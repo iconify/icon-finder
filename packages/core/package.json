@@ -1,0 +1,41 @@
+{
+	"name": "@iconify/search-core",
+	"description": "Iconify Search, core functions",
+	"version": "0.0.0-dev",
+	"author": "Vjacheslav Trushkin",
+	"license": "(Apache-2.0 OR GPL-2.0)",
+	"main": "./lib",
+	"scripts": {
+		"cleanup": "rm -rf lib compiled-tests",
+		"lint": "eslint {src,tests}/**/*.ts",
+		"prebuild": "npm run lint && npm run cleanup",
+		"build": "tsc -b",
+		"prewatch": "npm run lint",
+		"watch": "tsc -b -w",
+		"test": "mocha tests-compiled/*/*_test.js",
+		"pretest": "npm run build"
+	},
+	"bugs": "https://github.com/iconify/iconify-search/issues",
+	"homepage": "https://github.com/iconify/iconify-search",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/iconify/iconify-search.git"
+	},
+	"devDependencies": {
+		"@iconify/types": "^0.0.4",
+		"@types/chai": "^4.2.7",
+		"@types/mocha": "^5.2.7",
+		"@types/node": "^12.12.24",
+		"@types/request": "^2.48.4",
+		"@typescript-eslint/eslint-plugin": "^2.15.0",
+		"@typescript-eslint/parser": "^2.15.0",
+		"chai": "^4.2.0",
+		"eslint": "^6.8.0",
+		"mocha": "^6.2.2",
+		"typescript": "^3.7.4"
+	},
+	"dependencies": {
+		"@cyberalien/redundancy": "^0.0.6",
+		"axios": "^0.19.1"
+	}
+}

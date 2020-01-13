@@ -1,0 +1,6 @@
+.idea
+.DS_Store
+*.map
+node_modules
+lib
+tests-compiled
