@@ -20,6 +20,7 @@ export {
 	CollectionsListBlock,
 	isCollectionsBlockEmpty,
 	getCollectionsBlockCategories,
+	getCollectionsBlockPrefixes,
 	iterateCollectionsBlock,
 } from './blocks/collections-list';
 
@@ -35,6 +36,7 @@ export {
 	PaginationBlock,
 	isPaginationEmpty,
 	showPagination,
+	maxPage,
 } from './blocks/pagination';
 
 export { SearchBlock, isSearchBlockEmpty } from './blocks/search';
