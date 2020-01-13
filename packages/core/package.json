@@ -22,7 +22,7 @@
 		"url": "git://github.com/iconify/iconify-search.git"
 	},
 	"devDependencies": {
-		"@iconify/types": "^0.0.4",
+		"@iconify/types": "^1.0.0",
 		"@types/chai": "^4.2.7",
 		"@types/mocha": "^5.2.7",
 		"@types/node": "^12.12.24",
