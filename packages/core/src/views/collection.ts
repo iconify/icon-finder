@@ -7,6 +7,7 @@ import {
 	FiltersBlock,
 	defaultFiltersBlock,
 	defaultFilter,
+	autoIndexFilters,
 } from '../blocks/filters';
 import { CollectionRoute } from '../route/types';
 import { dataToCollection, CollectionData } from '../converters/collection';
@@ -393,6 +394,9 @@ export class CollectionView extends BaseView {
 						list.forEach(tag => {
 							filter.filters[tag] = defaultFilter(tag);
 						});
+
+						// Apply index
+						autoIndexFilters(filter);
 					}
 				}
 			});
