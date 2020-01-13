@@ -52,8 +52,12 @@ export const defaultFiltersBlock = (): FiltersBlock => {
 /**
  * Check if block is empty
  */
-export function isFiltersBlockEmpty(block: FiltersBlock | null): boolean {
-	return block === null || Object.keys(block.filters).length < 2;
+export function isFiltersBlockEmpty(block?: FiltersBlock | null): boolean {
+	return (
+		block === void 0 ||
+		block === null ||
+		Object.keys(block.filters).length < 2
+	);
 }
 
 /**

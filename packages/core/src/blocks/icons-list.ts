@@ -22,8 +22,8 @@ export const defaultIconsListBlock = (): IconsListBlock => {
 /**
  * Check if block is empty
  */
-export function isIconsListBlockEmpty(block: IconsListBlock | null): boolean {
-	return block === null || block.icons.length < 1;
+export function isIconsListBlockEmpty(block?: IconsListBlock | null): boolean {
+	return block === void 0 || block === null || block.icons.length < 1;
 }
 
 /**

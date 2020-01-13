@@ -22,7 +22,7 @@ export const defaultCollectionInfoBlock = (): CollectionInfoBlock => {
  * Check if block is empty
  */
 export function isCollectionInfoBlockEmpty(
-	block: CollectionInfoBlock | null
+	block?: CollectionInfoBlock | null
 ): boolean {
-	return block === null || block.info === null;
+	return block === void 0 || block === null || block.info === null;
 }

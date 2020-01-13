@@ -18,7 +18,7 @@ export const defaultCollectionsFilterBlock = (): CollectionsFilterBlock => {
  * Check if block is empty
  */
 export function isCollectionsFilterBlockEmpty(
-	block: CollectionsFilterBlock | null
+	block?: CollectionsFilterBlock | null
 ): boolean {
-	return block === null || block.keyword.trim() === '';
+	return block === void 0 || block === null || block.keyword.trim() === '';
 }

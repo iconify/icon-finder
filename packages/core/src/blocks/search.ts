@@ -23,6 +23,6 @@ export const defaultSearchBlock = (): SearchBlock => {
 /**
  * Check if block is empty
  */
-export function isSearchBlockEmpty(block: SearchBlock | null): boolean {
-	return block === null || block.keyword.trim() === '';
+export function isSearchBlockEmpty(block?: SearchBlock | null): boolean {
+	return block === void 0 || block === null || block.keyword.trim() === '';
 }

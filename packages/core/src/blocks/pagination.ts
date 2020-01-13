@@ -27,8 +27,8 @@ export const defaultPaginationBlock = (): PaginationBlock => {
 /**
  * Check if pagination is empty
  */
-export function isPaginationEmpty(block: PaginationBlock | null): boolean {
-	return block === null || block.length <= block.perPage;
+export function isPaginationEmpty(block?: PaginationBlock | null): boolean {
+	return block === void 0 || block === null || block.length <= block.perPage;
 }
 
 /**

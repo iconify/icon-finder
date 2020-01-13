@@ -30,9 +30,9 @@ export const defaultCollectionsListBlock = (): CollectionsListBlock => {
  * Check if block is empty
  */
 export function isCollectionsBlockEmpty(
-	block: CollectionsListBlock | null
+	block?: CollectionsListBlock | null
 ): boolean {
-	if (block === null) {
+	if (block === void 0 || block === null) {
 		return true;
 	}
 
