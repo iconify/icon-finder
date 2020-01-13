@@ -27,6 +27,7 @@ describe('Testing collection actions', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: prefix,
 			},
 			prefix
@@ -237,6 +238,7 @@ describe('Testing collection actions', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'

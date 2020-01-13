@@ -81,6 +81,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'
@@ -161,6 +162,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'
@@ -245,6 +247,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',
@@ -362,6 +365,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',
@@ -480,6 +484,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',

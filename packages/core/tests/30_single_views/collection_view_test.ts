@@ -46,6 +46,7 @@ describe('Testing collection view', () => {
 		api.loadFixture(
 			'/collection',
 			{
+				info: 'true',
 				prefix: prefix,
 			},
 			prefix

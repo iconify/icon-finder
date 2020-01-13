@@ -100,6 +100,7 @@ export class CollectionView extends BaseView {
 	_startLoading(): void {
 		this._startedLoading = true;
 		this._loadAPI('/collection', {
+			info: 'true',
 			prefix: this.prefix,
 		});
 	}
