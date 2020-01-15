@@ -1,15 +1,15 @@
 /**
- * Representation of icon
+ * Base icon
  */
-export interface Icon {
+interface BaseIcon {
 	readonly prefix: string;
 	readonly name: string;
 }
 
 /**
- * Icon with optional data used to categorise it
+ * Optional data used to categorise it
  */
-export interface ExtendedIconArrays {
+interface IconArrays {
 	// For categories
 	tags?: Array<string>;
 
@@ -18,92 +18,16 @@ export interface ExtendedIconArrays {
 	chars?: Array<string>;
 }
 
-export interface ExtendedIconStrings {
+interface IconStrings {
 	// For categories
 	themePrefix?: string;
 	themeSuffix?: string;
 }
 
-export interface ExtendedIcon
-	extends Icon,
-		ExtendedIconArrays,
-		ExtendedIconStrings {}
-
 /**
- * Interface for extra parameters passed to extendIcon()
+ * Icon interface
  */
-interface ExtraIconStringParams {
-	tag?: string;
-	alias?: string;
-	char?: string;
-}
-
-interface ExtraIconArrayParams {
-	tags?: string[];
-	aliases?: string[];
-	chars?: string[];
-}
-
-interface ExtraIconStringOnlyParams {
-	themePrefix?: string;
-	themeSuffix?: string;
-}
-
-export interface ExtraIconParams
-	extends ExtraIconStringParams,
-		ExtraIconArrayParams,
-		ExtraIconStringOnlyParams {}
-
-/**
- * List of optional properties that could be referenced by both string or array and have multiple properties
- */
-interface ExtraArraysItem {
-	str: keyof ExtraIconStringParams;
-	arr: keyof ExtraIconArrayParams;
-	key: keyof ExtendedIconArrays;
-}
-
-const extraArrays: ExtraArraysItem[] = [
-	{
-		str: 'tag',
-		arr: 'tags',
-		key: 'tags',
-	},
-	{
-		str: 'alias',
-		arr: 'aliases',
-		key: 'aliases',
-	},
-	{
-		str: 'char',
-		arr: 'chars',
-		key: 'chars',
-	},
-];
-
-/**
- * List of optional properties that are strings
- */
-interface ExtraStringItem {
-	str: keyof ExtraIconStringOnlyParams;
-	key: keyof ExtendedIconStrings;
-}
-
-const extraStrings: ExtraStringItem[] = [
-	{
-		str: 'themePrefix',
-		key: 'themePrefix',
-	},
-	{
-		str: 'themeSuffix',
-		key: 'themeSuffix',
-	},
-];
-
-/**
- * List of properties that are arrays and should have unique values
- */
-const uniqueArrays: (keyof ExtendedIconArrays)[] = ['tags', 'aliases', 'chars'];
+export interface Icon extends BaseIcon, IconArrays, IconStrings {}
 
 /**
  * Expression to test part of icon name.
@@ -138,59 +62,6 @@ export const stringToIcon = (value: string): Icon | null => {
 	}
 
 	return null;
-};
-
-/**
- * Add extended properties to icon
- */
-export const extendIcon = (
-	source: Icon,
-	params: Record<string, string | string[]>
-): ExtendedIcon => {
-	const icon = source as ExtendedIcon;
-
-	// Add extra parameters that could be array and/or string
-	extraArrays.forEach(attr => {
-		const arrValue = params[attr.arr];
-		let value: string[] = [];
-
-		// Array
-		if (typeof arrValue === 'string') {
-			value = [arrValue];
-		} else if (params[attr.arr] instanceof Array) {
-			value = arrValue.slice(0);
-		}
-
-		// String alias
-		const strValue = params[attr.str];
-		if (typeof strValue === 'string') {
-			value.push(strValue);
-		}
-
-		if (value.length > 0) {
-			icon[attr.key] = value;
-		}
-	});
-
-	// Add extra string parameters
-	extraStrings.forEach(attr => {
-		const value = params[attr.str];
-		if (typeof value === 'string') {
-			icon[attr.key] = value;
-		}
-	});
-
-	// Check that array values are unique
-	uniqueArrays.forEach(attr => {
-		const item = icon[attr];
-		if (item instanceof Array && item.length > 0) {
-			icon[attr] = item.filter(
-				(value, index, self) => self.indexOf(value) === index
-			);
-		}
-	});
-
-	return icon;
 };
 
 /**

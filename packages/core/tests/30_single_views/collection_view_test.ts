@@ -19,7 +19,7 @@ import {
 import { API as FakeAPI } from '../fake_api';
 import { EventCallback } from '../../lib/events';
 import { FiltersBlock, isFiltersBlockEmpty } from '../../lib/blocks/filters';
-import { ExtendedIcon } from '../../lib/icon';
+import { Icon } from '../../lib/icon';
 import { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isSearchBlockEmpty } from '../../lib/blocks/search';
 
@@ -93,7 +93,7 @@ describe('Testing collection view', () => {
 	 * Get icon names from block
 	 */
 	function getIconNames(block: IconsListBlock): string[] {
-		return (block.icons as ExtendedIcon[]).map(icon => {
+		return (block.icons as Icon[]).map(icon => {
 			return icon.name;
 		});
 	}

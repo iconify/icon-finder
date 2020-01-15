@@ -79,13 +79,7 @@ export { SearchViewBlocks } from './views/search';
 export { IconsList, CustomViewBlocks } from './views/custom';
 
 // From icons
-export {
-	Icon,
-	ExtendedIcon,
-	iconToString,
-	validateIcon,
-	compareIcons,
-} from './icon';
+export { Icon, iconToString, validateIcon, compareIcons } from './icon';
 
 /**
  * API core configuration

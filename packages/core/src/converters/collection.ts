@@ -1,5 +1,5 @@
 import { IconifyInfo, IconifyThemes } from '@iconify/types';
-import { ExtendedIcon } from '../icon';
+import { Icon } from '../icon';
 
 const minDisplayHeight = 16;
 const maxDisplayHeight = 24;
@@ -32,7 +32,7 @@ export interface CollectionData {
 	info?: CollectionInfo;
 
 	// List of icons
-	icons: ExtendedIcon[];
+	icons: Icon[];
 
 	// List of available tags, prefixes and suffixed
 	tags?: string[];
@@ -313,7 +313,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	});
 
 	// Find all icons
-	const icons: Record<string, ExtendedIcon> = Object.create(null);
+	const icons: Record<string, Icon> = Object.create(null);
 	tags.forEach(tag => {
 		const list = (source.categories as Record<string, string[]>)[tag];
 		list.forEach(name => {
@@ -322,7 +322,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 			}
 			if (icons[name] === void 0) {
 				// Add new icon
-				const icon: ExtendedIcon = {
+				const icon: Icon = {
 					prefix: result.prefix,
 					name: name,
 					tags: [tag],
@@ -349,7 +349,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 			}
 			if (icons[name] === void 0) {
 				// Add new icon
-				const icon: ExtendedIcon = {
+				const icon: Icon = {
 					prefix: result.prefix,
 					name: name,
 				};
@@ -396,7 +396,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	}
 
 	// Convert to sorted array
-	const sortedIcons: ExtendedIcon[] = [];
+	const sortedIcons: Icon[] = [];
 	Object.keys(icons)
 		.sort((a, b) => a.localeCompare(b))
 		.forEach(key => {

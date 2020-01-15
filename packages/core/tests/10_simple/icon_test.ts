@@ -4,7 +4,6 @@ import {
 	stringToIcon,
 	validateIcon,
 	iconToString,
-	extendIcon,
 	compareIcons,
 	Icon,
 } from '../../lib/icon';
@@ -87,170 +86,6 @@ describe('Testing icon', () => {
 		expect(iconToString(icon)).to.be.equal('md:fõö');
 	});
 
-	it('Extending', () => {
-		let icon;
-
-		// Empty extend
-		icon = stringToIcon('fa-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'fa',
-			name: 'home',
-		});
-		extendIcon(icon, {});
-		expect(icon).to.be.eql({
-			prefix: 'fa',
-			name: 'home',
-		});
-
-		// Tags as array
-		icon = stringToIcon('md-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-		});
-		extendIcon(icon, {
-			tags: ['Home', 'Baseline'],
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-			tags: ['Home', 'Baseline'],
-		});
-
-		// Tag as string
-		icon = stringToIcon('md-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-		});
-		extendIcon(icon, {
-			tag: 'Home',
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-			tags: ['Home'],
-		});
-
-		// Tags as array (should be first in result) and string (should be last in result)
-		icon = stringToIcon('md-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-		});
-		extendIcon(icon, {
-			tag: 'Home',
-			tags: ['Baseline'],
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-			tags: ['Baseline', 'Home'],
-		});
-
-		// Unique tags
-		icon = stringToIcon('md-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-		});
-		extendIcon(icon, {
-			tag: 'Home',
-			tags: ['Home', 'Baseline', 'Home'],
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-			tags: ['Home', 'Baseline'],
-		});
-
-		// Aliases
-		icon = stringToIcon('md-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-		});
-		extendIcon(icon, {
-			alias: 'house',
-			aliases: ['baseline-home', 'baseline-house'],
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-			aliases: ['baseline-home', 'baseline-house', 'house'],
-		});
-
-		// Characters
-		icon = stringToIcon('md-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-		});
-		extendIcon(icon, {
-			char: 'f001',
-			chars: ['f002', 'f003'],
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home',
-			chars: ['f002', 'f003', 'f001'],
-		});
-
-		// Prefix
-		icon = stringToIcon('md-baseline-home') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'baseline-home',
-		});
-		extendIcon(icon, {
-			themePrefix: 'baseline',
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'baseline-home',
-			themePrefix: 'baseline',
-		});
-
-		// Suffix
-		icon = stringToIcon('md-home-outline') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home-outline',
-		});
-		extendIcon(icon, {
-			themeSuffix: 'outline',
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'home-outline',
-			themeSuffix: 'outline',
-		});
-
-		// Mix of all properties
-		icon = stringToIcon('md:thin-home-outline') as Icon;
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'thin-home-outline',
-		});
-		extendIcon(icon, {
-			tags: ['Navigation'],
-			char: 'f000',
-			aliases: ['medium-home-outline'],
-			themePrefix: 'thin',
-			themeSuffix: 'outline',
-		});
-		expect(icon).to.be.eql({
-			prefix: 'md',
-			name: 'thin-home-outline',
-			tags: ['Navigation'],
-			chars: ['f000'],
-			aliases: ['medium-home-outline'],
-			themePrefix: 'thin',
-			themeSuffix: 'outline',
-		});
-		expect(iconToString(icon)).to.be.equal('md:thin-home-outline');
-	});
-
 	it('Comparing', () => {
 		let icon1, icon2;
 
@@ -304,9 +139,10 @@ describe('Testing icon', () => {
 			prefix: 'md',
 			name: 'thin-home-outline',
 		});
-		extendIcon(icon2, {
+
+		Object.assign(icon2, {
 			tags: ['Navigation'],
-			char: 'f000',
+			chars: ['f000'],
 			aliases: ['medium-home-outline'],
 			themePrefix: 'thin',
 			themeSuffix: 'outline',

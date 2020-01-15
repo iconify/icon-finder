@@ -4,7 +4,7 @@ import {
 	dataToCollection,
 	CollectionData,
 } from '../../lib/converters/collection';
-import { stringToIcon, Icon, extendIcon } from '../../lib/icon';
+import { stringToIcon, Icon } from '../../lib/icon';
 import { getFixture } from '../get_fixture';
 
 describe('Testing converting collection information', () => {
@@ -46,8 +46,8 @@ describe('Testing converting collection information', () => {
 			total: 2,
 			icons: [
 				// Order should change because of sorting
-				extendIcon(stringToIcon('foo:arrow-left') as Icon, {}),
-				extendIcon(stringToIcon('foo:home') as Icon, {}),
+				stringToIcon('foo:arrow-left') as Icon,
+				stringToIcon('foo:home') as Icon,
 			],
 		};
 		expect(result).to.be.eql(expected);
@@ -66,8 +66,8 @@ describe('Testing converting collection information', () => {
 			total: 2,
 			icons: [
 				// Order should change because of sorting
-				extendIcon(stringToIcon('foo:arrow-left') as Icon, {}),
-				extendIcon(stringToIcon('foo:home') as Icon, {}),
+				stringToIcon('foo:arrow-left') as Icon,
+				stringToIcon('foo:home') as Icon,
 			],
 		};
 		expect(result).to.be.eql(expected);
@@ -88,13 +88,13 @@ describe('Testing converting collection information', () => {
 			tags: ['Basic', 'Extra'],
 			icons: [
 				// Order should change because of sorting
-				extendIcon(stringToIcon('foo:alert') as Icon, {
+				Object.assign(stringToIcon('foo:alert') as Icon, {
 					tags: ['Basic'],
 				}),
-				extendIcon(stringToIcon('foo:arrows') as Icon, {
+				Object.assign(stringToIcon('foo:arrows') as Icon, {
 					tags: ['Extra'],
 				}),
-				extendIcon(stringToIcon('foo:home') as Icon, {
+				Object.assign(stringToIcon('foo:home') as Icon, {
 					tags: ['Basic'],
 				}),
 			],
@@ -117,13 +117,13 @@ describe('Testing converting collection information', () => {
 			tags: ['Basic', ''],
 			icons: [
 				// Order should change because of sorting
-				extendIcon(stringToIcon('foo:alert') as Icon, {
+				Object.assign(stringToIcon('foo:alert') as Icon, {
 					tags: ['Basic'],
 				}),
-				extendIcon(stringToIcon('foo:arrows') as Icon, {
+				Object.assign(stringToIcon('foo:arrows') as Icon, {
 					tags: [''],
 				}),
-				extendIcon(stringToIcon('foo:home') as Icon, {
+				Object.assign(stringToIcon('foo:home') as Icon, {
 					tags: ['Basic'],
 				}),
 			],
@@ -155,14 +155,14 @@ describe('Testing converting collection information', () => {
 			tags: ['Basic', 'Extra', ''],
 			icons: [
 				// Order should change because of sorting
-				extendIcon(stringToIcon('foo:alert') as Icon, {
+				Object.assign(stringToIcon('foo:alert') as Icon, {
 					tags: ['Basic', 'Extra'],
 				}),
-				extendIcon(stringToIcon('foo:arrows') as Icon, {
+				Object.assign(stringToIcon('foo:arrows') as Icon, {
 					tags: [''],
 					chars: ['f001'],
 				}),
-				extendIcon(stringToIcon('foo:home') as Icon, {
+				Object.assign(stringToIcon('foo:home') as Icon, {
 					tags: ['Basic'],
 					aliases: ['home-outline', 'house'],
 					chars: ['f000'],
@@ -203,23 +203,26 @@ describe('Testing converting collection information', () => {
 			total: 5,
 			icons: [
 				// Order should change because of sorting
-				extendIcon(stringToIcon('foo:outline-alert') as Icon, {
+				Object.assign(stringToIcon('foo:outline-alert') as Icon, {
 					themePrefix: 'Outline',
 					themeSuffix: '',
 				}),
-				extendIcon(stringToIcon('foo:outline-home') as Icon, {
+				Object.assign(stringToIcon('foo:outline-home') as Icon, {
 					themePrefix: 'Outline',
 					themeSuffix: '',
 				}),
-				extendIcon(stringToIcon('foo:outline-home-twotone') as Icon, {
-					themePrefix: 'Outline',
-					themeSuffix: 'TwoTone',
-				}),
-				extendIcon(stringToIcon('foo:solid-alert') as Icon, {
+				Object.assign(
+					stringToIcon('foo:outline-home-twotone') as Icon,
+					{
+						themePrefix: 'Outline',
+						themeSuffix: 'TwoTone',
+					}
+				),
+				Object.assign(stringToIcon('foo:solid-alert') as Icon, {
 					themePrefix: 'Solid',
 					themeSuffix: '',
 				}),
-				extendIcon(stringToIcon('foo:solid-home') as Icon, {
+				Object.assign(stringToIcon('foo:solid-home') as Icon, {
 					themePrefix: 'Solid',
 					themeSuffix: '',
 				}),

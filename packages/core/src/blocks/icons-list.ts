@@ -1,4 +1,4 @@
-import { Icon, ExtendedIcon } from '../icon';
+import { Icon } from '../icon';
 import { SearchBlock } from './search';
 import { FiltersBlock, enableFilters } from './filters';
 import { CollectionViewBlocksIconFilters } from '../views/collection';
@@ -7,7 +7,7 @@ import { CollectionViewBlocksIconFilters } from '../views/collection';
  * Interface for block
  */
 export interface IconsListBlock {
-	icons: Icon[] | ExtendedIcon[];
+	icons: Icon[];
 }
 
 /**
@@ -29,13 +29,9 @@ export function isIconsListBlockEmpty(block?: IconsListBlock | null): boolean {
 /**
  * Icon attributes to search
  */
-const searchableIconAttributes: (keyof ExtendedIcon)[] = [
-	'name',
-	'chars',
-	'aliases',
-];
+const searchableIconAttributes: (keyof Icon)[] = ['name', 'chars', 'aliases'];
 
-const searchableIconAttributesWithPrefixes: (keyof ExtendedIcon)[] = [
+const searchableIconAttributesWithPrefixes: (keyof Icon)[] = [
 	'prefix',
 	'name',
 	'chars',
@@ -57,10 +53,10 @@ export function applyIconFilters(
 		? searchableIconAttributesWithPrefixes
 		: searchableIconAttributes;
 
-	// Get ExtendedIcon attribute matching filter
+	// Get Icon attribute matching filter
 	function iconAttr(
 		key: keyof CollectionViewBlocksIconFilters
-	): keyof ExtendedIcon | null {
+	): keyof Icon | null {
 		switch (key) {
 			case 'tags':
 				return 'tags';
@@ -100,7 +96,7 @@ export function applyIconFilters(
 				}
 
 				icons = icons.filter(item => {
-					const icon = item as ExtendedIcon;
+					const icon = item as Icon;
 					let match = false;
 
 					searches.forEach(attr => {
@@ -141,7 +137,7 @@ export function applyIconFilters(
 
 		Object.keys(filter.filters).forEach(match => {
 			for (let i = icons.length - 1; i >= 0; i--) {
-				const value = (icons[i] as ExtendedIcon)[attr];
+				const value = (icons[i] as Icon)[attr];
 
 				if (value === void 0 || value === null) {
 					continue;
@@ -178,7 +174,7 @@ export function applyIconFilters(
 		}
 
 		icons = icons.filter(icon => {
-			const value = (icon as ExtendedIcon)[attr];
+			const value = (icon as Icon)[attr];
 
 			if (value === void 0 || value === null) {
 				return false;
