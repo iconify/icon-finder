@@ -124,9 +124,9 @@ export class SearchView extends BaseView {
 				}
 
 				// Check for "more"
-				if (value === 2 && this._showMoreButton()) {
+				if (value > 1 && this._showMoreButton()) {
 					// Create sibling route
-					this._triggerFullResults();
+					this._triggerFullResults(value);
 					return;
 				}
 
@@ -192,7 +192,7 @@ export class SearchView extends BaseView {
 	/**
 	 * Show full results
 	 */
-	_triggerFullResults(): void {
+	_triggerFullResults(page: number): void {
 		// Create sibling view
 		const registry = getRegistry(this._instance);
 		const router = registry.router;
@@ -200,7 +200,7 @@ export class SearchView extends BaseView {
 			{
 				type: 'search',
 				params: Object.assign({}, this.route.params, {
-					page: 2,
+					page: page,
 					more: false,
 				}),
 			} as PartialRoute,
