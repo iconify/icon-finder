@@ -24,7 +24,7 @@ All types can be imported from the main file or from `lib/blocks/{block-type}.js
 
 There are several types of blocks:
 
-## Collection info {#collection-info}
+## Collection info
 
 Type: `CollectionInfoBlock`
 block.type = "collection-info"
@@ -77,9 +77,9 @@ Information properties:
 
 Most properties, except for "name" and "total" could be empty or missing.
 
-For more details about CollectionInfo type, see [types.md](types.md#collection-info).
+For more details about CollectionInfo type, see [types.md](types.md#collectioninfo).
 
-## Collections filter {#collections-filter}
+## Collections filter
 
 Type: `CollectionsFilterBlock`
 block.type = "collections-filter"
@@ -97,7 +97,7 @@ Example:
 }
 ```
 
-## Collections list {#collections-list}
+## Collections list
 
 Type: `CollectionsListBlock`
 block.type = "collections-list"
@@ -220,7 +220,7 @@ This block has 2 properties:
 -   `showCategories`: boolean attribute. If false, UI should not show categories.
 -   `collections`: list of collections. Each entry is an object, where the key is category title, value is another object, where the key is the prefix, value is collection information block: CollectionInfo.
 
-For more details about CollectionInfo type, see [types.md](types.md#collection-info).
+For more details about CollectionInfo type, see [types.md](types.md#collectioninfo).
 
 Helper functions that can be imported from `lib/blocks/collections.js`:
 
@@ -255,7 +255,7 @@ iterateCollectionsBlock(blocks.collections, (info, prefix, category) => {
 });
 ```
 
-## Filters {#filters}
+## Filters
 
 Type: `FiltersBlock`
 block.type = "filters"
@@ -323,7 +323,7 @@ Block has the following properties:
 
 In an example above there are 53 filters (most were removed to reduce sample size). Usually, there aren't that many filters, that is an extreme case. UI must make sure all filters are visible, but they don't most important content, which is icons list, hidden below filters, so ideally UI should have max-height and overflow scrolling for filters block.
 
-## Icons list {#icons-list}
+## Icons list
 
 Type: `IconsListBlock`
 block.type = "icons-list"
@@ -405,7 +405,7 @@ if (compareIcons(icon1, icon2)) {
 
 `compareIcons(icon1, icon2): boolean` - compares icons. Returns true if icons are valid and identical, false if not. See code example above.
 
-## Pagination {#pagination}
+## Pagination
 
 Type: `PaginationBlock`
 block.type = "pagination"
@@ -476,7 +476,7 @@ if (!isBlockEmpty(pagination)) {
 return null;
 ```
 
-### More pages {#pagination-more}
+### More pages
 
 By default, Icon Finder will retrieve only first 2 pages of results from API. This is done to reduce the load on API because often visitors don't look further than the first page.
 
@@ -490,7 +490,7 @@ core.action('pagination', 2);
 
 For more information about actions, see [actions.md](actions.md)
 
-## Search {#search}
+## Search
 
 Type: `SearchBlock`
 block.type = "search"
@@ -532,7 +532,7 @@ Example:
 -   Search form for searching all icons
 -   Parent views
 
-## Search form {#search-form}
+## Search form
 
 Search form is present on all pages, so it should be treated as a separate form. UI can decide if a search form should be shown.
 
@@ -550,7 +550,7 @@ UI should follow this logic:
 -   If the current view is changed to "search" ((see `viewChanged` and route properties of render callback)[render.md]), copy keyword from route parameters to search form.
 -   When search form is submitted, run action "search" on the current view. All views can handle that action.
 
-## Parent views {#parent}
+## Parent views
 
 Parent views tree is also not part of the current view because it is not needed.
 
@@ -585,4 +585,4 @@ const info = collections.get(prefix);
 const title = info === null ? prefix : info.name;
 ```
 
-For details about CollectionInfo type, see [types.md](types.md#collection-info).
+For details about CollectionInfo type, see [types.md](types.md#collectioninfo).

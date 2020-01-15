@@ -58,7 +58,7 @@ Each route can have a parent route. For example, this is what route looks like i
 }
 ```
 
-## Route types {#types}
+## Types
 
 There are 4 types of routes. Almost all of them have required parameters:
 
@@ -67,14 +67,14 @@ There are 4 types of routes. Almost all of them have required parameters:
 -   `search`: Shows search results. Required parameter: "keyword" that contains a phrase to search for. Search is case insensitive.
 -   `custom`: Shows custom icons list (more about custom views below). Required parameter: "customType".
 
-### Collections list {#collections}
+### Collections
 
 Collections list route is represented by type `CollectionsRoute` and has the following optional parameters:
 
 -   `filter`: string. Used for searching collections list. The default value is an empty string "".
 -   `category`: string | null. Used to show icon sets only from one category. The default value is null.
 
-### Collection {#collection}
+### Collection
 
 Collection route is represented by type `CollectionRoute` and has one required parameter:
 
@@ -88,7 +88,7 @@ and following optional parameters:
 -   `themePrefix`: string | null. Theme prefix. Value is a theme name, not an actual prefix. See "Prefixes and Suffixes" section below. The default value is null.
 -   `themeSuffix`: string | null. Same as above, but for the suffix.
 
-### Search {#search}
+### Search
 
 Search results route is represented by type `SearchRoute` and has one required parameter:
 
@@ -101,7 +101,7 @@ and following optional parameters:
 
 By default, Icon Finder will retrieve only first 2 pages of results from API. This is done to reduce the load on API because often visitors don't look further than the first page. Additional results can be retrieved by changing the current page to 2 (or higher).
 
-### Custom {#custom}
+### Custom
 
 Custom icons list route is represented by type `CustomRoute` and has one required parameter:
 

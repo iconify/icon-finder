@@ -6,7 +6,7 @@ Iconify Icon Finder Core is written in TypeScript. This has several major advant
 -   When using a library written in TypeScript, editors such as VSCode will give you hints and autofill properties, making it much easier to use that library.
 -   Easier to avoid bugs. While core does have unit tests, TypeScript provides an additional layer of code checking, reducing chance of bugs.
 
-## Icon {#icon}
+## Icon
 
 Each icon is represented by the `Icon` type.
 
@@ -33,7 +33,7 @@ To convert icon from/to string, follwing functions are available:
 -   `iconToString(icon: Icon): string` - return string representation of icon, such as "fa-solid:home".
 -   `stringToIcon(icon: string): Icon | null` - returns Icon object, null if it fails to convert.
 
-## Route {#route}
+## Route
 
 Route is represented by several types:
 
@@ -51,6 +51,6 @@ When rendering UI, core provides data as `PartialRoute`, so route parameters inc
 
 For more information about routes, see [routes.md](routes.md).
 
-## CollectionInfo {#collection-info}
+## CollectionInfo
 
 TODO
