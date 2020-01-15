@@ -22,6 +22,7 @@ import { FiltersBlock, isFiltersBlockEmpty } from '../../lib/blocks/filters';
 import { Icon } from '../../lib/icon';
 import { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isSearchBlockEmpty } from '../../lib/blocks/search';
+import { PaginationBlock } from '../../lib/blocks/pagination';
 
 describe('Testing collection view', () => {
 	const namespace = __filename;
@@ -175,6 +176,7 @@ describe('Testing collection view', () => {
 				let iconNames: string[];
 				let tags: FiltersBlock;
 				let tagsList: string[];
+				let expectedPagination: PaginationBlock;
 
 				// Check view
 				expect(view.prefix).to.be.equal('fa-regular');
@@ -203,7 +205,7 @@ describe('Testing collection view', () => {
 
 				tags = blocks.tags as FiltersBlock;
 				expect(tags.active).to.be.equal(null);
-				expect(tags.type).to.be.equal('tags');
+				expect(tags.filterType).to.be.equal('tags');
 				expect(Object.keys(tags.filters)).to.be.eql([
 					'Accessibility',
 					'Alert',
@@ -264,12 +266,14 @@ describe('Testing collection view', () => {
 				expect(tagsList).to.be.eql([]);
 
 				// Pagination
-				expect(blocks.pagination).to.be.eql({
+				expectedPagination = {
+					type: 'pagination',
 					length: 151,
 					more: false,
 					page: 3,
 					perPage: 48,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Icons
 				expect(blocks.icons.icons.length).to.be.equal(7); // 151 - 48 * 3
@@ -300,12 +304,14 @@ describe('Testing collection view', () => {
 
 				// Check pagination
 				expect(view.route.params.page).to.be.equal(0);
-				expect(blocks.pagination).to.be.eql({
+				expectedPagination = {
+					type: 'pagination',
 					length: 3,
 					more: false,
 					page: 0,
 					perPage: 48,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Check icons
 				expect(blocks.icons.icons.length).to.be.equal(3);
@@ -323,12 +329,14 @@ describe('Testing collection view', () => {
 				expect(blocks).to.not.be.equal(null);
 
 				// Check pagination
-				expect(blocks.pagination).to.be.eql({
+				expectedPagination = {
+					type: 'pagination',
 					length: 6,
 					more: false,
 					page: 0,
 					perPage: 48,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Check icons
 				iconNames = getIconNames(blocks.icons);
@@ -344,7 +352,7 @@ describe('Testing collection view', () => {
 				// Check tags
 				tags = blocks.tags as FiltersBlock;
 				expect(tags.active).to.be.equal(null);
-				expect(tags.type).to.be.equal('tags');
+				expect(tags.filterType).to.be.equal('tags');
 
 				// Check for disabled tags
 				tagsList = filterTags(tags, true);
@@ -392,7 +400,7 @@ describe('Testing collection view', () => {
 
 				const tags = blocks.tags as FiltersBlock;
 				expect(tags.active).to.be.equal('');
-				expect(tags.type).to.be.equal('tags');
+				expect(tags.filterType).to.be.equal('tags');
 				tagsList = Object.keys(tags.filters);
 				expect(tagsList.length).to.be.equal(60);
 
@@ -404,12 +412,14 @@ describe('Testing collection view', () => {
 				expect(tagsList).to.be.eql([]);
 
 				// Pagination
-				expect(blocks.pagination).to.be.eql({
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
 					length: 1497,
 					more: false,
 					page: 0,
 					perPage: 48,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				done();
 			},
@@ -442,7 +452,7 @@ describe('Testing collection view', () => {
 
 				const suffixes = blocks.themeSuffixes as FiltersBlock;
 				expect(suffixes.active).to.be.equal('Outline');
-				expect(suffixes.type).to.be.equal('themeSuffixes');
+				expect(suffixes.filterType).to.be.equal('themeSuffixes');
 				suffixesList = Object.keys(suffixes.filters);
 				expect(suffixesList).to.be.eql(['Fill', 'Outline', 'TwoTone']);
 
@@ -451,12 +461,14 @@ describe('Testing collection view', () => {
 				expect(suffixesList).to.be.eql([]);
 
 				// Pagination
-				expect(blocks.pagination).to.be.eql({
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
 					length: 366,
 					more: false,
 					page: 3,
 					perPage: 48,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Check icons block for "git*" icons
 				const iconNames = getIconNames(blocks.icons).filter(

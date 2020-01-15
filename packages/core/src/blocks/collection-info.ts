@@ -1,9 +1,11 @@
+import { BaseBlock } from './types';
 import { CollectionInfo } from '../converters/collection';
 
 /**
  * Interface for block
  */
-export interface CollectionInfoBlock {
+export interface CollectionInfoBlock extends BaseBlock {
+	readonly type: 'collection-info';
 	prefix: string;
 	info: CollectionInfo | null;
 }
@@ -13,6 +15,7 @@ export interface CollectionInfoBlock {
  */
 export const defaultCollectionInfoBlock = (): CollectionInfoBlock => {
 	return {
+		type: 'collection-info',
 		prefix: '',
 		info: null,
 	};

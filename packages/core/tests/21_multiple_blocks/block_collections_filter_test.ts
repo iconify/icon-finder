@@ -46,13 +46,13 @@ describe('Testing collections filters block', () => {
 		const categoriesFilter: FiltersBlock = Object.assign(
 			defaultFiltersBlock(),
 			{
-				type: 'categories',
+				filterType: 'categories',
 			}
 		);
 		const expectedCategoriesFilter: FiltersBlock = Object.assign(
 			defaultFiltersBlock(),
 			{
-				type: 'categories',
+				filterType: 'categories',
 			}
 		);
 

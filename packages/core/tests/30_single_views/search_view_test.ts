@@ -18,7 +18,10 @@ import {
 	IconsListBlock,
 	isIconsListBlockEmpty,
 } from '../../lib/blocks/icons-list';
-import { isPaginationEmpty } from '../../lib/blocks/pagination';
+import {
+	isPaginationEmpty,
+	PaginationBlock,
+} from '../../lib/blocks/pagination';
 
 describe('Testing search view', () => {
 	const namespace = __filename;
@@ -230,12 +233,14 @@ describe('Testing search view', () => {
 			// Test pagination
 			expect(blocks.pagination).to.not.be.equal(null);
 			expect(isPaginationEmpty(blocks.pagination)).to.be.equal(false);
-			expect(blocks.pagination).to.be.eql({
+			const expectedPagination: PaginationBlock = {
+				type: 'pagination',
 				length: 64,
 				more: true,
 				page: 0,
 				perPage: 32,
-			});
+			};
+			expect(blocks.pagination).to.be.eql(expectedPagination);
 
 			done();
 		}, 'home');
@@ -244,6 +249,8 @@ describe('Testing search view', () => {
 	it('Test "home" search", full results', done => {
 		const view = setupView(
 			data => {
+				let expectedPagination: PaginationBlock;
+
 				expect(data).to.be.equal(view);
 
 				// Check view
@@ -311,12 +318,14 @@ describe('Testing search view', () => {
 				// Test pagination
 				expect(blocks.pagination).to.not.be.equal(null);
 				expect(isPaginationEmpty(blocks.pagination)).to.be.equal(false);
-				expect(blocks.pagination).to.be.eql({
+				expectedPagination = {
+					type: 'pagination',
 					length: 86,
 					more: false,
 					page: 0,
 					perPage: 32,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				/**
 				 * Change pagination to third page
@@ -342,12 +351,14 @@ describe('Testing search view', () => {
 				});
 
 				// Test pagination
-				expect(blocks.pagination).to.be.eql({
+				expectedPagination = {
+					type: 'pagination',
 					length: 86,
 					more: false,
 					page: 2,
 					perPage: 32,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				done();
 			},

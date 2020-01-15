@@ -1,3 +1,4 @@
+import { BaseBlock } from './types';
 import { Icon } from '../icon';
 import { SearchBlock } from './search';
 import { FiltersBlock, enableFilters } from './filters';
@@ -6,7 +7,8 @@ import { CollectionViewBlocksIconFilters } from '../views/collection';
 /**
  * Interface for block
  */
-export interface IconsListBlock {
+export interface IconsListBlock extends BaseBlock {
+	readonly type: 'icons-list';
 	icons: Icon[];
 }
 
@@ -15,6 +17,7 @@ export interface IconsListBlock {
  */
 export const defaultIconsListBlock = (): IconsListBlock => {
 	return {
+		type: 'icons-list',
 		icons: [],
 	};
 };
@@ -129,7 +132,7 @@ export function applyIconFilters(
 		}
 
 		const attr = iconAttr(
-			filter.type as keyof CollectionViewBlocksIconFilters
+			filter.filterType as keyof CollectionViewBlocksIconFilters
 		);
 		if (attr === null) {
 			return;
@@ -167,7 +170,7 @@ export function applyIconFilters(
 
 		const match = filter.active;
 		const attr = iconAttr(
-			filter.type as keyof CollectionViewBlocksIconFilters
+			filter.filterType as keyof CollectionViewBlocksIconFilters
 		);
 		if (attr === null) {
 			return;

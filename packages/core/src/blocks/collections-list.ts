@@ -1,3 +1,4 @@
+import { BaseBlock } from './types';
 import {
 	CollectionsList,
 	collectionsPrefixes,
@@ -11,7 +12,8 @@ import { CollectionsFilterBlock } from './collections-filter';
 /**
  * Block
  */
-export interface CollectionsListBlock {
+export interface CollectionsListBlock extends BaseBlock {
+	readonly type: 'collections-list';
 	showCategories: boolean;
 	collections: CollectionsList;
 }
@@ -21,6 +23,7 @@ export interface CollectionsListBlock {
  */
 export const defaultCollectionsListBlock = (): CollectionsListBlock => {
 	return {
+		type: 'collections-list',
 		showCategories: true,
 		collections: Object.create(null),
 	};
@@ -96,6 +99,7 @@ export function filterCollectionsBlock(
 	keepEmptyCategories = false
 ): CollectionsListBlock {
 	const result: CollectionsListBlock = {
+		type: 'collections-list',
 		showCategories: block.showCategories,
 		collections: filterCollections(
 			block.collections,
@@ -118,6 +122,7 @@ export function disableInactiveCategories(
 	}
 
 	const result: CollectionsListBlock = {
+		type: 'collections-list',
 		showCategories: block.showCategories,
 		collections: Object.create(null),
 	};
@@ -150,7 +155,7 @@ export function applyCollectionsFilter(
 	filters: FiltersBlock | null
 ): CollectionsListBlock {
 	const keyword = filter.keyword.trim();
-	const hasFilters = filters !== null && filters.type === 'categories';
+	const hasFilters = filters !== null && filters.filterType === 'categories';
 	const filtersList = filters as FiltersBlock;
 
 	if (keyword === '') {

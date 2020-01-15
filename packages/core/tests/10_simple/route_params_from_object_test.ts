@@ -6,6 +6,7 @@ import {
 	CollectionRouteParams,
 	SearchRouteParams,
 	CustomRouteParams,
+	RouteType,
 } from '../../lib/route/params';
 
 describe('Testing route parameters', () => {
@@ -271,12 +272,12 @@ describe('Testing route parameters', () => {
 	it('objectToRouteParams(invalid)', () => {
 		// Wrong type
 		expect(function() {
-			objectToRouteParams('bookmark', {});
+			objectToRouteParams(('bookmark' as unknown) as RouteType, {});
 		}).to.throw(Error);
 
 		// Wrong case
 		expect(function() {
-			objectToRouteParams('Collections', {});
+			objectToRouteParams(('Collections' as unknown) as RouteType, {});
 		}).to.throw(Error);
 
 		// Non-string type

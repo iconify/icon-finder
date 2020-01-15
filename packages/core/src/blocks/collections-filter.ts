@@ -1,7 +1,10 @@
+import { BaseBlock } from './types';
+
 /**
  * Interface for block
  */
-export interface CollectionsFilterBlock {
+export interface CollectionsFilterBlock extends BaseBlock {
+	readonly type: 'collections-filter';
 	keyword: string;
 }
 
@@ -10,6 +13,7 @@ export interface CollectionsFilterBlock {
  */
 export const defaultCollectionsFilterBlock = (): CollectionsFilterBlock => {
 	return {
+		type: 'collections-filter',
 		keyword: '',
 	};
 };

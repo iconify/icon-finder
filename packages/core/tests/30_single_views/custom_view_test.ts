@@ -19,6 +19,7 @@ import { EventCallback } from '../../lib/events';
 import { Icon, stringToIcon, iconToString } from '../../lib/icon';
 import { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isSearchBlockEmpty } from '../../lib/blocks/search';
+import { PaginationBlock } from '../../lib/blocks/pagination';
 
 describe('Testing custom view', () => {
 	const namespace = __filename;
@@ -237,12 +238,14 @@ describe('Testing custom view', () => {
 				expect(isSearchBlockEmpty(blocks.search)).to.be.equal(true);
 
 				// Pagination
-				expect(blocks.pagination).to.be.eql({
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
 					length: 4,
 					more: false,
 					page: 0,
 					perPage: 32,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Check icons
 				expect(blocks.icons.icons.length).to.be.equal(4);
@@ -277,12 +280,14 @@ describe('Testing custom view', () => {
 				expect(isSearchBlockEmpty(blocks.search)).to.be.equal(false);
 
 				// Pagination
-				expect(blocks.pagination).to.be.eql({
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
 					length: 2,
 					more: false,
 					page: 0,
 					perPage: 32,
-				});
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Check icons
 				expect(blocks.icons.icons.length).to.be.equal(2);

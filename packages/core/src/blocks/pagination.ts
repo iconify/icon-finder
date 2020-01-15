@@ -1,4 +1,8 @@
-export interface PaginationBlock {
+import { BaseBlock } from './types';
+
+export interface PaginationBlock extends BaseBlock {
+	readonly type: 'pagination';
+
 	// Current page
 	page: number;
 
@@ -17,6 +21,7 @@ export interface PaginationBlock {
  */
 export const defaultPaginationBlock = (): PaginationBlock => {
 	return {
+		type: 'pagination',
 		page: 0,
 		length: 0,
 		perPage: 24,

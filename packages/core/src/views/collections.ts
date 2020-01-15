@@ -228,7 +228,7 @@ export class CollectionsView extends BaseView {
 			categories: defaultFiltersBlock(),
 			collections: defaultCollectionsListBlock(),
 		};
-		this._blocks.categories.type = 'categories';
+		this._blocks.categories.filterType = 'categories';
 
 		if (this._data !== null) {
 			// Add indexes to collections

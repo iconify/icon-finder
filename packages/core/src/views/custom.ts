@@ -240,7 +240,7 @@ export class CustomView extends BaseView {
 			// Search
 			search: Object.assign(defaultSearchBlock(), {
 				keyword: this.route.params.filter,
-				type: 'custom',
+				searchType: 'custom',
 				title: this.customType,
 			}),
 

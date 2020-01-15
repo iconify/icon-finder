@@ -6,40 +6,26 @@ import { Router, RouterEvent } from './route/router';
 /**
  * Export data for various blocks
  */
-export {
-	CollectionInfoBlock,
-	isCollectionInfoBlockEmpty,
-} from './blocks/collection-info';
+export { BlockType, Block, isBlockEmpty } from './blocks/types';
 
-export {
-	CollectionsFilterBlock,
-	isCollectionsFilterBlockEmpty,
-} from './blocks/collections-filter';
+export { CollectionInfoBlock } from './blocks/collection-info';
+
+export { CollectionsFilterBlock } from './blocks/collections-filter';
 
 export {
 	CollectionsListBlock,
-	isCollectionsBlockEmpty,
 	getCollectionsBlockCategories,
 	getCollectionsBlockPrefixes,
 	iterateCollectionsBlock,
 } from './blocks/collections-list';
 
-export {
-	FiltersBlock,
-	FiltersFilter,
-	isFiltersBlockEmpty,
-} from './blocks/filters';
+export { FiltersBlock, FiltersFilter } from './blocks/filters';
 
-export { IconsListBlock, isIconsListBlockEmpty } from './blocks/icons-list';
+export { IconsListBlock } from './blocks/icons-list';
 
-export {
-	PaginationBlock,
-	isPaginationEmpty,
-	showPagination,
-	maxPage,
-} from './blocks/pagination';
+export { PaginationBlock, showPagination, maxPage } from './blocks/pagination';
 
-export { SearchBlock, isSearchBlockEmpty } from './blocks/search';
+export { SearchBlock } from './blocks/search';
 
 /**
  * Export various types

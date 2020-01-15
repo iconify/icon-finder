@@ -303,7 +303,7 @@ export class CollectionView extends BaseView {
 			// Search
 			filter: Object.assign(defaultSearchBlock(), {
 				keyword: this.route.params.filter,
-				type: 'collection',
+				searchType: 'collection',
 				title: this.prefix,
 			}),
 
@@ -387,7 +387,7 @@ export class CollectionView extends BaseView {
 					if (list instanceof Array && list.length > 1) {
 						// Create empty filters block
 						const filter = defaultFiltersBlock();
-						filter.type = key;
+						filter.filterType = key;
 						initialisedBlocks[key] = filter;
 
 						// Copy all filters

@@ -1,11 +1,15 @@
+import { BaseBlock } from './types';
+
 /**
  * Interface for block
  */
-export interface SearchBlock {
+export interface SearchBlock extends BaseBlock {
+	readonly type: 'search';
+
 	keyword: string;
 
 	// Optional type and title, used for placeholder and button
-	type?: 'all' | 'collection' | 'custom';
+	searchType?: 'all' | 'collection' | 'custom';
 
 	// Title is customType for custom view, collection name or prefix for collection
 	title?: string;
@@ -16,6 +20,7 @@ export interface SearchBlock {
  */
 export const defaultSearchBlock = (): SearchBlock => {
 	return {
+		type: 'search',
 		keyword: '',
 	};
 };

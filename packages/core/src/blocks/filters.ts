@@ -1,3 +1,5 @@
+import { BaseBlock } from './types';
+
 /**
  * One filter
  */
@@ -25,9 +27,11 @@ export const defaultFilter = (title: string): FiltersFilter => {
 /**
  * Block structure
  */
-export interface FiltersBlock {
+export interface FiltersBlock extends BaseBlock {
+	readonly type: 'filters';
+
 	// Filters type
-	type: string;
+	filterType: string;
 
 	// Active filter key, null if none
 	active: string | null;
@@ -43,7 +47,8 @@ export interface FiltersBlock {
  */
 export const defaultFiltersBlock = (): FiltersBlock => {
 	return {
-		type: '',
+		type: 'filters',
+		filterType: '',
 		active: null,
 		filters: Object.create(null),
 	};

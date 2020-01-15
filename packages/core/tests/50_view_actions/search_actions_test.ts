@@ -7,6 +7,7 @@ import { PartialRoute } from '../../lib/route/types';
 import { API as FakeAPI } from '../fake_api';
 import { RouterEvent } from '../../lib/route/router';
 import { SearchViewBlocks } from '../../lib/views/search';
+import { PaginationBlock } from '../../lib/blocks/pagination';
 
 describe('Testing search actions', () => {
 	const namespace = __filename;
@@ -265,6 +266,7 @@ describe('Testing search actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let blocks: SearchViewBlocks;
+		let expectedPagination: PaginationBlock;
 		events.subscribe('render', data => {
 			const params = data as RouterEvent;
 			eventCounter++;
@@ -305,12 +307,14 @@ describe('Testing search actions', () => {
 
 					// Check blocks
 					blocks = params.blocks as SearchViewBlocks;
-					expect(blocks.pagination).to.be.eql({
+					expectedPagination = {
+						type: 'pagination',
 						length: 86,
 						page: 1,
 						more: false,
 						perPage: 32,
-					});
+					};
+					expect(blocks.pagination).to.be.eql(expectedPagination);
 					expect(blocks.icons.icons.length).to.be.equal(32);
 
 					// Change page
@@ -335,12 +339,14 @@ describe('Testing search actions', () => {
 
 					// Check blocks
 					blocks = params.blocks as SearchViewBlocks;
-					expect(blocks.pagination).to.be.eql({
+					expectedPagination = {
+						type: 'pagination',
 						length: 86,
 						page: 2,
 						more: false,
 						perPage: 32,
-					});
+					};
+					expect(blocks.pagination).to.be.eql(expectedPagination);
 					expect(blocks.icons.icons.length).to.be.equal(22); // 86 - 32*2
 
 					done();

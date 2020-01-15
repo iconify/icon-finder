@@ -348,7 +348,7 @@ export class SearchView extends BaseView {
 			if (prefixes.length > 1) {
 				const block = defaultFiltersBlock();
 				this._blocks.collections = block;
-				block.type = 'collections';
+				block.filterType = 'collections';
 
 				prefixes.forEach(prefix => {
 					block.filters[prefix] = defaultFilter(
