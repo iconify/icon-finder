@@ -8,6 +8,12 @@ import { CustomView, IconsList } from '../views/custom';
 import { EventCallback } from '../events';
 
 /**
+ * TypeScript guard
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
+function assertNever(s: never): void {}
+
+/**
  * Interface for public view_loaded and view_updated events
  */
 export interface RouterEvent {
@@ -321,9 +327,11 @@ export class Router {
 
 			case 'custom':
 				return new CustomView(this._instance, route, parent);
-		}
 
-		return null;
+			default:
+				assertNever(route);
+				return null;
+		}
 	}
 
 	/**

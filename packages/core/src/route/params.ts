@@ -1,4 +1,15 @@
 /**
+ * TypeScript guard
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
+function assertNever(s: never): void {}
+
+/**
+ * Route types
+ */
+export type RouteType = 'collections' | 'collection' | 'search' | 'custom';
+
+/**
  * Interfaces and default values
  */
 // Collections list
@@ -73,7 +84,7 @@ export type PartialRouteParams = Partial<RouteParams>;
  * Remove default values from route
  */
 export const routeParamsToObject = (
-	type: string,
+	type: RouteType,
 	params: RouteParams
 ): PartialRouteParams => {
 	const result: Record<string, string | number | boolean> = {};
@@ -81,7 +92,7 @@ export const routeParamsToObject = (
 
 	switch (type) {
 		case 'collections':
-			defaults = collectionsRouteDefaults as CollectionsRouteParams;
+			defaults = collectionsRouteDefaults;
 			break;
 
 		case 'collection':
@@ -97,6 +108,7 @@ export const routeParamsToObject = (
 			break;
 
 		default:
+			assertNever(type);
 			throw new Error(
 				`Unknown route type in routeParamsToObject(): ${type}`
 			);
@@ -128,7 +140,7 @@ const toLowerCaseStrings = ['filter', 'search'];
  * Convert object to RouteParams
  */
 export const objectToRouteParams = (
-	type: string,
+	type: RouteType,
 	params: PartialRouteParams
 ): RouteParams => {
 	let defaults: RouteParams, result: RouteParams;
@@ -164,6 +176,7 @@ export const objectToRouteParams = (
 			break;
 
 		default:
+			assertNever(type);
 			throw new Error(
 				`Unknown route type in objectToRouteParams(): ${type}`
 			);

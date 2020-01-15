@@ -1,4 +1,5 @@
 import {
+	RouteType,
 	RouteParams,
 	CollectionsRouteParams,
 	CollectionRouteParams,
@@ -9,16 +10,21 @@ import {
 } from './params';
 
 /**
+ * TypeScript guard
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
+function assertNever(s: never): void {}
+
+/**
  * Route types
  */
-export type RouteType = 'collections' | 'collection' | 'search' | 'custom';
-
-const routeTypes: string[] = ['collections', 'collection', 'search', 'custom'];
+export { RouteType };
 
 /**
  * Route interfaces
  */
 interface CommonRoute {
+	readonly type: RouteType;
 	parent: Route | null;
 }
 
@@ -81,8 +87,19 @@ export const routeToObject = (route: Route): PartialRoute => {
 /**
  * Check if route type is valid
  */
-const isValidRouteType = (type: string): boolean => {
-	return typeof type === 'string' && routeTypes.indexOf(type) !== -1;
+const isValidRouteType = (type: RouteType): boolean => {
+	switch (type) {
+		case 'collections':
+		case 'collection':
+		case 'search':
+		case 'custom':
+			break;
+
+		default:
+			assertNever(type);
+			return false;
+	}
+	return typeof type === 'string';
 };
 
 /**
@@ -134,7 +151,8 @@ export const objectToRoute = (
 	};
 
 	// Convert route to correct type
-	switch (params.type) {
+	const type = params.type;
+	switch (type) {
 		case 'collections':
 			return route as CollectionsRoute;
 
@@ -148,8 +166,8 @@ export const objectToRoute = (
 			return route as CustomRoute;
 
 		default:
-			throw new Error(
-				`Unknown route type in objectToRoute(): ${route.type}`
-			);
+			// This code should be unreachable because of isValidRouteType() check
+			assertNever(type);
+			return null;
 	}
 };
