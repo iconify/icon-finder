@@ -2,6 +2,7 @@ import { Data as DataClass, DataStorage, DataChildStorage } from './data';
 import { createRegistry, Registry as RegistryClass } from './registry';
 import { PartialRoute, objectToRoute } from './route/types';
 import { Router, RouterEvent } from './route/router';
+import { CollectionInfo } from './converters/collection';
 
 /**
  * Export data for various blocks
@@ -113,6 +114,14 @@ export class APICore {
 		} else if (config.defaultRoute !== null) {
 			router.home();
 		}
+	}
+
+	/**
+	 * Get collection information
+	 */
+	getCollection(prefix: string): CollectionInfo | null {
+		const collections = this.registry.collections;
+		return collections.get(prefix);
 	}
 
 	/**
