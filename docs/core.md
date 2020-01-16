@@ -14,7 +14,7 @@ Creating instance:
 -   You supply core with a route. If a route is not supplied, Icon Finder Core will navigate to collections list.
 -   Icon Finder Core sends requests to API to retrieve data.
 -   When data is available, Icon Finder Core parses that data, filters it according to route, converts everything to simple objects and calls callback you have provided when you were creating new APICore instance.
--   In callback you render data.
+-   In callback you render data. See [render event callback](core/render.md).
 
 To change something, for example, a page, you should do this:
 

@@ -1,6 +1,6 @@
 # Routes in Iconify Icon Finder
 
-Every request and response has a route associated with it. Route is a simple object of type `PartialRoute` describing the current view.
+Every request and response has a route associated with it. The route is a simple object of type `PartialRoute` describing the current view.
 
 For example, this route represents collections list:
 
@@ -24,7 +24,7 @@ For example, this route represents displaying second page (pages start with 0) o
 }
 ```
 
-In this example route represents searching collection "mdi" for icons that contain "arrow" and are part of "Account / User" category:
+In this example route represents searching collection "mdi" for icons that contain "arrow" and are part of the "Account / User" category:
 
 ```json
 {

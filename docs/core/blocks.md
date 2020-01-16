@@ -1,6 +1,6 @@
 # Blocks in Iconify Icon Finder
 
-When rendering a view, it generates blocks that should be displayed by UI. Each block represents one set of data.
+When rendering a view, it generates blocks that should be displayed by UI. Each block represents one set of data that can be passed as parameters to appropriate React component (or component of any other framework), making it easy to detect changes and update only components that should be updated.
 
 For example, when browsing the collections list, UI needs to render the following blocks:
 
@@ -65,8 +65,8 @@ Example of collections list data:
 
 Information properties:
 
--   `name`: Icon set name
--   `total`: Number of icons
+-   `name`: Icon set name.
+-   `total`: Number of icons.
 -   `version`: icon set version number.
 -   `author`: information about icon set author.
 -   `license`: information about icon set license.
@@ -74,11 +74,11 @@ Information properties:
 -   `category`: category in the collections list.
 -   `palette`: true if icons in icon set have predefined palette (such as emojis), false if icons use currentColor.
 -   `height`: height of icons: number or array of numbers.
--   `displayHeight`: height for displaying samples, a number between 16 and 24.
+-   `displayHeight`: height for displaying samples, a number between 16 and 30 (inclusive).
 
 Most properties, except for "name" and "total" could be empty or missing.
 
-For more details about CollectionInfo type, see [types.md](types.md#collectioninfo).
+For more details about CollectionInfo type, see [types.md](types.md#collectioninfo) and type `IconifyInfo` in [@iconify/types](https://github.com/iconify/types#info).
 
 ## Collections filter
 

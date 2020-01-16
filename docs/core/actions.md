@@ -31,7 +31,7 @@ router.action('tags', null); // Reset tags. Value can also be key of currently s
 
 Almost all actions are instant. They work by applying filters to data that is already available in the view, such as applying tags filter, changing page or filtering collections list. Therefore UI can and should run such action immediately when the value of input changes.
 
-Some actions are delayed. They require retrieving data from API, which can take anything from a few milliseconds to a few seconds, depending on the user's internet connection. Examples are global search, navigating to a collection. When applying such action from an input (such as global search form), UI should not run those actions immediately on the keyup event, instead, UI should wait for a user to click "Search" button. UI should also throttle those actions, not allowing a user to click it more than once every few seconds to prevent flooding API with requests.
+Some actions are delayed. They require retrieving data from API, which can take anything from a few milliseconds to a few seconds, depending on the user's internet connection. Examples are global search, navigating to a collection. When applying such action from an input (such as global search form), UI should not run those actions immediately on the "keyup" event, instead, UI should wait for a user to click "Search" button. UI should also throttle those actions, not allowing a user to click it more than once every few seconds to prevent flooding API with requests.
 
 List of delayed actions:
 
@@ -128,7 +128,7 @@ router.action('filter', '');
 
 Block type: `pagination`, TypeScript type: `PaginationBlock` ([see blocks.md](blocks.md#pagination)).
 
-This block changes the current page. The first page number is 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
+This block changes the current page. The first page has a value of 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
 
 ```js
 // Change page to 5
@@ -199,7 +199,7 @@ This action is not instant and it changes the current view.
 
 Block type: `pagination`, TypeScript type: `PaginationBlock` ([see blocks.md](blocks.md#pagination)).
 
-This block changes the current page. The first page number is 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
+This block changes the current page. The first page has a value of 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
 
 ```js
 // Change page to 5
@@ -229,7 +229,7 @@ router.action('filter', '');
 
 Block type: `pagination`, TypeScript type: `PaginationBlock` ([see blocks.md](blocks.md#pagination)).
 
-This block changes the current page. The first page number is 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
+This block changes the current page. The first page has a value of 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
 
 ```js
 // Change page to 5
@@ -312,4 +312,4 @@ Block type: none. Global search is not in blocks, ([see blocks.md](blocks.md#sea
 router.action('search', 'home');
 ```
 
-Router will automatically figure out if search action needs to create child view or if it needs to navigate to parent view before searching, so this action can be used in all views.
+The router will automatically figure out if search action needs to create child view or if it needs to navigate to parent view before searching, so this action can be used in all views.
