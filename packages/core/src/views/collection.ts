@@ -10,7 +10,11 @@ import {
 	autoIndexFilters,
 } from '../blocks/filters';
 import { CollectionRoute } from '../route/types';
-import { dataToCollection, CollectionData } from '../converters/collection';
+import {
+	dataToCollection,
+	CollectionData,
+	CollectionInfo,
+} from '../converters/collection';
 import {
 	IconsListBlock,
 	defaultIconsListBlock,
@@ -26,6 +30,8 @@ import { SearchBlock, defaultSearchBlock } from '../blocks/search';
 import { View } from './types';
 import { CollectionRouteFilterParams } from '../route/params';
 import { SearchView } from './search';
+import { CollectionsView } from './collections';
+import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
 
 /**
  * Filters for block
@@ -91,8 +97,10 @@ export class CollectionView extends BaseView {
 		this.parent = parent;
 		this.prefix = route.params.prefix;
 
-		// Wait for parent to load if parent view is search
-		this._mustWaitForParent = parent !== null && parent.type === 'search';
+		// Wait for parent to load if parent view is search or collections list
+		this._mustWaitForParent =
+			parent !== null &&
+			(parent.type === 'search' || parent.type === 'collections');
 	}
 
 	/**
@@ -366,16 +374,19 @@ export class CollectionView extends BaseView {
 			);
 
 			// Copy collections filter from parent view
-			if (this.parent) {
-				const parentView = this.parent as SearchView;
-				if (parentView.type === 'search' && !parentView.loading) {
+			if (this.parent && !this.parent.loading) {
+				if (this.parent.type === 'search') {
 					// Get copy of block from parent view
-					const collectionsBlock = parentView.getCollectionsBlock();
+					const collectionsBlock = (this
+						.parent as SearchView).getCollectionsBlock();
 					if (collectionsBlock !== null) {
 						// Copy block and set active filter
 						this._blocks.collections = collectionsBlock;
 						this._blocks.collections.active = this.prefix;
 					}
+				} else if (this.parent.type === 'collections') {
+					// Find previous / next items
+					this._blocks.collections = this._findSiblingCollections();
 				}
 			}
 
@@ -404,5 +415,63 @@ export class CollectionView extends BaseView {
 
 		// Send event
 		this._triggerLoaded();
+	}
+
+	/**
+	 * Find sibling collections from collections list, return them as block
+	 */
+	_findSiblingCollections(): FiltersBlock | null {
+		const collectionsBlock = (this
+			.parent as CollectionsView).getCollectionsBlock();
+
+		if (collectionsBlock === null) {
+			return null;
+		}
+
+		const collections = collectionsPrefixesWithInfo(collectionsBlock);
+		const match = collections.find(item => item.prefix === this.prefix);
+		if (match === void 0 || collections.length < 2) {
+			return null;
+		}
+
+		// Get limit
+		const registry = getRegistry(this._instance);
+		const config = registry.config;
+		const limit = config.data.display.showSiblingCollections as number;
+
+		// Get items before and after current prefix
+		let display: CollectionInfo[] = [];
+		if (collections.length < limit * 2 + 2) {
+			// Display all collections
+			display = collections.slice(0);
+		} else {
+			const index = collections.indexOf(match);
+
+			// few items before current
+			for (let i = index - limit; i < index; i++) {
+				display.push(
+					collections[(i + collections.length) % collections.length]
+				);
+			}
+
+			// Current item
+			display.push(match);
+
+			// few items after current
+			for (let i = index + 1; i <= index + limit; i++) {
+				display.push(collections[i % collections.length]);
+			}
+		}
+
+		// Create block
+		const block = defaultFiltersBlock();
+		block.filterType = 'collections';
+		block.active = this.prefix;
+
+		display.forEach(item => {
+			block.filters[item.prefix] = defaultFilter(item.name);
+		});
+
+		return block;
 	}
 }

@@ -61,6 +61,9 @@ const defaultConfig: DataStorage = {
 		// Maximum delay between changing current view and updating visible view.
 		// This delay is used to avoid "loading" page when changing views.
 		viewUpdateDelay: 300,
+
+		// Number of sibling collections to show when collection view is child view of collections list.
+		showSiblingCollections: 3,
 	},
 };
 

@@ -206,6 +206,21 @@ export class CollectionsView extends BaseView {
 	}
 
 	/**
+	 * Get collections block.
+	 *
+	 * Used by child view.
+	 */
+	getCollectionsBlock(): CollectionsListBlock | null {
+		if (this.loading || this.error !== '') {
+			return null;
+		}
+		const blocks = this.render();
+		return blocks !== null && blocks.collections !== null
+			? blocks.collections
+			: null;
+	}
+
+	/**
 	 * Parse data from API
 	 *
 	 * Should be overwritten by child classes

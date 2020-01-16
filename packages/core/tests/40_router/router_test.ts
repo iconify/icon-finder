@@ -6,6 +6,9 @@ import { createRegistry, Registry } from '../../lib/registry';
 import { CollectionRoute, PartialRoute } from '../../lib/route/types';
 import { API as FakeAPI } from '../fake_api';
 import { RouterEvent } from '../../lib/route/router';
+import { FiltersBlock } from '../../lib/blocks/filters';
+import { CollectionViewBlocks } from '../../lib/views/collection';
+import { isBlockEmpty } from '../../lib/blocks/types';
 
 describe('Testing router', () => {
 	const namespace = __filename;
@@ -97,6 +100,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
+		let collectionsBlock: FiltersBlock | null;
 		router.subscribe(params => {
 			eventCounter++;
 
@@ -131,6 +135,26 @@ describe('Testing router', () => {
 					});
 					expect(params.viewChanged).to.be.equal(false);
 					expect(params.error).to.be.equal('');
+
+					// Test collections block
+					collectionsBlock = (params.blocks as CollectionViewBlocks)
+						.collections;
+					expect(isBlockEmpty(collectionsBlock)).to.be.equal(false);
+
+					expect(
+						Object.keys((collectionsBlock as FiltersBlock).filters)
+					).to.be.eql([
+						// 3 prefixes before "mdi", but because "mdi" is first, it should be 3 last prefixes
+						'geo',
+						'map',
+						'medical-icon',
+						// mdi
+						'mdi',
+						// 3 prefixes after "mdi"
+						'mdi-light',
+						'ic',
+						'uil',
+					]);
 
 					done();
 					break;
@@ -373,6 +397,17 @@ describe('Testing router', () => {
 				responseDelay: 10,
 			}
 		);
+		api.loadFixture(
+			'/collection',
+			{
+				info: 'true',
+				prefix: 'el',
+			},
+			'el',
+			{
+				responseDelay: 700,
+			}
+		);
 
 		// Create router
 		const router = registry.router;
@@ -397,7 +432,13 @@ describe('Testing router', () => {
 							prefix: 'mdi',
 						},
 						parent: {
-							type: 'collections',
+							type: 'collection',
+							params: {
+								prefix: 'el',
+							},
+							parent: {
+								type: 'collections',
+							},
 						},
 					});
 					expect(params.viewChanged).to.be.equal(true);
@@ -412,7 +453,13 @@ describe('Testing router', () => {
 							prefix: 'mdi',
 						},
 						parent: {
-							type: 'collections',
+							type: 'collection',
+							params: {
+								prefix: 'el',
+							},
+							parent: {
+								type: 'collections',
+							},
 						},
 					});
 					expect(params.viewChanged).to.be.equal(false);
@@ -423,9 +470,15 @@ describe('Testing router', () => {
 					break;
 
 				case 3:
-					// Home page, loading. MDI view should not have waited for home page to load
+					// EL collection, loading. MDI view should not have waited for parent view to load
 					expect(params.route).to.be.eql({
-						type: 'collections',
+						type: 'collection',
+						params: {
+							prefix: 'el',
+						},
+						parent: {
+							type: 'collections',
+						},
 					});
 					expect(params.viewChanged).to.be.equal(true);
 					expect(params.error).to.be.equal('loading');
@@ -433,9 +486,15 @@ describe('Testing router', () => {
 					break;
 
 				case 4:
-					// Home page, loaded
+					// EL collection, loaded
 					expect(params.route).to.be.eql({
-						type: 'collections',
+						type: 'collection',
+						params: {
+							prefix: 'el',
+						},
+						parent: {
+							type: 'collections',
+						},
 					});
 					expect(params.viewChanged).to.be.equal(false);
 					expect(params.error).to.be.equal('');
@@ -457,7 +516,14 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 			},
 			parent: {
-				type: 'collections',
+				// Add another collection as parent because otherwise mdi will wait for collections list to load
+				type: 'collection',
+				params: {
+					prefix: 'el',
+				},
+				parent: {
+					type: 'collections',
+				},
 			},
 		} as PartialRoute;
 	});

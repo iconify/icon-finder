@@ -76,6 +76,24 @@ export function getCollectionsBlockPrefixes(
 }
 
 /**
+ * Get all collections info as array
+ */
+export function collectionsPrefixesWithInfo(
+	block: CollectionsListBlock
+): CollectionInfo[] {
+	const info: CollectionInfo[] = [];
+	Object.keys(block.collections).forEach(category => {
+		const items = block.collections[category];
+		Object.keys(items).forEach(prefix => {
+			if (items[prefix] !== null) {
+				info.push(items[prefix]);
+			}
+		});
+	});
+	return info;
+}
+
+/**
  * Iterate collections block
  */
 export function iterateCollectionsBlock(

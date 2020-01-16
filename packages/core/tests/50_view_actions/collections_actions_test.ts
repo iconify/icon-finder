@@ -5,6 +5,9 @@ import { API as FakeAPI } from '../fake_api';
 import { RouterEvent } from '../../lib/route/router';
 import { CollectionsViewBlocks } from '../../lib/views/collections';
 import { getCollectionsBlockPrefixes } from '../../lib/blocks/collections-list';
+import { FiltersBlock } from '../../lib/blocks/filters';
+import { CollectionViewBlocks } from '../../lib/views/collection';
+import { isBlockEmpty } from '../../lib/blocks/types';
 
 describe('Testing collections actions', () => {
 	const namespace = __filename;
@@ -230,6 +233,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
+		let collectionsBlock: FiltersBlock | null;
 		events.subscribe('render', data => {
 			const params = data as RouterEvent;
 			eventCounter++;
@@ -243,12 +247,15 @@ describe('Testing collections actions', () => {
 					expect(params.viewChanged).to.be.equal(true);
 					expect(params.error).to.be.equal('loading');
 
+					// Set filter to "24" to test collections block in mdi
+					router.action('filter', '24');
+
 					// Change view to "mdi"
 					router.action('collections', 'mdi');
 					break;
 
 				case 2:
-					// "mdi" has been loaded because it should not wait for parent unless parent view is search
+					// "mdi" should wait for parent unless parent view is search
 					expect(params.route).to.be.eql({
 						type: 'collection',
 						params: {
@@ -256,10 +263,57 @@ describe('Testing collections actions', () => {
 						},
 						parent: {
 							type: 'collections',
+							params: {
+								filter: '24',
+							},
 						},
 					});
 					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 3:
+					// "mdi" has loaded
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+						},
+						parent: {
+							type: 'collections',
+							params: {
+								filter: '24',
+							},
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
 					expect(params.error).to.be.equal('');
+
+					// Test collections block
+					collectionsBlock = (params.blocks as CollectionViewBlocks)
+						.collections;
+
+					expect(isBlockEmpty(collectionsBlock)).to.be.equal(false);
+
+					expect(
+						(collectionsBlock as FiltersBlock).active
+					).to.be.equal('mdi');
+
+					// Collections should include only icon sets with 24px grid
+					expect(
+						Object.keys((collectionsBlock as FiltersBlock).filters)
+					).to.be.eql([
+						// 3 items before "mdi", but "mdi" is first, so 3 last items
+						'fe',
+						'typcn',
+						'simple-icons',
+						// mdi
+						'mdi',
+						// 3 items after "mdi"
+						'mdi-light',
+						'ic',
+						'uil',
+					]);
 
 					done();
 					break;

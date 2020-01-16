@@ -2,7 +2,7 @@ import { DataStorage } from '../data';
 import { Config } from '../data/config';
 import { Events } from '../events';
 import { API } from '../api/axios';
-import { Route } from '../route/types';
+import { PartialRoute } from '../route/types';
 import { Router } from '../route/router';
 import { CollectionsData } from '../data/collections';
 
@@ -31,7 +31,6 @@ interface RegistryDataStorage {
 	collections?: CollectionsData;
 
 	// Local
-	route?: Route | null;
 	router?: Router;
 }
 
@@ -153,15 +152,12 @@ export class Registry {
 	/**
 	 * Set/set route
 	 */
-	get route(): Route | null {
-		if (this._data.route === void 0) {
-			return null;
-		}
-		return this._data.route;
+	get route(): PartialRoute | null {
+		return this.router.route;
 	}
 
-	set route(value: Route | null) {
-		this._data.route = value;
+	set route(value: PartialRoute | null) {
+		this.router.route = value;
 	}
 
 	/**
