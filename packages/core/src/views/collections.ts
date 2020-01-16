@@ -106,12 +106,20 @@ export class CollectionsView extends BaseView {
 				}
 				return;
 
+			// Select collection, called from child view
+			case 'collections-internal':
+				if (typeof value !== 'string' || value === '') {
+					return;
+				}
+				this._triggerCollectionAction(value, 1);
+				return;
+
 			// Select collection
 			case 'collections':
 				if (typeof value !== 'string' || value === '') {
 					return;
 				}
-				this._triggerCollectionAction(value);
+				this._triggerCollectionAction(value, 0);
 				return;
 
 			default:
@@ -125,7 +133,7 @@ export class CollectionsView extends BaseView {
 	/**
 	 * Create child view for prefix
 	 */
-	_triggerCollectionAction(prefix: string): void {
+	_triggerCollectionAction(prefix: string, levels: number): void {
 		// Try to find prefix in collections list
 		if (!this.loading && this._data !== null && this.error === '') {
 			// Find matching prefix
@@ -147,12 +155,15 @@ export class CollectionsView extends BaseView {
 		// Create child view
 		const registry = getRegistry(this._instance);
 		const router = registry.router;
-		router.createChildView({
-			type: 'collection',
-			params: {
-				prefix: prefix,
-			},
-		} as PartialRoute);
+		router.createChildView(
+			{
+				type: 'collection',
+				params: {
+					prefix: prefix,
+				},
+			} as PartialRoute,
+			levels
+		);
 	}
 
 	/**

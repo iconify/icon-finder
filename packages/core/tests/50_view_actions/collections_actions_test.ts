@@ -227,6 +227,17 @@ describe('Testing collections actions', () => {
 				responseDelay: 0,
 			}
 		);
+		api.loadFixture(
+			'/collection',
+			{
+				info: 'true',
+				prefix: 'ant-design',
+			},
+			'ant-design',
+			{
+				responseDelay: 0,
+			}
+		);
 
 		// Create router
 		const router = registry.router;
@@ -315,6 +326,27 @@ describe('Testing collections actions', () => {
 						'uil',
 					]);
 
+					// Change collection to ant-design. It is not in filters list, but action should work anyway
+					router.action('collections', 'ant-design');
+
+					break;
+
+				case 4:
+					// "ant-design" should have loaded
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'ant-design',
+						},
+						parent: {
+							type: 'collections',
+							params: {
+								filter: '24',
+							},
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
 					done();
 					break;
 

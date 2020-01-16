@@ -214,7 +214,8 @@ export class CollectionView extends BaseView {
 	_collectionsAction(value: unknown): void {
 		if (
 			this.parent === null ||
-			this.parent.type !== 'search' ||
+			(this.parent.type !== 'search' &&
+				this.parent.type !== 'collections') ||
 			typeof value !== 'string'
 		) {
 			return;
