@@ -27,6 +27,7 @@ There are several types of blocks:
 ## Collection info
 
 Type: `CollectionInfoBlock`
+
 block.type = "collection-info"
 
 This block shows information about icons set. It is available only in a collection view.
@@ -82,6 +83,7 @@ For more details about CollectionInfo type, see [types.md](types.md#collectionin
 ## Collections filter
 
 Type: `CollectionsFilterBlock`
+
 block.type = "collections-filter"
 
 This is a special block used only in the collections list. It displays the search form.
@@ -100,6 +102,7 @@ Example:
 ## Collections list
 
 Type: `CollectionsListBlock`
+
 block.type = "collections-list"
 
 This block represents collections list, used only in the collections list view. It is one of the biggest blocks.
@@ -258,6 +261,7 @@ iterateCollectionsBlock(blocks.collections, (info, prefix, category) => {
 ## Filters
 
 Type: `FiltersBlock`
+
 block.type = "filters"
 
 This block is used in almost all views. This block represents a list of filters, such as categories (collections list, collection view), themes (collection view), collections (search view).
@@ -326,6 +330,7 @@ In an example above there are 53 filters (most were removed to reduce sample siz
 ## Icons list
 
 Type: `IconsListBlock`
+
 block.type = "icons-list"
 
 Icons list is a simple block that shows icons. Only icons displayed on the current page are included (see pagination block).
@@ -408,6 +413,7 @@ if (compareIcons(icon1, icon2)) {
 ## Pagination
 
 Type: `PaginationBlock`
+
 block.type = "pagination"
 
 Pagination block that is used in all views where icons list is shown, so that's every view except for collections list.
@@ -493,6 +499,7 @@ For more information about actions, see [actions.md](actions.md)
 ## Search
 
 Type: `SearchBlock`
+
 block.type = "search"
 
 This block displays the search form for icons.

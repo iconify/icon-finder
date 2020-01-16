@@ -112,6 +112,8 @@ and the following optional parameters:
 -   `filter`: string. Keyword to filter icons. The default value is an empty string "".
 -   `page`: number. Current page number. The default value is 0.
 
+For more information about a custom view, see [custom-view.md](custom-view.md)
+
 ## Prefixes and suffixes
 
 Collection route can have theme prefix and/or suffix.
