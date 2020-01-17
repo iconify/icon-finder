@@ -3,6 +3,9 @@ import { createRegistry, Registry as RegistryClass } from './registry';
 import { PartialRoute, objectToRoute } from './route/types';
 import { Router, RouterEvent } from './route/router';
 import { CollectionInfo } from './converters/collection';
+import { EventCallback } from './events';
+import { Icon } from './icon';
+import { CustomViewLoadCallback } from './views/custom';
 
 /**
  * Export data for various blocks
@@ -66,7 +69,8 @@ export { SearchViewBlocks } from './views/search';
 export { IconsList, CustomViewBlocks } from './views/custom';
 
 // From icons
-export { Icon, iconToString, validateIcon, compareIcons } from './icon';
+export { Icon };
+export { iconToString, validateIcon, compareIcons } from './icon';
 
 /**
  * API core configuration
@@ -83,6 +87,11 @@ interface APICoreConfig {
 
 	// Callback for view updates
 	callback: (data: RouterEvent, core: APICore) => void;
+
+	// Callbacks for loading data
+	custom?: {
+		[index: string]: (callback: CustomViewLoadCallback) => void;
+	};
 }
 
 /**
@@ -102,6 +111,17 @@ export class APICore {
 
 		// Subscribe to events
 		events.subscribe('render', this._routerEvent.bind(this));
+		if (typeof config.custom === 'object' && config.custom !== null) {
+			Object.keys(config.custom).forEach(customType => {
+				events.subscribe(
+					'load-' + customType,
+					this._loadCustomIconsEvent.bind(
+						this,
+						customType
+					) as EventCallback
+				);
+			});
+		}
 
 		// Change route
 		if (config.defaultRoute !== void 0 && config.defaultRoute !== null) {
@@ -129,6 +149,19 @@ export class APICore {
 	 */
 	_routerEvent(data: unknown): void {
 		this.config.callback(data as RouterEvent, this);
+	}
+
+	/**
+	 * Load data
+	 */
+	_loadCustomIconsEvent(
+		customType: string,
+		callback: CustomViewLoadCallback
+	): void {
+		if (this.config.custom === void 0) {
+			return;
+		}
+		this.config.custom[customType](callback);
 	}
 
 	/**
