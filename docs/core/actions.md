@@ -209,7 +209,7 @@ router.action('pagination', 5);
 router.action('pagination', 0);
 ```
 
-## Actions in custom view
+## Actions in a custom view
 
 ### filter
 
