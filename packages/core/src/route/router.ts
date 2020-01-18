@@ -5,7 +5,6 @@ import { CollectionsView } from '../views/collections';
 import { CollectionView } from '../views/collection';
 import { SearchView } from '../views/search';
 import { CustomView, IconsList } from '../views/custom';
-import { EventCallback } from '../events';
 
 /**
  * TypeScript guard
@@ -177,24 +176,6 @@ export class Router {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Subscribe to event
-	 */
-	subscribe(callback: (data: RouterEvent) => void): void {
-		const registry = getRegistry(this._instance);
-		const events = registry.events;
-		events.subscribe('render', callback as EventCallback);
-	}
-
-	/**
-	 * Unsubscribe from event
-	 */
-	unsubscribe(callback: (data: RouterEvent) => void): void {
-		const registry = getRegistry(this._instance);
-		const events = registry.events;
-		events.unsubscribe('render', callback as EventCallback);
 	}
 
 	/**

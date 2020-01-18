@@ -90,8 +90,9 @@ describe('Testing router', () => {
 			'mdi'
 		);
 
-		// Create router
+		// Create router and events
 		const router = registry.router;
+		const events = registry.events;
 
 		// Check for data
 		expect(router.error()).to.be.equal('loading');
@@ -101,7 +102,8 @@ describe('Testing router', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		router.subscribe(params => {
+		events.subscribe('render', data => {
+			const params = data as RouterEvent;
 			eventCounter++;
 
 			switch (eventCounter) {
