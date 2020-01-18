@@ -1,5 +1,9 @@
 import { Data as DataClass, DataStorage, DataChildStorage } from './data';
-import { createRegistry, Registry as RegistryClass } from './registry';
+import {
+	createRegistry,
+	Registry as RegistryClass,
+	getRegistry,
+} from './registry';
 import { PartialRoute, objectToRoute } from './route/types';
 import { Router, RouterEvent } from './route/router';
 import { CollectionInfo } from './converters/collection';
@@ -101,11 +105,17 @@ export class APICore {
 	protected readonly config: APICoreConfig;
 	protected readonly registry: Registry;
 	protected readonly router: Router;
+	public readonly id: string;
 
 	constructor(config: APICoreConfig) {
 		this.config = config;
 
+		// Get Registry instance
 		const registry = (this.registry = createRegistry(config));
+		this.id = registry.id;
+		registry.setCustom('APICore', this, true);
+
+		// Get other required classes from Registry
 		const router = (this.router = registry.router);
 		const events = registry.events;
 
@@ -177,4 +187,12 @@ export class APICore {
 	getInternalRegistry(): Registry {
 		return this.registry;
 	}
+}
+
+/**
+ * Find APICore instance for id
+ */
+export function getAPICoreInstance(id: string): APICore | undefined {
+	const registry = getRegistry(id);
+	return registry ? (registry.getCustom('APICore', true) as APICore) : void 0;
 }

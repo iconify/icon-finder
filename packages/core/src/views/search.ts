@@ -301,7 +301,7 @@ export class SearchView extends BaseView {
 
 		// Check if data was valid
 		if (this._data === null) {
-			this.error = 'invalid_data';
+			this.error = data === null ? 'not_found' : 'invalid_data';
 			this._triggerLoaded();
 			return;
 		}

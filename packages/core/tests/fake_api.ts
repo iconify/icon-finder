@@ -20,7 +20,7 @@ const defaultParams: FakeAPIParams = {
 };
 
 interface FakeAPIData extends FakeAPIParams {
-	data: string;
+	data: string | null;
 }
 
 interface FakeAPIStorage {
@@ -61,7 +61,7 @@ export class API extends BaseAPI {
 		setTimeout(() => {
 			let response;
 			try {
-				response = JSON.parse(data.data);
+				response = data.data === null ? null : JSON.parse(data.data);
 			} catch (err) {
 				response = data.data;
 			}
@@ -78,7 +78,7 @@ export class API extends BaseAPI {
 	setFakeData(
 		query: string,
 		queryParams: APIParams,
-		data: string,
+		data: string | null,
 		params: FakeAPIParams = {}
 	): void {
 		const uri = mergeQuery(query, queryParams);

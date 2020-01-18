@@ -176,6 +176,49 @@ describe('Testing search view', () => {
 		}, 'home');
 	});
 
+	it('Not found', done => {
+		const keyword = 'home';
+		const registry = createRegistry(namespace + nsCounter++);
+
+		// Change pagination limit for tests to 32
+		const config = registry.config;
+		config.data.display.itemsPerPage = 32;
+
+		// Change API to fake API and load fixture
+		const api = new FakeAPI(registry);
+		registry.api = api;
+		api.setFakeData(
+			'/search',
+			{
+				query: keyword,
+				limit: 64,
+			},
+			null
+		);
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', data => {
+			const view = data as SearchView;
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new SearchView(
+			registry.id,
+			objectToRoute({
+				type: 'search',
+				params: {
+					search: keyword,
+				},
+			} as PartialRoute) as SearchRoute
+		);
+		view.startLoading();
+	});
+
 	it('Test "home" search"', done => {
 		const view = setupView(data => {
 			expect(data).to.be.equal(view);

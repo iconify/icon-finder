@@ -32,6 +32,11 @@ interface RegistryDataStorage {
 
 	// Local
 	router?: Router;
+
+	// Custom properties
+	custom?: {
+		[index: string]: unknown;
+	};
 }
 
 /**
@@ -158,6 +163,26 @@ export class Registry {
 
 	set route(value: PartialRoute | null) {
 		this.router.route = value;
+	}
+
+	/**
+	 * Get/set custom data
+	 */
+	getCustom(key: string, local = true): unknown {
+		const data = local ? this._data : this._sharedData;
+		if (data.custom === void 0) {
+			return void 0;
+		}
+		return data.custom[key];
+	}
+
+	setCustom(key: string, value: unknown, local = true): void {
+		const data = local ? this._data : this._sharedData;
+		if (data.custom === void 0) {
+			data.custom = Object.create(null);
+		}
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		data.custom![key] = value;
 	}
 
 	/**

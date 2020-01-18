@@ -170,6 +170,45 @@ describe('Testing collection view', () => {
 		}, 'fa-regular');
 	});
 
+	it('Not found', done => {
+		const prefix = 'foo';
+		const registry = createRegistry(namespace + nsCounter++);
+
+		// Change API to fake API and emulate "not found" response
+		const api = new FakeAPI(registry);
+		registry.api = api;
+		api.setFakeData(
+			'/collection',
+			{
+				info: 'true',
+				prefix: prefix,
+			},
+			null
+		);
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', data => {
+			const view = data as CollectionView;
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionView(
+			registry.id,
+			objectToRoute({
+				type: 'collection',
+				params: {
+					prefix: prefix,
+				},
+			} as PartialRoute) as CollectionRoute
+		);
+		view.startLoading();
+	});
+
 	it('Test fa-regular ()', done => {
 		const view = setupView(
 			data => {

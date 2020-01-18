@@ -244,10 +244,6 @@ export class CollectionsView extends BaseView {
 		this.blocksRequireUpdate = true;
 		this.error = '';
 
-		if (this._data === null) {
-			this.error = 'invalid_data';
-		}
-
 		// Create blocks
 		this._blocks = {
 			filter: defaultCollectionsFilterBlock(),
@@ -256,7 +252,10 @@ export class CollectionsView extends BaseView {
 		};
 		this._blocks.categories.filterType = 'categories';
 
-		if (this._data !== null) {
+		// Parse data
+		if (this._data === null || data === null) {
+			this.error = data === null ? 'not_found' : 'invalid_data';
+		} else {
 			// Add indexes to collections
 			autoIndexCollections(this._data);
 

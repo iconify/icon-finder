@@ -10,8 +10,9 @@ import { PartialRoute } from '../route/types';
  * 	'timeout' - API call timed out
  * 	'invalid_data' - invalid data was sent from API
  * 	'empty' - view is empty (after parsing API response, before applying route filters)
+ *  'not_found' - API returned "not found" error
  */
-export type ViewError = '' | 'timeout' | 'invalid_data' | 'empty';
+export type ViewError = '' | 'timeout' | 'invalid_data' | 'empty' | 'not_found';
 
 /**
  * Blocks
@@ -158,6 +159,12 @@ export class BaseView {
 			if (this._loadingTimer !== null) {
 				clearTimeout(this._loadingTimer as number);
 				this._loadingTimer = null;
+			}
+
+			if (data === null || !this._mustWaitForParent) {
+				// Parse immediately
+				this._parseAPIData(data);
+				return;
 			}
 
 			// Parse data after parent view has finished loading

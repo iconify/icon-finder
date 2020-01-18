@@ -200,13 +200,16 @@ export class CustomView extends BaseView {
 	}
 
 	_setIcons(data: IconsList): void {
-		// Filter data
+		// Check if data is valid
+		let dataArray = data;
 		let invalidData = false;
-		if (!(data instanceof Array)) {
+		if (!(dataArray instanceof Array)) {
 			invalidData = true;
-			data = [];
+			dataArray = [];
 		}
-		const parsedData: Icon[] = data
+
+		// Filter data
+		const parsedData: Icon[] = dataArray
 			.map(item => {
 				// Convert strings
 				if (typeof item === 'string') {
@@ -252,7 +255,7 @@ export class CustomView extends BaseView {
 
 		// Check if data was valid
 		if (invalidData) {
-			this.error = 'invalid_data';
+			this.error = data === null ? 'not_found' : 'invalid_data';
 			this._triggerLoaded();
 			return;
 		}

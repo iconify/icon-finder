@@ -20,6 +20,13 @@ export class API extends BaseAPI {
 		instance
 			.get(params)
 			.then(response => {
+				if (response.status === 404) {
+					// Not found. Should be called in error handler
+					this._storeCache(params, null);
+					status.done(null);
+					return;
+				}
+
 				if (response.status !== 200) {
 					return;
 				}
@@ -35,7 +42,16 @@ export class API extends BaseAPI {
 				status.done(data);
 			})
 			.catch(err => {
-				// Do nothing
+				if (
+					typeof err === 'object' &&
+					err.response &&
+					err.response.status &&
+					err.response.status === 404
+				) {
+					// Not found
+					this._storeCache(params, null);
+					status.done(null);
+				}
 			});
 	}
 }

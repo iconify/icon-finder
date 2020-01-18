@@ -12,7 +12,7 @@ export interface APICallback {
 }
 
 export interface APICache {
-	[index: string]: string;
+	[index: string]: string | null;
 }
 
 /**
@@ -104,7 +104,8 @@ export class BaseAPI {
 		if (!ignoreCache && this._cache[uri] !== void 0) {
 			// Return cached data on next tick
 			setTimeout(() => {
-				callback(JSON.parse(this._cache[uri]), true);
+				const cached = this._cache[uri];
+				callback(cached === null ? null : JSON.parse(cached), true);
 			});
 			return;
 		}
@@ -176,7 +177,7 @@ export class BaseAPI {
 	 * Store cached data
 	 */
 	_storeCache(params: string, data: unknown): void {
-		this._cache[params] = JSON.stringify(data);
+		this._cache[params] = data === null ? null : JSON.stringify(data);
 	}
 
 	/**

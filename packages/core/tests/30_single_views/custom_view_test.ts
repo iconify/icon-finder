@@ -222,6 +222,36 @@ describe('Testing custom view', () => {
 		);
 	});
 
+	it('Not found', done => {
+		const registry = setupRegistry();
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', data => {
+			const view = data as CustomView;
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+			done();
+		});
+
+		// Event to send data
+		events.subscribe('load-recent', param => {
+			(param as (data: unknown) => void)(null);
+		});
+
+		// Create view
+		const view = new CustomView(
+			registry.id,
+			objectToRoute({
+				type: 'custom',
+				params: {
+					customType: 'recent',
+				},
+			} as PartialRoute) as CustomRoute
+		);
+		view.startLoading();
+	});
+
 	it('Simple set of icons', done => {
 		const view = setupView(
 			data => {

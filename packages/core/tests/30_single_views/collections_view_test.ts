@@ -112,6 +112,32 @@ describe('Testing collections list view', () => {
 		});
 	});
 
+	it('Test not found error', done => {
+		const registry = createRegistry(namespace + nsCounter++);
+		const api = new FakeAPI(registry);
+		registry.api = api;
+		api.setFakeData('/collections', {}, null);
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', data => {
+			const view = data as CollectionsView;
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionsView(
+			registry.id,
+			objectToRoute({
+				type: 'collections',
+			}) as CollectionsRoute
+		);
+		view.startLoading();
+	});
+
 	it('Test rendering blocks', done => {
 		const view = setupView(data => {
 			const blocks = view.render() as NonNullable<CollectionsViewBlocks>;
