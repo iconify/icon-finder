@@ -52,6 +52,7 @@ Parameter "data" of the callback contains data you should render. Data is an obj
     -   "timeout": API request timed out.
     -   "invalid_data": API returned invalid data.
     -   "empty": API returned empty data. This can happen if, for example, there are no search matches. This error is generated before applying view filters, so lack of error does not guarantee that there are items to display.
+    -   "not_found": API returned "not found" error.
 -   `route`: PartialRoute. Current route. See [Route type](types.md#route).
 -   `block`: Blocks. See [blocks.md](blocks.md). If there is an error (see `error` property mentioned above), blocks could be null.
 

@@ -1,6 +1,6 @@
 # Iconify Icon Finder
 
-Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as source, providing access to over 40,000 icons.
+Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as a source, providing access to over 40,000 icons.
 
 Icon finder repository has several packages:
 
@@ -24,19 +24,19 @@ This package contains icons used by UI. It is a separate package to make it easy
 
 ## CSS
 
-This package contains stylesheet used by UI. It is a separate package to make it easy to customise theme.
+This package contains stylesheet used by UI. It is a separate package to make it easy to customise the theme.
 
 ## UI
 
 UI is a React application that displays search results. It uses all packages that are listed above.
 
-See [docs/phrases.md](docs/ui.md) to understand how UI works and how to customise it.
+See [docs/ui.md](docs/ui.md) to understand how UI works and how to customise it.
 
 ## Build
 
-This is a tool for building custom UI. It allows you to configure UI and make custom builds. You can set behavior, configure custom sources for phrases, icons and stylesheet.
+This is a tool for building custom UI. It allows you to configure UI and make custom builds. You can set behaviour, configure custom sources for phrases, icons and stylesheet.
 
-See [docs/phrases.md](docs/build.md) to understand how build process works.
+See [docs/build.md](docs/build.md) to understand how build process works.
 
 # License
 
