@@ -113,6 +113,9 @@ describe('Testing custom view', () => {
 			const view = data as CustomView;
 			expect(view.error).to.be.equal('');
 			expect(view.loading).to.be.equal(false);
+			expect(view.getIcons()).to.be.eql(
+				convertIcons(['foo-bar', 'foo-bar2', 'foo-bar3', 'foo-bar4'])
+			);
 
 			done();
 		});
@@ -135,12 +138,18 @@ describe('Testing custom view', () => {
 				},
 			} as PartialRoute) as CustomRoute
 		);
+
+		// Test getIcons()
+		expect(view.getIcons()).to.be.equal(null);
+
+		// Start loading
 		view.startLoading();
 
 		// Make sure view is loaded asynchronously, even though data is available instantly
 		expect(view.loading).to.be.equal(true);
 		expect(view.error).to.be.equal('');
 		expect(loaded).to.be.equal(false);
+		expect(view.getIcons()).to.be.equal(null);
 
 		// Make sure all route params have been setup
 		expect(view.route).to.be.eql({

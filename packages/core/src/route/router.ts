@@ -153,29 +153,47 @@ export class Router {
 	 * View must be visible or pending
 	 */
 	setCustomIcons(customType: string, icons: IconsList): boolean {
+		const view = this._getCustomView(customType);
+		if (view !== null) {
+			view.setIcons(icons);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get custom icons
+	 */
+	getCustomIcons(customType: string): IconsList | null {
+		const view = this._getCustomView(customType);
+		return view === null ? null : view.getIcons();
+	}
+
+	/**
+	 * Find custom view
+	 */
+	_getCustomView(customType: string): CustomView | null {
 		if (this._visibleView === null || this._view === null) {
-			return false;
+			return null;
 		}
 
-		// Set icons for visible view
+		// Check visible view
 		if (
 			this._visibleView.type === 'custom' &&
 			(this._visibleView as CustomView).type === customType
 		) {
-			(this._visibleView as CustomView).setIcons(icons);
-			return true;
+			return this._visibleView as CustomView;
 		}
 
-		// Set icons for pending view
+		// Check pending view
 		if (
 			this._view.type === 'custom' &&
 			(this._view as CustomView).type === customType
 		) {
-			(this._view as CustomView).setIcons(icons);
-			return true;
+			return this._view as CustomView;
 		}
 
-		return false;
+		return null;
 	}
 
 	/**

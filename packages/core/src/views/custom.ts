@@ -281,4 +281,14 @@ export class CustomView extends BaseView {
 		// Send event
 		this._triggerLoaded();
 	}
+
+	/**
+	 * Get icons list
+	 */
+	getIcons(): Icon[] | null {
+		if (this.loading || this._blocks === null || this._data === null) {
+			return null;
+		}
+		return JSON.parse(JSON.stringify(this._data));
+	}
 }

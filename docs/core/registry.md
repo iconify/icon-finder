@@ -2,7 +2,7 @@
 
 ## When to use Registry?
 
-Registry class is more complex than APICore class. It is not as straight forward as APICore and requires reading documentation to understand how things work. So why would you want to use it? To access internal stuff directly, like events, configuration.
+Registry class is more complex than APICore class. It is not as straight forward as APICore and requires reading documentation to understand how things work. So why would you want to use it? To access internal stuff directly, like events, configuration and API.
 
 ## Creating Registry instance
 
