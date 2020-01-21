@@ -1,9 +1,5 @@
 import { Data as DataClass, DataStorage, DataChildStorage } from './data';
-import {
-	createRegistry,
-	Registry as RegistryClass,
-	getRegistry,
-} from './registry';
+import { Registry as RegistryClass, getRegistry } from './registry';
 import { PartialRoute, objectToRoute } from './route/types';
 import { Router, RouterEvent } from './route/router';
 import { CollectionInfo } from './converters/collection';
@@ -111,7 +107,7 @@ export class APICore {
 		this.config = config;
 
 		// Get Registry instance
-		const registry = (this.registry = createRegistry(config));
+		const registry = (this.registry = new RegistryClass(config));
 		this.id = registry.id;
 		registry.setCustom('APICore', this, true);
 

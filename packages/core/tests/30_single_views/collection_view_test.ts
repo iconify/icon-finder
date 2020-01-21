@@ -6,7 +6,7 @@ import {
 	CollectionView,
 	CollectionViewBlocks,
 } from '../../lib/views/collection';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import {
 	objectToRoute,
 	CollectionRoute,
@@ -35,7 +35,7 @@ describe('Testing collection view', () => {
 		prefix: string,
 		routeParams: Partial<CollectionRouteParams> | null = null
 	): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		// Change pagination limit for tests to 48
 		const config = registry.config;
@@ -172,7 +172,7 @@ describe('Testing collection view', () => {
 
 	it('Not found', done => {
 		const prefix = 'foo';
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		// Change API to fake API and emulate "not found" response
 		const api = new FakeAPI(registry);

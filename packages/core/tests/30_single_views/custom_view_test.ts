@@ -8,7 +8,7 @@ import {
 	CustomViewLoadCallback,
 	IconsList,
 } from '../../lib/views/custom';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import {
 	objectToRoute,
 	CustomRoute,
@@ -36,7 +36,7 @@ describe('Testing custom view', () => {
 	 * Setup registry for test
 	 */
 	function setupRegistry(): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		// Change pagination limit for tests to 32
 		const config = registry.config;

@@ -7,7 +7,7 @@ import {
 	CollectionsViewBlocks,
 } from '../../lib/views/collections';
 import { getCollectionsBlockPrefixes } from '../../lib/blocks/collections-list';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import { objectToRoute, CollectionsRoute } from '../../lib/route/types';
 import { CollectionsRouteParams } from '../../lib/route/params';
 import { EventCallback } from '../../lib/events';
@@ -21,7 +21,7 @@ describe('Testing collections list view', () => {
 	 * Setup registry for test
 	 */
 	function setupRegistry(): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.loadFixture('/collections', {}, 'collections');
@@ -113,7 +113,7 @@ describe('Testing collections list view', () => {
 	});
 
 	it('Test not found error', done => {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.setFakeData('/collections', {}, null);
@@ -268,7 +268,7 @@ describe('Testing collections list view', () => {
 	 * Bad data
 	 */
 	it('Bad data (object)', done => {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.setFakeData(
@@ -299,7 +299,7 @@ describe('Testing collections list view', () => {
 	});
 
 	it('Bad data (string)', done => {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.setFakeData('/collections', {}, 'whatever');

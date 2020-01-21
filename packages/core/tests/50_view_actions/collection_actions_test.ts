@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import { PartialRoute } from '../../lib/route/types';
 import { API as FakeAPI } from '../fake_api';
 import { RouterEvent } from '../../lib/route/router';
@@ -16,7 +16,7 @@ describe('Testing collection actions', () => {
 	 * Setup registry for test
 	 */
 	function setupRegistry(prefix: string): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		const config = registry.config;
 		config.data.display.itemsPerPage = 48;

@@ -3,7 +3,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import { SearchView, SearchViewBlocks } from '../../lib/views/search';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import {
 	objectToRoute,
 	SearchRoute,
@@ -31,7 +31,7 @@ describe('Testing search view', () => {
 	 * Setup registry for test
 	 */
 	function setupRegistry(search: string, short = true): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		// Change pagination limit for tests to 32
 		const config = registry.config;
@@ -178,7 +178,7 @@ describe('Testing search view', () => {
 
 	it('Not found', done => {
 		const keyword = 'home';
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		// Change pagination limit for tests to 32
 		const config = registry.config;

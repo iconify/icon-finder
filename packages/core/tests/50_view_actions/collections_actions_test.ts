@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import { API as FakeAPI } from '../fake_api';
 import { RouterEvent } from '../../lib/route/router';
 import { CollectionsViewBlocks } from '../../lib/views/collections';
@@ -17,7 +17,7 @@ describe('Testing collections actions', () => {
 	 * Setup registry for test
 	 */
 	function setupRegistry(): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.loadFixture('/collections', {}, 'collections');

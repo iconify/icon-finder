@@ -1,7 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import { API } from '../fake_api';
-import { createRegistry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 
 describe('Testing API', function() {
 	const namespace = __filename;
@@ -43,7 +43,7 @@ describe('Testing API', function() {
 
 		// Run test
 		const test = (): void => {
-			const registry = createRegistry(namespace + nsCounter++);
+			const registry = new Registry(namespace + nsCounter++);
 			const api = new API(registry);
 			let loaded = false;
 			const startTime = Date.now();
@@ -149,7 +149,7 @@ describe('Testing API', function() {
 
 		// Run test
 		const test = (): void => {
-			const registry = createRegistry(namespace + nsCounter++);
+			const registry = new Registry(namespace + nsCounter++);
 
 			// Set custom configuration
 			const config = registry.config;
@@ -258,7 +258,7 @@ describe('Testing API', function() {
 
 		// Run test
 		const test = (): void => {
-			const registry = createRegistry(namespace + nsCounter++);
+			const registry = new Registry(namespace + nsCounter++);
 			const api = new API(registry);
 			const startTime = Date.now();
 			let loaded = false;
@@ -373,7 +373,7 @@ describe('Testing API', function() {
 
 		// Run test
 		const test = (): void => {
-			const registry = createRegistry(namespace + nsCounter++);
+			const registry = new Registry(namespace + nsCounter++);
 
 			// Set custom configuration
 			const config = registry.config;

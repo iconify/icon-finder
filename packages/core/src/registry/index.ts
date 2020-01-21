@@ -68,17 +68,52 @@ export class Registry {
 	protected _data: RegistryDataStorage = Object.create(null);
 	protected _sharedData: RegistryDataStorage;
 
-	constructor(
-		namespace: string,
-		id: string,
-		initialised: boolean,
-		params: RegistryParams
-	) {
-		this.namespace = namespace;
+	constructor(params?: string | RegistryParams) {
+		const namespace =
+			typeof params === 'string'
+				? params
+				: typeof params === 'object' &&
+				  typeof params.namespace === 'string'
+				? params.namespace
+				: 'iconify';
+
+		// Generate unique id based on namespace
+		let counter = 0,
+			id;
+
+		while (registry[(id = namespace + counter)] !== void 0) {
+			counter++;
+		}
 		this.id = id;
-		this.initialised = initialised;
-		this.params = params;
+
+		// Add namespace
+		this.initialised = false;
+		if (namespaces[namespace] === void 0) {
+			namespaces[namespace] = {
+				ids: [id],
+				data: Object.create(null),
+			};
+			this.initialised = true;
+		} else {
+			namespaces[namespace].ids.push(id);
+		}
+		this.namespace = namespace;
+
+		// Copy shared data
 		this._sharedData = namespaces[namespace].data;
+
+		// Params
+		this.params = typeof params === 'object' ? params : {};
+
+		// Add instance
+		this._save();
+	}
+
+	/**
+	 * Save instance in registry list
+	 */
+	_save(): void {
+		registry[this.id] = this;
 	}
 
 	/**
@@ -202,50 +237,6 @@ export class Registry {
 		);
 	}
 }
-
-/**
- * Create new registry with shared namespace, return registry id.
- */
-export const createRegistry = (params?: string | RegistryParams): Registry => {
-	const namespace =
-		typeof params === 'string'
-			? params
-			: typeof params === 'object' && typeof params.namespace === 'string'
-			? params.namespace
-			: 'iconify';
-
-	// Generate unique id based on namespace
-	let counter = 0,
-		id;
-
-	while (registry[(id = namespace + counter)] !== void 0) {
-		counter++;
-	}
-
-	// Add namespace
-	let initialised = false;
-	if (namespaces[namespace] === void 0) {
-		namespaces[namespace] = {
-			ids: [id],
-			data: Object.create(null),
-		};
-		initialised = true;
-	} else {
-		namespaces[namespace].ids.push(id);
-	}
-
-	// Create Registry instance
-	const item = new Registry(
-		namespace,
-		id,
-		initialised,
-		typeof params === 'object' ? params : {}
-	);
-	registry[id] = item;
-
-	// Return Registry instance
-	return item;
-};
 
 /**
  * Get Registry instance for id.

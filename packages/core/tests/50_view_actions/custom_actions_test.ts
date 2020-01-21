@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
 import 'mocha';
 import { expect } from 'chai';
-import { createRegistry, Registry } from '../../lib/registry';
+import { Registry } from '../../lib/registry';
 import { API as FakeAPI } from '../fake_api';
 import { PartialRoute } from '../../lib/route/types';
 import { RouterEvent } from '../../lib/route/router';
@@ -24,7 +24,7 @@ describe('Testing custom actions', () => {
 	 * Setup registry for test
 	 */
 	function setupRegistry(): Registry {
-		const registry = createRegistry(namespace + nsCounter++);
+		const registry = new Registry(namespace + nsCounter++);
 
 		const config = registry.config;
 		config.data.display.itemsPerPage = 32;
