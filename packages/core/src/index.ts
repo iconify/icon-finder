@@ -183,6 +183,13 @@ export class APICore {
 	getInternalRegistry(): Registry {
 		return this.registry;
 	}
+
+	/**
+	 * Destroy instance
+	 */
+	destroy() {
+		this.registry.destroy();
+	}
 }
 
 /**
