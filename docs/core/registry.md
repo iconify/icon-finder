@@ -6,12 +6,12 @@ Registry class is more complex than APICore class. It is not as straight forward
 
 ## Creating Registry instance
 
-To create Registry instance, you need to use function `createRegistry`:
+To create Registry instance, you need to use import class `Registry` from `lib/registry` and initialise it:
 
 ```js
-const { createRegistry } = require('@iconify/icon-finder-core/lib/registry');
+const { Registry } = require('@iconify/icon-finder-core/lib/registry');
 
-const registry = createRegistry();
+const registry = new Registry();
 ```
 
 ## Namespace
@@ -22,11 +22,11 @@ Icon Finder Core is designed to share data between various instances. What data 
 -   Configuration. This allows you to set configuration once, then create multiple instances.
 -   Icon sets information. Since the API endpoint is the same, information about any icon set is the same, so why not share it between instances?
 
-There are cases when you do not want to share information. Shared information is tied to a namespace. All you need to do is simply pass different namespace value to each `createRegistry` call:
+There are cases when you do not want to share information. Shared information is tied to a namespace. All you need to do is simply pass different namespace value to Registry constructor:
 
 ```js
-const registry1 = createRegistry('iconify');
-const registry2 = createRegistry('custom');
+const registry1 = new Registry('iconify');
+const registry2 = new Registry('custom');
 ```
 
 That's it. Those instances will no longer share information.

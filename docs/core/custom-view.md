@@ -60,10 +60,10 @@ const core = new APICore({
 If you are using Registry class, you need to use an event listener:
 
 ```js
-const { createRegistry } = require('@iconify/icon-finder-core/lib/registry');
+const { Registry } = require('@iconify/icon-finder-core/lib/registry');
 
 // Create registry, set event listeners to loading custom icons
-const registry = createRegistry();
+const registry = new Registry();
 const events = registry.events;
 
 // Event name starts with "load-", followed by "customType" value.

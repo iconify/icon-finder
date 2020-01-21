@@ -408,7 +408,7 @@ if (compareIcons(icon1, icon2)) {
 }
 ```
 
-`compareIcons(icon1, icon2): boolean` - compares icons. Returns true if icons are valid and identical, false if not. See code example above.
+`compareIcons(icon1, icon2): boolean` - compares icons. Returns true if icons are valid and identical, false if not. See an example above.
 
 ## Pagination
 

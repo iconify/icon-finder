@@ -39,15 +39,15 @@ const core = new APICore({
 });
 ```
 
-Registry class gives full access to all internal stuff. You can also access it from APICore instance by calling method getInternalRegistry().
+Registry class gives full access to all internal stuff. You can also access it from APICore instance by calling method `getInternalRegistry()`.
 
-Registry instance is not created directly, instead, you should use createRegistry function:
+To create Registry instance, import Registry class from `lib/registry` and create new instance:
 
 ```js
-const { createRegistry } = require('@iconify/icon-finder-core/lib/registry');
+const { Registry } = require('@iconify/icon-finder-core/lib/registry');
 
 // Create registry, get router and events
-const registry = createRegistry();
+const registry = new Registry();
 const router = registry.router;
 const events = registry.events;
 
@@ -70,7 +70,7 @@ For description of routes see [core/routes.md](core/routes.md).
 
 ## Views
 
-View is script's internal presentation of route. For each route type, there is a view type.
+View is script's internal presentation of the route. For each route type, there is a view type.
 
 View does all heavy lifting:
 

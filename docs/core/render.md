@@ -1,6 +1,6 @@
 # Render event callback in Iconify Icon Finder Core
 
-This callback is the most important part of code. When there is something new to render, this callback is called. UI must create function for callback and use it to update UI.
+This callback is the most important part of code. When there is something new to render, this callback is called. UI must create a function for callback and use it to update UI.
 
 ## Listening to "render" event
 
@@ -25,10 +25,10 @@ const core = new APICore({
 This is how you should create callback when using [Registry class](registry.md):
 
 ```js
-const { createRegistry } = require('@iconify/icon-finder-core/lib/registry');
+const { Registry } = require('@iconify/icon-finder-core/lib/registry');
 
 // Create registry, get router and events
-const registry = createRegistry();
+const registry = new Registry();
 const router = registry.router;
 const events = registry.events;
 

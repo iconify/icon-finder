@@ -4,7 +4,7 @@ You can look at default configuration values in `src/data/config.ts`.
 
 ## Changing configuration
 
-If you want to change configuration, you should do it when initialising instance.
+If you want to change the configuration, you should do it when initialising instance.
 
 If you are using [APICore class](api-core.md), pass custom configuration as `config` parameter to constructor:
 
@@ -32,10 +32,10 @@ const core = new APICore({
 If you are using [Registry class](registry.md), change configuration after creating registry:
 
 ```js
-const { createRegistry } = require('@iconify/icon-finder-core/lib/registry');
+const { Registry } = require('@iconify/icon-finder-core/lib/registry');
 
 // Create registry, get configuration and change it
-const registry = createRegistry();
+const registry = new Registry();
 const config = registry.config;
 config.set({
 	API: {
@@ -50,7 +50,7 @@ config.set({
 // Do other stuff
 ```
 
-You can set only values that are modified. Values will be merged with default configuration.
+You can set only values that are modified. Values will be merged with the default configuration.
 
 Important: make sure types are the same as in default configuration, otherwise things might break!
 
