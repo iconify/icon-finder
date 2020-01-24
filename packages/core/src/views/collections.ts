@@ -23,7 +23,7 @@ import {
 	dataToCollections,
 	autoIndexCollections,
 } from '../converters/collections';
-import { getRegistry } from '../registry';
+import { getRegistry } from '../registry/storage';
 import { View } from './types';
 
 /**

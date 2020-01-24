@@ -25,7 +25,7 @@ import {
 	defaultPaginationBlock,
 	maxPage,
 } from '../blocks/pagination';
-import { getRegistry } from '../registry';
+import { getRegistry } from '../registry/storage';
 import { SearchBlock, defaultSearchBlock } from '../blocks/search';
 import { View } from './types';
 import { CollectionRouteFilterParams } from '../route/params';

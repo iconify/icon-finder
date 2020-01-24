@@ -1,5 +1,6 @@
 import { Data as DataClass, DataStorage, DataChildStorage } from './data';
-import { Registry as RegistryClass, getRegistry } from './registry';
+import { Registry as RegistryClass } from './registry';
+import { getRegistry } from './registry/storage';
 import { PartialRoute, objectToRoute } from './route/types';
 import { Router, RouterEvent } from './route/router';
 import { CollectionInfo } from './converters/collection';

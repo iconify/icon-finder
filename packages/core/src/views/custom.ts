@@ -10,7 +10,7 @@ import {
 	defaultPaginationBlock,
 	maxPage,
 } from '../blocks/pagination';
-import { getRegistry } from '../registry';
+import { getRegistry } from '../registry/storage';
 import { Icon, validateIcon, stringToIcon } from '../icon';
 import { SearchBlock, defaultSearchBlock } from '../blocks/search';
 import { View } from './types';

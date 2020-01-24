@@ -1,4 +1,4 @@
-import { getRegistry } from '../registry';
+import { getRegistry } from '../registry/storage';
 import { View, ViewBlocks } from '../views/types';
 import { Route, objectToRoute, routeToObject, PartialRoute } from './types';
 import { CollectionsView } from '../views/collections';

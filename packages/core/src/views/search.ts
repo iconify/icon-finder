@@ -13,7 +13,7 @@ import {
 	defaultPaginationBlock,
 	maxPage,
 } from '../blocks/pagination';
-import { getRegistry } from '../registry';
+import { getRegistry } from '../registry/storage';
 import { View } from './types';
 
 /**

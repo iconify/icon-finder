@@ -1,5 +1,5 @@
 import { APIParams } from '../api/base';
-import { getRegistry } from '../registry';
+import { getRegistry } from '../registry/storage';
 import { PartialRoute } from '../route/types';
 
 /**

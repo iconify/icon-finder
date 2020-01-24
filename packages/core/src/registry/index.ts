@@ -5,48 +5,14 @@ import { API } from '../api/axios';
 import { PartialRoute } from '../route/types';
 import { Router } from '../route/router';
 import { CollectionsData } from '../data/collections';
-
-/**
- * Shared data storage per namespace
- */
-interface RegistryNamespace {
-	ids: string[];
-	data: {};
-}
-
-interface RegistryNamespaces {
-	[index: string]: RegistryNamespace;
-}
-
-const namespaces: RegistryNamespaces = Object.create(null);
-
-/**
- * Registry data storage
- */
-interface RegistryDataStorage {
-	// Shared
-	config?: Config;
-	events?: Events;
-	api?: API;
-	collections?: CollectionsData;
-
-	// Local
-	router?: Router;
-
-	// Custom properties
-	custom?: {
-		[index: string]: unknown;
-	};
-}
-
-/**
- * Storage of Registry instances
- */
-interface RegistryStorage {
-	[index: string]: Registry;
-}
-
-const registry: RegistryStorage = Object.create(null);
+import {
+	RegistryDataStorage,
+	uniqueId,
+	addRegistry,
+	getSharedData,
+	saveRegistry,
+	destroyRegistry,
+} from './storage';
 
 /**
  * Registry parameters
@@ -76,31 +42,16 @@ export class Registry {
 				  typeof params.namespace === 'string'
 				? params.namespace
 				: 'iconify';
-
-		// Generate unique id based on namespace
-		let counter = 0,
-			id;
-
-		while (registry[(id = namespace + counter)] !== void 0) {
-			counter++;
-		}
-		this.id = id;
-
-		// Add namespace
-		this.initialised = false;
-		if (namespaces[namespace] === void 0) {
-			namespaces[namespace] = {
-				ids: [id],
-				data: Object.create(null),
-			};
-			this.initialised = true;
-		} else {
-			namespaces[namespace].ids.push(id);
-		}
 		this.namespace = namespace;
 
+		// Get unique id based on namespace
+		this.id = uniqueId(namespace);
+
+		// Add namespace
+		this.initialised = addRegistry(this);
+
 		// Copy shared data
-		this._sharedData = namespaces[namespace].data;
+		this._sharedData = getSharedData(namespace);
 
 		// Params
 		this.params = typeof params === 'object' ? params : {};
@@ -113,7 +64,7 @@ export class Registry {
 	 * Save instance in registry list
 	 */
 	_save(): void {
-		registry[this.id] = this;
+		saveRegistry(this);
 	}
 
 	/**
@@ -224,23 +175,6 @@ export class Registry {
 	 * Destroy instance
 	 */
 	destroy(): void {
-		if (registry[this.id] === void 0) {
-			return;
-		}
-
-		// Delete registry from index
-		delete registry[this.id];
-
-		// Remove id from shared namespaces
-		namespaces[this.namespace].ids = namespaces[this.namespace].ids.filter(
-			id => id !== this.id
-		);
+		destroyRegistry(this);
 	}
 }
-
-/**
- * Get Registry instance for id.
- *
- * This is used to pass registry as constant string in React/Svelte, so changes in Registry instance won't trigger refresh of entire UI.
- */
-export const getRegistry = (id: string): Registry => registry[id];
