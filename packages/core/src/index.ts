@@ -76,7 +76,7 @@ export { iconToString, validateIcon, compareIcons } from './icon';
 /**
  * API core configuration
  */
-interface APICoreConfig {
+export interface APICoreConfig {
 	// Namespace. Used to share configuration and API cache between instances. Defaults to 'iconify'
 	namespace?: string;
 
@@ -130,17 +130,24 @@ export class APICore {
 			});
 		}
 
-		// Change route
-		if (config.defaultRoute !== void 0 && config.defaultRoute !== null) {
-			const route = objectToRoute(config.defaultRoute);
-			if (route !== null) {
-				router.route = route;
-			} else {
-				router.home();
+		// Change route on next tick, so callback would be called asynchronously
+		setTimeout(() => {
+			if (router.route === null) {
+				if (
+					config.defaultRoute !== void 0 &&
+					config.defaultRoute !== null
+				) {
+					const route = objectToRoute(config.defaultRoute);
+					if (route !== null) {
+						router.route = route;
+					} else {
+						router.home();
+					}
+				} else if (config.defaultRoute !== null) {
+					router.home();
+				}
 			}
-		} else if (config.defaultRoute !== null) {
-			router.home();
-		}
+		});
 	}
 
 	/**
