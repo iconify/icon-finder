@@ -15,6 +15,7 @@ import {
 } from '../blocks/pagination';
 import { getRegistry } from '../registry/storage';
 import { View } from './types';
+import { clone } from '../objects';
 
 /**
  * Blocks
@@ -262,7 +263,7 @@ export class SearchView extends BaseView {
 		}
 		const blocks = this.render();
 		return blocks !== null && blocks.collections !== null
-			? JSON.parse(JSON.stringify(blocks.collections))
+			? (clone(blocks.collections) as FiltersBlock)
 			: null;
 	}
 

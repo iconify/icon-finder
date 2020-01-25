@@ -14,6 +14,7 @@ import { getRegistry } from '../registry/storage';
 import { Icon, validateIcon, stringToIcon } from '../icon';
 import { SearchBlock, defaultSearchBlock } from '../blocks/search';
 import { View } from './types';
+import { clone } from '../objects';
 
 /**
  * Blocks
@@ -289,6 +290,6 @@ export class CustomView extends BaseView {
 		if (this.loading || this._blocks === null || this._data === null) {
 			return null;
 		}
-		return JSON.parse(JSON.stringify(this._data));
+		return clone(this._data) as Icon[];
 	}
 }

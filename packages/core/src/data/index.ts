@@ -1,3 +1,5 @@
+import { clone, compare } from '../objects';
+
 export interface DataChildStorage {
 	[key: string]: unknown;
 }
@@ -42,7 +44,7 @@ export class Data {
 		Object.keys(this.data).forEach(key => {
 			if (this._default[key] === void 0) {
 				// New key
-				customised[key] = JSON.parse(JSON.stringify(this.data[key]));
+				customised[key] = clone(this.data[key]) as DataChildStorage;
 				return;
 			}
 
@@ -56,10 +58,10 @@ export class Data {
 			Object.keys(custom).forEach(key2 => {
 				if (
 					defaults[key2] === void 0 ||
-					!this._compare(defaults[key2], custom[key2])
+					!compare(defaults[key2], custom[key2])
 				) {
 					found = true;
-					child[key2] = JSON.parse(JSON.stringify(custom[key2]));
+					child[key2] = clone(custom[key2]);
 				}
 			});
 
@@ -78,33 +80,13 @@ export class Data {
 		Object.keys(data).forEach(key => {
 			if (this.data[key] === void 0) {
 				// Adding new root object
-				this.data[key] = JSON.parse(JSON.stringify(data[key]));
+				this.data[key] = clone(data[key]) as DataChildStorage;
 				return;
 			}
 
 			// Merge objects
-			const clone = JSON.parse(JSON.stringify(data[key]));
-			Object.assign(this.data[key], clone);
+			const cloned = clone(data[key]);
+			Object.assign(this.data[key], cloned);
 		});
-	}
-
-	/**
-	 * Compare 2 values
-	 */
-	_compare(item1: unknown, item2: unknown): boolean {
-		if (typeof item1 !== typeof item2) {
-			return false;
-		}
-
-		switch (typeof item1) {
-			case 'object':
-				if (item2 === null) {
-					item1 = null;
-				}
-				return JSON.stringify(item1) === JSON.stringify(item2);
-
-			default:
-				return item1 === item2;
-		}
 	}
 }

@@ -8,6 +8,7 @@ import {
 import { CollectionInfo } from '../converters/collection';
 import { FiltersBlock, enableFilters } from './filters';
 import { CollectionsFilterBlock } from './collections-filter';
+import { match } from '../objects';
 
 /**
  * Block
@@ -202,15 +203,8 @@ export function applyCollectionsFilter(
 					continue;
 				}
 
-				// Get value
-				const value = item[key];
-				const test = (typeof value === 'string'
-					? value
-					: JSON.stringify(value)
-				).toLowerCase();
-
 				// Test value
-				if (test.indexOf(keyword) !== -1) {
+				if (match(item[key], keyword)) {
 					// Enable category in category filters
 					if (hasFilters) {
 						if (activeCategories[category] !== true) {
