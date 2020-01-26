@@ -32,7 +32,7 @@ export class Data {
 	 * Merge with custom data
 	 */
 	set(values: DataStorage): void {
-		this._merge(values);
+		this._merge(values, false);
 	}
 
 	/**
@@ -76,17 +76,23 @@ export class Data {
 	/**
 	 * Merge data
 	 */
-	_merge(data: DataStorage): void {
+	_merge(data: DataStorage, allowCustom = true): void {
 		Object.keys(data).forEach(key => {
 			if (this.data[key] === void 0) {
 				// Adding new root object
-				this.data[key] = clone(data[key]) as DataChildStorage;
+				if (allowCustom) {
+					this.data[key] = clone(data[key]) as DataChildStorage;
+				}
 				return;
 			}
 
 			// Merge objects
-			const cloned = clone(data[key]);
-			Object.assign(this.data[key], cloned);
+			Object.keys(data[key]).forEach(key2 => {
+				if (this.data[key][key2] !== void 0 || allowCustom) {
+					// Overwrite entry
+					this.data[key][key2] = clone(data[key][key2]);
+				}
+			});
 		});
 	}
 }

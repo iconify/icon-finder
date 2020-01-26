@@ -52,16 +52,12 @@ describe('Testing config', () => {
 		);
 		expect(c.data.API.rotate).to.be.equal(500);
 		expect(c.data.API.timeout).to.be.equal(5000);
-		expect(typeof c.data.foo).to.be.equal('object');
-		expect(c.data.foo.bar).to.be.equal(1);
+		expect(typeof c.data.foo).to.be.equal('undefined');
 		expect(c.customised()).to.be.eql({
 			API: {
 				// Change API entries order
 				resources: resources.slice(1).concat([resources[0]]),
 				rotate: 500,
-			},
-			foo: {
-				bar: 1,
 			},
 		});
 	});
