@@ -8,11 +8,11 @@
 	"workspaces": [
 		"packages/*"
 	],
-	"bugs": "https://github.com/iconify/iconify-search/issues",
-	"homepage": "https://github.com/iconify/iconify-search",
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/iconify/iconify-search.git"
+		"url": "git://github.com/iconify/icon-finder.git"
 	},
 	"devDependencies": {
 		"lerna": "^3.20.0"

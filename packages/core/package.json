@@ -15,11 +15,11 @@
 		"test": "npx mocha tests-compiled/*/*_test.js",
 		"pretest": "npm run build"
 	},
-	"bugs": "https://github.com/iconify/iconify-search/issues",
-	"homepage": "https://github.com/iconify/iconify-search",
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/iconify/iconify-search.git"
+		"url": "git://github.com/iconify/icon-finder.git"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.2.7",
