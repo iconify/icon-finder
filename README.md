@@ -1,6 +1,6 @@
 # Iconify Icon Finder
 
-Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as a source, providing access to over 40,000 icons.
+Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as a source, providing access to over 50,000 icons.
 
 Icon finder repository has several packages:
 
@@ -12,12 +12,6 @@ It is a separate package, making it easy to build custom UI around it.
 
 See [docs/core.md](docs/core.md) for details.
 
-## Phrases
-
-This package contains phrases used by UI. It is a separate package to make it easy to translate phrases.
-
-See [docs/phrases.md](docs/phrases.md) if you want to translate icon finder.
-
 ## Icons
 
 This package contains icons used by UI. It is a separate package to make it easy to change icons.
@@ -28,9 +22,11 @@ This package contains stylesheet used by UI. It is a separate package to make it
 
 ## UI
 
-UI is a React application that displays search results. It uses all packages that are listed above.
+UI is an application built with Svelte that displays search results. It uses all packages that are listed above.
 
 See [docs/ui.md](docs/ui.md) to understand how UI works and how to customise it.
+
+See [docs/phrases.md](docs/phrases.md) if you want to translate UI.
 
 ## Build
 
