@@ -40,6 +40,9 @@ const defaultConfig: DataStorage = {
 			'https://api2.iconify.design',
 		],
 
+		// Start index
+		index: 0,
+
 		// Timeout before next host is used.
 		rotate: 750,
 
@@ -50,7 +53,7 @@ const defaultConfig: DataStorage = {
 		limit: 2,
 
 		// Randomise default API end point.
-		random: true,
+		random: false,
 	} as RedundancyConfig) as unknown) as DataChildStorage,
 
 	// Display
