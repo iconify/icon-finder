@@ -1,0 +1,20 @@
+{
+	"name": "@iconify/search",
+	"private": true,
+	"version": "0.0.0-dev",
+	"description": "Iconify Search",
+	"author": "Vjacheslav Trushkin",
+	"license": "(Apache-2.0 OR GPL-2.0)",
+	"workspaces": [
+		"packages/*"
+	],
+	"bugs": "https://github.com/iconify/iconify-search/issues",
+	"homepage": "https://github.com/iconify/iconify-search",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/iconify/iconify-search.git"
+	},
+	"devDependencies": {
+		"lerna": "^3.20.0"
+	}
+}
