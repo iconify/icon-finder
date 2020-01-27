@@ -308,6 +308,7 @@ describe('Testing collection view', () => {
 				expectedPagination = {
 					type: 'pagination',
 					length: 151,
+					fullLength: 151,
 					more: false,
 					page: 3,
 					perPage: 48,
@@ -346,6 +347,7 @@ describe('Testing collection view', () => {
 				expectedPagination = {
 					type: 'pagination',
 					length: 3,
+					fullLength: 151,
 					more: false,
 					page: 0,
 					perPage: 48,
@@ -371,6 +373,7 @@ describe('Testing collection view', () => {
 				expectedPagination = {
 					type: 'pagination',
 					length: 6,
+					fullLength: 151,
 					more: false,
 					page: 0,
 					perPage: 48,
@@ -454,6 +457,7 @@ describe('Testing collection view', () => {
 				const expectedPagination: PaginationBlock = {
 					type: 'pagination',
 					length: 1497,
+					fullLength: 4621,
 					more: false,
 					page: 0,
 					perPage: 48,
@@ -503,6 +507,7 @@ describe('Testing collection view', () => {
 				const expectedPagination: PaginationBlock = {
 					type: 'pagination',
 					length: 366,
+					fullLength: 728,
 					more: false,
 					page: 3,
 					perPage: 48,

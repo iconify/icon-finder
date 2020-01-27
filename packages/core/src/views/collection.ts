@@ -369,7 +369,7 @@ export class CollectionView extends BaseView {
 			// Create pagination
 			const pagination = initialisedBlocks.pagination;
 			pagination.perPage = config.data.display.itemsPerPage as number;
-			pagination.length = parsedData.icons.length;
+			pagination.fullLength = pagination.length = parsedData.icons.length;
 			pagination.page = Math.min(
 				this.route.params.page,
 				maxPage(pagination)

@@ -74,7 +74,6 @@ const defaultConfig: DataStorage = {
 		showSiblingCollections: 3,
 	},
 };
-console.log(defaultConfig.API);
 
 /**
  * Config class

@@ -272,7 +272,7 @@ export class CustomView extends BaseView {
 			// Create pagination
 			const pagination = initialisedBlocks.pagination;
 			pagination.perPage = config.data.display.itemsPerPage as number;
-			pagination.length = parsedData.length;
+			pagination.fullLength = pagination.length = parsedData.length;
 			pagination.page = Math.min(
 				this.route.params.page,
 				maxPage(pagination)

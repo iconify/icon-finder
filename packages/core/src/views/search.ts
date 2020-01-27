@@ -325,15 +325,16 @@ export class SearchView extends BaseView {
 			this.error = 'empty';
 		} else {
 			// Create pagination
-			initialisedBlocks.pagination.perPage = this.itemsPerPage;
-			initialisedBlocks.pagination.length = parsedData.icons.length;
-			initialisedBlocks.pagination.page = Math.min(
+			const pagination = initialisedBlocks.pagination;
+			pagination.perPage = this.itemsPerPage;
+			pagination.fullLength = pagination.length = parsedData.icons.length;
+			pagination.page = Math.min(
 				this.route.params.page,
-				maxPage(initialisedBlocks.pagination)
+				maxPage(pagination)
 			);
 
 			// Check if more results are available
-			initialisedBlocks.pagination.more = this._showMoreButton();
+			pagination.more = this._showMoreButton();
 
 			// Get all collections
 			const prefixes = Object.keys(parsedData.collections);

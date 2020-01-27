@@ -279,6 +279,7 @@ describe('Testing search view', () => {
 			const expectedPagination: PaginationBlock = {
 				type: 'pagination',
 				length: 64,
+				fullLength: 64,
 				more: true,
 				page: 0,
 				perPage: 32,
@@ -364,6 +365,7 @@ describe('Testing search view', () => {
 				expectedPagination = {
 					type: 'pagination',
 					length: 86,
+					fullLength: 86,
 					more: false,
 					page: 0,
 					perPage: 32,
@@ -397,6 +399,7 @@ describe('Testing search view', () => {
 				expectedPagination = {
 					type: 'pagination',
 					length: 86,
+					fullLength: 86,
 					more: false,
 					page: 2,
 					perPage: 32,

@@ -280,6 +280,7 @@ describe('Testing custom view', () => {
 				const expectedPagination: PaginationBlock = {
 					type: 'pagination',
 					length: 4,
+					fullLength: 4,
 					more: false,
 					page: 0,
 					perPage: 32,
@@ -322,6 +323,7 @@ describe('Testing custom view', () => {
 				const expectedPagination: PaginationBlock = {
 					type: 'pagination',
 					length: 2,
+					fullLength: 4,
 					more: false,
 					page: 0,
 					perPage: 32,

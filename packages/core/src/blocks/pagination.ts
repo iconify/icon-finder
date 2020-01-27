@@ -9,6 +9,9 @@ export interface PaginationBlock extends BaseBlock {
 	// Length of items list
 	length: number;
 
+	// Length of items before filters (optional)
+	fullLength?: number;
+
 	// Number of items per page
 	perPage: number;
 

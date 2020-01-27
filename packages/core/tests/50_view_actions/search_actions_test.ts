@@ -310,6 +310,7 @@ describe('Testing search actions', () => {
 					expectedPagination = {
 						type: 'pagination',
 						length: 86,
+						fullLength: 86,
 						page: 1,
 						more: false,
 						perPage: 32,
@@ -342,6 +343,7 @@ describe('Testing search actions', () => {
 					expectedPagination = {
 						type: 'pagination',
 						length: 86,
+						fullLength: 86,
 						page: 2,
 						more: false,
 						perPage: 32,
