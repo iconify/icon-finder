@@ -215,8 +215,7 @@ export class CollectionView extends BaseView {
 		if (
 			this.parent === null ||
 			(this.parent.type !== 'search' &&
-				this.parent.type !== 'collections') ||
-			typeof value !== 'string'
+				this.parent.type !== 'collections')
 		) {
 			return;
 		}
@@ -228,7 +227,9 @@ export class CollectionView extends BaseView {
 		}
 
 		// Run action on parent view
-		(this.parent as SearchView).action('collections-internal', value);
+		if (typeof value === 'string') {
+			(this.parent as SearchView).action('collections-internal', value);
+		}
 	}
 
 	/**
