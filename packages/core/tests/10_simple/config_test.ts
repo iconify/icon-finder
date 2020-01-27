@@ -40,6 +40,10 @@ describe('Testing config', () => {
 				resources: resources.slice(1).concat([resources[0]]),
 				rotate: 500,
 				timeout: 5000, // Default value
+				// Function should be ignored
+				limit: (): number => {
+					return 5000;
+				},
 			},
 			foo: {
 				bar: 1,

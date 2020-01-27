@@ -42,14 +42,9 @@ export class Data {
 		const customised: DataStorage = {};
 
 		Object.keys(this.data).forEach(key => {
-			if (this._default[key] === void 0) {
-				// New key
-				customised[key] = clone(this.data[key]) as DataChildStorage;
-				return;
-			}
-
 			// Check all keys
-			const defaults = this._default[key],
+			const defaults =
+					this._default[key] === void 0 ? {} : this._default[key],
 				custom = this.data[key];
 
 			const child: DataChildStorage = {};
@@ -57,8 +52,11 @@ export class Data {
 
 			Object.keys(custom).forEach(key2 => {
 				if (
-					defaults[key2] === void 0 ||
-					!compare(defaults[key2], custom[key2])
+					// Ignore functions
+					typeof custom[key2] !== 'function' &&
+					// Copy if value is missing or different
+					(defaults[key2] === void 0 ||
+						!compare(defaults[key2], custom[key2]))
 				) {
 					found = true;
 					child[key2] = clone(custom[key2]);
