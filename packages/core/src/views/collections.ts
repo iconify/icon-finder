@@ -90,9 +90,10 @@ export class CollectionsView extends BaseView {
 				if (this.route.params.filter !== value) {
 					this.route.params.filter = value as string;
 					this.blocksRequireUpdate = true;
-					break;
+				} else {
+					return;
 				}
-				return;
+				break;
 
 			// Filter categories
 			case 'categories':
@@ -102,9 +103,10 @@ export class CollectionsView extends BaseView {
 				) {
 					this.route.params.category = value;
 					this.blocksRequireUpdate = true;
-					break;
+				} else {
+					return;
 				}
-				return;
+				break;
 
 			// Select collection, called from child view
 			case 'collections-internal':

@@ -118,10 +118,9 @@ describe('Testing collections filters block', () => {
 		expect(filteredCollections).to.not.be.equal(collections);
 		expect(filteredCollections).to.not.be.eql(collections);
 
-		// Categories should include "Emoji", but it should be empty
+		// Categories should not include "Emoji" because it should be empty
 		expect(getCollectionsBlockCategories(filteredCollections)).to.be.eql([
 			'General',
-			'Emoji',
 			'Thematic',
 		]);
 		expect(getCollectionsBlockPrefixes(filteredCollections)).to.be.eql([
@@ -130,7 +129,6 @@ describe('Testing collections filters block', () => {
 			'fa',
 			'fa-brands',
 		]);
-		expect(filteredCollections.collections.Emoji).to.be.eql({});
 
 		// Test categories filter. "Emoji" should be disabled
 		expect(categoriesFilter).to.not.be.eql(expectedCategoriesFilter);

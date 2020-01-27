@@ -2,6 +2,41 @@ import { RedundancyConfig } from '@cyberalien/redundancy';
 import { Data, DataStorage, DataChildStorage } from '../data';
 
 /**
+ * Redundancy for API servers.
+ *
+ * API should have very high uptime because of implemented redundancy at server level, but
+ * sometimes bad things happen. On internet 100% uptime is not possible.
+ *
+ * There could be routing problems. Server might go down for whatever reason, but it takes
+ * few minutes to detect that downtime, so during those few minutes API might not be accessible.
+ *
+ * This script has some redundancy to mitigate possible network issues.
+ *
+ * If one host cannot be reached in 'rotate' (750 by default) ms, script will try to retrieve
+ * data from different host. Hosts have different configurations, pointing to different
+ * API servers hosted at different providers.
+ */
+const fallBackAPISources = [
+	'https://api1.simplesvg.com',
+	'https://api2.iconify.design',
+];
+
+// Shuffle fallback API
+const fallBackAPI: string[] = [];
+while (fallBackAPISources.length > 0) {
+	if (fallBackAPISources.length === 1) {
+		fallBackAPI.push(fallBackAPISources.shift() as string);
+	} else {
+		// Get first or last item
+		if (Math.random() > 0.5) {
+			fallBackAPI.push(fallBackAPISources.shift() as string);
+		} else {
+			fallBackAPI.push(fallBackAPISources.pop() as string);
+		}
+	}
+}
+
+/**
  * Default configuration.
  *
  * 2 levels deep object:
@@ -27,21 +62,8 @@ const defaultConfig: DataStorage = {
 			 * data from different host. Hosts have different configurations, pointing to different
 			 * API servers hosted at different providers.
 			 */
-			// All Iconify API servers
 			'https://api.iconify.design',
-
-			/**
-			 * All Iconify API servers split into 2 sets.
-			 *
-			 * If server in one set goes down, script will try to access data from another set.
-			 * One of sets uses different host name to avoid interruption if there is a DNS problem.
-			 */
-			'https://api1.simplesvg.com',
-			'https://api2.iconify.design',
-		],
-
-		// Start index
-		index: 0,
+		].concat(fallBackAPI),
 
 		// Timeout before next host is used.
 		rotate: 750,
@@ -69,6 +91,7 @@ const defaultConfig: DataStorage = {
 		showSiblingCollections: 3,
 	},
 };
+console.log(defaultConfig.API);
 
 /**
  * Config class

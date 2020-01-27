@@ -219,6 +219,6 @@ export function applyCollectionsFilter(
 			}
 			return false;
 		},
-		true
+		false
 	);
 }
