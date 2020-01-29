@@ -90,6 +90,9 @@ describe('Testing router', () => {
 			'mdi'
 		);
 
+		const config = registry.config;
+		config.data.display.showSiblingCollections = 3;
+
 		// Create router and events
 		const router = registry.router;
 		const events = registry.events;

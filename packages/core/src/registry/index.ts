@@ -167,8 +167,23 @@ export class Registry {
 		if (data.custom === void 0) {
 			data.custom = Object.create(null);
 		}
+
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		data.custom![key] = value;
+		const custom = data.custom!;
+
+		// Create getter and setter for local properties
+		if (local && custom[key] === void 0) {
+			Object.defineProperty(this, key, {
+				get() {
+					return custom[key];
+				},
+				set(value) {
+					custom[key] = value;
+				},
+			});
+		}
+
+		custom[key] = value;
 	}
 
 	/**

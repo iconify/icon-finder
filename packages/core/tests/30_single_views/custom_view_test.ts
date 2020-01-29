@@ -273,8 +273,8 @@ describe('Testing custom view', () => {
 				expect(blocks).to.not.be.equal(null);
 
 				// Test search block
-				expect(blocks.search.keyword).to.be.equal('');
-				expect(isSearchBlockEmpty(blocks.search)).to.be.equal(true);
+				expect(blocks.filter.keyword).to.be.equal('');
+				expect(isSearchBlockEmpty(blocks.filter)).to.be.equal(true);
 
 				// Pagination
 				const expectedPagination: PaginationBlock = {
@@ -316,8 +316,8 @@ describe('Testing custom view', () => {
 				expect(blocks).to.not.be.equal(null);
 
 				// Test search block
-				expect(blocks.search.keyword).to.be.equal('arrow');
-				expect(isSearchBlockEmpty(blocks.search)).to.be.equal(false);
+				expect(blocks.filter.keyword).to.be.equal('arrow');
+				expect(isSearchBlockEmpty(blocks.filter)).to.be.equal(false);
 
 				// Pagination
 				const expectedPagination: PaginationBlock = {
@@ -344,7 +344,7 @@ describe('Testing custom view', () => {
 				blocks = view.render() as NonNullable<CustomViewBlocks>;
 				expect(blocks).to.not.be.equal(null);
 
-				expect(blocks.search.keyword).to.be.equal('mdi');
+				expect(blocks.filter.keyword).to.be.equal('mdi');
 
 				iconNames = getIconNames(blocks.icons);
 				expect(iconNames).to.be.eql(['mdi:home', 'mdi:arrows']);
@@ -358,7 +358,7 @@ describe('Testing custom view', () => {
 				blocks = view.render() as NonNullable<CustomViewBlocks>;
 				expect(blocks).to.not.be.equal(null);
 
-				expect(blocks.search.keyword).to.be.equal('mdi:home');
+				expect(blocks.filter.keyword).to.be.equal('mdi:home');
 
 				iconNames = getIconNames(blocks.icons);
 				expect(iconNames).to.be.eql(['mdi:home']);

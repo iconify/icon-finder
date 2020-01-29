@@ -20,7 +20,7 @@ import { clone } from '../objects';
  * Blocks
  */
 export interface CustomViewBlocks extends BaseViewBlocks {
-	search: SearchBlock;
+	filter: SearchBlock;
 
 	// Icons and pagination
 	icons: IconsListBlock;
@@ -165,8 +165,8 @@ export class CustomView extends BaseView {
 		blocks.icons.icons = this._data.slice(0) as Icon[];
 
 		// Search icons
-		blocks.search.keyword = this.route.params.filter;
-		blocks.icons = applyIconFilters(blocks.icons, blocks.search, [], true);
+		blocks.filter.keyword = this.route.params.filter;
+		blocks.icons = applyIconFilters(blocks.icons, blocks.filter, [], true);
 
 		// Get items per page
 		const registry = getRegistry(this._instance);
@@ -242,7 +242,7 @@ export class CustomView extends BaseView {
 		// Create empty blocks
 		this._blocks = {
 			// Search
-			search: Object.assign(defaultSearchBlock(), {
+			filter: Object.assign(defaultSearchBlock(), {
 				keyword: this.route.params.filter,
 				searchType: 'custom',
 				title: this.customType,

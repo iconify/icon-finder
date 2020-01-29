@@ -71,7 +71,7 @@ const defaultConfig: DataStorage = {
 		viewUpdateDelay: 300,
 
 		// Number of sibling collections to show when collection view is child view of collections list.
-		showSiblingCollections: 3,
+		showSiblingCollections: 2,
 	},
 };
 

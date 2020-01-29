@@ -210,6 +210,7 @@ describe('Testing collections actions', () => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 50;
+		config.data.display.showSiblingCollections = 3;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;

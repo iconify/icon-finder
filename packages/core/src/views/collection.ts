@@ -471,7 +471,9 @@ export class CollectionView extends BaseView {
 		block.active = this.prefix;
 
 		display.forEach(item => {
-			block.filters[item.prefix] = defaultFilter(item.name);
+			const filter = defaultFilter(item.name);
+			filter.index = item.index;
+			block.filters[item.prefix] = filter;
 		});
 
 		return block;
