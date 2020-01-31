@@ -22,12 +22,12 @@
 		"url": "git://github.com/iconify/icon-finder.git"
 	},
 	"devDependencies": {
-		"@types/chai": "^4.2.7",
+		"@types/chai": "^4.2.8",
 		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.12.24",
+		"@types/node": "^12.12.26",
 		"@types/request": "^2.48.4",
-		"@typescript-eslint/eslint-plugin": "^2.15.0",
-		"@typescript-eslint/parser": "^2.15.0",
+		"@typescript-eslint/eslint-plugin": "^2.18.0",
+		"@typescript-eslint/parser": "^2.18.0",
 		"chai": "^4.2.0",
 		"eslint": "^6.8.0",
 		"mocha": "^6.2.2",
