@@ -393,6 +393,7 @@ export class CollectionView extends BaseView {
 			}
 
 			// Icon filters
+			let startIndex = 0;
 			filterKeys.forEach(key => {
 				const dataKey = key as keyof CollectionData;
 				if (parsedData[dataKey] !== void 0) {
@@ -409,7 +410,7 @@ export class CollectionView extends BaseView {
 						});
 
 						// Apply index
-						autoIndexFilters(filter);
+						startIndex = autoIndexFilters(filter, startIndex);
 					}
 				}
 			});
