@@ -114,10 +114,13 @@ export class Router {
 	 * Navigate to home
 	 */
 	home(): void {
+		const registry = getRegistry(this._instance);
+		const config = registry.config;
+
 		// Generate route
-		const route = objectToRoute({
-			type: 'collections',
-		});
+		const route = objectToRoute(
+			JSON.parse(config.data.router.home as string)
+		);
 		if (route === null) {
 			throw new Error('Error resetting route');
 		}

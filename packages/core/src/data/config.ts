@@ -73,6 +73,14 @@ const defaultConfig: DataStorage = {
 		// Number of sibling collections to show when collection view is child view of collections list.
 		showSiblingCollections: 2,
 	},
+
+	// Router
+	router: {
+		// Home route as string
+		home: JSON.stringify({
+			type: 'collections',
+		}),
+	},
 };
 
 /**

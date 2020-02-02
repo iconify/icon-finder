@@ -72,5 +72,6 @@ There are several types of configuration, split into different sections:
 
 -   `API`: configuration for API requests.
 -   `display`: configuration rendering data.
+-   `router`: routes configuration.
 
 Explanation of each configuration variable is available in `src/data/config.ts`.

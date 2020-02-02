@@ -78,6 +78,87 @@ describe('Testing router', () => {
 		router.home();
 	});
 
+	it('Custom home route', done => {
+		const registry = setupRegistry();
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'/collection',
+			{
+				info: 'true',
+				chars: 'true',
+				prefix: 'mdi',
+			},
+			'mdi'
+		);
+
+		// Set custom home page
+		const config = registry.config;
+		config.data.router.home = JSON.stringify({
+			type: 'collection',
+			params: {
+				prefix: 'mdi',
+			},
+		});
+
+		// Create router and events
+		const router = registry.router;
+		const events = registry.events;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.route).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		let collectionsBlock: FiltersBlock | null;
+		events.subscribe('render', data => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// First load - loading page
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 2:
+					// Second load - home page has loaded
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					// Test collections block
+					collectionsBlock = (params.blocks as CollectionViewBlocks)
+						.collections;
+					expect(isBlockEmpty(collectionsBlock)).to.be.equal(true);
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to home
+		router.home();
+	});
+
 	it('Loading route from object', done => {
 		const registry = setupRegistry();
 		const api = registry.api as FakeAPI;
@@ -172,7 +253,7 @@ describe('Testing router', () => {
 			}
 		});
 
-		// Navigate to home
+		// Navigate to MDI
 		router.route = {
 			type: 'collection',
 			params: {
