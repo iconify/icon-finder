@@ -84,7 +84,7 @@ export interface APICoreConfig {
 	config?: DataStorage;
 
 	// Default route. Null if no route should be set
-	defaultRoute?: PartialRoute | null;
+	route?: PartialRoute | null;
 
 	// Callback for view updates
 	callback: (data: RouterEvent, core: APICore) => void;
@@ -133,17 +133,14 @@ export class APICore {
 		// Change route on next tick, so callback would be called asynchronously
 		setTimeout(() => {
 			if (router.route === null) {
-				if (
-					config.defaultRoute !== void 0 &&
-					config.defaultRoute !== null
-				) {
-					const route = objectToRoute(config.defaultRoute);
+				if (config.route !== void 0 && config.route !== null) {
+					const route = objectToRoute(config.route);
 					if (route !== null) {
 						router.route = route;
 					} else {
 						router.home();
 					}
-				} else if (config.defaultRoute !== null) {
+				} else if (config.route !== null) {
 					router.home();
 				}
 			}

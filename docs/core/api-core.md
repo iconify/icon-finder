@@ -15,8 +15,14 @@ const core = new APICore({
 		},
 	},
 	// Default route. If default route fails, script will navigate to home page
-	defaultRoute: {
-		type: 'collections',
+	route: {
+		type: 'collection',
+		params: {
+			prefix: 'mdi',
+		},
+		parent: {
+			type: 'collections',
+		},
 	},
 	callback: (data, core) => {
 		// Main callback where all stuff happens
