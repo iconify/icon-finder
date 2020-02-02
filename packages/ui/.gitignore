@@ -1,0 +1,10 @@
+.idea
+.vscode
+.DS_Store
+.rpt2_cache
+*.map
+!package-lock.json
+dev.config.json
+node_modules
+lib
+dist

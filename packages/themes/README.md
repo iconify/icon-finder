@@ -1,4 +1,4 @@
-# Iconify Icon Finder Core
+# Iconify Icon Finder Themes
 
 Iconify Search is a script for browsing icons available on Iconify API.
 

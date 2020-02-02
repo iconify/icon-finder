@@ -1,0 +1,72 @@
+<script>
+	import Input from '../forms/Input.svelte';
+	import Block from '../Block.svelte';
+
+	export let registry; /** @type {Registry} */
+	export let viewChanged; /** @type {boolean} */
+	export let route; /** @type {PartialRoute} */
+
+	// Phrases
+	const phrases = registry.phrases; /** @type {UITranslation} */
+
+	// Current keyword
+	let keyword = null; /** @type {string|null} */
+
+	// Variable to store last change to avoid changing keyword multiple times to same value
+	let lastChange = ''; /** @type {string} */
+
+	// Check route for keyword
+	function checkRoute(route) {
+		if (
+			route.type === 'search' &&
+			(lastChange === '' || lastChange !== route.params.search)
+		) {
+			keyword = route.params.search;
+			lastChange = keyword;
+			return true;
+		}
+		return false;
+	}
+
+	// Submit form
+	function submitForm() {
+		const value = keyword.trim().toLowerCase();
+		if (value !== '') {
+			lastChange = value;
+			registry.router.action('search', value);
+		}
+	}
+
+	// Overwrite keyword on first render or when current view changes to search results
+	$: {
+		if (keyword === null) {
+			// First render - get keyword from route
+			keyword = '';
+			if (route !== null) {
+				// Get keyword from current route or its parent
+				if (!checkRoute(route) && route.parent !== void 9) {
+					checkRoute(route.parent);
+				}
+			}
+		} else if (viewChanged) {
+			if (!viewChanged) {
+				lastChange = '';
+			} else {
+				checkRoute(route);
+			}
+		}
+	}
+</script>
+
+<Block type="search" name="global">
+	<form on:submit|preventDefault={submitForm} class="iif-block--search-form">
+		<Input
+			type="text"
+			bind:value={keyword}
+			placeholder={phrases.search.placeholder}
+			icon="search" />
+		<button class="iif-form-button iif-form-button--primary" type="submit">
+			{phrases.search.button}
+		</button>
+	</form>
+</Block>

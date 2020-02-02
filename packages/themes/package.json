@@ -1,0 +1,31 @@
+{
+	"name": "@iconify/search-theme",
+	"private": true,
+	"description": "Iconify Search, Theme",
+	"version": "0.0.0-dev",
+	"author": "Vjacheslav Trushkin",
+	"license": "(Apache-2.0 OR GPL-2.0)",
+	"main": "build.js",
+	"scripts": {
+		"build": "node build",
+		"dev": "node watch",
+		"watch": "node watch"
+	},
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/iconify/icon-finder.git"
+	},
+	"devDependencies": {
+		"@cyberalien/conditional-replacements": "^0.0.2",
+		"node-sass": "^4.13.1",
+		"nodemon": "^2.0.2"
+	},
+	"nodemonConfig": {
+		"ignore": [
+			"*/style.css",
+			"node_modules/*"
+		]
+	}
+}

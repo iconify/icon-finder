@@ -1,0 +1,41 @@
+{
+	"parent": "default",
+	"rotation": 11,
+	"icons": {
+		"size": 12,
+		"reset": {
+			"body": "<path d=\"M6 5.293l4.789-4.79.707.708-4.79 4.79 4.79 4.789-.707.707-4.79-4.79-4.789 4.79-.707-.707L5.293 6 .502 1.211 1.21.504 6 5.294v-.001z\" fill=\"currentColor\"/>"
+		},
+		"search": {
+			"body": "<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M7.453 8.16a4 4 0 11.707-.707l3.194 3.193-.707.707L7.452 8.16zM8 5a3 3 0 11-6 0 3 3 0 016 0z\" fill=\"currentColor\"/>"
+		},
+		"down": {
+			"body": "<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.646 7.354l-3-3 .708-.708L6 6.293l2.646-2.647.708.708-3 3L6 7.707l-.354-.353z\" fill=\"currentColor\"/>"
+		},
+		"left": {
+			"parent": "down",
+			"rotate": 1
+		},
+		"right": {
+			"parent": "down",
+			"rotate": 3
+		},
+		"parent": {
+			"parent": "down",
+			"rotate": 1
+		},
+		"grid": {
+			"body": "<path d=\"M1 1h2v2H1V1zm4 0h2v2H5V1zm4 0h2v2H9V1zM1 5h2v2H1V5zm4 0h2v2H5V5zm4 0h2v2H9V5zM1 9h2v2H1V9zm4 0h2v2H5V9zm4 0h2v2H9V9z\" fill=\"currentColor\"/>"
+		},
+		"list": {
+			"body": "<path d=\"M1 1h10v2H1V1zm0 4h10v2H1V5zm0 4h10v2H1V9z\" fill=\"currentColor\"/>"
+		},
+		"error-loading": {
+			"body": "<g clip-path=\"url(#clip0)\"><path d=\"M9.9.2l-.2 1C12.7 2 15 4.7 15 8c0 3.9-3.1 7-7 7s-7-3.1-7-7c0-3.3 2.3-6 5.3-6.8l-.2-1C2.6 1.1 0 4.3 0 8c0 4.4 3.6 8 8 8s8-3.6 8-8c0-3.7-2.6-6.9-6.1-7.8z\" fill=\"currentColor\"/></g><defs><clipPath id=\"clip0\"><path fill=\"#fff\" d=\"M0 0h16v16H0z\"/></clipPath></defs>",
+			"width": 16,
+			"height": 16
+		},
+		"width": 12,
+		"height": 12
+	}
+}

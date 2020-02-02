@@ -1,0 +1,38 @@
+{
+	"name": "@iconify/search-ui",
+	"private": true,
+	"description": "Iconify Search, UI",
+	"version": "0.0.0-dev",
+	"author": "Vjacheslav Trushkin",
+	"license": "(Apache-2.0 OR GPL-2.0)",
+	"main": "dist/ui.js",
+	"scripts": {
+		"cleanup": "rm -rf dist",
+		"build": "rollup -c",
+		"prebuild": "npm run cleanup",
+		"dev": "rollup -c -w"
+	},
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/iconify/icon-finder.git"
+	},
+	"devDependencies": {
+		"@cyberalien/conditional-replacements": "^0.0.2",
+		"@cyberalien/rollup-plugin-typescript2": "^0.25.4",
+		"@rollup/plugin-commonjs": "^11.0.1",
+		"@rollup/plugin-node-resolve": "^7.0.0",
+		"cross-env": "^7.0.0",
+		"rollup": "^1.31.0",
+		"rollup-plugin-livereload": "^1.0.0",
+		"rollup-plugin-svelte": "^5.0.3",
+		"rollup-plugin-terser": "^5.1.2",
+		"svelte": "^3.18.1",
+		"typescript": "^3.7.5"
+	},
+	"dependencies": {
+		"@iconify/iconify": "^1.0.4",
+		"@iconify/types": "^1.0.0"
+	}
+}

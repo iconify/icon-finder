@@ -1,0 +1,10 @@
+{
+	"options": {
+		"API": {
+			"resources": ["http://localhost:3000"]
+		}
+	},
+	"iconify": {
+		"defaultAPI": "http://127.0.0.1:3000/{prefix}.js?icons={icons}"
+	}
+}

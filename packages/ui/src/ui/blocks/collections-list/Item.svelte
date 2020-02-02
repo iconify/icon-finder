@@ -1,0 +1,98 @@
+<script context="module">
+	// @iconify-replacement: 'maxIndex = 10'
+	const maxIndex = 10;
+
+	// @iconify-replacement: 'authorLink = true'
+	const authorLink = true;
+
+	const baseClass = 'iif-collection';
+
+	function getSamplesHeight(info) {
+		if (info.displayHeight) {
+			return info.displayHeight;
+		} else if (typeof info.height === 'number') {
+			return info.height;
+		}
+		return 0;
+	}
+
+	function getSamples(info) {
+		if (info.samples instanceof Array) {
+			return info.samples.slice(0, 3);
+		}
+		return [];
+	}
+</script>
+
+<script>
+	import Height from './Height.svelte';
+
+	export let registry; /** @type {Registry} */
+	export let phrases; /** @type {UITranslation} */
+	export let prefix; /** @type {string} */
+	export let info; /** @type {CollectionInfo} */
+	export let onClick; /** @type {function} */
+
+	const options = registry.options;
+
+	// Get link
+	const link = options.links.collection.replace('{prefix}', prefix);
+
+	// Get container class name
+	let className; /** @type {string} */
+	$: {
+		className =
+			baseClass +
+			' ' +
+			baseClass +
+			'--' +
+			prefix +
+			(info.index ? ' ' + baseClass + '--' + (info.index % maxIndex) : '');
+	}
+
+	// Samples
+	const samples = getSamples(info);
+	const samplesHeight = getSamplesHeight(info);
+
+	// Height
+	const height =
+		'|' +
+		(typeof info.height !== 'object' ? info.height : info.height.join(', '));
+</script>
+
+<li class={className}>
+	<div class="iif-collection-text">
+		<a href={link} on:click|preventDefault={() => onClick(prefix)}>
+			{info.name}
+		</a>
+		{#if info.author}
+			<small>
+				{phrases.collection.by}
+				{#if authorLink && info.author.url}
+					<a href={info.author.url} target="_blank">{info.author.name}</a>
+				{:else}{info.author.name}{/if}
+			</small>
+		{/if}
+	</div>
+	<div class="iif-collection-data">
+		{#if samples.length > 0}
+			<div
+				class="iif-collection-samples{samplesHeight ? ' iif-collection-samples--' + samplesHeight : ''}">
+				{#each samples as sample}
+					<span
+						class="iconify"
+						data-icon={prefix + ':' + sample}
+						data-inline="false" />
+				{/each}
+			</div>
+		{/if}
+		{#if info.height}
+			<div class="iif-collection-height">
+				<Height text={height} />
+			</div>
+		{/if}
+		<div class="iif-collection-total">
+			<Height text={info.total} />
+		</div>
+	</div>
+</li>

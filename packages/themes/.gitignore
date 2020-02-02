@@ -1,0 +1,5 @@
+.idea
+.DS_Store
+node_modules
+*/style.css
+build.log
