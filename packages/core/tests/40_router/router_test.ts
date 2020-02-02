@@ -85,6 +85,7 @@ describe('Testing router', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'
@@ -192,6 +193,7 @@ describe('Testing router', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'
@@ -277,6 +279,7 @@ describe('Testing router', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',
@@ -395,6 +398,7 @@ describe('Testing router', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',
@@ -406,6 +410,7 @@ describe('Testing router', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'el',
 			},
 			'el',
@@ -556,6 +561,7 @@ describe('Testing router', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',

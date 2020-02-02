@@ -48,6 +48,7 @@ describe('Testing collection view', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: prefix,
 			},
 			prefix
@@ -181,6 +182,7 @@ describe('Testing collection view', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: prefix,
 			},
 			null

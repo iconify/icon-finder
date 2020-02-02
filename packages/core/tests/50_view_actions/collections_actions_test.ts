@@ -32,6 +32,7 @@ describe('Testing collections actions', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'
@@ -112,6 +113,7 @@ describe('Testing collections actions', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',
@@ -221,6 +223,7 @@ describe('Testing collections actions', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi',
@@ -232,6 +235,7 @@ describe('Testing collections actions', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'ant-design',
 			},
 			'ant-design',

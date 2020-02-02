@@ -28,6 +28,7 @@ describe('Testing collection actions', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: prefix,
 			},
 			prefix
@@ -239,6 +240,7 @@ describe('Testing collection actions', () => {
 			'/collection',
 			{
 				info: 'true',
+				chars: 'true',
 				prefix: 'mdi',
 			},
 			'mdi'
