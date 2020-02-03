@@ -34,7 +34,7 @@
 		<CollectionInfoBlock {registry} name="info" block={blocks.info} />
 	{/if}
 
-	<SearchBlock {registry} name="filter" block={blocks.filter} />
+	<SearchBlock {registry} name="filter" block={blocks.filter} {info} />
 
 	{#each filterBlocks as key, i (key)}
 		{#if blocks[key]}

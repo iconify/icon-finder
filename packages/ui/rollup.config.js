@@ -81,8 +81,12 @@ const replacementPairs = {
 };
 
 // Collections list
-if (!config.theme['collections-author-link']) {
+if (!config.theme['collections-list-author-link']) {
 	replacementPairs['authorLink = true'] = 'authorLink = false';
+}
+if (config.theme['collections-list-clickable']) {
+	replacementPairs['collectionClickable = false'] =
+		'collectionClickable = true';
 }
 
 // Language

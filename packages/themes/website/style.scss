@@ -1,0 +1,20 @@
+@import 'normalize.css';
+
+@import 'palette';
+@import 'vars';
+@import 'mixins';
+
+@import 'wrapper';
+
+@import 'inputs/button';
+@import 'inputs/input';
+@import 'inputs/search_form';
+
+@import 'components/collection_info';
+@import 'components/collections_list';
+@import 'components/content_error';
+@import 'components/filters';
+@import 'components/parent';
+
+@import 'views/collections';
+@import 'views/error';

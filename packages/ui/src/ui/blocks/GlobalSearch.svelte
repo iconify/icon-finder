@@ -7,7 +7,7 @@
 	export let route; /** @type {PartialRoute} */
 
 	// Phrases
-	const phrases = registry.phrases; /** @type {UITranslation} */
+	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
 
 	// Current keyword
 	let keyword = null; /** @type {string|null} */
@@ -61,10 +61,10 @@
 		<Input
 			type="text"
 			bind:value={keyword}
-			placeholder={phrases.search.placeholder}
+			placeholder={phrases.defaultPlaceholder}
 			icon="search" />
 		<button class="iif-form-button iif-form-button--primary" type="submit">
-			{phrases.search.button}
+			{phrases.button}
 		</button>
 	</form>
 </Block>

@@ -1,9 +1,8 @@
 export interface UITranslation {
 	lang: string;
 	search: {
-		placeholder: string;
-		namedPlaceholder: string;
-		collectionsPlaceholder: string;
+		placeholder: Record<string, string>;
+		defaultPlaceholder: string;
 		button: string;
 	};
 	errors: {

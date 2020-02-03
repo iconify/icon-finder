@@ -24,6 +24,10 @@
 	background: $plugin-palette-background-darker-white-borderless;
 	position: relative;
 
+	&--clickable {
+		cursor: pointer;
+	}
+
 	@media (max-width: 600px) {
 		max-width: none;
 		margin-right: 0;
@@ -57,11 +61,10 @@
 
 		&:focus {
 			outline: none;
-			text-decoration: underline;
 		}
 
 		&:hover {
-			text-decoration: none;
+			text-decoration: underline;
 		}
 	}
 
@@ -191,8 +194,8 @@
 	}
 
 	// Hover
-	&:hover {
-		cursor: pointer;
+	&:hover,
+	&:focus-within {
 		background: $plugin-palette-background-white;
 		box-shadow: 0 0 0 $plugin-collection-border-width
 			$plugin-palette-border-blue inset;
@@ -201,7 +204,6 @@
 			> a,
 			> span {
 				color: $plugin-palette-color-link-hover;
-				text-decoration: none;
 			}
 		}
 
@@ -215,6 +217,14 @@
 
 			.iif-collection-samples {
 				background-color: transparent;
+			}
+		}
+	}
+
+	&--clickable:hover {
+		.iif-collection-text {
+			> a:hover {
+				text-decoration: none;
 			}
 		}
 	}

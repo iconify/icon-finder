@@ -1,0 +1,273 @@
+// Spacing between items
+$iif-spacing: 8px;
+$iif-base-spacing-unit: $iif-spacing; // Temporary - replace later
+
+// Fonts
+$iif-font-family: 'PT Sans', 'Open Sans', 'Droid Sans', sans-serif;
+$iif-font-weight-normal: 400;
+$iif-font-weight-bold: 700;
+
+$iif-letter-spacing: normal;
+
+$iif-base-font-size: 16px;
+$iif-base-line-height: 24px;
+
+$iif-small-font-size: 14px;
+$iif-small-line-height: 22px;
+
+$iif-medium-font-size: 18px;
+$iif-medium-line-height: 26px;
+
+$iif-large-font-size: 22px;
+$iif-large-line-height: 32px;
+
+// Main palette
+$iif-background-color: palette('gray', 50);
+$iif-background-color2: palette('gray', 25);
+
+$iif-text-color: palette('gray', 800);
+$iif-text-muted-color: palette('gray', 400);
+$iif-text-dimmed-color: palette('gray', 600);
+$iif-text-faint-color: palette('gray', 200);
+
+$iif-simple-border-color: palette('gray', 100);
+
+// Rotation
+$iif-rotation-palettes: (
+	'purple',
+	'teal',
+	'orange',
+	'blue-gray',
+	'green',
+	'indigo',
+	'brown',
+	'deep-purple',
+	'pink',
+	'cyan',
+	'light-green',
+	'red'
+);
+$iif-rotation-palettes-length: length($iif-rotation-palettes);
+$iif-rotation-default-palette: 'light-blue';
+
+// Links
+$iif-link-palette: 'blue';
+$iif-link-shade: 600;
+$iif-link-hover-palette: 'red';
+$iif-link-hover-shade: $iif-link-shade;
+
+$iif-link-color: palette($iif-link-palette, $iif-link-shade);
+$iif-link-hover-color: palette($iif-link-hover-palette, $iif-link-hover-shade);
+
+// Borders
+$iif-border-focus-color: palette($iif-link-palette, 150);
+$iif-border-width: 2px;
+$iif-border-radius-small: 2px;
+$iif-border-radius-medium: 5px;
+
+// Icon
+$iif-icon-size: 16px;
+
+/*
+    Inputs and form buttons
+*/
+
+$iif-input-spacing: $iif-spacing; // Spacing on left/right of input
+$iif-input-height: 36px; // Input height
+$iif-input-border-width: $iif-border-width;
+$iif-input-border-radius: $iif-border-radius-medium;
+$iif-button-border-width: $iif-border-width;
+$iif-button-border-radius: $iif-border-radius-medium;
+
+$iif-input-font-size: $iif-base-font-size;
+$iif-input-line-height: $iif-base-line-height;
+$iif-button-font-size: $iif-base-font-size;
+$iif-button-line-height: $iif-base-line-height;
+
+$iif-input-icon-size: $iif-icon-size;
+$iif-input-reset-size: 24px;
+$iif-input-icon-spacing: 22px;
+
+// Input normal
+$iif-input-background-color: palette('gray', 0);
+$iif-input-border-color: $iif-simple-border-color;
+$iif-input-color: palette('gray', 600);
+
+// Input hover
+$iif-input-hover-background-color: $iif-input-background-color;
+$iif-input-hover-border-color: palette('gray', 150);
+$iif-input-hover-color: palette('gray', 600);
+
+// Input focus
+$iif-input-focus-background-color: $iif-input-background-color;
+$iif-input-focus-border-color: $iif-border-focus-color;
+$iif-input-focus-color: $iif-input-color;
+
+// Input Selection
+$iif-input-selection-color: $iif-input-color;
+$iif-input-selection-background-color: palette($iif-link-palette, 150);
+
+// Input placeholder
+$iif-input-placeholder-color: $iif-text-faint-color;
+$iif-input-placeholder-icon-color: palette('gray', 300);
+
+// Input Icon
+$iif-input-icon-color: $iif-input-placeholder-color;
+$iif-input-icon-hover-color: $iif-input-placeholder-color;
+$iif-input-icon-focus-color: $iif-text-muted-color;
+
+// Reset
+$iif-input-reset-color: $iif-link-color;
+$iif-input-reset-hover-color: $iif-link-hover-color;
+
+// Button
+$iif-button-background-color: $iif-input-background-color;
+$iif-button-border-color: $iif-input-border-color;
+$iif-button-color: $iif-input-color;
+
+// Button hover
+$iif-button-hover-background-color: $iif-input-hover-background-color;
+$iif-button-hover-border-color: $iif-input-hover-border-color;
+$iif-button-hover-color: $iif-link-hover-color;
+
+// Button focus
+$iif-button-focus-background-color: $iif-input-focus-background-color;
+$iif-button-focus-border-color: $iif-input-focus-border-color;
+$iif-button-focus-color: $iif-link-color;
+
+/*
+    Search form input and button
+*/
+$iif-big-input-height: 44px;
+
+$iif-big-input-font-size: $iif-medium-font-size;
+$iif-big-input-line-height: $iif-medium-line-height;
+$iif-big-button-font-size: $iif-medium-font-size;
+$iif-big-button-line-height: $iif-medium-line-height;
+
+$iif-big-input-icon-spacing: 26px;
+
+/*
+    Filters
+*/
+$iif-filter-margin: ($iif-spacing / 2) ($iif-spacing / 2) ($iif-spacing / 2) 0;
+$iif-filter-padding: 2px $iif-spacing;
+
+$iif-filter-font-size: 'small';
+
+$iif-filter-border-width: 0;
+$iif-filter-border-radius: $iif-border-radius-small;
+
+// Normal status - based on palette
+$iif-filter-color-shade: 0;
+$iif-filter-background-shade: 600;
+$iif-filter-border-shade: 0; // Ignored because radius is 0. Change value if radius is changed
+
+// Hover status - red
+$iif-filter-hover-color: palette('gray', 0);
+$iif-filter-hover-background-color: palette($iif-link-hover-palette, 600);
+$iif-filter-hover-border-color: $iif-filter-hover-background-color;
+
+// Focus
+$iif-filter-focus-color: palette($iif-link-palette, $iif-link-shade);
+$iif-filter-focus-background-color: palette($iif-link-palette, 0);
+$iif-filter-focus-border-color: $iif-border-focus-color;
+$iif-filter-focus-shadow: 0 0 0 2px $iif-border-focus-color inset;
+
+// Unselected
+$iif-filter-unselected-color: palette('gray', 0);
+$iif-filter-unselected-background-color: palette('gray', 300);
+$iif-filter-unselected-border-color: palette('gray', 300);
+
+// Unselected + focus
+$iif-filter-unselected-focus-color: palette('gray', $iif-link-shade);
+$iif-filter-unselected-focus-background-color: $iif-filter-focus-background-color;
+$iif-filter-unselected-focus-border-color: $iif-filter-focus-border-color;
+$iif-filter-unselected-focus-shadow: 0 0 0 2px $iif-border-focus-color inset;
+
+// Selected + focus
+$iif-filter-selected-focus-color: palette(
+	$iif-link-hover-palette,
+	$iif-link-shade
+);
+$iif-filter-selected-focus-background-color: palette(
+	$iif-link-hover-palette,
+	0
+);
+$iif-filter-selected-focus-border-color: palette($iif-link-hover-palette, 0);
+$iif-filter-selected-focus-shadow: 0 0 0 2px
+	palette($iif-link-hover-palette, 150) inset;
+
+/*
+    Collections list
+*/
+$iif-collections-list-title-color: $iif-text-dimmed-color;
+
+$iif-collection-border-width: $iif-border-width;
+
+$iif-collections-list-stats-width: 80px + $iif-collection-border-width;
+$iif-collections-list-min-width: 200px;
+$iif-collections-list-max-width: $iif-collections-list-min-width + 120px;
+$iif-collections-list-spacing: 12px;
+
+// Collection
+$iif-collection-background-color: $iif-background-color2;
+
+// Collection, hover. Border exists only in hover state
+$iif-collection-hover-background-color: palette('gray', 0);
+$iif-collection-hover-border-color: $iif-simple-border-color;
+$iif-collection-focus-border-color: $iif-border-focus-color;
+
+// Text. Adjusting height might need some additional changes for stats block in components/_collections_list.scss
+$iif-collection-title-height: 28px;
+$iif-collection-author-height: 24px;
+
+$iif-collection-author-color: $iif-text-muted-color;
+
+// Stats
+$iif-collection-stats-color: palette('gray', 0);
+$iif-collection-background-shade: 600;
+$iif-collection-stats-overlay-background: rgba(
+	255,
+	255,
+	255,
+	0.1
+); // Slightly modified blue background, used for samples in collections list
+
+$iif-collection-stats-hover-color: $iif-text-dimmed-color;
+
+/*
+    Error
+*/
+$iif-error-color: palette('gray', 0);
+$iif-error-background-color: palette('red', 600);
+$iif-error-loading-background-color: palette('blue-gray', 600);
+
+$iif-error-border-radius: $iif-border-radius-medium;
+$iif-error-box-shadow: 0 5px 17px rgba(0, 0, 0, 0.2),
+	0 2px 7px rgba(0, 0, 0, 0.15);
+
+$iif-error-icon-size: $iif-icon-size;
+
+/*
+    Parent block
+*/
+$iif-parent-border-width: $iif-border-width;
+$iif-parent-border-radius: $iif-border-radius-small;
+$iif-parent-icon-size: $iif-icon-size;
+$iif-parent-icon-spacing: $iif-parent-icon-size + 4px;
+$iif-parent-level-spacing: $iif-spacing;
+
+// Normal
+$iif-parent-color: $iif-text-dimmed-color;
+$iif-parent-background-color: $iif-background-color2;
+$iif-parent-border-color: $iif-simple-border-color;
+$iif-parent-icon-color: $iif-text-muted-color;
+
+// Hover on block
+$iif-parent-hover-color: $iif-link-color;
+$iif-parent-hover-background-color: $iif-background-color2;
+$iif-parent-hover-border-color: $iif-simple-border-color;
+
+// Link hover
+$iif-parent-link-hover-color: $iif-link-hover-color;

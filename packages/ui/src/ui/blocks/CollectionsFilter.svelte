@@ -6,7 +6,7 @@
 	export let name; /** @type {string} */
 	export let block; /** @type {FiltersBlock | null} */
 
-	const phrases = registry.phrases; /** @type {UITranslation} */
+	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
 	let value = block.keyword;
 
 	$: {
@@ -14,13 +14,14 @@
 			registry.router.action(name, value);
 		}
 	}
+
+	const placeholder =
+		phrases.placeholder.collections === void 0
+			? phrases.defaultPlaceholder
+			: phrases.placeholder.collections;
 </script>
 
 <Block type="filter">
-	<Input
-		type="text"
-		bind:value
-		icon="search"
-		placeholder={phrases.search.collectionsPlaceholder} />
+	<Input type="text" bind:value icon="search" {placeholder} />
 
 </Block>

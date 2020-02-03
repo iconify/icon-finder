@@ -15,7 +15,7 @@
 </script>
 
 <div class="iif-view iif-view--custom iif-view--custom--{customType}">
-	<SearchBlock {registry} name="filter" block={blocks.filter} />
+	<SearchBlock {registry} name="filter" block={blocks.filter} {customType} />
 
 	<IconsWithPages {registry} {blocks} {selectedIcon} {route} />
 </div>

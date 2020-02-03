@@ -3,9 +3,11 @@ import { UITranslation } from './types';
 export const phrases: UITranslation = {
 	lang: 'English',
 	search: {
-		placeholder: 'Search all icons',
-		namedPlaceholder: 'Search {name}',
-		collectionsPlaceholder: 'Filter collections',
+		placeholder: {
+			collection: 'Search {name}',
+			collections: 'Filter collections',
+		},
+		defaultPlaceholder: 'Search all icons',
 		button: 'Find Icons',
 	},
 	errors: {

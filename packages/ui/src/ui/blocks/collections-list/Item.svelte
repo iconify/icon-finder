@@ -5,6 +5,9 @@
 	// @iconify-replacement: 'authorLink = true'
 	const authorLink = true;
 
+	// @iconify-replacement: 'collectionClickable = false'
+	const collectionClickable = false;
+
 	const baseClass = 'iif-collection';
 
 	function getSamplesHeight(info) {
@@ -47,6 +50,7 @@
 			baseClass +
 			'--' +
 			prefix +
+			(collectionClickable ? ' ' + baseClass + '--clickable' : '') +
 			(info.index ? ' ' + baseClass + '--' + (info.index % maxIndex) : '');
 	}
 
@@ -58,9 +62,17 @@
 	const height =
 		'|' +
 		(typeof info.height !== 'object' ? info.height : info.height.join(', '));
+
+	// Block was clicked
+	function handleBlockClick(event) {
+		if (collectionClickable) {
+			event.preventDefault();
+			onClick(prefix);
+		}
+	}
 </script>
 
-<li class={className}>
+<li class={className} on:click={handleBlockClick}>
 	<div class="iif-collection-text">
 		<a href={link} on:click|preventDefault={() => onClick(prefix)}>
 			{info.name}

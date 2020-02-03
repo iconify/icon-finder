@@ -50,12 +50,28 @@
 		if (route !== null && route.parent !== void 0) {
 			addEntry(route.parent, 1);
 		}
+
+		// Add unique key to avoid re-rendering items
+		entries = entries.map((item, index) => {
+			let key = item.route.type + '-' + index + '-';
+			switch (item.route.type) {
+				case 'collection':
+					key += item.route.params.prefix;
+					break;
+
+				case 'custom':
+					key += item.route.params.customType;
+					break;
+			}
+			item.key = key;
+			return item;
+		});
 	}
 </script>
 
 {#if entries.length > 0}
 	<Block type="parent">
-		{#each entries as item, i (item.route)}
+		{#each entries as item, i (item.key)}
 			<Link
 				text={item.text}
 				level={item.level}

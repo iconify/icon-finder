@@ -1,0 +1,79 @@
+.iif-form-button {
+	cursor: pointer;
+	white-space: nowrap;
+	display: inline-block;
+	flex-shrink: 0;
+
+	font-size: $iif-button-font-size; // changed for search
+	line-height: $iif-button-line-height; // changed for search
+
+	height: $iif-input-height; // changed for search
+	margin: 0 0 0 $iif-spacing;
+	padding: (
+			($iif-input-height - $iif-button-line-height) / 2 -
+				$iif-button-border-width
+		)
+		($iif-spacing * 2); // changed for search
+
+	color: $iif-button-color;
+	background: $iif-button-background-color;
+	border: $iif-button-border-width solid $iif-button-border-color;
+	border-radius: $iif-button-border-radius;
+
+	text-decoration: none;
+	outline: none;
+
+	&:hover {
+		color: $iif-button-hover-color;
+		background: $iif-button-hover-background-color;
+		border-color: $iif-button-hover-border-color;
+	}
+
+	&:focus {
+		color: $iif-button-focus-color;
+		background: $iif-button-focus-background-color;
+		border-color: $iif-button-focus-border-color;
+	}
+
+	&:disabled {
+		// TODO
+	}
+
+	// Primary
+	&--primary {
+		// TODO
+		&:enabled:active,
+		&:enabled:not(:hover):focus {
+		}
+
+		&:disabled {
+		}
+	}
+
+	// Secondary
+	&--secondary {
+		// TODO
+		&:enabled:active,
+		&:enabled:not(:hover):focus {
+		}
+
+		&:disabled {
+		}
+	}
+}
+
+// Changes for search (copy all values that are changed)
+.iif-block--search {
+	.iif-form-button {
+		font-size: $iif-big-button-font-size;
+		line-height: $iif-big-button-line-height;
+
+		height: $iif-big-input-height;
+		margin: 0 0 0 $iif-spacing;
+		padding: (
+				($iif-big-input-height - $iif-big-button-line-height) / 2 -
+					$iif-button-border-width
+			)
+			($iif-spacing * 2);
+	}
+}

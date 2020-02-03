@@ -1,4 +1,5 @@
 {
 	"rotation": 10,
-	"collections-author-link": false
+	"collections-list-author-link": false,
+	"collections-list-clickable": true
 }
