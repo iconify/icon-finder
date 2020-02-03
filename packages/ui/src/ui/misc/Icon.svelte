@@ -43,50 +43,79 @@
 	export let icon; /** @type {string} */
 	export let height; /** @type {string|number} */
 
+	// Local watched variables. Update them only if needed to avoid duplicate re-renders
+	let name = '';
+	let loaded = false;
+	let svg = '';
+	let updateCounter = 0;
+	let assignedEvent = false;
+
 	// Resolve icon name
-	let name;
 	$: {
+		let newName;
 		switch (typeof uiIcons[icon]) {
 			case 'string':
-				name = uiIcons[icon];
+				newName = uiIcons[icon];
 				break;
 
 			case 'object':
-				name = customPrefix + ':' + icon;
+				newName = customPrefix + ':' + icon;
 				break;
 
 			default:
-				name = null;
+				newName = null;
+		}
+		if (newName !== name) {
+			// Update variable only when changed because it is a watched variable
+			name = newName;
+			loaded = false;
 		}
 	}
 
 	// Event listener
-	let updateCounter = 0;
 	const loadingEvent = () => {
-		updateCounter++;
+		if (name !== null && Iconify.iconExists(name) && !loaded) {
+			// Force update
+			updateCounter++;
+		}
 	};
 
 	// Check if icon has been loaded
-	let assignedEvent = false;
-	let loaded;
-	let svg;
 	$: {
-		svg = '';
+		updateCounter;
 		if (name !== null) {
-			loaded = Iconify.iconExists(name);
+			if (loaded !== Iconify.iconExists(name)) {
+				// Update variable only if it needs to be updated
+				loaded = !loaded;
+			}
 			if (!loaded) {
+				// Icon is not loaded - assign loading event listener and load it
 				if (!assignedEvent) {
 					assignedEvent = true;
 					document.addEventListener('IconifyAddedIcons', loadingEvent, true);
 				}
 				Iconify.preloadImages([name]);
 			} else {
-				svg = Iconify.getSVG(name, {
+				// Icon is loaded - generate SVG
+				let newSVG = Iconify.getSVG(name, {
 					'data-height': height ? height : defaultHeight,
 					'data-inline': false,
 				});
+				if (uiIcons['class'] !== void 0) {
+					// Temporary fix until Iconify 2 is available
+					newSVG = newSVG.replace(
+						'<svg ',
+						'<svg class="' + uiIcons['class'] + '" '
+					);
+				}
+
+				// Compare SVG with previous entry to avoid marking 'svg' variable as dirty and causing re-render
+				if (newSVG !== svg) {
+					svg = newSVG;
+				}
 			}
-		} else {
+		} else if (loaded) {
+			// Icon was loaded and is no longer loaded. Icon name changed?
 			loaded = false;
 		}
 	}

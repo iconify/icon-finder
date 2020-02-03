@@ -44,7 +44,7 @@
 
 	// Change page
 	function setPage(page) {
-		registry.router.action(name, page > 1 && block.more ? 'more' : page);
+		registry.router.action(name, page);
 	}
 </script>
 
@@ -73,7 +73,7 @@
 			<a
 				href="# "
 				class={moreClass}
-				on:click|preventDefault={() => setPage('more')}>
+				on:click|preventDefault={() => setPage(registry.phrases.icons.moreAsNumber ? 2 : 'more')}>
 				{registry.phrases.icons.more}
 			</a>
 		{/if}

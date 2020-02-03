@@ -13,102 +13,71 @@
 <script>
 	import Filter from '../filters/Filter.svelte';
 
-	export let blocks; /** @type {ViewBlocks} */
-	export let item; /** @type {{name: string, tooltip: string, text: string, icon: Icon, exists: boolean, selected: boolean, link: string}} */
+	// ...item
+	export let name; /** @type {string} */
+	export let tooltip; /** @type {string} */
+	export let text; /** @type {string} */
+	export let icon; /** @type {string} */
+	export let exists; /** @type {boolean} */
+	export let selected; /** @type {boolean} */
+	export let link; /** @type {string} */
+	export let filters; /** @type {Array} */
+
 	export let onClick; /** @type {function} */
 	export let uncategorised; /** @type {string} */
-	export let route; /** @type {PartialRoute} */
 
 	// Get class name
-	let className;
+	let className = '';
 	$: {
-		className =
+		const newClassName =
 			baseClass +
 			' ' +
 			baseClass +
-			(item.exists ? '--loaded' : '--loading') +
-			(item.selected ? ' ' + baseClass + '--selected' : '');
+			(exists ? '--loaded' : '--loading') +
+			(selected ? ' ' + baseClass + '--selected' : '');
+		if (newClassName !== className) {
+			// Trigger re-render only if value was changed
+			className = newClassName;
+		}
 	}
 
 	// Get SVG
-	let svg;
+	let svg = false;
 	$: {
-		svg = item.exists
-			? Iconify.getSVG(item.name, {
+		const newSVG = exists
+			? Iconify.getSVG(name, {
 					'data-width': '1em',
 					'data-height': '1em',
 					'data-inline': false,
 			  })
 			: false;
+		if (newSVG !== svg) {
+			// Trigger re-render only if SVG was changed
+			svg = newSVG;
+		}
 	}
 
 	// Get size
-	let size;
+	let size = null;
 	$: {
-		size = item.exists ? Iconify.getIcon(item.name) : null;
+		const newSize = exists ? Iconify.getIcon(name) : null;
+		if (newSize !== size) {
+			size = newSize;
+		}
 	}
 
 	// Select icon
 	function handleClick() {
-		onClick('icons', item.icon);
-	}
-
-	// Get filters
-	let filters = [];
-	$: {
-		filters = [];
-		const icon = item.icon;
-
-		// Filters
-		filterKeys.forEach(key => {
-			if (!blocks[key]) {
-				return;
-			}
-			const attr = filtersMap[key];
-			if (icon[attr] === void 0) {
-				return;
-			}
-
-			const block = blocks[key];
-			const active = block.active;
-			const iconValue = icon[attr];
-
-			(typeof iconValue === 'string' ? [iconValue] : iconValue).forEach(
-				value => {
-					if (value === active) {
-						return;
-					}
-					if (block.filters[value] !== void 0) {
-						filters.push({
-							action: key,
-							value: value,
-							item: block.filters[value],
-						});
-					}
-				}
-			);
-		});
-
-		// Icon sets
-		if (route.type === 'search' && blocks.collections) {
-			const prefix = item.icon.prefix;
-			if (blocks.collections.filters[prefix]) {
-				filters.push({
-					action: 'collections',
-					value: prefix,
-					item: blocks.collections.filters[prefix],
-				});
-			}
-		}
+		onClick('icons', icon);
 	}
 </script>
 
 <li class={className}>
 	<div class="iif-icon-sample">
 		<a
-			href={item.link}
+			href={link}
 			target="_blank"
-			title={item.tooltip}
+			title={tooltip}
 			on:click|preventDefault={handleClick}>
 			{#if svg !== false}
 				{@html svg}
@@ -119,12 +88,12 @@
 	<div class={'iif-icon-data iif-icon-data--filters--' + filters.length}>
 		<a
 			class="iif-icon-name"
-			href={item.link}
-			title={item.tooltip}
+			href={link}
+			title={tooltip}
 			on:click|preventDefault={handleClick}>
-			{item.text}
+			{text}
 		</a>
-		{#if item.exists}
+		{#if exists}
 			<div class="iif-icon-size">{size.width} x {size.height}</div>
 		{/if}
 		{#if filters}

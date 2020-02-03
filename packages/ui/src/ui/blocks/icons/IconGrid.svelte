@@ -5,43 +5,59 @@
 </script>
 
 <script>
-	export let item; /** @type {{name: string, tooltip: string, text: string, icon: Icon, exists: boolean, selected: boolean, link: string}} */
+	// ...item
+	export let name; /** @type {string} */
+	export let tooltip; /** @type {string} */
+	// export let text; /** @type {string} */
+	export let icon; /** @type {string} */
+	export let exists; /** @type {boolean} */
+	export let selected; /** @type {boolean} */
+	export let link; /** @type {string} */
+
 	export let onClick;
 
 	// Get class name
-	let className;
+	let className = '';
 	$: {
-		className =
+		const newClassName =
 			baseClass +
 			' ' +
 			baseClass +
-			(item.exists ? '--loaded' : '--loading') +
-			(item.selected ? ' ' + baseClass + '--selected' : '');
+			(exists ? '--loaded' : '--loading') +
+			(selected ? ' ' + baseClass + '--selected' : '');
+		if (newClassName !== className) {
+			// Trigger re-render only if value was changed
+			className = newClassName;
+		}
 	}
 
 	// Get SVG
-	let svg;
+	let svg = false;
 	$: {
-		svg = item.exists
-			? Iconify.getSVG(item.name, {
+		const newSVG = exists
+			? Iconify.getSVG(name, {
 					'data-width': '1em',
 					'data-height': '1em',
 					'data-inline': false,
 			  })
 			: false;
+		if (newSVG !== svg) {
+			// Trigger re-render only if SVG was changed
+			svg = newSVG;
+		}
 	}
 
 	// Select icon
 	function handleClick() {
-		onClick('icons', item.icon);
+		onClick('icons', icon);
 	}
 </script>
 
 <li class={className}>
 	<a
-		href={item.link}
+		href={link}
 		target="_blank"
-		title={item.tooltip}
+		title={tooltip}
 		on:click|preventDefault={handleClick}>
 		{#if svg !== false}
 			{@html svg}

@@ -48,12 +48,10 @@
 					checkRoute(route.parent);
 				}
 			}
-		} else if (viewChanged) {
-			if (!viewChanged) {
-				lastChange = '';
-			} else {
-				checkRoute(route);
-			}
+		} else if (!viewChanged) {
+			lastChange = '';
+		} else {
+			checkRoute(route);
 		}
 	}
 </script>

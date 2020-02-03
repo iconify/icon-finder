@@ -28,6 +28,7 @@ export interface UITranslation {
 			length: string;
 		};
 		more: string;
+		moreAsNumber: boolean;
 	};
 	filters: Record<string, string>;
 	collectionInfo: {

@@ -41,7 +41,8 @@ export const phrases: UITranslation = {
 			char: '\nIcon font character: {char}',
 			length: '', //'\nContent: {length} bytes',
 		},
-		more: 'Find more icons',
+		more: '3 ...', // 'Find more icons'
+		moreAsNumber: true, // True if text above refers to third page, false if text above shows "Find more icons" or similar text
 	},
 	filters: {
 		'uncategorised': 'Uncategorised',

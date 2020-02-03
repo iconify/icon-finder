@@ -1,7 +1,7 @@
 <script context="module">
 	import Iconify from '@iconify/iconify';
 	import { iconToString } from '../../../../../core/lib/icon';
-	import { compare } from '../../../../../core/lib/objects';
+	import { clone, compare } from '../../../../../core/lib/objects';
 	import IconList from './IconList.svelte';
 	import IconGrid from './IconGrid.svelte';
 
@@ -9,6 +9,14 @@
 	Iconify.setConfig('sessionStorage', false);
 
 	const baseClass = 'iif-icons';
+
+	// List of key maps: key = block name, value = icon attribute
+	const filtersMap = {
+		tags: 'tags',
+		themePrefixes: 'themePrefix',
+		themeSuffixes: 'themeSuffix',
+	};
+	const filterKeys = Object.keys(filtersMap);
 </script>
 
 <script>
@@ -38,6 +46,56 @@
 		updateCounter++;
 	};
 
+	// Get filters to list view
+	function getFilters(item) {
+		let filters = [];
+		const icon = item.icon;
+
+		// Filters
+		filterKeys.forEach(key => {
+			if (!blocks[key]) {
+				return;
+			}
+			const attr = filtersMap[key];
+			if (icon[attr] === void 0) {
+				return;
+			}
+
+			const block = blocks[key];
+			const active = block.active;
+			const iconValue = icon[attr];
+
+			(typeof iconValue === 'string' ? [iconValue] : iconValue).forEach(
+				value => {
+					if (value === active) {
+						return;
+					}
+					if (block.filters[value] !== void 0) {
+						filters.push({
+							action: key,
+							value: value,
+							item: clone(block.filters[value]),
+						});
+					}
+				}
+			);
+		});
+
+		// Icon sets
+		if (route.type === 'search' && blocks.collections) {
+			const prefix = item.icon.prefix;
+			if (blocks.collections.filters[prefix]) {
+				filters.push({
+					action: 'collections',
+					value: prefix,
+					item: clone(blocks.collections.filters[prefix]),
+				});
+			}
+		}
+
+		return filters;
+	}
+
 	// Filter icons
 	let parsedIcons = [];
 	$: {
@@ -45,16 +103,24 @@
 		updateCounter;
 
 		// Reset icons list
-		parsedIcons = [];
+		let newParsedIcons = [];
 
 		// Parse icons
 		let pending = [];
 		let selectedName = selectedIcon === null ? '' : iconToString(selectedIcon);
 
+		// Map old icons
+		const oldKeys = Object.create(null);
+		parsedIcons.forEach(icon => {
+			oldKeys[icon.name] = icon;
+		});
+
+		let updated = false;
 		blocks.icons.icons.forEach(icon => {
 			const name = iconToString(icon);
 			const data = Iconify.getIcon(name);
 			const exists = data !== null;
+
 			let tooltip = showPrefix ? name : icon.name;
 			if (exists) {
 				tooltip += tooltipText.size.replace(
@@ -73,11 +139,11 @@
 						data.body.indexOf('currentColor') === -1 ? 'colorful' : 'colorless'
 					];
 			}
-			const item = {
+			let item = {
 				name,
 				text: showPrefix ? name : icon.name,
 				tooltip,
-				icon,
+				icon: clone(icon),
 				exists,
 				link: options.links.icon
 					.replace('{prefix}', icon.prefix)
@@ -85,10 +151,24 @@
 				selected: name === selectedName,
 			};
 
-			parsedIcons.push(item);
-			if (!exists) {
-				pending.push(name);
+			if (isList) {
+				// Add filters
+				item.filters = getFilters(item);
 			}
+
+			// Check if item has been updated, use old item if not to avoid re-rendering child component
+			if (oldKeys[name] === void 0) {
+				updated = true;
+				if (!exists) {
+					pending.push(name);
+				}
+			} else if (!compare(oldKeys[name], item)) {
+				updated = true;
+			} else {
+				item = oldKeys[name];
+			}
+
+			newParsedIcons.push(item);
 		});
 
 		// Load pending images
@@ -99,8 +179,14 @@
 			}
 			Iconify.preloadImages(pending);
 		}
+
+		// Overwrite parseIcons variable only if something was updated, triggering component re-render
+		if (updated) {
+			parsedIcons = newParsedIcons;
+		}
 	}
 
+	// Icon or filter was clicked
 	function onClick(block, value) {
 		if (block === 'icons') {
 			const callback = registry.callback;
@@ -122,9 +208,9 @@
 	<ul>
 		{#each parsedIcons as item, i (item.name)}
 			{#if isList}
-				<IconList {item} {blocks} {route} {onClick} {uncategorised} />
+				<IconList {...item} {onClick} {uncategorised} />
 			{:else}
-				<IconGrid {item} {onClick} />
+				<IconGrid {...item} {onClick} />
 			{/if}
 		{/each}
 	</ul>
