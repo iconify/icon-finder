@@ -107,8 +107,8 @@ export class SearchView extends BaseView {
 			// Change current page
 			case 'pagination':
 				if (value === 'more' && this._showMoreButton()) {
-					// Change to second page
-					value = 2;
+					// Change to current page + 1
+					value = this.route.params.page + 1;
 				}
 
 				// Check number
@@ -125,7 +125,7 @@ export class SearchView extends BaseView {
 				}
 
 				// Check for "more"
-				if (value > 1 && this._showMoreButton()) {
+				if (value > 0 && this._showMoreButton()) {
 					// Create sibling route
 					this._triggerFullResults(value);
 					return;
@@ -202,7 +202,7 @@ export class SearchView extends BaseView {
 				type: 'search',
 				params: Object.assign({}, this.route.params, {
 					page: page,
-					more: false,
+					short: false,
 				}),
 			} as PartialRoute,
 			1

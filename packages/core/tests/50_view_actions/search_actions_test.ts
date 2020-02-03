@@ -24,7 +24,7 @@ describe('Testing search actions', () => {
 		return registry;
 	}
 
-	it('Pagination with "more"', done => {
+	it('Pagination with "more" from second page', done => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -100,7 +100,7 @@ describe('Testing search actions', () => {
 					break;
 
 				case 3:
-					// Full results
+					// Full results, next page
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
@@ -131,6 +131,222 @@ describe('Testing search actions', () => {
 			params: {
 				search: 'home',
 				page: 1,
+				short: true,
+			},
+			parent: {
+				type: 'collections',
+			},
+		} as unknown) as PartialRoute;
+	});
+
+	it('Pagination with "more" from first page', done => {
+		const registry = setupRegistry();
+		const events = registry.events;
+
+		const config = registry.config;
+		config.data.display.itemsPerPage = 32;
+
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'/search',
+			{
+				query: 'home',
+				limit: 64,
+			},
+			'search-home'
+		);
+		api.loadFixture(
+			'/search',
+			{
+				query: 'home',
+				limit: 999,
+			},
+			'search-home-full'
+		);
+
+		// Create router
+		const router = registry.router;
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', data => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// Loading page
+					expect(params.route).to.be.eql({
+						type: 'search',
+						params: {
+							search: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 2:
+					// Search results have loaded
+					expect(params.route).to.be.eql({
+						type: 'search',
+						params: {
+							search: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					// Change page
+					router.action('pagination', 'more');
+					break;
+
+				case 3:
+					// Full results, next page
+					expect(params.route).to.be.eql({
+						type: 'search',
+						params: {
+							search: 'home',
+							page: 1,
+							short: false,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to search results
+		router.route = ({
+			type: 'search',
+			params: {
+				search: 'home',
+				page: 0,
+				short: true,
+			},
+			parent: {
+				type: 'collections',
+			},
+		} as unknown) as PartialRoute;
+	});
+
+	it('Loading full results by triggering second page', done => {
+		const registry = setupRegistry();
+		const events = registry.events;
+
+		const config = registry.config;
+		config.data.display.itemsPerPage = 32;
+
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'/search',
+			{
+				query: 'home',
+				limit: 64,
+			},
+			'search-home'
+		);
+		api.loadFixture(
+			'/search',
+			{
+				query: 'home',
+				limit: 999,
+			},
+			'search-home-full'
+		);
+
+		// Create router
+		const router = registry.router;
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', data => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// Loading page
+					expect(params.route).to.be.eql({
+						type: 'search',
+						params: {
+							search: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 2:
+					// Search results have loaded
+					expect(params.route).to.be.eql({
+						type: 'search',
+						params: {
+							search: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					// Change page
+					router.action('pagination', 2);
+					break;
+
+				case 3:
+					// Full results, next page
+					expect(params.route).to.be.eql({
+						type: 'search',
+						params: {
+							search: 'home',
+							page: 2,
+							short: false,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to search results
+		router.route = ({
+			type: 'search',
+			params: {
+				search: 'home',
+				page: 0,
 				short: true,
 			},
 			parent: {
