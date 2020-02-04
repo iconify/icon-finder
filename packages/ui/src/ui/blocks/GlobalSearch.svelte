@@ -6,6 +6,9 @@
 	export let viewChanged; /** @type {boolean} */
 	export let route; /** @type {PartialRoute} */
 
+	// @iconify-replacement: 'canFocusSearch = true'
+	const canFocusSearch = true;
+
 	// Phrases
 	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
 
@@ -56,10 +59,12 @@
 	}
 
 	// Focus input, use "each" to re-mount input when value changes
-	let focusInput;
+	let focusInput = false;
 	$: {
-		focusInput =
-			route && (route.type === 'collections' || route.type === 'search');
+		if (canFocusSearch) {
+			focusInput =
+				route && (route.type === 'collections' || route.type === 'search');
+		}
 	}
 </script>
 

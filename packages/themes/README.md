@@ -6,23 +6,23 @@ This module is core. It is designed to work in both node.js and browser. It does
 
 ## Building
 
-To build any theme, first you need to install dependencies: `npm install`.
+To build any theme, first, you need to install dependencies: `npm install`.
 
 Then to build all themes, run `npm run build`
 
-To built any specific theme, for example "figma", run `npm run build figma` (replace theme name).
+To build any specific theme, for example, "figma", run `npm run build figma` (replace theme name).
 
 ## Automatically re-building
 
 To automatically rebuild files as you save them, run `npm run watch`.
 
-You can add theme name as extra parameter to rebuild only your theme, for example `npm run watch figma`.
+You can add theme name as an extra parameter to rebuild only your theme, for example, `npm run watch figma`.
 
 ## Themes hierarchy
 
-Themes are not standalone. Most themes have parent theme, which might have its own parent theme and so on.
+Themes are not standalone. Most themes have the parent theme, which might have its parent theme and so on.
 
-What's the point of theme hierarchy? It allows you to modify themes without maintaining all files. Simply create new theme, set original theme as parent and copy only files that you want to modify.
+What's the point of theme hierarchy? It allows you to modify themes without maintaining all files. Simply create a new theme, set the original theme as the parent theme and copy only files that you want to modify.
 
 Because of hierarchy, you should not use external SASS compilers. Use build script instead.
 

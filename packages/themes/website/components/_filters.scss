@@ -6,9 +6,10 @@
 	transition: max-height 0.3s ease;
 
 	.iif-filters-header {
-		@include iif-font('medium', 'normal');
+		@include iif-font('base', 'normal');
 		margin: $iif-spacing 0;
 		padding: 0;
+		color: $iif-filter-title-color;
 	}
 
 	&--active,

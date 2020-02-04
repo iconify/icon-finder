@@ -80,6 +80,17 @@ const replacementPairs = {
 	'maxIndex = 10': 'maxIndex = ' + Math.max(1, config.theme.rotation),
 };
 
+// Support custom views
+if (!config['custom-view']) {
+	replacementPairs['supportCustomView = true'] = 'supportCustomView = false';
+	replacementPairs['./views/Custom.svelte'] = './Empty.svelte';
+}
+
+// Focus search
+if (!config.theme['focus-search']) {
+	replacementPairs['canFocusSearch = true'] = 'canFocusSearch = false';
+}
+
 // Collections list
 if (!config.theme['collections-list-author-link']) {
 	replacementPairs['authorLink = true'] = 'authorLink = false';

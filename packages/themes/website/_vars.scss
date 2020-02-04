@@ -1,6 +1,5 @@
 // Spacing between items
 $iif-spacing: 8px;
-$iif-base-spacing-unit: $iif-spacing; // Temporary - replace later
 
 // Fonts
 $iif-font-family: 'PT Sans', 'Open Sans', 'Droid Sans', sans-serif;
@@ -156,6 +155,7 @@ $iif-filter-margin: ($iif-spacing / 2) ($iif-spacing / 2) ($iif-spacing / 2) 0;
 $iif-filter-padding: 2px $iif-spacing;
 
 $iif-filter-font-size: 'small';
+$iif-filter-title-color: $iif-text-dimmed-color;
 
 $iif-filter-border-width: 0;
 $iif-filter-border-radius: $iif-border-radius-small;

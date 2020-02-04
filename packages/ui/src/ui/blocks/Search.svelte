@@ -8,6 +8,9 @@
 	export let info = null; /** @type {CollectionInfo | null} */
 	export let customType = ''; /** @type {string} */
 
+	// @iconify-replacement: 'canFocusSearch = true'
+	const canFocusSearch = true;
+
 	// Phrases
 	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
 
@@ -36,7 +39,7 @@
 		onInput={changeValue}
 		{placeholder}
 		icon="search"
-		autofocus={true} />
+		autofocus={canFocusSearch} />
 	<button class="iif-form-button iif-form-button--primary" focusable="false">
 		{phrases.button}
 	</button>

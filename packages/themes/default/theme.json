@@ -1,5 +1,6 @@
 {
 	"rotation": 10,
 	"collections-list-author-link": false,
-	"collections-list-clickable": true
+	"collections-list-clickable": true,
+	"focus-search": true
 }

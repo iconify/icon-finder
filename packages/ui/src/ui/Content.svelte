@@ -5,6 +5,7 @@
 	import CollectionsView from './views/Collections.svelte';
 	import CollectionView from './views/Collection.svelte';
 	import SearchView from './views/Search.svelte';
+	// @iconify-replacement: './views/Custom.svelte'
 	import CustomView from './views/Custom.svelte';
 
 	/**
@@ -18,6 +19,9 @@
 	export let error; /** @type {string} */
 	export let route; /** @type {PartialRoute} */
 	export let blocks; /** @type {ViewBlocks | null} */
+
+	// @iconify-replacement: 'supportCustomView = true'
+	const supportCustomView = true;
 
 	const baseClass = 'iif-content';
 	let className, searchValue;
@@ -34,18 +38,14 @@
 			className +=
 				' ' + baseClass + '--view ' + baseClass + '--view--' + route.type;
 
-			switch (route.type) {
-				case 'collection':
-					// Add prefix: '{base} {base}--view {base}--view--collection {base}--view--collection--{prefix}'
-					className +=
-						' ' + baseClass + '--view--collection--' + route.params.prefix;
-					break;
-
-				case 'custom':
-					// Add custom type: '{base} {base}--view {base}--view--custom {base}--view--custom--{customType}'
-					className +=
-						' ' + baseClass + '--view--custom--' + route.params.customType;
-					break;
+			if (route.type === 'collection') {
+				// Add prefix: '{base} {base}--view {base}--view--collection {base}--view--collection--{prefix}'
+				className +=
+					' ' + baseClass + '--view--collection--' + route.params.prefix;
+			} else if (supportCustomView && route.type === 'custom') {
+				// Add custom type: '{base} {base}--view {base}--view--custom {base}--view--custom--{customType}'
+				className +=
+					' ' + baseClass + '--view--custom--' + route.params.customType;
 			}
 		}
 	}
@@ -82,7 +82,7 @@
 		<CollectionView {registry} {route} {blocks} {selectedIcon} />
 	{:else if route.type === 'search'}
 		<SearchView {registry} {route} {blocks} {selectedIcon} />
-	{:else if route.type === 'custom'}
+	{:else if supportCustomView && route.type === 'custom'}
 		<CustomView {registry} {route} {blocks} {selectedIcon} />
 	{:else}
 		<ViewError {registry} error="bad_route" {route} />

@@ -12,13 +12,9 @@ It is a separate package, making it easy to build custom UI around it.
 
 See [docs/core.md](docs/core.md) for details.
 
-## Icons
+## Themes
 
-This package contains icons used by UI. It is a separate package to make it easy to change icons.
-
-## CSS
-
-This package contains stylesheet used by UI. It is a separate package to make it easy to customise the theme.
+This package contains themes, which include stylesheets and icons used by UI. It is a separate package to make it easy to change the theme.
 
 ## UI
 
