@@ -76,9 +76,11 @@
 		pointer-events: none;
 
 		// For older browsers
+		/*
 		&:hover {
 			display: none;
 		}
+		*/
 	}
 
 	.iif-input-reset {
@@ -137,9 +139,11 @@
 	}
 
 	// Focused state
+	/*
 	&:focus-within {
 		.iif-input-placeholder {
 			display: none;
 		}
 	}
+	*/
 }

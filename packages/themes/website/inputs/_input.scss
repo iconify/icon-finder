@@ -144,9 +144,11 @@
 		}
 
 		// For older browsers
+		/*
 		&:focus + .iif-input-placeholder {
 			display: none;
 		}
+		*/
 	}
 
 	// Adjustments for icon
@@ -161,11 +163,13 @@
 	}
 
 	// Focused state
+	/*
 	&:focus-within {
 		.iif-input-placeholder {
 			display: none;
 		}
 	}
+	*/
 }
 
 // Changes for search (copy all values that are changed)
