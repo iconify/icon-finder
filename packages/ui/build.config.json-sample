@@ -1,0 +1,10 @@
+{
+	"--comment": "This file contains default values for config and theme. Copy this file to 'build.config.json', change values and run 'npm run build' or 'npm run dev'.",
+	"--comment-theme": "Theme attribute is default theme name. See 'packages/themes'. You can override this value with environment variable UI_THEME (see README.md)",
+	"theme": "iconify",
+	"config": {
+		"--comment": "Configuration to use. 'development' is default value for development mode, 'production' is default value for production mode. See files in directory 'packages/config/'. You can separate multiple config files with comma, for example 'local,no-footer'. You can override value using UI_CONFIG environment variable (see README.md).",
+		"development": "local",
+		"production": ""
+	}
+}

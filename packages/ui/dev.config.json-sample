@@ -1,5 +1,0 @@
-{
-	"comment": "This file contains default values for config and theme for development. Copy this file to 'dev.config.json', change values and run 'npm run dev'",
-	"config": "local",
-	"theme": "figma"
-}

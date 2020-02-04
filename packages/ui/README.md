@@ -4,9 +4,9 @@ This package renders user interface.
 
 ## Development environment
 
-This package does not provide web server. To test UI, you should install web server on your computer.
+This package does not provide a web server. To test UI, you should install a web server on your computer.
 
-OSX comes with Apache preinstalled, so if you are developing with OSX, you already have server. All you need to do is setup virtual host or change root directory. There are many tutorials online that will help you.
+OSX comes with Apache preinstalled, so if you are developing with OSX, you already have server. All you need to do is set up a virtual host or change root directory. There are many tutorials online that will help you.
 
 ## Building core
 
@@ -14,7 +14,7 @@ This package requires "core" package to be built. See [../core/README.md](../cor
 
 ## Themes
 
-Theme is integral part of UI. Themes are in separate package "themes" (in parent directory). Themes include not only stylesheet, but also icons and various configuration options that change behavior of user interface.
+The theme is an integral part of UI. Themes are in separate package "themes" (in the parent directory). Themes include stylesheet, icons and various configuration options that change the behaviour of the user interface.
 
 First you need to compile theme. See [../themes/README.md](../themes/README.md).
 
@@ -26,9 +26,11 @@ Compiling UI is very easy.
 
 2. Install dependencies: `npm install`
 
-3. Compile UI: `npm run build`
+3. Choose a theme (see below).
 
-To test it, open one of html files from directory "demo" in your browser (via web server, not as file://).
+4. Compile UI: `npm run build`
+
+To test it, open one of HTML files from directory "demo" in your browser (via web server, not as file://).
 
 ## Development mode
 
@@ -36,49 +38,75 @@ Development mode is similar to production mode, but generates bigger files with 
 
 To compile in development mode, run `npm run dev`.
 
-## Choosing theme
+Development mode also watches files for changes and automatically recompiles UI.
 
-By default, UI is compiled with theme "default". To choose different theme, you need to set it via environment variable `UI_THEME`:
+## Choosing the theme
+
+You must choose the theme before compiling UI.
+
+There are two ways of choosing the theme:
+
+### Setting theme with build.config.json
+
+The easiest way to set the default theme is by editing file `build.config.json`. Open that file, change the value of "theme" property.
+
+Then you can run `npm run dev` or `npm run build` without adding any extra parameters.
+
+If you do not have `build.config.json` in this directory, copy `build.config.json-sample` to `build.config.json`.
+
+### Setting theme with UI_THEME
+
+You can also set the theme by setting an environment variable `UI_THEME` before npm command:
 
 ```
 UI_THEME=figma npm run build
 ```
 
+If both `build.config.json` and `UI_THEME` are present, the build process uses the value from `UI_THEME` environment variable.
+
 ## Configuration files
 
-There are various configuration files that change UI behavior. See [../config/README.md](../config/README.md).
+Various configuration files can change UI behavior. You can specify things such as footer options, custom API endpoints, custom default page and so on.
 
-To use configuration file (or multiple configuration files), you need to set environment variable `UI_CONFIG`:
+See [../config/README.md](../config/README.md).
+
+There are several premade configuration files. You can use multiple files at the same time, they will be merged into one big config file.
+
+By default, only `default` configuration file is used.
+
+There are two ways to set configuration files:
+
+### Setting configuration with build.config.json
+
+The easiest way to set the configuration is by editing file `build.config.json`. Open that file, find "config" object, change the values of "development" and "production" values.
+
+Then you can run `npm run dev` or `npm run build` without adding any extra parameters.
+
+The value set in "development" is used when running `npm run dev`. The value set in "production" is used when running `npm run build`.
+
+If you do not have `build.config.json` in this directory, copy `build.config.json-sample` to `build.config.json`.
+
+### Setting config with UI_CONFIG
+
+You can also set config by setting an environment variable `UI_CONFIG` before npm command:
 
 ```
 UI_CONFIG=no-footer npm run build
 ```
 
-If you want to apply multiple configuration files, separate them with comma:
+If you want to apply multiple configuration files, separate them with the comma:
 
 ```
 UI_CONFIG=no-footer,local npm run build
 ```
 
-## Using both theme and config
+## Using the command line
 
-You can set both configuration and theme in command line:
+You can set both configuration and theme in the command line:
 
 ```
 UI_CONFIG=no-footer UI_THEME=website npm run build
 ```
-
-## Theme and config for development
-
-Setting UI_THEME and UI_CONFIG environment variables for each `npm run dev` call could be frustrating. Do not worry, you can change default values for development mode.
-
-Copy file `dev.config.json-sample` to `dev.config.json`, open it and change values for theme and config.
-
-Then next time you run `npm run dev`, build script will use your values from `dev.config.json`.
-
-File `dev.config.json` is ignored by `.gitignore`, so it will not be published to repository.
-
-Configuration file does not affect production builds. For production builds you need to set configuration via environment variables.
 
 ## Production builds
 

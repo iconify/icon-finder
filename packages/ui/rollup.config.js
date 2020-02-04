@@ -18,7 +18,7 @@ const production = !process.env.ROLLUP_WATCH;
  */
 const packagesDir = path.dirname(__dirname) + '/';
 const config = {
-	themePath: 'default',
+	themePath: '',
 	theme: {},
 };
 let included = {};
@@ -26,33 +26,34 @@ let included = {};
 // Default configuration
 parseConfig(config, 'default');
 
-// Get default development config from dev.config.json
-// dev.config.json is not added to repository, so it is safe to edit.
-// Copy dev.config.json-sample to dev.config.json and run `npm run dev`
-let devConfig = null;
-if (!production) {
-	try {
-		devConfig = JSON.parse(
-			fs.readFileSync(__dirname + '/dev.config.json', 'utf8')
-		);
-		if (devConfig.theme.match(themeMatch)) {
-			config.themePath = devConfig.theme;
-		}
-	} catch (err) {
-		devConfig = null;
+// Get default config from dev.config.json
+// build.config.json is not added to repository, so it is safe to edit.
+//
+// Copy build.config.json-sample to build.config.json, edit it and
+// run `npm run dev` for development build or `npm run build` for production build
+let defaultConfig = null;
+try {
+	defaultConfig = JSON.parse(
+		fs.readFileSync(__dirname + '/build.config.json', 'utf8')
+	);
+	if (defaultConfig.theme.match(themeMatch)) {
+		config.themePath = defaultConfig.theme;
 	}
+	defaultConfig =
+		defaultConfig.config[production ? 'production' : 'development'];
+	if (typeof defaultConfig !== 'string') {
+		defaultConfig = null;
+	}
+} catch (err) {
+	defaultConfig = null;
 }
 
 // Parse configuration files
 // Example: UI_CONFIG=local npm run build
 if (typeof process.env.UI_CONFIG === 'string') {
 	setConfig(process.env.UI_CONFIG);
-} else if (
-	devConfig &&
-	typeof devConfig === 'object' &&
-	typeof devConfig.config === 'string'
-) {
-	setConfig(devConfig.config);
+} else if (defaultConfig !== null) {
+	setConfig(defaultConfig);
 }
 
 // Add custom theme
@@ -62,6 +63,12 @@ if (typeof process.env.UI_THEME === 'string') {
 	if (theme.match(themeMatch)) {
 		config.themePath = theme;
 	}
+}
+
+if (config.themePath === '') {
+	throw new Error(
+		'Missing theme name. You can set theme name using UI_THEME environment variable or by setting default theme name in build.config.json. See README.md'
+	);
 }
 parseThemeConfig(config, config.themePath);
 

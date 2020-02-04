@@ -14,12 +14,8 @@ Go to `packages/core`, run `npm install` to install dependencies and `npm build`
 
 Then go to `packages/ui`, run `npm install` to install dependencies.
 
-Now you are ready to build UI. Before building UI you can change the configuration in file `packages/ui/build.config.js`.
+Now you are ready to build UI. Before building UI you need to choose the theme and maybe customise the configuration.
 
-To build UI, run `npm run build`.
+See [ui.md](ui.md)
 
-## Configuring UI
-
-Before building UI, you can change the configuration. To change the configuration, edit file `packages/ui/build.config.js`
-
-_TODO: list all options_
+After you have configured the theme, to build UI, run `npm run build`.
