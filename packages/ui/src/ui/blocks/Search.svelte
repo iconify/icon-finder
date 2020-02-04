@@ -35,7 +35,8 @@
 		value={block.keyword}
 		onInput={changeValue}
 		{placeholder}
-		icon="search" />
+		icon="search"
+		autofocus={true} />
 	<button class="iif-form-button iif-form-button--primary" focusable="false">
 		{phrases.button}
 	</button>

@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import { onMount } from 'svelte';
 	import Icon from '../misc/Icon.svelte';
 
 	export let placeholder = '';
@@ -10,6 +11,7 @@
 	export let disabled = false;
 	export let icon = '';
 	export let onInput;
+	export let autofocus = false;
 
 	// Get container class name
 	let className;
@@ -40,6 +42,14 @@
 			onInput(value);
 		}
 	}
+
+	// Focus
+	let inputRef;
+	onMount(() => {
+		if (autofocus) {
+			inputRef.focus();
+		}
+	});
 </script>
 
 <div class="iif-input-wrapper">
@@ -56,7 +66,8 @@
 			spellcheck="false"
 			autocomplete="off"
 			autocorrect="off"
-			autocapitalize="off" />
+			autocapitalize="off"
+			bind:this={inputRef} />
 		{#if value === '' && placeholder !== ''}
 			<div class="iif-input-placeholder">{placeholder}</div>
 		{/if}

@@ -54,15 +54,25 @@
 			checkRoute(route);
 		}
 	}
+
+	// Focus input, use "each" to re-mount input when value changes
+	let focusInput;
+	$: {
+		focusInput =
+			route && (route.type === 'collections' || route.type === 'search');
+	}
 </script>
 
 <Block type="search" name="global">
 	<form on:submit|preventDefault={submitForm} class="iif-block--search-form">
-		<Input
-			type="text"
-			bind:value={keyword}
-			placeholder={phrases.defaultPlaceholder}
-			icon="search" />
+		{#each [focusInput] as autofocus, i (autofocus)}
+			<Input
+				type="text"
+				bind:value={keyword}
+				placeholder={phrases.defaultPlaceholder}
+				icon="search"
+				{autofocus} />
+		{/each}
 		<button class="iif-form-button iif-form-button--primary" type="submit">
 			{phrases.button}
 		</button>
