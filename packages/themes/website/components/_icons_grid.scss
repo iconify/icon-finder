@@ -1,0 +1,110 @@
+.iif-icons--grid {
+	border: $iif-icons-wrapper-border-width solid
+		$iif-icons-wrapper-border-color;
+	background: $iif-icons-wrapper-background-color;
+
+	ul {
+		margin: 0;
+		padding: $iif-icons-container-grid-padding;
+		box-sizing: border-box;
+		list-style: none;
+		&:after {
+			content: ' ';
+			display: table;
+			clear: both;
+		}
+	}
+
+	.iif-icon-grid {
+		list-style: none;
+		float: left;
+		padding: 0;
+		margin: $iif-icons-grid-icon-margin;
+		width: $iif-icons-grid-icon-size + $iif-icons-grid-icon-border-width * 2;
+		height: $iif-icons-grid-icon-size + $iif-icons-grid-icon-border-width *
+			2;
+
+		svg {
+			display: block;
+		}
+
+		a {
+			display: block;
+			font-size: $iif-icons-grid-icon-size;
+			width: 1em;
+			height: 1em;
+			color: $iif-icons-grid-icon-color;
+			background: $iif-icons-grid-icon-background-color;
+			border: $iif-icons-grid-icon-border-width solid
+				$iif-icons-grid-icon-border-color;
+			cursor: pointer;
+			text-decoration: none;
+
+			&:hover,
+			&:active {
+				color: $iif-icons-grid-icon-hover-color;
+				background: $iif-icons-grid-icon-hover-background-color;
+				border-color: $iif-icons-grid-icon-hover-border-color;
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+
+			&:focus:not(:hover) {
+				color: $iif-icons-grid-icon-focus-color;
+				background: $iif-icons-grid-icon-focus-background-color;
+				@if $iif-icons-grid-icon-border-width > 0 {
+					border-color: $iif-icons-grid-icon-focus-border-color;
+				}
+				else {
+					box-shadow: 0 0 0 2px
+						$iif-icons-grid-icon-focus-border-color;
+				}
+			}
+		}
+
+		&--selected {
+			a {
+				color: $iif-icons-grid-icon-selected-color;
+				background: $iif-icons-grid-icon-selected-background-color;
+				border-color: $iif-icons-grid-icon-selected-border-color;
+
+				&:hover,
+				&:active {
+					color: $iif-icons-grid-icon-selected-hover-color;
+					background: $iif-icons-grid-icon-selected-hover-background-color;
+					border-color: $iif-icons-grid-icon-selected-hover-border-color;
+				}
+
+				&:focus:not(:hover) {
+					color: $iif-icons-grid-icon-selected-color;
+					background: $iif-icons-grid-icon-selected-background-color;
+					border-color: $iif-icons-grid-icon-selected-border-color;
+					box-shadow: none;
+				}
+			}
+		}
+
+		&--loading {
+			a {
+				// Loading state - display empty block
+				background: transparent;
+				border-color: transparent;
+			}
+		}
+	}
+
+	@media (max-width: 600px) {
+		.iif-icon-grid {
+			width: $iif-icons-grid-icon-compact-size +
+				$iif-icons-grid-icon-border-width * 2;
+			height: $iif-icons-grid-icon-compact-size +
+				$iif-icons-grid-icon-border-width * 2;
+			a {
+				font-size: $iif-icons-grid-icon-compact-size;
+			}
+		}
+	}
+}

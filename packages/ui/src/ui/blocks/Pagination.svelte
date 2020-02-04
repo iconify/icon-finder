@@ -31,11 +31,13 @@
 			// Map pages
 			pages = pages.map((page, index) => {
 				const dot = index > 0 && pages[index - 1] < page - 1;
+				const selected = page === block.page;
 				return {
+					selected,
 					dot,
 					page,
 					text: page + 1,
-					className: page === block.page ? selectedClass : baseClass,
+					className: selected ? selectedClass : baseClass,
 					onClick: () => setPage(page),
 				};
 			});
@@ -58,12 +60,12 @@
 				<Icon icon="left" />
 			</a>
 		{/if}
-		{#each pages as page}
+		{#each pages as page, i (page.text)}
 			{#if page.dot}
 				<span>...</span>
 			{/if}
 			<a
-				href="# "
+				href={page.selected ? void 0 : '# '}
 				class={page.className}
 				on:click|preventDefault={page.onClick}>
 				{page.text}

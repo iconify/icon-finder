@@ -7,6 +7,7 @@
 @import 'wrapper';
 
 @import 'inputs/button';
+@import 'inputs/icon_button';
 @import 'inputs/input';
 @import 'inputs/search_form';
 
@@ -14,6 +15,10 @@
 @import 'components/collections_list';
 @import 'components/content_error';
 @import 'components/filters';
+@import 'components/icons_block';
+@import 'components/icons_grid';
+@import 'components/icons_list';
+@import 'components/pagination';
 @import 'components/parent';
 
 @import 'views/collections';

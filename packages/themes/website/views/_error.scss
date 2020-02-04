@@ -16,12 +16,17 @@
 	}
 
 	a {
+		@include iif-font('base', 'normal');
 		color: inherit;
 		text-decoration: underline;
 		&:hover,
 		&:focus {
+			color: inherit;
 			text-decoration: underline;
 			outline: none;
+		}
+		&:focus:not(:hover) {
+			box-shadow: 0 0 0 max($iif-border-width, 1px) $iif-error-color;
 		}
 	}
 

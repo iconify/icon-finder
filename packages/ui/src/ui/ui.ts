@@ -47,14 +47,13 @@ const main = new Main({
 	route: ({
 		type: 'collection',
 		params: {
-			prefix: 'foo',
+			prefix: 'ic',
 		},
 		parent: {
 			type: 'collections',
 		},
 	} as unknown) as CollectionRoute,
 	*/
-
 	options: options as DataStorage,
 	iconProps: {
 		rotate: 1,

@@ -1,0 +1,40 @@
+.iif-block--icons {
+	margin: $iif-spacing 0 $iif-spacing * 2;
+	padding: $iif-icons-container-padding;
+	border: $iif-border-width solid $iif-icons-container-border-color;
+	border-radius: $iif-icons-container-border-radius;
+	background: $iif-icons-container-background-color;
+}
+
+// Icons header
+.iif-icons-header {
+	margin: 0 0 $iif-spacing;
+	padding: $iif-icons-header-padding;
+	display: flex;
+}
+
+.iif-icons-header-text {
+	flex-grow: 1;
+	text-align: left;
+}
+
+.iif-icons-header-modes {
+	width: $iif-icons-header-modes-size;
+	height: $iif-icons-header-modes-size;
+	position: relative;
+	box-sizing: border-box;
+	button {
+		position: absolute;
+		top: ($iif-icons-header-modes-size - $iif-icon-button-size) / 2;
+		right: ($iif-icons-header-modes-size - $iif-icon-button-size) / 2;
+		padding: (
+				$iif-icons-header-modes-size - $iif-icons-header-modes-icon-size
+			) / 2;
+
+		svg {
+			font-size: $iif-icons-header-modes-icon-size;
+			width: $iif-icons-header-modes-icon-size;
+			height: $iif-icons-header-modes-icon-size;
+		}
+	}
+}

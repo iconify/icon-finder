@@ -33,7 +33,7 @@
 		text-decoration: none;
 		&:hover {
 			color: $iif-link-hover-color;
-			text-decoration: none;
+			text-decoration: underline;
 		}
 		&:focus {
 			text-decoration: underline;

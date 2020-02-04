@@ -34,7 +34,8 @@
 
 		&:focus:not(:hover) {
 			text-decoration: underline;
-			box-shadow: 0 0 0 2px $iif-border-focus-color;
+			box-shadow: 0 0 0 max($iif-border-width, 1px)
+				$iif-border-focus-color;
 		}
 	}
 }

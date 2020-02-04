@@ -1,5 +1,5 @@
 .iif-pagination {
-	margin: 8px 0;
+	margin: 8px 0 0;
 	padding: 0 32px;
 	text-align: center;
 	position: relative;
@@ -37,38 +37,40 @@
 		&:not(:hover):focus {
 			box-shadow: $plugin-button-active-shadow;
 		}
-	}
 
-	.iif-page--more {
-		padding: 6px;
-	}
-
-	.iif-page--selected {
-		background: $plugin-palette-background-selected-borderless;
-		color: $plugin-palette-color-black;
-		box-shadow: none !important;
-		pointer-events: none;
-	}
-
-	.iif-page--arrow {
-		position: absolute;
-		top: 50%;
-		margin-top: -14px;
-		height: 28px;
-		width: 26px;
-		svg {
-			display: block;
-			position: absolute;
-			left: (26px - $plugin-input-icon-size) / 2;
-			top: (28px - $plugin-input-icon-size) / 2;
+		&--more {
+			padding: 6px;
 		}
-	}
-	.iif-page--prev {
-		left: 0;
-		margin-left: 0;
-	}
-	.iif-page--next {
-		right: 0;
-		margin-right: 0;
+
+		// Selected page
+		&--selected {
+			background: $plugin-palette-background-selected-borderless;
+			color: $plugin-palette-color-black;
+			box-shadow: none !important;
+			pointer-events: none;
+		}
+
+		// Arrows
+		&--arrow {
+			position: absolute;
+			top: 50%;
+			margin-top: -14px;
+			height: 28px;
+			width: 26px;
+			svg {
+				display: block;
+				position: absolute;
+				left: (26px - $plugin-input-icon-size) / 2;
+				top: (28px - $plugin-input-icon-size) / 2;
+			}
+		}
+		&--prev {
+			left: 0;
+			margin-left: 0;
+		}
+		&--next {
+			right: 0;
+			margin-right: 0;
+		}
 	}
 }

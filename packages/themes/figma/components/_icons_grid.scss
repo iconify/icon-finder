@@ -64,9 +64,8 @@
 
 		&--loading {
 			a {
-				//background: $plugin-palette-background-darker-white;
-				//border-color: $plugin-palette-border-grey;
-				//color: $plugin-palette-color-black-muted;
+				background: transparent;
+				border-color: transparent;
 			}
 		}
 	}

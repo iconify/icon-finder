@@ -29,7 +29,7 @@
 		border-color: $iif-button-hover-border-color;
 	}
 
-	&:focus {
+	&:focus:not(:hover) {
 		color: $iif-button-focus-color;
 		background: $iif-button-focus-background-color;
 		border-color: $iif-button-focus-border-color;

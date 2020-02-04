@@ -16,6 +16,8 @@
 	}
 
 	a {
+		@include plugin-font-ui-neg('medium', 'normal');
+
 		color: inherit;
 		text-decoration: underline;
 		&:hover,

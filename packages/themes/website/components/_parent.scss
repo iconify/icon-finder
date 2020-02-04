@@ -1,11 +1,12 @@
 .iif-block--parent {
-	border: $iif-parent-border-width solid $iif-parent-border-color;
-	border-radius: $iif-parent-border-radius;
-	background: $iif-parent-background-color;
+	@if $iif-parent-with-block {
+		border: $iif-parent-border-width solid $iif-parent-border-color;
+		border-radius: $iif-parent-border-radius;
+		background: $iif-parent-background-color;
+		margin: $iif-spacing 0;
+		padding: 0 ($iif-spacing / 2);
+	}
 	color: $iif-parent-color;
-
-	margin: $iif-spacing 0;
-	padding: 0 ($iif-spacing / 2);
 
 	@include iif-font('base', 'normal');
 
@@ -31,20 +32,24 @@
 			pointer-events: none;
 		}
 
-		&:nth-child(2) {
-			margin-left: $iif-parent-level-spacing;
-		}
-		&:nth-child(3) {
-			margin-left: $iif-parent-level-spacing * 2;
-		}
-		&:nth-child(4) {
-			margin-left: $iif-parent-level-spacing * 3;
+		@if $iif-parent-has-steps {
+			&:nth-child(2) {
+				margin-left: $iif-parent-level-spacing;
+			}
+			&:nth-child(3) {
+				margin-left: $iif-parent-level-spacing * 2;
+			}
+			&:nth-child(4) {
+				margin-left: $iif-parent-level-spacing * 3;
+			}
 		}
 	}
 
-	&:hover {
-		background-color: $iif-parent-hover-background-color;
-		border-color: $iif-parent-hover-border-color;
+	@if $iif-parent-with-block {
+		&:hover {
+			background-color: $iif-parent-hover-background-color;
+			border-color: $iif-parent-hover-border-color;
+		}
 	}
 
 	a:hover,
