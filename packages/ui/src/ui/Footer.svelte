@@ -1,14 +1,35 @@
+<script context="module">
+	// @iconify-replacement: 'footerOptions = {}'
+	let footerOptions = {};
+</script>
+
 <script>
 	import Iconify from '@iconify/iconify';
 	import { onDestroy } from 'svelte';
 	import { iconToString } from '../../../core/lib/icon';
 
-	// @iconify-replacement: '/footer/Empty.svelte'
-	import Footer from './footer/Empty.svelte';
+	// @iconify-replacement: '/footer/Simple.svelte'
+	import Footer from './footer/Simple.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let selectedIcon; /** @type {Icon | null} */
 	export let route; /** @type {PartialRoute} */
+
+	// Translate buttons
+	const phrases = registry.phrases;
+	Object.keys(footerOptions.buttons).forEach(key => {
+		const item = footerOptions.buttons[key];
+		if (typeof item.text !== 'string') {
+			// Set text: from phrases if phrase exists, capitalised key if not
+			item.text =
+				phrases.footerButtons[key] === void 0
+					? key
+							.split('-')
+							.map(str => str.slice(0, 1).toUpperCase() + str.slice(1))
+							.join(' ')
+					: phrases.footerButtons[key];
+		}
+	});
 
 	// Get icon name as string
 	let iconName;
@@ -47,6 +68,4 @@
 	});
 </script>
 
-{#if loaded}
-	<Footer {registry} {selectedIcon} {iconName} {route} />
-{/if}
+<Footer {footerOptions} {registry} {loaded} {selectedIcon} {iconName} {route} />

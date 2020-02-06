@@ -126,6 +126,16 @@ $iif-button-background-color: $iif-input-background-color;
 $iif-button-border-color: $iif-input-border-color;
 $iif-button-color: $iif-input-color;
 
+// Secondary button
+$iif-button-secondary-background-color: $iif-background-color2;
+$iif-button-secondary-border-color: palette('gray', 100);
+$iif-button-secondary-color: $iif-text-muted-color;
+
+// Destructive button
+$iif-button-destructive-background-color: palette('red', 600);
+$iif-button-destructive-border-color: $iif-button-destructive-background-color;
+$iif-button-destructive-color: palette('red', 0);
+
 // Button hover
 $iif-button-hover-background-color: $iif-input-hover-background-color;
 $iif-button-hover-border-color: $iif-input-hover-border-color;
@@ -135,6 +145,11 @@ $iif-button-hover-color: $iif-link-hover-color;
 $iif-button-focus-background-color: $iif-input-focus-background-color;
 $iif-button-focus-border-color: $iif-input-focus-border-color;
 $iif-button-focus-color: $iif-link-color;
+
+// Disabled button
+$iif-button-disabled-background-color: $iif-background-color2;
+$iif-button-disabled-border-color: $iif-button-disabled-background-color;
+$iif-button-disabled-color: $iif-text-muted-color;
 
 /*
     Search form input and button

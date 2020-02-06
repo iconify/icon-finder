@@ -1,4 +1,3 @@
-import { tick } from 'svelte';
 import Container from './Container.svelte';
 import { Options, DataStorage } from '../misc/options';
 import {
@@ -10,7 +9,7 @@ import {
 	compareIcons,
 	validateIcon,
 } from '../../../core/lib';
-import { compare } from '../../../core/lib/objects';
+import { compare, clone } from '../../../core/lib/objects';
 import { Data } from '../../../core/lib/data';
 import { phrases } from '../modules/phrases';
 import {
@@ -229,6 +228,17 @@ export class Main {
 	}
 
 	/**
+	 * Button was clicked in footer
+	 */
+	_footerButtonClicked(button: string): void {
+		const data = {
+			button,
+			icon: clone(this._selectedIcon),
+		};
+		this._triggerEvent('footer', data);
+	}
+
+	/**
 	 * Trigger event
 	 */
 	_triggerEvent(event: string, payload: unknown): void {
@@ -245,6 +255,11 @@ export class Main {
 			case 'selection':
 				// Selected icon changed
 				this.selectIcon(payload as Icon);
+				return;
+
+			case 'footer':
+				// Button was clicked in footer
+				this._footerButtonClicked(payload as string);
 				return;
 		}
 	}

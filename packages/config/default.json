@@ -1,4 +1,17 @@
 {
 	"language": "en",
-	"custom-view": true
+	"custom-view": true,
+	"footer": {
+		"type": "simple",
+		"transformations": false,
+		"color": false,
+		"buttons": {
+			"submit": {
+				"type": "primary"
+			},
+			"cancel": {
+				"type": "secondary"
+			}
+		}
+	}
 }

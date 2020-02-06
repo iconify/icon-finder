@@ -1,3 +1,6 @@
 {
-	"footer": false
+	"footer": {
+		"type": "none",
+		"buttons": false
+	}
 }

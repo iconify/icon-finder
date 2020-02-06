@@ -55,11 +55,18 @@
 		let newName;
 		switch (typeof uiIcons[icon]) {
 			case 'string':
+				// Icon value is icon name
 				newName = uiIcons[icon];
 				break;
 
 			case 'object':
+				// Custom icon
 				newName = customPrefix + ':' + icon;
+				break;
+
+			case 'undefined':
+				// Icon key as icon name
+				newName = icon.indexOf(':') === -1 ? null : icon;
 				break;
 
 			default:

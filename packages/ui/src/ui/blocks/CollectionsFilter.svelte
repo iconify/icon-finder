@@ -23,5 +23,4 @@
 
 <Block type="filter">
 	<Input type="text" bind:value icon="search" {placeholder} />
-
 </Block>

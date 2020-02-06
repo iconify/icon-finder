@@ -73,4 +73,11 @@ export const phrases: UITranslation = {
 	collection: {
 		by: 'by ',
 	},
+	footerButtons: {
+		submit: 'Submit',
+		change: 'Change',
+		select: 'Select',
+		cancel: 'Cancel',
+		close: 'Close',
+	},
 };

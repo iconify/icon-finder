@@ -23,6 +23,21 @@
 	text-decoration: none;
 	outline: none;
 
+	// Secondary
+	&--secondary {
+		color: $iif-button-secondary-color;
+		background: $iif-button-secondary-background-color;
+		border-color: $iif-button-secondary-border-color;
+	}
+
+	// Destructive
+	&--destructive {
+		color: $iif-button-destructive-color;
+		background: $iif-button-destructive-background-color;
+		border-color: $iif-button-destructive-border-color;
+	}
+
+	// States
 	&:hover {
 		color: $iif-button-hover-color;
 		background: $iif-button-hover-background-color;
@@ -36,29 +51,23 @@
 	}
 
 	&:disabled {
-		// TODO
+		cursor: inherit;
+		color: $iif-button-disabled-color;
+		background: $iif-button-disabled-background-color;
+		border-color: $iif-button-disabled-border-color;
 	}
 
-	// Primary
-	&--primary {
-		// TODO
-		&:enabled:active,
-		&:enabled:not(:hover):focus {
-		}
-
-		&:disabled {
-		}
+	// Icon
+	svg {
+		display: inline-block;
+		vertical-align: -0.125em;
+		margin: 0;
+		position: relative;
+		left: (0 - $iif-spacing / 2); // assuming button is before text
+		opacity: 0.5;
 	}
-
-	// Secondary
-	&--secondary {
-		// TODO
-		&:enabled:active,
-		&:enabled:not(:hover):focus {
-		}
-
-		&:disabled {
-		}
+	&:hover svg {
+		opacity: 1;
 	}
 }
 

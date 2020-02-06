@@ -39,10 +39,12 @@ const main = new Main({
 	callback: (event, payload) => {
 		console.log('Callback:', event, payload);
 	},
+	/*
 	selectedIcon: {
 		prefix: 'mdi',
 		name: 'home',
 	},
+	*/
 	/*
 	route: ({
 		type: 'collection',

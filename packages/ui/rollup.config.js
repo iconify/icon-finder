@@ -8,6 +8,7 @@ import typescript from '@cyberalien/rollup-plugin-typescript2';
 import { Replacements } from '@cyberalien/conditional-replacements';
 
 const requiredIcons = ['reset', 'search', 'parent', 'grid', 'list'];
+const overwriteChildenConfig = ['footer', 'icons'];
 
 const themeMatch = /^[a-z0-9_.-]+$/gi;
 
@@ -75,9 +76,7 @@ parseThemeConfig(config, config.themePath);
 /**
  * Validate config
  */
-if (typeof config.theme.rotation !== 'number' || !config.theme.rotation) {
-	throw new Error('Theme error: "rotation" should be a number.');
-}
+normaliseConfig(config);
 
 /**
  * Generate replacements
@@ -108,7 +107,7 @@ if (config.theme['collections-list-clickable']) {
 }
 
 // Language
-if (typeof config.language === 'string') {
+if (typeof config.language === 'string' && config.language !== 'en') {
 	replacementPairs['/phrases/en'] = '/phrases/' + config.language;
 }
 
@@ -133,6 +132,18 @@ requiredIcons.forEach(icon => {
 });
 replacementPairs['uiIcons = {}'] =
 	'uiIcons = ' + JSON.stringify(config.theme.icons);
+
+// Footer
+const footerFile = capitalise(config.footer.type);
+try {
+	const footerFilename = `${__dirname}/src/ui/footer/${footerFile}.svelte`;
+	fs.lstatSync(footerFilename, 'utf8');
+} catch (err) {
+	throw new Error(`Invalid footer: ${config.footer.type}`);
+}
+replacementPairs['/footer/Simple.svelte'] = `/footer/${footerFile}.svelte`;
+replacementPairs['footerOptions = {}'] =
+	'footerOptions = ' + JSON.stringify(config.footer);
 
 // Instance
 const replacements = new Replacements(replacementPairs, '@iconify-replacement');
@@ -192,13 +203,20 @@ export default {
  * @param {*} target
  * @param {*} source
  */
-function merge(target, source) {
+function merge(target, source, parentKey = '') {
 	Object.keys(source).forEach(key => {
 		if (target[key] === void 0) {
 			target[key] = source[key];
 			return;
 		}
 
+		// Overwrite all children keys
+		if (overwriteChildenConfig.indexOf(parentKey) !== -1) {
+			target[key] = source[key];
+			return;
+		}
+
+		// Merge children
 		switch (typeof source[key]) {
 			case 'object':
 				if (typeof target[key] !== 'object') {
@@ -207,7 +225,7 @@ function merge(target, source) {
 					return;
 				}
 				// Merge objects
-				merge(target[key], source[key]);
+				merge(target[key], source[key], key);
 				return;
 
 			default:
@@ -303,4 +321,197 @@ function parseThemeConfig(config, theme) {
 
 	// Merge
 	merge(config.theme, data);
+}
+
+/**
+ * Capitalise text
+ */
+function capitalise(text) {
+	return text.slice(0, 1).toUpperCase() + text.slice(1);
+}
+
+/**
+ * Normalise config
+ */
+function normaliseConfig(config) {
+	// Check theme
+	const theme = config.theme;
+	if (typeof theme.rotation !== 'number' || !theme.rotation) {
+		throw new Error('Theme error: "rotation" should be a number.');
+	}
+
+	// Check footer type
+	if (typeof config.footer !== 'object' || config.footer === null) {
+		config.footer = {
+			type: typeof config.footer === 'string' ? config.footer : 'none',
+			buttons: false,
+		};
+	}
+
+	// Convert footer buttons list to objects
+	const footer = config.footer;
+	switch (typeof footer.buttons) {
+		case 'string':
+			// Convert from keyword
+			(() => {
+				const buttons = footer.buttons
+					.split(/[,|]/)
+					.filter(item => item !== '' && item !== 'none');
+				footer.buttons = {};
+				buttons.forEach(button => {
+					footer.buttons[button] = true;
+				});
+			})();
+			break;
+
+		case 'boolean':
+			// true = 'submit,cancel', false = 'none'
+			footer.buttons = footer.buttons
+				? {
+						submit: true,
+						cancel: true,
+				  }
+				: {};
+			break;
+
+		case 'object':
+			if (footer.buttons === null) {
+				footer.buttons = {};
+			}
+			break;
+
+		default:
+			// Unknown value
+			throw new Error('Invalid value for configuration footer.buttons');
+	}
+
+	// Convert each button to object
+	const buttons = footer.buttons;
+	let alwaysShowButtons = false;
+	Object.keys(buttons).forEach((key, index) => {
+		let value = buttons[key];
+		switch (typeof value) {
+			case 'boolean':
+				if (value) {
+					// true -> {value: true}
+					buttons[key] = {
+						text: true,
+					};
+				} else {
+					// false -> delete item
+					delete buttons[key];
+					return;
+				}
+				break;
+
+			case 'string':
+				// Use string as text
+				buttons[key] = {
+					text: value,
+				};
+				break;
+
+			case 'object':
+				break;
+
+			default:
+				throw new Error(
+					`Invalid value for configuration footer.buttons.${key}`
+				);
+		}
+		value = buttons[key];
+
+		// Check button text
+		switch (typeof value.text) {
+			case 'boolean':
+				if (value.text === false) {
+					throw new Error(
+						`Invalid value for configuration footer.buttons.${key}.text`
+					);
+				}
+				// Delete entry
+				delete value.text;
+				break;
+
+			case 'undefined':
+			case 'string':
+				break;
+
+			default:
+				throw new Error(
+					`Invalid value for configuration footer.buttons.${key}.text`
+				);
+		}
+
+		// Check button type
+		if (typeof value.type !== 'string') {
+			switch (key) {
+				case 'submit':
+				case 'change':
+				case 'select':
+					value.type = 'primary';
+					break;
+
+				case 'cancel':
+				case 'close':
+					value.type = 'secondary';
+					break;
+
+				case 'delete':
+					value.type = 'destructive';
+					break;
+
+				default:
+					// Set type based on index: primary for first button, secondary for others
+					value.type = index ? 'secondary' : 'primary';
+			}
+		}
+
+		// Check button icon
+		if (value.icon !== void 0) {
+			if (typeof value.icon !== 'string') {
+				throw new Error(
+					`Invalid value for configuration footer.buttons.${key}.icon (invalid type)`
+				);
+			}
+			if (theme.icons[value.icon] === void 0) {
+				// Missing icon
+				if (value.icon.indexOf(':') === -1) {
+					throw new Error(
+						`Invalid value for configuration footer.buttons.${key}.icon (no such icon in theme)`
+					);
+				}
+			}
+		}
+
+		// Check if buttons should always be shown (must be configured on per button basis!)
+		if (value['always-visible'] === true) {
+			// Rename 'always-visible' to 'always'
+			value.always = value['always-visible'];
+			delete value['always-visible'];
+		}
+
+		if (value.always !== true) {
+			delete value.always;
+		} else {
+			alwaysShowButtons = true;
+		}
+	});
+	footer.showButtons = alwaysShowButtons;
+	footer.hasButtons = Object.keys(footer.buttons).length > 0;
+
+	// Toggle empty/none type to avoid loading buttons if there are no buttons to show
+	switch (footer.type) {
+		case 'none':
+			if (alwaysShowButtons) {
+				footer.type = 'empty';
+			}
+			break;
+
+		case 'empty':
+			if (!alwaysShowButtons) {
+				footer.type = 'none';
+			}
+			break;
+	}
 }

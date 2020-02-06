@@ -68,6 +68,7 @@
 		}
 	}
 
+	&--destructive,
 	&--secondary-destructive {
 		@include plugin-font-ui-pos('small', 'medium');
 
@@ -85,5 +86,14 @@
 		&:disabled {
 			opacity: 0.4;
 		}
+	}
+
+	// Icon
+	svg {
+		display: inline-block;
+		vertical-align: -0.125em;
+		margin: 0;
+		position: relative;
+		left: -4px; // assuming button is before text
 	}
 }

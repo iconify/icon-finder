@@ -1,8 +1,22 @@
 <script>
-	// export let registry; /** @type {Registry} */
-	// export let selectedIcon; /** @type {Icon} */
-	// export let iconName; /** @type {string} */
+	import Block from '../Block.svelte';
+	import ButtonsContainer from './buttons/Container.svelte';
+
+	export let registry; /** @type {Registry} */
+	export let loaded; /** @type {boolean} */
+	export let selectedIcon; /** @type {Icon} */
+	export let iconName; /** @type {string} */
 	// export let route; /** @type {PartialRoute} */
+	export let footerOptions; /** @type {object} */
 </script>
 
-<div>Empty footer</div>
+{#if footerOptions.showButtons}
+	<Block type="footer">
+		<ButtonsContainer
+			{registry}
+			{footerOptions}
+			{loaded}
+			{selectedIcon}
+			{iconName} />
+	</Block>
+{/if}

@@ -44,4 +44,5 @@ export interface UITranslation {
 	collection: {
 		by: string;
 	};
+	footerButtons: Record<string, string>;
 }
