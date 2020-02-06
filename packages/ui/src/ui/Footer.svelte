@@ -32,7 +32,7 @@
 	});
 
 	// Get icon name as string
-	let iconName;
+	let iconName = '';
 	$: {
 		iconName = selectedIcon === null ? '' : iconToString(selectedIcon);
 	}

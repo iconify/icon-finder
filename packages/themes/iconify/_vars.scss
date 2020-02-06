@@ -472,3 +472,20 @@ $iif-pagination-focus-border-color: $iif-border-focus-color;
 $iif-pagination-selected-color: palette('gray', 0);
 $iif-pagination-selected-background-color: palette('blue-gray', 600);
 $iif-pagination-selected-border-color: palette('blue-gray', 600);
+
+/*
+	Footer
+*/
+$iif-footer-icon-name-text: 180px;
+$iif-footer-icon-name-sample-size: 32px;
+$iif-footer-icon-name-spacing: $iif-spacing;
+$iif-footer-icon-name-text-padding: $iif-spacing / 2;
+
+// Normal
+$iif-footer-icon-name-text-color: $iif-text-dimmed-color;
+$iif-footer-icon-name-sample-color: $iif-text-dimmed-color;
+
+// Hover
+$iif-footer-icon-name-sample-hover-color: $iif-link-color;
+$iif-footer-icon-name-sample-hover-background-color: $iif-background-color2;
+$iif-footer-icon-name-sample-hover-box-shadow: $iif-simple-border-color;

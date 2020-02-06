@@ -5,6 +5,7 @@
 		"type": "simple",
 		"transformations": false,
 		"color": false,
+		"editable-name": false,
 		"buttons": {
 			"submit": {
 				"type": "primary"

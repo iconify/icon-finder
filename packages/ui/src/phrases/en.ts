@@ -73,6 +73,10 @@ export const phrases: UITranslation = {
 	collection: {
 		by: 'by ',
 	},
+	footer: {
+		iconName: 'Selected icon:',
+		iconNamePlaceholder: 'Enter icon by name...',
+	},
 	footerButtons: {
 		submit: 'Submit',
 		change: 'Change',

@@ -142,6 +142,16 @@ try {
 	throw new Error(`Invalid footer: ${config.footer.type}`);
 }
 replacementPairs['/footer/Simple.svelte'] = `/footer/${footerFile}.svelte`;
+delete config.footer.type;
+
+// Editable icon name
+if (config.footer['editable-name']) {
+	replacementPairs['/parts/IconName.svelte'] =
+		'/parts/IconNameEditable.svelte';
+}
+delete config.footer['editable-name'];
+
+// Footer options
 replacementPairs['footerOptions = {}'] =
 	'footerOptions = ' + JSON.stringify(config.footer);
 

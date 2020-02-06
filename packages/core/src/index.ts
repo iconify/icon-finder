@@ -71,7 +71,7 @@ export { IconsList, CustomViewBlocks } from './views/custom';
 
 // From icons
 export { Icon };
-export { iconToString, validateIcon, compareIcons } from './icon';
+export { iconToString, validateIcon, compareIcons, stringToIcon } from './icon';
 
 /**
  * API core configuration

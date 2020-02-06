@@ -6,6 +6,7 @@ import {
 	APICore,
 	APICoreConfig,
 	RouterEvent,
+	stringToIcon,
 	compareIcons,
 	validateIcon,
 } from '../../../core/lib';
@@ -254,6 +255,12 @@ export class Main {
 		switch (event) {
 			case 'selection':
 				// Selected icon changed
+				if (typeof payload === 'string') {
+					payload = stringToIcon(payload);
+					if (!payload) {
+						return;
+					}
+				}
 				this.selectIcon(payload as Icon);
 				return;
 

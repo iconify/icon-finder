@@ -11,6 +11,7 @@
 	export let disabled = false;
 	export let icon = '';
 	export let onInput;
+	export let onBlur;
 	export let autofocus = false;
 
 	// Get container class name
@@ -43,6 +44,13 @@
 		}
 	}
 
+	// on:blur binding as onBlur
+	function handleBlur() {
+		if (typeof onBlur === 'function') {
+			onBlur(value);
+		}
+	}
+
 	// Focus
 	let inputRef;
 	onMount(() => {
@@ -63,6 +71,7 @@
 			type="text"
 			bind:value
 			on:input={handleInput}
+			on:blur={handleBlur}
 			spellcheck="false"
 			autocomplete="off"
 			autocorrect="off"

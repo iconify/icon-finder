@@ -1,6 +1,7 @@
 .iif-block--footer {
 	// Footer is not in content wrapper, so it must have same padding as content
 	padding: 0 ($iif-spacing * 2) ($iif-spacing * 2) ($iif-spacing * 2);
+	margin: (0 - $iif-spacing) 0 0;
 }
 
 .iif-footer-buttons {
