@@ -4,10 +4,14 @@
 	export let registry; /** @type {Registry} */
 	export let type; /** @type {string} */
 	export let value; /** @type {string} */
+	export let iconSize; /** @type {number} */
 
-	const placeholder = registry.defaultProps[type].defaultValue;
+	const defaultValue = registry.defaultProps[type].defaultValue;
 	const title = registry.phrases.footerBlocks[type];
 	const callback = registry.callback;
+
+	let placeholder;
+	$: placeholder = defaultValue ? defaultValue : iconSize;
 
 	let lastValue = value;
 	let inputValue = value;

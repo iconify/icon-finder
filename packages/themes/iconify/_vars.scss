@@ -87,17 +87,25 @@ $iif-button-line-height: $iif-base-line-height;
 
 $iif-input-icon-size: $iif-icon-size;
 $iif-input-reset-size: $iif-icon-button-size;
+$iif-option-button-icon-size: $iif-icon-size;
 $iif-input-icon-spacing: 22px;
+
+// Options button
+$iff-option-button-padding-left: $iif-spacing;
+$iff-option-button-with-icon-padding-left: $iif-spacing +
+	$iif-option-button-icon-size + 6px;
+$iff-option-button-with-icon-padding-right: $iif-spacing + 2px;
 
 // Input normal
 $iif-input-background-color: palette('gray', 0);
 $iif-input-border-color: $iif-simple-border-color;
-$iif-input-color: palette('gray', 600);
+$iif-input-color: $iif-text-dimmed-color;
+$iff-input-dimmed-color: $iif-text-muted-color;
 
 // Input hover
 $iif-input-hover-background-color: $iif-input-background-color;
 $iif-input-hover-border-color: $iif-solid-border-color;
-$iif-input-hover-color: palette('gray', 600);
+$iif-input-hover-color: $iif-text-dimmed-color;
 
 // Input focus
 $iif-input-focus-background-color: $iif-input-background-color;
@@ -130,6 +138,22 @@ $iif-button-color: $iif-input-color;
 $iif-button-secondary-background-color: $iif-background-color2;
 $iif-button-secondary-border-color: palette('gray', 100);
 $iif-button-secondary-color: $iif-text-muted-color;
+
+// Checked button
+$iif-button-checked-background-color: palette($iif-link-palette, 600);
+$iif-button-checked-border-color: $iif-button-checked-background-color;
+$iif-button-checked-color: palette($iif-link-palette, 0);
+
+$iif-button-checked-hover-background-color: palette(
+	$iif-link-hover-palette,
+	600
+);
+$iif-button-checked-hover-border-color: $iif-button-checked-hover-background-color;
+$iif-button-checked-hover-color: palette($iif-link-hover-palette, 0);
+
+$iif-button-checked-focused-background-color: palette($iif-link-palette, 500);
+$iif-button-checked-focused-border-color: $iif-button-checked-background-color;
+$iif-button-checked-focused-color: $iif-button-checked-color;
 
 // Destructive button
 $iif-button-destructive-background-color: palette('red', 600);

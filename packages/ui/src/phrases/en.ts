@@ -87,10 +87,18 @@ export const phrases: UITranslation = {
 	footerBlocks: {
 		color: 'Color',
 		flip: 'Flip',
+		hFlip: 'Horizontal',
+		vFlip: 'Vertical',
 		rotate: 'Rotate',
 		width: 'Width',
 		height: 'Height',
 		size: 'Size', // Width + height in one block
 		alignment: 'Alignment',
+	},
+	footerOptionButtons: {
+		hFlip: 'Horizontal',
+		vFlip: 'Vertical',
+		rotate: '{num}°',
+		rotateTitle: 'Rotate {num}°',
 	},
 };

@@ -26,7 +26,7 @@
 	background-color: $plugin-palette-background-white;
 
 	&--number {
-		min-width: 80px;
+		min-width: 100px;
 	}
 	&--color {
 		min-width: 140px;
@@ -104,8 +104,11 @@
 			opacity: 1;
 		}
 		&:focus {
+			opacity: 1;
 			outline: none;
-			box-shadow: 0 0 0 2px $plugin-palette-border-blue inset;
+		}
+		&:focus:not(:hover) {
+			box-shadow: 0 0 0 1px $plugin-palette-border-blue inset;
 		}
 		svg {
 			display: block;

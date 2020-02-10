@@ -3,7 +3,7 @@
 	import SizeInput from './SizeInput.svelte';
 
 	export let registry; /** @type {Registry} */
-	// export let iconData; /** @type {IconifyIcon} */
+	export let iconData; /** @type {IconifyIcon} */
 	export let iconProps; /** @type {PartialIconProperties} */
 
 	const defaultProps = registry.defaultProps;
@@ -26,6 +26,10 @@
 
 <Block {type} {registry}>
 	{#each list as type, i (type)}
-		<SizeInput {registry} {type} value={iconProps[type]} />
+		<SizeInput
+			{registry}
+			{type}
+			value={iconProps[type]}
+			iconSize={iconData[type]} />
 	{/each}
 </Block>

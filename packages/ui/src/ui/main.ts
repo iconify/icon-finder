@@ -256,8 +256,6 @@ export class Main {
 	 * Icon property was changed
 	 */
 	_iconPropertyChanged(value: PropertyEventPayload): void {
-		console.log('_iconPropertyChanged', value);
-
 		// Replace properties object to trigger footer re-render
 		const props: PartialIconProperties = { ...this._iconProps };
 		(props as Record<string, unknown>)[value.prop] = value.value;

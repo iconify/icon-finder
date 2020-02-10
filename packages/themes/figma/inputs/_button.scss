@@ -13,10 +13,11 @@
 	border-radius: $plugin-border-radius-large;
 	outline: none;
 
+	@include plugin-font-ui-neg('small', 'medium');
+	line-height: 16px;
+
 	//Primary
 	&--primary {
-		@include plugin-font-ui-neg('small', 'medium');
-
 		color: $plugin-palette-color-white;
 		background-color: $plugin-palette-background-blue;
 
@@ -32,8 +33,6 @@
 
 	//Primary Destructive
 	&--primary-destructive {
-		@include plugin-font-ui-neg('small', 'medium');
-
 		color: $plugin-palette-color-white;
 		background-color: $plugin-palette-background-red;
 
@@ -49,8 +48,6 @@
 
 	//Secondary
 	&--secondary {
-		@include plugin-font-ui-pos('small', 'medium');
-
 		color: $plugin-palette-color-black-dimmed;
 		border: 1px solid $plugin-palette-color-black-dimmed;
 		background-color: $plugin-palette-background-white;
@@ -70,8 +67,6 @@
 
 	&--destructive,
 	&--secondary-destructive {
-		@include plugin-font-ui-pos('small', 'medium');
-
 		color: $plugin-palette-color-red;
 		border: 1px solid $plugin-palette-border-red;
 		background-color: $plugin-palette-background-white;

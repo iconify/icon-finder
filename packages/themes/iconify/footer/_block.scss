@@ -1,4 +1,6 @@
 .iif-footer-options-blocks {
+	margin-bottom: $iif-spacing;
+
 	&:empty {
 		display: none;
 	}

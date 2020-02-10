@@ -50,4 +50,10 @@ export interface UITranslation {
 	};
 	footerButtons: Record<string, string>;
 	footerBlocks: Record<string, string>;
+	footerOptionButtons: {
+		hFlip: string;
+		vFlip: string;
+		rotate: string;
+		rotateTitle: string;
+	};
 }

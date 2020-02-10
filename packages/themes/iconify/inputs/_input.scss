@@ -27,7 +27,7 @@
 	box-shadow: none;
 
 	&--number {
-		min-width: 100px;
+		min-width: 120px;
 	}
 	&--color {
 		min-width: 140px;
@@ -115,6 +115,9 @@
 		}
 		&:focus {
 			outline: none;
+			color: $iif-input-reset-hover-color;
+		}
+		&:focus:not(:hover) {
 			box-shadow: 0 0 0 $iif-border-width $iif-border-focus-color;
 		}
 		svg {

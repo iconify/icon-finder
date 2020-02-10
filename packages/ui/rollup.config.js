@@ -545,6 +545,29 @@ function normaliseConfig(config) {
 	const props = {};
 
 	Object.keys(footer).forEach(prop => {
+		switch (prop) {
+			case 'flip':
+				if (footer[prop] === true) {
+					props.hFlip = defaultProperties.hFlip;
+					props.vFlip = defaultProperties.vFlip;
+					return;
+				} else if (footer[prop] !== false) {
+					throw new Error(
+						`Invalid value for configuration footer.${prop}. Expected boolean, got ${typeof footer[
+							prop
+						]}`
+					);
+				}
+				delete footer[prop];
+				return;
+
+			case 'hFlip':
+			case 'vFlip':
+				throw new Error(
+					`Invalid configuration footer.${prop}. To enable or disable flip, use footer.flip = true or footer.flip = false.`
+				);
+		}
+
 		if (defaultProperties[prop] === void 0) {
 			return;
 		}
