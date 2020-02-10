@@ -26,6 +26,13 @@
 	outline: none;
 	box-shadow: none;
 
+	&--number {
+		min-width: 100px;
+	}
+	&--color {
+		min-width: 140px;
+	}
+
 	// Icon
 	.iif-input-icon {
 		position: absolute;
@@ -93,6 +100,7 @@
 	// Reset button
 	.iif-input-reset {
 		position: absolute;
+		display: none;
 		right: ($iif-input-height - $iif-input-reset-size) / 2 -
 			$iif-input-border-width; // changed for search
 		top: ($iif-input-height - $iif-input-reset-size) / 2 -
@@ -105,12 +113,23 @@
 		&:hover {
 			color: $iif-input-reset-hover-color;
 		}
+		&:focus {
+			outline: none;
+			box-shadow: 0 0 0 $iif-border-width $iif-border-focus-color;
+		}
 		svg {
 			display: block;
 			font-size: $iif-input-icon-size;
 			width: 1em;
 			margin: ($iif-input-reset-size - $iif-input-icon-size) / 2;
 			padding: 0;
+		}
+	}
+
+	&:hover,
+	&:focus-within {
+		.iif-input-reset {
+			display: block;
 		}
 	}
 

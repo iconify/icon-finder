@@ -6,6 +6,8 @@ import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import typescript from '@cyberalien/rollup-plugin-typescript2';
 import { Replacements } from '@cyberalien/conditional-replacements';
+import colors from 'cyberalien-color';
+import { defaultProperties } from './src/misc/default-properties';
 
 const requiredIcons = ['reset', 'search', 'parent', 'grid', 'list'];
 const overwriteChildenConfig = ['footer', 'icons'];
@@ -71,6 +73,7 @@ if (config.themePath === '') {
 		'Missing theme name. You can set theme name using UI_THEME environment variable or by setting default theme name in build.config.json. See README.md'
 	);
 }
+console.log(`Theme: ${config.themePath}`);
 parseThemeConfig(config, config.themePath);
 
 /**
@@ -154,6 +157,16 @@ delete config.footer['editable-name'];
 // Footer options
 replacementPairs['footerOptions = {}'] =
 	'footerOptions = ' + JSON.stringify(config.footer);
+
+// Icon properties
+replacementPairs['ExtendedIconProperties = {}'] =
+	'ExtendedIconProperties = ' + JSON.stringify(config.iconProps);
+
+if (!Object.keys(config.iconProps).length) {
+	replacementPairs['./parts/Properties.svelte'] = '../Empty.svelte';
+} else {
+	//
+}
 
 // Instance
 const replacements = new Replacements(replacementPairs, '@iconify-replacement');
@@ -279,12 +292,15 @@ function parseConfig(config, file) {
  * @param {string} str
  */
 function setConfig(str) {
-	str.split(',')
+	const files = str
+		.split(',')
 		.map(item => item.trim())
-		.filter(item => item.match(/^[a-z0-9_.-]+$/g))
-		.forEach(file => {
-			parseConfig(config, file);
-		});
+		.filter(item => item.match(/^[a-z0-9_.-]+$/g));
+
+	console.log(`Configuration: ${files.join(', ')}`);
+	files.forEach(file => {
+		parseConfig(config, file);
+	});
 }
 
 /**
@@ -524,4 +540,81 @@ function normaliseConfig(config) {
 			}
 			break;
 	}
+
+	// Check for properties
+	const props = {};
+
+	Object.keys(footer).forEach(prop => {
+		if (defaultProperties[prop] === void 0) {
+			return;
+		}
+
+		if (footer[prop] === null || footer[prop] === false) {
+			// Disabled
+			delete footer[prop];
+			return;
+		}
+
+		// Property exists
+		let configItem = footer[prop];
+		delete footer[prop];
+		const defaultItem = defaultProperties[prop];
+
+		if (configItem === true) {
+			// Empty object, all values will be assigned later
+			configItem = {};
+		}
+
+		if (typeof configItem === 'object') {
+			// Object - check for defaultValue and value
+			let item = configItem;
+			if (item.defaultValue === void 0) {
+				item.defaultValue = defaultItem.defaultValue;
+			}
+			if (item.emptyValue === void 0) {
+				item.emptyValue =
+					defaultItem.emptyValue === void 0
+						? defaultItem.defaultValue
+						: defaultItem.emptyValue;
+			}
+			delete item.value;
+			props[prop] = item;
+			return;
+		}
+
+		// Convert value
+		if (typeof configItem !== typeof defaultItem.defaultValue) {
+			throw new Error(
+				`Invalid value for configuration footer.${prop}. Expected ${typeof defaultItem.defaultValue}, got ${typeof configItem}`
+			);
+		}
+
+		// Check value
+		switch (prop) {
+			case 'color':
+				// different string, test if its a color
+				(() => {
+					const color = colors.fromString(configItem);
+					if (color) {
+						configItem = color.toString();
+					} else {
+						throw new Error(
+							`Invalid value for configuration footer.color`
+						);
+					}
+				})();
+				break;
+		}
+
+		// Set value as default value
+		const item = defaultItem;
+		if (item.emptyValue === void 0) {
+			item.emptyValue = item.defaultValue;
+		}
+		item.defaultValue = configItem;
+		props[prop] = item;
+	});
+
+	config.iconProps = props;
+	console.log('Props:', props);
 }

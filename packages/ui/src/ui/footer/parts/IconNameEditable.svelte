@@ -15,13 +15,11 @@
 
 	let value = iconName;
 	let lastIconName = iconName;
-	console.log('lastIconName:', lastIconName);
 	$: {
 		// Copy icon name if it was changed
 		if (lastIconName !== iconName) {
 			lastIconName = iconName;
 			value = iconName;
-			console.log('lastIconName changed:', lastIconName);
 		}
 
 		// Check for icon

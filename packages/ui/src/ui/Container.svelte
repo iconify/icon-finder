@@ -11,6 +11,7 @@
 	 */
 	export let registry; /** @type {Registry} */
 	export let selectedIcon; /** @type {Icon | null} */
+	export let iconProps; /** @type {PartialIconProperties} */
 
 	// RouterEvent
 	export let viewChanged; /** @type {boolean} */
@@ -22,7 +23,7 @@
 <Wrapper>
 	<Navigation {registry} {route} />
 	<Content {...$$props} />
-	<Footer {registry} {selectedIcon} {route} />
+	<Footer {registry} {selectedIcon} {route} {iconProps} />
 </Wrapper>
 
 <div id="debug">

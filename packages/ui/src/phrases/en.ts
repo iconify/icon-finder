@@ -84,4 +84,13 @@ export const phrases: UITranslation = {
 		cancel: 'Cancel',
 		close: 'Close',
 	},
+	footerBlocks: {
+		color: 'Color',
+		flip: 'Flip',
+		rotate: 'Rotate',
+		width: 'Width',
+		height: 'Height',
+		size: 'Size', // Width + height in one block
+		alignment: 'Alignment',
+	},
 };

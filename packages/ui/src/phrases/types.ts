@@ -49,4 +49,5 @@ export interface UITranslation {
 		iconNamePlaceholder: string;
 	};
 	footerButtons: Record<string, string>;
+	footerBlocks: Record<string, string>;
 }

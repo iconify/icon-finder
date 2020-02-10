@@ -25,6 +25,13 @@
 	box-shadow: none;
 	background-color: $plugin-palette-background-white;
 
+	&--number {
+		min-width: 100px;
+	}
+	&--color {
+		min-width: 140px;
+	}
+
 	// Without placeholder
 
 	// With placeholder
@@ -95,6 +102,10 @@
 		opacity: 0.5;
 		&:hover {
 			opacity: 1;
+		}
+		&:focus {
+			outline: none;
+			box-shadow: 0 0 0 2px $plugin-palette-border-blue inset;
 		}
 		svg {
 			display: block;

@@ -10,9 +10,15 @@
 	export let value = '';
 	export let disabled = false;
 	export let icon = '';
+	export let type = '';
 	export let onInput;
 	export let onBlur;
 	export let autofocus = false;
+
+	let hasIcon = false;
+	function iconLoaded() {
+		hasIcon = true;
+	}
 
 	// Get container class name
 	let className;
@@ -26,7 +32,9 @@
 			(placeholder === '' ? 'out' : '') +
 			'-placeholder' +
 			// Icon
-			(icon !== '' ? ' ' + baseClass + '--with-icon' : '') +
+			(hasIcon ? ' ' + baseClass + '--with-icon' : '') +
+			// Type
+			(type !== '' ? ' ' + baseClass + '--' + type : '') +
 			// Disabled
 			(disabled ? ' ' + baseClass + '--disabled' : '');
 	}
@@ -64,11 +72,12 @@
 	<div class={className}>
 		{#if icon !== ''}
 			<div class="iif-input-icon">
-				<Icon {icon} />
+				<Icon {icon} onLoad={iconLoaded} />
 			</div>
 		{/if}
 		<input
 			type="text"
+			title={placeholder}
 			bind:value
 			on:input={handleInput}
 			on:blur={handleBlur}

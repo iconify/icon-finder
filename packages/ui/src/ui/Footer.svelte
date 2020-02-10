@@ -13,6 +13,7 @@
 
 	export let registry; /** @type {Registry} */
 	export let selectedIcon; /** @type {Icon | null} */
+	export let iconProps; /** @type {PartialIconProperties} */
 	export let route; /** @type {PartialRoute} */
 
 	// Translate buttons
@@ -68,4 +69,11 @@
 	});
 </script>
 
-<Footer {footerOptions} {registry} {loaded} {selectedIcon} {iconName} {route} />
+<Footer
+	{footerOptions}
+	{registry}
+	{loaded}
+	{selectedIcon}
+	{iconName}
+	{iconProps}
+	{route} />

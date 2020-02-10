@@ -14,10 +14,11 @@ import { compare, clone } from '../../../core/lib/objects';
 import { Data } from '../../../core/lib/data';
 import { phrases } from '../modules/phrases';
 import {
-	IconCustomisations,
-	defaultIconCustomisations,
-	PartialIconCustomisations,
-} from '../misc/icon-customisations';
+	exportCustomProperties,
+	PartialIconProperties,
+	ExtendedIconProperties,
+	iconProps,
+} from '../misc/icon-properties';
 
 /**
  * Function called by UI when something changes
@@ -43,14 +44,22 @@ export interface UIParams {
 	// Selected icon
 	selectedIcon?: Icon | null;
 
-	// Icon customisations
-	iconProps?: PartialIconCustomisations;
+	// Icon properties
+	iconProps?: PartialIconProperties;
 
 	// Default route
 	defaultRoute?: PartialRoute;
 
 	// Route
 	route?: PartialRoute;
+}
+
+/**
+ * Value for 'prop' internal event
+ */
+interface PropertyEventPayload {
+	prop: string;
+	value: unknown;
 }
 
 /**
@@ -69,8 +78,8 @@ export class Main {
 	// Currently selected icon
 	protected _selectedIcon: Icon | null = null;
 
-	// Icon customisations
-	protected _iconProps: IconCustomisations;
+	// Icon properties
+	protected _iconProps: PartialIconProperties;
 
 	/**
 	 * Constructor
@@ -115,11 +124,23 @@ export class Main {
 			this._selectedIcon = Object.assign({}, params.selectedIcon) as Icon;
 		}
 
-		// Icon customisations
-		this._iconProps = defaultIconCustomisations();
-		if (typeof params.iconProps === 'object' && params.iconProps !== null) {
-			Object.assign(this._iconProps, params.iconProps);
-		}
+		// Icon properties
+		this._iconProps = {};
+		const props =
+			typeof params.iconProps === 'object' && params.iconProps !== null
+				? params.iconProps
+				: {};
+
+		Object.keys(iconProps).forEach(key => {
+			const prop = key as keyof ExtendedIconProperties;
+			const defaultValue = iconProps[prop]!.emptyValue;
+
+			(this._iconProps as Record<string, unknown>)[prop] =
+				typeof props[prop] === typeof defaultValue
+					? props[prop]
+					: iconProps[prop]!.emptyValue;
+		});
+		registry.setCustom('defaultProps', iconProps);
 	}
 
 	/**
@@ -162,17 +183,8 @@ export class Main {
 				? null
 				: Object.assign({}, this._selectedIcon);
 
-		// Icon customisations
-		result.iconProps = {};
-		const defaultIconProps = defaultIconCustomisations();
-		Object.keys(defaultIconProps).forEach(attr => {
-			const key = attr as keyof IconCustomisations;
-			if (this._iconProps[key] !== defaultIconProps[key]) {
-				(result.iconProps as Record<string, unknown>)[
-					key
-				] = this._iconProps[key];
-			}
-		});
+		// Icon properties
+		result.iconProps = exportCustomProperties(iconProps, this._iconProps);
 
 		return result;
 	}
@@ -185,6 +197,7 @@ export class Main {
 		const props = {
 			...data,
 			selectedIcon: this._selectedIcon,
+			iconProps: this._iconProps,
 			registry: this._core.getInternalRegistry(),
 		};
 
@@ -240,6 +253,31 @@ export class Main {
 	}
 
 	/**
+	 * Icon property was changed
+	 */
+	_iconPropertyChanged(value: PropertyEventPayload): void {
+		console.log('_iconPropertyChanged', value);
+
+		// Replace properties object to trigger footer re-render
+		const props: PartialIconProperties = { ...this._iconProps };
+		(props as Record<string, unknown>)[value.prop] = value.value;
+		this._iconProps = props;
+
+		// Trigger event
+		this._triggerEvent(
+			'properties',
+			exportCustomProperties(iconProps, this._iconProps)
+		);
+
+		// Update container
+		if (this._container !== null) {
+			this._container.$set({
+				iconProps: props,
+			});
+		}
+	}
+
+	/**
 	 * Trigger event
 	 */
 	_triggerEvent(event: string, payload: unknown): void {
@@ -262,6 +300,11 @@ export class Main {
 					}
 				}
 				this.selectIcon(payload as Icon);
+				return;
+
+			case 'prop':
+				// Property was changed
+				this._iconPropertyChanged(payload as PropertyEventPayload);
 				return;
 
 			case 'footer':

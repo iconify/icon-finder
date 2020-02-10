@@ -42,6 +42,7 @@
 
 	export let icon; /** @type {string} */
 	export let height; /** @type {string|number} */
+	export let onLoad; /** @type {function} */
 
 	// Local watched variables. Update them only if needed to avoid duplicate re-renders
 	let name = '';
@@ -94,6 +95,9 @@
 			if (loaded !== Iconify.iconExists(name)) {
 				// Update variable only if it needs to be updated
 				loaded = !loaded;
+				if (typeof onLoad === 'function') {
+					onLoad();
+				}
 			}
 			if (!loaded) {
 				// Icon is not loaded - assign loading event listener and load it

@@ -33,6 +33,7 @@
 	},
 	"dependencies": {
 		"@iconify/iconify": "^1.0.4",
-		"@iconify/types": "^1.0.0"
+		"@iconify/types": "^1.0.0",
+		"cyberalien-color": "^1.0.0"
 	}
 }
