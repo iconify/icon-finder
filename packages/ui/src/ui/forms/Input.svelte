@@ -7,10 +7,12 @@
 	import Icon from '../misc/Icon.svelte';
 
 	export let placeholder = '';
+	export let title;
 	export let value = '';
 	export let disabled = false;
 	export let icon = '';
 	export let type = '';
+	export let extra = '';
 	export let onInput;
 	export let onBlur;
 	export let autofocus = false;
@@ -37,6 +39,15 @@
 			(type !== '' ? ' ' + baseClass + '--' + type : '') +
 			// Disabled
 			(disabled ? ' ' + baseClass + '--disabled' : '');
+	}
+
+	// Get icon style
+	let iconStyle;
+	$: {
+		iconStyle = '';
+		if (type === 'color' && extra !== '') {
+			iconStyle = 'opacity: 1; color: ' + extra;
+		}
 	}
 
 	// Reset value
@@ -71,13 +82,13 @@
 <div class="iif-input-wrapper">
 	<div class={className}>
 		{#if icon !== ''}
-			<div class="iif-input-icon">
+			<div class="iif-input-icon" style={iconStyle}>
 				<Icon {icon} onLoad={iconLoaded} />
 			</div>
 		{/if}
 		<input
 			type="text"
-			title={placeholder}
+			title={title ? title : placeholder}
 			bind:value
 			on:input={handleInput}
 			on:blur={handleBlur}

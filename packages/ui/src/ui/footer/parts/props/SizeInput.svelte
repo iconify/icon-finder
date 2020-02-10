@@ -6,6 +6,7 @@
 	export let value; /** @type {string} */
 
 	const placeholder = registry.defaultProps[type].defaultValue;
+	const title = registry.phrases.footerBlocks[type];
 	const callback = registry.callback;
 
 	let lastValue = value;
@@ -40,6 +41,7 @@
 <Input
 	value={inputValue}
 	{placeholder}
+	{title}
 	{onInput}
 	{onBlur}
 	icon={'icon-' + type}

@@ -14,6 +14,7 @@
 	}
 
 	const placeholder = registry.defaultProps.color.defaultValue;
+	const title = registry.phrases.footerBlocks.color;
 	const callback = registry.callback;
 
 	let lastValue = value;
@@ -26,19 +27,38 @@
 		}
 	}
 
+	// Convert color to valid string
+	function getColor(value, defaultValue) {
+		const color = colors.fromString(value);
+		if (!color) {
+			return defaultValue;
+		}
+		const keyword = color.toKeyword(false, true);
+		if (keyword) {
+			return keyword;
+		}
+		return color.toString({
+			compress: true,
+		});
+	}
+
 	// Check input
 	function onInput(newValue) {
 		inputValue = newValue;
 
 		// Check for valid color
-		let validatedValue;
 		if (newValue === '') {
-			validatedValue = '';
-		} else {
-			const color = colors.fromString(newValue);
-			validatedValue = color ? newValue : null;
+			callback('prop', {
+				prop: 'color',
+				value: '',
+			});
+			return;
 		}
+
+		const validatedValue = getColor(newValue, null);
 		if (validatedValue !== null) {
+			// Change lastValue to avoid triggering component refresh
+			lastValue = value = validatedValue;
 			callback('prop', {
 				prop: 'color',
 				value: validatedValue,
@@ -48,28 +68,8 @@
 
 	// Reset to last valid value
 	function onBlur() {
-		if (value === '') {
-			inputValue = value;
-			return;
-		}
-
-		const color = colors.fromString(value);
-		if (color) {
-			const keyword = color.toKeyword(false, true);
-			const newValue =
-				keyword === false
-					? color.toString({
-							format: 'hex',
-							compress: true,
-					  })
-					: keyword;
-			if (newValue !== inputValue) {
-				callback('prop', {
-					prop: 'color',
-					value: newValue,
-				});
-			}
-		}
+		// Set last value as input value
+		inputValue = value;
 	}
 </script>
 
@@ -78,9 +78,11 @@
 		<Input
 			value={inputValue}
 			{placeholder}
+			{title}
 			{onInput}
 			{onBlur}
-			icon="color"
+			icon={value === '' ? 'color' : 'color-filled'}
+			extra={value}
 			type="color" />
 	</Block>
 {/if}
