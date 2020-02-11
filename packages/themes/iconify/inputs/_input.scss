@@ -79,8 +79,9 @@
 		line-height: $iif-input-line-height; // changed for search
 
 		left: $iif-input-spacing + $iif-input-border-width;
-		right: $iif-input-spacing * 2 + $iif-input-border-width +
-			$iif-input-reset-size;
+		// right: $iif-input-spacing * 2 + $iif-input-border-width +
+		// 	$iif-input-reset-size;
+		right: $iif-input-spacing + $iif-input-border-width;
 		top: ($iif-input-height - $iif-input-line-height) / 2 -
 			$iif-input-border-width; // changed for search
 		bottom: ($iif-input-height - $iif-input-line-height) / 2 -

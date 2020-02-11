@@ -1,8 +1,12 @@
 <script>
 	import Iconify from '@iconify/iconify';
+	// @iconify-replacement: '/props/Color.svelte'
 	import ColorBlock from './props/Color.svelte';
+	// @iconify-replacement: '/props/Size.svelte'
 	import SizeBlock from './props/Size.svelte';
+	// @iconify-replacement: '/props/Rotate.svelte'
 	import RotateBlock from './props/Rotate.svelte';
+	// @iconify-replacement: '/props/Flip.svelte'
 	import FlipBlock from './props/Flip.svelte';
 
 	export let registry; /** @type {Registry} */

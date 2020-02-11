@@ -9,7 +9,21 @@
 	const defaultProps = registry.defaultProps;
 	const phrases = registry.phrases.footerOptionButtons;
 
-	const list = ['hFlip', 'vFlip'];
+	// Dynamically generate list of icons, using keys to force redrawing button, triggering css animation
+	let list;
+	$: {
+		list = [
+			addItem('hFlip', iconProps.hFlip),
+			addItem('vFlip', iconProps.vFlip),
+		];
+	}
+
+	function addItem(type, selected) {
+		return {
+			type: type,
+			key: type + (selected ? '!' : ''),
+		};
+	}
 
 	// Toggle
 	function flipClicked(type) {
@@ -21,7 +35,7 @@
 </script>
 
 <Block type="flip" {registry}>
-	{#each list as type, i (type)}
+	{#each list as { type, key }, i (key)}
 		<Button
 			icon={type}
 			title={phrases[type]}

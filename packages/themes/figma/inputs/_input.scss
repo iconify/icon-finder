@@ -20,6 +20,7 @@
 
 	color: $plugin-palette-color-black-dimmed;
 	border: 1px solid transparent;
+	border-bottom-color: $plugin-palette-border-darker-grey;
 	border-radius: $plugin-border-radius-small;
 	outline: none;
 	box-shadow: none;
@@ -35,11 +36,11 @@
 	// Without placeholder
 
 	// With placeholder
-	&--with-placeholder {
-		border-color: transparent;
-		border-bottom-color: $plugin-palette-border-darker-grey;
-		box-shadow: none;
-	}
+	// &--with-placeholder {
+	// 	border-color: transparent;
+	// 	border-bottom-color: $plugin-palette-border-darker-grey;
+	// 	box-shadow: none;
+	// }
 
 	// Hover
 	&:hover {
@@ -71,7 +72,8 @@
 	.iif-input-placeholder {
 		position: absolute;
 		left: 8px;
-		right: 32px;
+		// right: 32px;
+		right: 8px;
 		top: 4px;
 		bottom: 4px;
 		height: 22px;

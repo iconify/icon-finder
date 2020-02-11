@@ -4,6 +4,46 @@
 	margin: (0 - $iif-spacing) 0 0;
 }
 
+// Full footer
+.iif-footer-full {
+	display: flex;
+	width: 100%;
+	> div:first-child {
+		font-size: 160px;
+		margin: 0;
+	}
+	> div:last-child {
+		flex-grow: 1;
+		margin: 0 0 0 $iif-spacing * 2;
+	}
+
+	@media (max-width: 600px) {
+		display: block;
+		> div:first-child {
+			margin: $iif-spacing auto;
+			text-align: center;
+		}
+		> div:last-child {
+			margin: $iif-spacing 0;
+		}
+	}
+
+	.iif-footer-sample--loaded {
+		svg {
+			display: block;
+			margin: $iif-border-width;
+		}
+		&:hover {
+			svg {
+				color: $iif-footer-icon-name-sample-hover-color;
+				background-color: $iif-footer-icon-name-sample-hover-background-color;
+				box-shadow: 0 0 0 $iif-border-width
+					$iif-footer-icon-name-sample-hover-box-shadow;
+			}
+		}
+	}
+}
+
 .iif-footer-buttons {
 	text-align: right;
 	button:last-child {

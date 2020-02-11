@@ -1,10 +1,15 @@
 {
 	"language": "en",
 	"custom-view": true,
+	"customisations": {
+		"color": true,
+		"width": true,
+		"height": true,
+		"flip": true,
+		"rotate": true
+	},
 	"footer": {
 		"type": "simple",
-		"transformations": false,
-		"color": false,
 		"editable-name": false,
 		"buttons": {
 			"submit": {

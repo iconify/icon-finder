@@ -42,6 +42,7 @@
 
 	export let icon; /** @type {string} */
 	export let height; /** @type {string|number} */
+	export let props; /** @type {object} */
 	export let onLoad; /** @type {function} */
 
 	// Local watched variables. Update them only if needed to avoid duplicate re-renders
@@ -108,10 +109,14 @@
 				Iconify.preloadImages([name]);
 			} else {
 				// Icon is loaded - generate SVG
-				let newSVG = Iconify.getSVG(name, {
-					'data-height': height ? height : defaultHeight,
-					'data-inline': false,
-				});
+				const iconProps = Object.assign(
+					{
+						'data-inline': false,
+						'data-height': height ? height : defaultHeight,
+					},
+					typeof props === 'object' ? props : {}
+				);
+				let newSVG = Iconify.getSVG(name, iconProps);
 				if (uiIcons['class'] !== void 0) {
 					// Temporary fix until Iconify 2 is available
 					newSVG = newSVG.replace(

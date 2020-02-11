@@ -165,7 +165,37 @@ replacementPairs['ExtendedIconProperties = {}'] =
 if (!Object.keys(config.iconProps).length) {
 	replacementPairs['./parts/Properties.svelte'] = '../Empty.svelte';
 } else {
-	//
+	// Replace unused properties
+	const tests = [
+		{
+			test: ['color'],
+			replace: 'Color.svelte',
+		},
+		{
+			test: ['rotate'],
+			replace: 'Rotate.svelte',
+		},
+		{
+			test: ['width', 'height'],
+			replace: 'Size.svelte',
+		},
+		{
+			test: ['flip'],
+			replace: 'Flip.svelte',
+		},
+	];
+
+	tests.forEach(item => {
+		let exists = false;
+		item.test.forEach(key => {
+			if (config.iconProps[key]) {
+				exists = true;
+			}
+		});
+		if (!exists) {
+			replacementPairs['/props/' + item.replace] = '/props/Empty.svelte';
+		}
+	});
 }
 
 // Instance
@@ -544,100 +574,105 @@ function normaliseConfig(config) {
 	// Check for properties
 	const props = {};
 
-	Object.keys(footer).forEach(prop => {
-		switch (prop) {
-			case 'flip':
-				if (footer[prop] === true) {
-					props.hFlip = defaultProperties.hFlip;
-					props.vFlip = defaultProperties.vFlip;
-					return;
-				} else if (footer[prop] !== false) {
-					throw new Error(
-						`Invalid value for configuration footer.${prop}. Expected boolean, got ${typeof footer[
-							prop
-						]}`
-					);
-				}
-				delete footer[prop];
-				return;
+	Object.keys(config.customisations ? config.customisations : {}).forEach(
+		prop => {
+			const customisations = config.customisations;
 
-			case 'hFlip':
-			case 'vFlip':
-				throw new Error(
-					`Invalid configuration footer.${prop}. To enable or disable flip, use footer.flip = true or footer.flip = false.`
-				);
-		}
-
-		if (defaultProperties[prop] === void 0) {
-			return;
-		}
-
-		if (footer[prop] === null || footer[prop] === false) {
-			// Disabled
-			delete footer[prop];
-			return;
-		}
-
-		// Property exists
-		let configItem = footer[prop];
-		delete footer[prop];
-		const defaultItem = defaultProperties[prop];
-
-		if (configItem === true) {
-			// Empty object, all values will be assigned later
-			configItem = {};
-		}
-
-		if (typeof configItem === 'object') {
-			// Object - check for defaultValue and value
-			let item = configItem;
-			if (item.defaultValue === void 0) {
-				item.defaultValue = defaultItem.defaultValue;
-			}
-			if (item.emptyValue === void 0) {
-				item.emptyValue =
-					defaultItem.emptyValue === void 0
-						? defaultItem.defaultValue
-						: defaultItem.emptyValue;
-			}
-			delete item.value;
-			props[prop] = item;
-			return;
-		}
-
-		// Convert value
-		if (typeof configItem !== typeof defaultItem.defaultValue) {
-			throw new Error(
-				`Invalid value for configuration footer.${prop}. Expected ${typeof defaultItem.defaultValue}, got ${typeof configItem}`
-			);
-		}
-
-		// Check value
-		switch (prop) {
-			case 'color':
-				// different string, test if its a color
-				(() => {
-					const color = colors.fromString(configItem);
-					if (color) {
-						configItem = color.toString();
-					} else {
+			switch (prop) {
+				case 'flip':
+					if (customisations[prop] === true) {
+						props.hFlip = defaultProperties.hFlip;
+						props.vFlip = defaultProperties.vFlip;
+						return;
+					} else if (customisations[prop] !== false) {
 						throw new Error(
-							`Invalid value for configuration footer.color`
+							`Invalid value for configuration customisations.${prop}. Expected boolean, got ${typeof customisations[
+								prop
+							]}`
 						);
 					}
-				})();
-				break;
-		}
+					return;
 
-		// Set value as default value
-		const item = defaultItem;
-		if (item.emptyValue === void 0) {
-			item.emptyValue = item.defaultValue;
-		}
-		item.defaultValue = configItem;
-		props[prop] = item;
-	});
+				case 'hFlip':
+				case 'vFlip':
+					throw new Error(
+						`Invalid configuration customisations.${prop}. To enable or disable flip, use customisations.flip = true or customisations.flip = false.`
+					);
+			}
 
+			if (defaultProperties[prop] === void 0) {
+				return;
+			}
+
+			if (
+				customisations[prop] === null ||
+				customisations[prop] === false
+			) {
+				// Disabled
+				return;
+			}
+
+			// Property exists
+			let configItem = customisations[prop];
+			const defaultItem = defaultProperties[prop];
+
+			if (configItem === true) {
+				// Empty object, all values will be assigned later
+				configItem = {};
+			}
+
+			if (typeof configItem === 'object') {
+				// Object - check for defaultValue and value
+				let item = configItem;
+				if (item.defaultValue === void 0) {
+					item.defaultValue = defaultItem.defaultValue;
+				}
+				if (item.emptyValue === void 0) {
+					item.emptyValue =
+						defaultItem.emptyValue === void 0
+							? defaultItem.defaultValue
+							: defaultItem.emptyValue;
+				}
+				delete item.value;
+				props[prop] = item;
+				return;
+			}
+
+			// Convert value
+			if (typeof configItem !== typeof defaultItem.defaultValue) {
+				throw new Error(
+					`Invalid value for configuration customisations.${prop}. Expected ${typeof defaultItem.defaultValue}, got ${typeof configItem}`
+				);
+			}
+
+			// Check value
+			switch (prop) {
+				case 'color':
+					// different string, test if its a color
+					(() => {
+						const color = colors.fromString(configItem);
+						if (color) {
+							configItem = color.toString();
+						} else {
+							throw new Error(
+								`Invalid value for configuration customisations.color`
+							);
+						}
+					})();
+					break;
+			}
+
+			// Set value as default value
+			const item = defaultItem;
+			if (item.emptyValue === void 0) {
+				item.emptyValue = item.defaultValue;
+			}
+			item.defaultValue = configItem;
+			props[prop] = item;
+		}
+	);
+
+	delete config.customisations;
 	config.iconProps = props;
 	console.log('Props:', props);
 }
