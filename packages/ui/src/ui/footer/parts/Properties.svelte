@@ -1,3 +1,17 @@
+<script context="module">
+	// Constants toggled by compiler, allowing minifier to exclude blocks of
+	// code `if (false) { ... removed code ... }`, reducing bundle size
+
+	// @iconify-replacement: 'canShowColorProp = true'
+	const canShowColorProp = true;
+	// @iconify-replacement: 'canShowSizeProp = true'
+	const canShowSizeProp = true;
+	// @iconify-replacement: 'canShowRotateProp = true'
+	const canShowRotateProp = true;
+	// @iconify-replacement: 'canShowFlipProp = true'
+	const canShowFlipProp = true;
+</script>
+
 <script>
 	import Iconify from '@iconify/iconify';
 	// @iconify-replacement: '/props/Color.svelte'
@@ -10,11 +24,8 @@
 	import FlipBlock from './props/Flip.svelte';
 
 	export let registry; /** @type {Registry} */
-	// export let selectedIcon; /** @type {Icon} */
 	export let iconName; /** @type {string} */
 	export let iconProps; /** @type {PartialIconProperties} */
-	// export let route; /** @type {PartialRoute} */
-	// export let footerOptions; /** @type {object} */
 
 	const defaultProps = registry.defaultProps;
 
@@ -27,16 +38,16 @@
 
 {#if iconData}
 	<div class="iif-footer-options-blocks">
-		{#if defaultProps.color}
+		{#if canShowColorProp && defaultProps.color}
 			<ColorBlock {registry} {iconData} value={iconProps.color} />
 		{/if}
-		{#if defaultProps.width || defaultProps.height}
+		{#if canShowSizeProp && (defaultProps.width || defaultProps.height)}
 			<SizeBlock {registry} {iconData} {iconProps} />
 		{/if}
-		{#if defaultProps.rotate}
+		{#if canShowRotateProp && defaultProps.rotate}
 			<RotateBlock {registry} {iconData} value={iconProps.rotate} />
 		{/if}
-		{#if defaultProps.hFlip}
+		{#if canShowFlipProp && defaultProps.hFlip}
 			<FlipBlock {registry} {iconData} {iconProps} />
 		{/if}
 	</div>

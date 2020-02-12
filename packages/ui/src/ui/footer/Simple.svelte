@@ -11,20 +11,15 @@
 	export let selectedIcon; /** @type {Icon} */
 	export let iconName; /** @type {string} */
 	export let iconProps; /** @type {PartialIconProperties} */
-	// export let route; /** @type {PartialRoute} */
+	export let route; /** @type {PartialRoute} */
 	export let footerOptions; /** @type {object} */
 </script>
 
 {#if loaded | footerOptions.showButtons}
 	<Block type="footer">
-		<IconName {registry} {iconName} {loaded} />
+		<IconName {registry} {iconName} {loaded} {selectedIcon} {route} />
 		{#if loaded}
-			<PropertiesContainer
-				{registry}
-				{iconName}
-				{selectedIcon}
-				{iconProps}
-				{footerOptions} />
+			<PropertiesContainer {registry} {iconName} {iconProps} />
 		{/if}
 		<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />
 	</Block>

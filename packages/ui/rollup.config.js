@@ -149,10 +149,16 @@ delete config.footer.type;
 
 // Editable icon name
 if (config.footer['editable-name']) {
+	config.footer['shorter-name'] = false;
 	replacementPairs['/parts/IconName.svelte'] =
 		'/parts/IconNameEditable.svelte';
 }
 delete config.footer['editable-name'];
+
+// Shorten icon name when viewing collection
+if (config.footer['shorter-name'] === false) {
+	replacementPairs['canShortenName = true'] = 'canShortenName = false';
+}
 
 // Footer options
 replacementPairs['footerOptions = {}'] =
@@ -164,24 +170,30 @@ replacementPairs['ExtendedIconProperties = {}'] =
 
 if (!Object.keys(config.iconProps).length) {
 	replacementPairs['./parts/Properties.svelte'] = '../Empty.svelte';
+	replacementPairs['canShowIconProperties = true'] =
+		'canShowIconProperties = false';
 } else {
 	// Replace unused properties
 	const tests = [
 		{
 			test: ['color'],
 			replace: 'Color.svelte',
+			const: 'canShowColorProp',
 		},
 		{
 			test: ['rotate'],
 			replace: 'Rotate.svelte',
+			const: 'canShowRotateProp',
 		},
 		{
 			test: ['width', 'height'],
 			replace: 'Size.svelte',
+			const: 'canShowSizeProp',
 		},
 		{
 			test: ['flip'],
 			replace: 'Flip.svelte',
+			const: 'canShowFlipProp',
 		},
 	];
 
@@ -193,7 +205,14 @@ if (!Object.keys(config.iconProps).length) {
 			}
 		});
 		if (!exists) {
-			replacementPairs['/props/' + item.replace] = '/props/Empty.svelte';
+			if (item.replace) {
+				replacementPairs['/props/' + item.replace] =
+					'/props/Empty.svelte';
+			}
+			if (item.const) {
+				replacementPairs[item.const + ' = true'] =
+					item.const + ' = false';
+			}
 		}
 	});
 }

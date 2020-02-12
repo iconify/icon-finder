@@ -1,3 +1,8 @@
+<script context="module">
+	// @iconify-replacement: 'canShowIconProperties = true'
+	const canShowIconProperties = true;
+</script>
+
 <script>
 	import Block from '../Block.svelte';
 	// @iconify-replacement: '/parts/IconName.svelte'
@@ -12,7 +17,7 @@
 	export let selectedIcon; /** @type {Icon} */
 	export let iconName; /** @type {string} */
 	export let iconProps; /** @type {PartialIconProperties} */
-	// export let route; /** @type {PartialRoute} */
+	export let route; /** @type {PartialRoute} */
 	export let footerOptions; /** @type {object} */
 </script>
 
@@ -21,14 +26,9 @@
 		<div class="iif-footer-full">
 			<Sample {registry} {loaded} {iconName} {iconProps} {footerOptions} />
 			<div class="iif-footer-full-content">
-				<IconName {registry} {iconName} {loaded} />
-				{#if loaded}
-					<PropertiesContainer
-						{registry}
-						{iconName}
-						{selectedIcon}
-						{iconProps}
-						{footerOptions} />
+				<IconName {registry} {iconName} {loaded} {selectedIcon} {route} />
+				{#if canShowIconProperties && loaded}
+					<PropertiesContainer {registry} {iconName} {iconProps} />
 				{/if}
 				<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />
 			</div>

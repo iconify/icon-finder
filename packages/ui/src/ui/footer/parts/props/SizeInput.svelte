@@ -4,7 +4,6 @@
 	export let registry; /** @type {Registry} */
 	export let type; /** @type {string} */
 	export let value; /** @type {string} */
-	// export let iconSize; /** @type {number} */
 	export let placeholder; /** @type {string} */
 
 	const defaultValue = registry.defaultProps[type].defaultValue;
