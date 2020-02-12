@@ -45,24 +45,24 @@ router.home();
 
 Parameter "data" of the callback contains data you should render. Data is an object, TypeScript type is `RouterEvent`. It has the following properties:
 
--   `viewChanged`: boolean. True if the current view has changed since the previous callback call. Value is true on the first callback call. This attribute should be used by UI to check if entire UI needs re-rendering, including parent views list.
+-   `viewChanged`: boolean. True if the current view has changed since the previous callback call. Value is true on the first callback call. This attribute should be used by UI to check if the entire UI needs re-rendering, including the parent views list.
 -   `error`: string. Possible values:
     -   "": no error, the view is safe to render.
-    -   "loading": the view is still loading. UI should render generic "Loading" page.
+    -   "loading": the view is still loading. UI should render the generic "Loading" page.
     -   "timeout": API request timed out.
     -   "invalid_data": API returned invalid data.
-    -   "empty": API returned empty data. This can happen if, for example, there are no search matches. This error is generated before applying view filters, so lack of error does not guarantee that there are items to display.
+    -   "empty": API returned empty data. This can happen if, for example, there are no search matches. This error is generated before applying view filters, so a lack of error does not guarantee that there are items to display.
     -   "not_found": API returned "not found" error.
 -   `route`: PartialRoute. Current route. See [Route type](types.md#route).
 -   `blocks`: Blocks. See [blocks.md](blocks.md). If there is an error (see `error` property mentioned above), blocks could be null.
 
 ## Callback logic
 
-First check for `viewChanged` attribute. If the value is `true`, it means route was changed. UI might need to render different component for different view type, change navigation, change parent views list, change the keyword in the search form.
+First check for `viewChanged` attribute. If the value is `true`, it means route was changed. UI might need to render different components for different view types, change navigation, change parent views list, change the keyword in the search form.
 
-Then check for `error` attribute. If the value is not empty, the current view is not ready to be rendered. Display the appropriate error message. If the value is "loading", UI should show "loading" page.
+Then check for an `error` attribute. If the value is not empty, the current view is not ready to be rendered. Display the appropriate error message. If the value is "loading", UI should show the "loading" page.
 
-If there is no error, you can access `blocks` property. UI should be split into components of the same types as blocks. Render components in whatever order you want, use data blocks as parameters.
+If there is no error, you can access the `blocks` property. UI should be split into components of the same types as blocks. Render components in whatever order you want, use data blocks as parameters.
 
 ## Buttons and inputs
 
@@ -70,9 +70,9 @@ Render callback is responsible only for rendering current data. If a user clicks
 
 ## Example
 
-This example shows simple container that creates Icon Finder Core instance, uses data from callback to change state and render child components.
+This example shows a simple container that creates an Icon Finder Core instance, uses data from callback to change state and renders child components.
 
-It decides what child component to show based on current error message and route.
+It decides what child component to show based on the current error message and route.
 
 ```jsx
 import react, { Component } from 'react';

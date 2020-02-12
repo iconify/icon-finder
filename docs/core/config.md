@@ -74,4 +74,4 @@ There are several types of configuration, split into different sections:
 -   `display`: configuration rendering data.
 -   `router`: routes configuration.
 
-Explanation of each configuration variable is available in `src/data/config.ts`.
+The explanation of each configuration variable is available in `src/data/config.ts`.

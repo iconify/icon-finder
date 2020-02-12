@@ -1,6 +1,6 @@
 # Routes in Iconify Icon Finder
 
-Every request and response has a route associated with it. The route is a simple object of type `PartialRoute` describing the current view.
+Every request and response has a route associated with it. A route is a simple object of type `PartialRoute` describing the current view.
 
 For example, this route represents collections list:
 
@@ -60,12 +60,13 @@ Each route can have a parent route. For example, this is what route looks like i
 
 ## Types
 
-There are 4 types of routes. Almost all of them have required parameters:
+There are 5 types of routes. Almost all of them have required parameters:
 
 -   `collections`: Shows list of collections. No required parameters.
 -   `collection`: Shows one collection. Required parameter: "prefix" that matches icon set prefix.
 -   `search`: Shows search results. Required parameter: "keyword" that contains a phrase to search for. Search is case insensitive.
 -   `custom`: Shows custom icons list (more about custom views below). Required parameter: "customType".
+-   `empty`: Shows empty content. This is used if you want UI to display only the footer. No parameters.
 
 ### Collections
 
@@ -85,7 +86,7 @@ and following optional parameters:
 -   `filter`: string. Keyword to filter icons. The default value is an empty string "".
 -   `page`: number. Current page number. The default value is 0.
 -   `tag`: string | null. Tag filter. If not null, only icons that include tag will be shown. Value could be an empty string to show icons that do not have any tag. The default value is null.
--   `themePrefix`: string | null. Theme prefix. Value is a theme name, not an actual prefix. See "Prefixes and Suffixes" section below. The default value is null.
+-   `themePrefix`: string | null. Theme prefix. Value is a theme name, not an actual prefix. See the "Prefixes and Suffixes" section below. The default value is null.
 -   `themeSuffix`: string | null. Same as above, but for the suffix.
 
 ### Search
@@ -99,7 +100,7 @@ and following optional parameters:
 -   `page`: number. Current page number. The default value is 0.
 -   `mode`: boolean. True if more results are available. The default value is true, unless page > 1.
 
-By default, Icon Finder will retrieve only first 2 pages of results from API. This is done to reduce the load on API because often visitors don't look further than the first page. Additional results can be retrieved by changing the current page to 2 (or higher).
+By default, Icon Finder will retrieve only the first 2 pages of results from API. This is done to reduce the load on API because often visitors don't look further than the first page. Additional results can be retrieved by changing the current page to 2 (or higher).
 
 ### Custom
 
@@ -116,7 +117,7 @@ For more information about a custom view, see [custom-view.md](custom-view.md)
 
 ## Prefixes and suffixes
 
-Collection route can have theme prefix and/or suffix.
+The collection route can have theme prefix and/or suffix.
 
 Theme prefixes and suffixes have 2 components:
 

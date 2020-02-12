@@ -1,6 +1,6 @@
 # Custom views in Iconify Icon Finder
 
-The custom view is similar to the search results view, except that it uses custom source for icons list. You must set icons list when the view is being initialised. You can do that asynchronously, similar to querying API for search results.
+The custom view is similar to the search results view, except that it uses custom source for icons list. You must set the icons list when the view is being initialised. You can do that asynchronously, similar to querying API for search results.
 
 The custom view is used for things like bookmarked icons, recent icons list.
 
@@ -90,7 +90,7 @@ The easiest way is to use "set" action on a custom view.
 
 See [actions.md](actions.md#set)
 
-Action is always performed on currently visible view. So using "set" action requires the custom view to be visible when you use that action. Changing the icons list is most likely a result of a user action in UI, done while the custom view is rendered.
+Action is always performed on the currently visible view. So using "set" action requires the custom view to be visible when you use that action. Changing the icons list is most likely a result of a user action in UI, done while the custom view is rendered.
 
 ### Using router
 
@@ -111,7 +111,7 @@ router.setCustomIcons('recent', ['mdi:home']);
 
 ## How to get full icons list
 
-Icons are retrieved from UI using callback (or event), so UI should have access to original icons list for a custom view.
+Icons are retrieved from UI using callback (or event), so UI should have access to the original icons list for a custom view.
 
 Because of that, you shouldn't need to get a list of icons. However, if for some reason you do need to do it, you can use router's `getCustomIcons(customType: string): Icon[] | null` function.
 

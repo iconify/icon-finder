@@ -2,7 +2,7 @@
 
 ## When to use Registry?
 
-Registry class is more complex than APICore class. It is not as straight forward as APICore and requires reading documentation to understand how things work. So why would you want to use it? To access internal stuff directly, like events, configuration and API.
+Registry class is more complex than APICore class. It is not as straight forward as APICore and requires reading documentation to understand how things work. So why would you want to use it? To access internal stuff directly, like events, configuration, and API.
 
 ## Creating Registry instance
 
@@ -33,7 +33,7 @@ That's it. Those instances will no longer share information.
 
 ## Events
 
-Icon Finder Core uses events to send messages across different parts. The event system is a very simple custom class that you can find in `src/events.ts`. It is a custom class because Core is designed to work in both Node.js and browser and be as small as possible.
+Icon Finder Core uses events to send messages across different parts. The event system is a very simple custom class that you can find in `src/events.ts`. It is a custom class because Core is designed to work in both Node.js and the browser and be as small as possible.
 
 To get events instance from Registry instance, simply call `events` property:
 
@@ -52,12 +52,12 @@ events.unsubscribe('render', renderEventHandler);
 
 You can have multiple subscribers for each event, so creating a new subscriber won't automatically unsubscribe the previous subscriber.
 
-Each event has one parameter: payload. Type of payload depends on an event.
+Each event has one parameter: payload. The type of payload depends on an event.
 
 Available events:
 
 -   `render`: Called when new data is available. The payload type is `RouterEvent`. See [render.md](render.md).
--   `load-*`: Called when loading icons for a custom view. Event name starts with "load-", followed by the custom view's `customType` property value. The payload is a callback to call when a custom icons list is available. See [custom-view.md](custom-view.md).
+-   `load-*`: Called when loading icons for a custom view. The event name starts with "load-", followed by the custom view's `customType` property value. The payload is a callback to call when a custom icons list is available. See [custom-view.md](custom-view.md).
 
 ## Collections info
 

@@ -5,7 +5,7 @@ When rendering a view, it generates blocks that should be displayed by UI. Each 
 For example, when browsing the collections list, UI needs to render the following blocks:
 
 -   `filter`: CollectionsFilterBlock. This block represents the search field to filter collections.
--   `categories`: FiltersBlock. This block represents the categories filters.
+-   `categories`: FiltersBlock. This block represents the categories' filters.
 -   `collections`: CollectionsListBlock. This block represents the collections list.
 
 Each block has a corresponding type, making it easy to use with TypeScript. To easily identify any block, each block has property `type`.
@@ -61,7 +61,7 @@ Example of collections list data:
 }
 ```
 
-"prefix" is always available, but "info" object might not be available if API did not include information in response.
+"prefix" is always available, but the "info" object might not be available if API did not include information in response.
 
 Information properties:
 
@@ -320,7 +320,7 @@ Block has the following properties:
     -   In collection view: "tags", "themePrefixes", "themeSuffixes"
     -   In search view: "collections" (list of collections)
 -   `active`: Currently active filter. Null if none or filter key.
--   `filters`: List of available filters. Filter key is used to uniquely identify filter. Value is an object:
+-   `filters`: List of available filters. The object key is used to uniquely identify filter. Value is an object:
     -   `title`: Filter title, should be used by UI instead of filter key, though they usually match, except for collections list filter in search results.
     -   `index`: Filter index. If filters have colour rotation, its index should be used to set UI colour.
     -   `disabled`: True if a filter is disabled. A filter is disabled when, for example, a user is searching icons in icon set, filter represents a tag and applying that tag would return 0 results.
@@ -381,7 +381,7 @@ Each icon must have prefix and name attributes. Other attributes are optional.
 
 To convert, validate and compare icons there are several helper functions you can import from the main file or `lib/icon.js`:
 
-`iconToString(icon: Icon): string` - converts icon to string
+`iconToString(icon: Icon): string` - converts icon to string.
 
 ```js
 const icon: Icon = {
@@ -392,11 +392,9 @@ const name = iconToString(icon);
 console.log(name); // "mdi:home"
 ```
 
-`validateIcon(icon): boolean` - checks if icon is valid.
+`validateIcon(icon): boolean` - checks if icon object is valid.
 
-All icons in the block are valid, but you can use it to compare with custom icons. Another helpful function is:
-
-`stringToIcon(icon: string): Icon` - converts string to icon. Returns null on failure
+`stringToIcon(icon: string): Icon` - converts string to icon. Returns null on failure.
 
 ```js
 const icon1 = stringToIcon('mdi:home');
@@ -416,7 +414,7 @@ Type: `PaginationBlock`
 
 block.type = "pagination"
 
-Pagination block that is used in all views where icons list is shown, so that's every view except for collections list.
+Pagination block that is used in all views where icons list is shown, so that's every view except for the collections list.
 
 Example:
 
@@ -434,7 +432,7 @@ This block has several properties:
 
 -   `page`: Current page. The first page is 0.
 -   `length`: Total number of icons. This is not the number of pages.
--   `perPage`: Number of icons to display per page. This value is taken from Icon Finder configuration. See [config.md](config.md).
+-   `perPage`: Number of icons to display per page. This value is taken from the Icon Finder configuration. See [config.md](config.md).
 -   `more`: boolean. This is used in the search results. See below.
 
 To help with displaying pagination, there are several helper functions:
@@ -446,7 +444,7 @@ let newPage = Math.min(5, maxPage(block);
 core.action('pagination', newPage);
 ```
 
-In actual code, you do not need to check for the maximum page because core will automatically do that check. Code is shown only as an example.
+In actual code, you do not need to check for the maximum page, because core will automatically do that check. The code above is shown only as an example.
 
 `showPagination(block): number[]` - return list of pages to show in pagination.
 
@@ -484,7 +482,7 @@ return null;
 
 ### More pages
 
-By default, Icon Finder will retrieve only first 2 pages of results from API. This is done to reduce the load on API because often visitors don't look further than the first page.
+By default, Icon Finder will retrieve only the first 2 pages of results from API. This is done to reduce the load on API because often visitors don't look further than the first page.
 
 If `more` attribute in pagination block is set to `true`, UI should show either third page in pagination or button with text like "Load more results".
 
@@ -541,11 +539,11 @@ Example:
 
 ## Search form
 
-Search form is present on all pages, so it should be treated as a separate form. UI can decide if a search form should be shown.
+The search form is present on all pages, so it should be treated as a separate form. UI can decide if the search form should be shown.
 
 All previous search blocks (collections filter, search), are for searching content of the current view. They do not change the current view, so they belong to their views.
 
-Global search form though does not belong to any view, therefore it is not part of any view. UI should not rely on the current view to render search form.
+The global search form though does not belong to any view, therefore it is not part of any view. UI should not rely on the current view to render search form.
 
 ### Keyword
 
@@ -579,7 +577,7 @@ const info = core.getCollection(prefix);
 const title = info === null ? prefix : info.name;
 ```
 
-Variable "core" is available in the callback you set when creating new APICore instance.
+Variable "core" is available in the callback you set when creating a new APICore instance.
 
 What if you are not using [APICore class](api-core.md)? Then you must be using [Registry](registry.md) class. To retrieve icons set information from Registry instance, you can do this:
 

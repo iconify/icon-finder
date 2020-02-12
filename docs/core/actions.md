@@ -1,8 +1,8 @@
 # Actions in Iconify Icon Finder
 
-When rendering a view, you get a list of blocks ([see blocks.md](blocks.md)). Each block has an action associated with it. Action name matches the name of the block. Each block renders only 1 type of data.
+When rendering a view, you get a list of blocks ([see blocks.md](blocks.md)). Each block has an action associated with it. The action name matches the name of the block. Each block renders only 1 type of data.
 
-Usually, when rendering any block, there is something for a user to edit or to click. For example, in pagination block, user can click a page, in search form user and enter a keyword. To forward that action to Icon Finder Core, UI should apply action to the current view.
+Usually, when rendering any block, there is something for a user to edit or to click. For example, in the pagination block, the user can click a page, in search form user and enter a keyword. To forward that action to Icon Finder Core, UI should apply action to the current view.
 
 To apply action to currently visible view, you need to run `action(blockName: string, value: unknown)` function of router. If you are using APICore instance, do this:
 
@@ -70,13 +70,13 @@ router.action('collections', 'noto');
 router.action('collections', 'ion');
 ```
 
-This action has no reset function because it creates a child view. To return to icon sets list, use action 'parent' on collection view.
+This action has no reset function because it creates a child view. To return to the icon sets list, use action 'parent' on collection view.
 
 ### filter
 
 Block type: `collections-filter`, TypeScript type: `CollectionsFilterBlock` ([see blocks.md](blocks.md#collections-filter)).
 
-This block displays search form that filters collections list.
+This block displays a search form that filters collections list.
 
 ```js
 // Search for icon sets that contain "awesome" (case insensitive)
@@ -99,7 +99,7 @@ Block type: `filters`, TypeScript type: `FiltersBlock`, block.filterType = "coll
 
 This is a special block, which does not belong to a collection view.
 
-When a collection view is a child view of search results, this block is copied from the search results view. Search results include collections block, which lists collections where requested icons are found, making it easy to filter results by collection. Collection view displays duplicate block, so a user does not have to return to search results, making it easy to switch collections.
+When a collection view is a child view of search results, this block is copied from the search results view. Search results include collections block, which lists collections where requested icons are found, making it easy to filter results by collection. The collection view displays duplicate block, so a user does not have to return to search results, making it easy to switch collections.
 
 When collection view is a child of collections list, this block shows several previous and next collections. This makes it easy to navigate icon sets without returning to the parent view. It takes into account filters used on the parent view.
 
@@ -128,7 +128,7 @@ router.action('filter', '');
 
 Block type: `pagination`, TypeScript type: `PaginationBlock` ([see blocks.md](blocks.md#pagination)).
 
-This block changes the current page. The first page has a value of 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
+This block changes the current page. The first page has a value of 0. If you set a number higher than the maximum, the value will automatically be changed to the maximum page number.
 
 ```js
 // Change page to 5
@@ -199,7 +199,7 @@ This action is not instant and it changes the current view.
 
 Block type: `pagination`, TypeScript type: `PaginationBlock` ([see blocks.md](blocks.md#pagination)).
 
-This block changes the current page. The first page has a value of 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
+This block changes the current page. The first page has a value of 0. If you set a number higher than the maximum, the value will automatically be changed to the maximum page number.
 
 ```js
 // Change page to 5
@@ -229,7 +229,7 @@ router.action('filter', '');
 
 Block type: `pagination`, TypeScript type: `PaginationBlock` ([see blocks.md](blocks.md#pagination)).
 
-This block changes the current page. The first page has a value of 0. If you set number higher than maximum, the value will automatically be changed to the maximum page number.
+This block changes the current page. The first page has a value of 0. If you set a number higher than the maximum, the value will automatically be changed to the maximum page number.
 
 ```js
 // Change page to 5

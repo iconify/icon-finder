@@ -19,7 +19,7 @@ Other properties that represent icon metadata and are used only when displaying 
 
 -   `tags`: string[]. List of tags. In many icon sets tags (or categories) are used to categorise icons.
 -   `aliases`: string[]. List of aliases. Some icons have several names, for example, "home" and "house".
--   `chars`: string[]. List of characters. This is used when an icon is imported from icon font or has metadata for exporting icon set to a font. An icon can have multiple characters, so this attribute is an array. Values are hexadecimal strings, such as "f000".
+-   `chars`: string[]. List of characters. This is used when an icon is imported from icon font or has metadata for exporting an icon set to a font. An icon can have multiple characters, so this attribute is an array. Values are hexadecimal strings, such as "f000".
 -   `themePrefix`: string. Theme prefix.
 -   `themeSuffix`: string. Theme suffix. Prefix and suffix are used in some icon sets to create variations of the same icon, such as "-solid" and "-outline". Value contains the title of prefix/suffix used to display prefix/suffix filter, such as "Outline".
 
@@ -47,7 +47,7 @@ There are generic types that represent any route:
 -   `Route` - any route mentioned above.
 -   `PartialRoute` - Route with all parameters being optional.
 
-When rendering UI, Icon Finder Core provides data as `PartialRoute`, so route parameters include only properties that are different from default and includes parent route only if parent route exists.
+When rendering UI, Icon Finder Core provides data as `PartialRoute`, so route parameters include only properties that are different from default and include parent route only if the parent route exists.
 
 For more information about routes, see [routes.md](routes.md).
 

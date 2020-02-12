@@ -2,7 +2,7 @@
 
 APICore class makes it easy to interact with Iconify Icon Finder Core.
 
-All configuration values, initial route and callbacks are set in the constructor. Then all you need to do is react to the main callback.
+All configuration values, initial route, and callbacks are set in the constructor. Then all you need to do is react to the main callback.
 
 ```js
 const { APICore } = require('@iconify/icon-finder-core');
