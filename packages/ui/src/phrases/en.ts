@@ -85,6 +85,7 @@ export const phrases: UITranslation = {
 		close: 'Close',
 	},
 	footerBlocks: {
+		title: 'Customize icon:',
 		color: 'Color',
 		flip: 'Flip',
 		hFlip: 'Horizontal',

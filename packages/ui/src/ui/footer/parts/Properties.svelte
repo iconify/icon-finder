@@ -2,6 +2,9 @@
 	// Constants toggled by compiler, allowing minifier to exclude blocks of
 	// code `if (false) { ... removed code ... }`, reducing bundle size
 
+	// @iconify-replacement: 'showPropsTitle = false'
+	const showPropsTitle = false;
+
 	// @iconify-replacement: 'canShowColorProp = true'
 	const canShowColorProp = true;
 	// @iconify-replacement: 'canShowSizeProp = true'
@@ -29,6 +32,9 @@
 
 	const defaultProps = registry.defaultProps;
 
+	// Title
+	const title = showPropsTitle ? registry.phrases.footerBlocks.title : '';
+
 	// Get icon data
 	let iconData;
 	$: {
@@ -37,6 +43,9 @@
 </script>
 
 {#if iconData}
+	{#if showPropsTitle && title}
+		<p class="iif-footer-options-block-title">{title}</p>
+	{/if}
 	<div class="iif-footer-options-blocks">
 		{#if canShowColorProp && defaultProps.color}
 			<ColorBlock {registry} {iconData} value={iconProps.color} />

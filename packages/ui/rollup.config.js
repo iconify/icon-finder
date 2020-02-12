@@ -173,6 +173,9 @@ if (!Object.keys(config.iconProps).length) {
 	replacementPairs['canShowIconProperties = true'] =
 		'canShowIconProperties = false';
 } else {
+	if (config.iconPropsTitle) {
+		replacementPairs['showPropsTitle = false'] = 'showPropsTitle = true';
+	}
 	// Replace unused properties
 	const tests = [
 		{
@@ -690,6 +693,11 @@ function normaliseConfig(config) {
 			props[prop] = item;
 		}
 	);
+
+	// Show title?
+	if (Object.keys(props)) {
+		config.iconPropsTitle = config.customisations.title;
+	}
 
 	delete config.customisations;
 	config.iconProps = props;

@@ -1,5 +1,12 @@
+.iif-footer-options-block-title {
+	@include iif-font('base', 'normal');
+	margin: $iif-spacing 0 0;
+	padding: 0;
+	color: $iif-text-dimmed-color;
+}
+
 .iif-footer-options-blocks {
-	margin-bottom: $iif-spacing;
+	margin-bottom: $iif-spacing * 2;
 
 	&:empty {
 		display: none;
