@@ -1,7 +1,7 @@
 <script>
 	import Block from '../Block.svelte';
-	// @iconify-replacement: '/parts/IconName.svelte'
-	import IconName from './parts/IconName.svelte';
+	// @iconify-replacement: '/parts/name/Simple.svelte'
+	import IconName from './parts/name/Simple.svelte';
 	import ButtonsContainer from './parts/Buttons.svelte';
 	// @iconify-replacement: './parts/Properties.svelte'
 	import PropertiesContainer from './parts/Properties.svelte';

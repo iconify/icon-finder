@@ -139,21 +139,29 @@ replacementPairs['uiIcons = {}'] =
 // Footer
 const footerFile = capitalise(config.footer.type);
 try {
-	const footerFilename = `${__dirname}/src/ui/footer/${footerFile}.svelte`;
-	fs.lstatSync(footerFilename, 'utf8');
+	const testFile = `${__dirname}/src/ui/footer/${footerFile}.svelte`;
+	fs.lstatSync(testFile, 'utf8');
 } catch (err) {
 	throw new Error(`Invalid footer: ${config.footer.type}`);
 }
 replacementPairs['/footer/Simple.svelte'] = `/footer/${footerFile}.svelte`;
 delete config.footer.type;
 
-// Editable icon name
-if (config.footer['editable-name']) {
-	config.footer['shorter-name'] = false;
-	replacementPairs['/parts/IconName.svelte'] =
-		'/parts/IconNameEditable.svelte';
+// Icon name style
+if (config.footer['name-style']) {
+	const iconNameFile = capitalise(config.footer['name-style']);
+	try {
+		const testFile = `${__dirname}/src/ui/footer/parts/name/${iconNameFile}.svelte`;
+		fs.lstatSync(testFile, 'utf8');
+	} catch (err) {
+		throw new Error(
+			`Invalid name-style value: ${config.footer['name-style']}`
+		);
+	}
+	replacementPairs['/parts/name/Simple.svelte'] =
+		'/parts/name/' + iconNameFile + '.svelte';
 }
-delete config.footer['editable-name'];
+delete config.footer['name-style'];
 
 // Shorten icon name when viewing collection
 if (config.footer['shorter-name'] === false) {
@@ -405,7 +413,10 @@ function parseThemeConfig(config, theme) {
  * Capitalise text
  */
 function capitalise(text) {
-	return text.slice(0, 1).toUpperCase() + text.slice(1);
+	return text
+		.split('-')
+		.map(item => item.slice(0, 1).toUpperCase() + item.slice(1))
+		.join('');
 }
 
 /**

@@ -48,16 +48,16 @@
 	// Load icon
 	let loaded;
 	$: {
-		loaded = false;
-		if (selectedIcon !== null) {
-			loaded = Iconify.iconExists(iconName);
-			if (!loaded) {
-				if (!assignedEvent) {
-					assignedEvent = true;
-					document.addEventListener('IconifyAddedIcons', loadingEvent, true);
-				}
-				Iconify.preloadImages([iconName]);
+		// Mention updateCounter to make sure this code is ran
+		updateCounter;
+
+		loaded = selectedIcon ? Iconify.iconExists(iconName) : false;
+		if (!loaded) {
+			if (!assignedEvent) {
+				assignedEvent = true;
+				document.addEventListener('IconifyAddedIcons', loadingEvent, true);
 			}
+			Iconify.preloadImages([iconName]);
 		}
 	}
 

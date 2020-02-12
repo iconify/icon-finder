@@ -7,7 +7,12 @@ function assertNever(s: never): void {}
 /**
  * Route types
  */
-export type RouteType = 'collections' | 'collection' | 'search' | 'custom';
+export type RouteType =
+	| 'collections'
+	| 'collection'
+	| 'search'
+	| 'custom'
+	| 'empty';
 
 /**
  * Interfaces and default values
@@ -71,12 +76,19 @@ export const customRouteDefaults: CustomRouteParams = {
 	page: 0,
 };
 
+// Empty
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface EmptyRouteParams {}
+
+export const emptyRouteDefaults: EmptyRouteParams = {};
+
 // Combination of params
 export type RouteParams =
 	| CollectionsRouteParams
 	| CollectionRouteParams
 	| SearchRouteParams
-	| CustomRouteParams;
+	| CustomRouteParams
+	| EmptyRouteParams;
 
 export type PartialRouteParams = Partial<RouteParams>;
 
@@ -105,6 +117,10 @@ export const routeParamsToObject = (
 
 		case 'custom':
 			defaults = customRouteDefaults;
+			break;
+
+		case 'empty':
+			defaults = emptyRouteDefaults;
 			break;
 
 		default:
@@ -173,6 +189,11 @@ export const objectToRouteParams = (
 			requiredStrings.push('customType');
 			defaults = customRouteDefaults;
 			result = {} as CustomRouteParams;
+			break;
+
+		case 'empty':
+			defaults = emptyRouteDefaults;
+			result = {} as EmptyRouteParams;
 			break;
 
 		default:

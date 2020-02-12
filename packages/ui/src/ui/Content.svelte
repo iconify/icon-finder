@@ -74,17 +74,22 @@
 		<ParentBlock {registry} {route} />
 	{/if}
 
-	{#if error !== '' || !route}
-		<ViewError {registry} error={error !== '' ? error : 'bad_route'} {route} />
-	{:else if route.type === 'collections'}
-		<CollectionsView {registry} {blocks} />
-	{:else if route.type === 'collection'}
-		<CollectionView {registry} {route} {blocks} {selectedIcon} />
-	{:else if route.type === 'search'}
-		<SearchView {registry} {route} {blocks} {selectedIcon} />
-	{:else if supportCustomView && route.type === 'custom'}
-		<CustomView {registry} {route} {blocks} {selectedIcon} />
-	{:else}
-		<ViewError {registry} error="bad_route" {route} />
+	{#if !route || route.type !== 'empty'}
+		{#if error !== '' || !route}
+			<ViewError
+				{registry}
+				error={error !== '' ? error : 'bad_route'}
+				{route} />
+		{:else if route.type === 'collections'}
+			<CollectionsView {registry} {blocks} />
+		{:else if route.type === 'collection'}
+			<CollectionView {registry} {route} {blocks} {selectedIcon} />
+		{:else if route.type === 'search'}
+			<SearchView {registry} {route} {blocks} {selectedIcon} />
+		{:else if supportCustomView && route.type === 'custom'}
+			<CustomView {registry} {route} {blocks} {selectedIcon} />
+		{:else}
+			<ViewError {registry} error="bad_route" {route} />
+		{/if}
 	{/if}
 </div>

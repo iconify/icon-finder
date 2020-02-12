@@ -1,7 +1,6 @@
 import Iconify from '@iconify/iconify';
 import { Main } from './main';
 import { DataStorage } from '../misc/options';
-import { CollectionRoute } from '../../../core/lib';
 
 // @iconify-replacement: 'options = {}'
 const options = {};

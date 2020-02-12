@@ -1,8 +1,8 @@
 <script>
 	import Iconify from '@iconify/iconify';
 	import { onDestroy } from 'svelte';
-	import Icon from '../../misc/Icon.svelte';
-	import Input from '../../forms/Input.svelte';
+	import Icon from '../../../misc/Icon.svelte';
+	import Input from '../../../forms/Input.svelte';
 
 	export let registry; /** @type {Registry} */
 	// export let loaded; /** @type {boolean} */

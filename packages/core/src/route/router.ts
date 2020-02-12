@@ -5,6 +5,7 @@ import { CollectionsView } from '../views/collections';
 import { CollectionView } from '../views/collection';
 import { SearchView } from '../views/search';
 import { CustomView, IconsList } from '../views/custom';
+import { EmptyView } from '../views/empty';
 
 /**
  * TypeScript guard
@@ -329,6 +330,9 @@ export class Router {
 
 			case 'custom':
 				return new CustomView(this._instance, route, parent);
+
+			case 'empty':
+				return new EmptyView(this._instance, route, parent);
 
 			default:
 				assertNever(route);

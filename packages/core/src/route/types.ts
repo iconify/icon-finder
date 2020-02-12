@@ -5,6 +5,7 @@ import {
 	CollectionRouteParams,
 	SearchRouteParams,
 	CustomRouteParams,
+	EmptyRouteParams,
 	routeParamsToObject,
 	objectToRouteParams,
 } from './params';
@@ -48,11 +49,17 @@ export interface CustomRoute extends CommonRoute {
 	params: CustomRouteParams;
 }
 
+export interface EmptyRoute extends CommonRoute {
+	readonly type: 'empty';
+	params: EmptyRouteParams;
+}
+
 export type Route =
 	| CollectionsRoute
 	| CollectionRoute
 	| SearchRoute
-	| CustomRoute;
+	| CustomRoute
+	| EmptyRoute;
 
 /**
  * Partial route that can be missing attributes or could be null
@@ -93,6 +100,7 @@ const isValidRouteType = (type: RouteType): boolean => {
 		case 'collection':
 		case 'search':
 		case 'custom':
+		case 'empty':
 			break;
 
 		default:
@@ -164,6 +172,9 @@ export const objectToRoute = (
 
 		case 'custom':
 			return route as CustomRoute;
+
+		case 'empty':
+			return route as EmptyRoute;
 
 		default:
 			// This code should be unreachable because of isValidRouteType() check

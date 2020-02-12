@@ -4,7 +4,7 @@
 </script>
 
 <script>
-	import Icon from '../../misc/Icon.svelte';
+	import Icon from '../../../misc/Icon.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let loaded; /** @type {boolean} */

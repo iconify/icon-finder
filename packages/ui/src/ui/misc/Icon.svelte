@@ -91,7 +91,9 @@
 
 	// Check if icon has been loaded
 	$: {
+		// Mention updateCounter to make sure this code is ran
 		updateCounter;
+
 		if (name !== null) {
 			if (loaded !== Iconify.iconExists(name)) {
 				// Update variable only if it needs to be updated
