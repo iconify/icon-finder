@@ -4,7 +4,9 @@
 </script>
 
 <script>
+	import Iconify from '@iconify/iconify';
 	import Icon from '../../../misc/Icon.svelte';
+	import { getIconGrid } from '../../../../misc/scale-icon';
 
 	export let registry; /** @type {Registry} */
 	export let loaded; /** @type {boolean} */
@@ -30,18 +32,36 @@
 			text = iconName;
 		}
 	}
+
+	// Get icon data and grid
+	let iconData;
+	let grid;
+	$: {
+		onLoad(iconName);
+	}
+
+	function onLoad() {
+		iconData = Iconify.getIcon(iconName);
+		if (!iconData) {
+			grid = 0;
+			return;
+		}
+
+		grid = getIconGrid(iconData.height);
+	}
+
+	// Get sample class name
+	let className;
+	$: {
+		className = 'iif-footer-small-sample iif-footer-small-sample--' + grid;
+	}
 </script>
 
 {#if loaded}
-	<div class="iif-footer-icon-name iif-footer-icon-name--simple">
-		<dl>
-			<dt>{phrases.iconName}</dt>
-			<dd>
-				<Icon icon={iconName} />
-				<div class="iif-footer-icon-name-input">
-					<span>{text}</span>
-				</div>
-			</dd>
-		</dl>
+	<div class="iif-footer-icon-name iif-footer-icon-name--block">
+		<div class={className}>
+			<Icon icon={iconName} height="1em" {onLoad} />
+		</div>
+		<span>{text}</span>
 	</div>
 {/if}

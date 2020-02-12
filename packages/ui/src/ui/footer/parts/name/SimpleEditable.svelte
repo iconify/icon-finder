@@ -74,7 +74,8 @@
 
 <form
 	on:submit|preventDefault={testNewValue}
-	class="iif-footer-icon-name iif-footer-icon-name--editable">
+	class="iif-footer-icon-name iif-footer-icon-name--simple
+	iif-footer-icon-name--simple--editable">
 	<dl>
 		<dt>{phrases.iconName}</dt>
 		<dd>
