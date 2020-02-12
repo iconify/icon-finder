@@ -29,6 +29,10 @@
 		}
 	}
 
+	&:focus {
+		outline: none;
+	}
+
 	&:focus:not(:hover) {
 		border: 2px solid $plugin-palette-background-darker-blue;
 	}

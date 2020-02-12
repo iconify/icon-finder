@@ -44,6 +44,10 @@
 		border-color: $iif-button-hover-border-color;
 	}
 
+	&:focus {
+		outline: none;
+	}
+
 	&:focus:not(:hover) {
 		color: $iif-button-focus-color;
 		background: $iif-button-focus-background-color;

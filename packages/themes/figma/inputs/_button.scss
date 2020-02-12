@@ -16,6 +16,10 @@
 	@include plugin-font-ui-neg('small', 'medium');
 	line-height: 16px;
 
+	&:focus {
+		outline: none;
+	}
+
 	//Primary
 	&--primary {
 		color: $plugin-palette-color-white;
