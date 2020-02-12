@@ -53,11 +53,11 @@
 		{#if canShowSizeProp && (defaultProps.width || defaultProps.height)}
 			<SizeBlock {registry} {iconData} {iconProps} />
 		{/if}
-		{#if canShowRotateProp && defaultProps.rotate}
-			<RotateBlock {registry} {iconData} value={iconProps.rotate} />
-		{/if}
 		{#if canShowFlipProp && defaultProps.hFlip}
 			<FlipBlock {registry} {iconData} {iconProps} />
+		{/if}
+		{#if canShowRotateProp && defaultProps.rotate}
+			<RotateBlock {registry} {iconData} value={iconProps.rotate} />
 		{/if}
 	</div>
 {/if}

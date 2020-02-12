@@ -202,7 +202,7 @@ if (!Object.keys(config.iconProps).length) {
 			const: 'canShowSizeProp',
 		},
 		{
-			test: ['flip'],
+			test: ['hFlip'],
 			replace: 'Flip.svelte',
 			const: 'canShowFlipProp',
 		},
