@@ -181,7 +181,8 @@
 		}
 
 		// Overwrite parseIcons variable only if something was updated, triggering component re-render
-		if (updated) {
+		// Also compare length in case if new set is subset of old set
+		if (updated || parsedIcons.length !== newParsedIcons.length) {
 			parsedIcons = newParsedIcons;
 		}
 	}
