@@ -30,6 +30,19 @@
 	</head>
 
 	<body>
-		<script src="../dist/ui.js"></script>
+		<script>
+			(function() {
+				var base = '../dist/ui.';
+				var suffix = '';
+				try {
+					eval('let foo = () => 2');
+				} catch (err) {
+					suffix = 'ie11.';
+				}
+				var node = document.createElement('script');
+				node.setAttribute('src', base + suffix + 'js');
+				document.body.appendChild(node);
+			})();
+		</script>
 	</body>
 </html>
