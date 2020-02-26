@@ -8,9 +8,11 @@
 	"main": "dist/ui.js",
 	"scripts": {
 		"cleanup": "rm -rf dist",
-		"build": "rollup -c",
+		"build": "rollup -c rollup.config.js && npm run build:ie11 && npm run build:min",
 		"prebuild": "npm run cleanup",
-		"dev": "rollup -c -w"
+		"build:ie11": "rollup -c rollup.ie11.config.js",
+		"build:min": "rollup -c rollup.minify.config.js",
+		"dev": "rollup -c rollup.config.js -w"
 	},
 	"bugs": "https://github.com/iconify/icon-finder/issues",
 	"homepage": "https://github.com/iconify/icon-finder",
@@ -21,11 +23,13 @@
 	"devDependencies": {
 		"@cyberalien/conditional-replacements": "^0.0.2",
 		"@cyberalien/rollup-plugin-typescript2": "^0.25.4",
+		"@rollup/plugin-buble": "^0.21.1",
 		"@rollup/plugin-commonjs": "^11.0.1",
-		"@rollup/plugin-node-resolve": "^7.0.0",
+		"@rollup/plugin-node-resolve": "^7.1.1",
 		"cross-env": "^7.0.0",
 		"rollup": "^1.31.0",
 		"rollup-plugin-livereload": "^1.0.0",
+		"rollup-plugin-polyfill": "^3.0.0",
 		"rollup-plugin-svelte": "^5.0.3",
 		"rollup-plugin-terser": "^5.1.2",
 		"svelte": "^3.18.1",

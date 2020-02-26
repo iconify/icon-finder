@@ -3,7 +3,6 @@ import fs from 'fs';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
 import typescript from '@cyberalien/rollup-plugin-typescript2';
 import { Replacements } from '@cyberalien/conditional-replacements';
 import colors from 'cyberalien-color';
@@ -270,10 +269,6 @@ export default {
 				return result;
 			},
 		}),
-
-		// If we're building for production (npm run build
-		// instead of npm run dev), minify
-		production && terser(),
 	],
 	watch: {
 		clearScreen: false,
