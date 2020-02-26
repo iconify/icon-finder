@@ -52,7 +52,7 @@
 		updateCounter;
 
 		loaded = selectedIcon ? Iconify.iconExists(iconName) : false;
-		if (!loaded) {
+		if (selectedIcon && !loaded) {
 			if (!assignedEvent) {
 				assignedEvent = true;
 				document.addEventListener('IconifyAddedIcons', loadingEvent, true);
