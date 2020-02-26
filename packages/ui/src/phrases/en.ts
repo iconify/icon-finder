@@ -99,7 +99,7 @@ export const phrases: UITranslation = {
 	footerOptionButtons: {
 		hFlip: 'Horizontal',
 		vFlip: 'Vertical',
-		rotate: '{num}°',
-		rotateTitle: 'Rotate {num}°',
+		rotate: '{num}' + String.fromCharCode(0x00b0),
+		rotateTitle: 'Rotate {num}' + String.fromCharCode(0x00b0),
 	},
 };
