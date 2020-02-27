@@ -49,8 +49,10 @@
 					suffix = 'ie11.';
 				}
 				var node = document.createElement('script');
-				node.setAttribute('src', base + suffix + 'js');
-				document.body.appendChild(node);
+				node.type = 'text/javascript';
+				node.async = true;
+				node.src = base + suffix + 'js';
+				document.head.appendChild(node);
 			})();
 		</script>
 	</body>

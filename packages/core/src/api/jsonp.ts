@@ -81,8 +81,9 @@ export class API extends BaseAPI {
 
 		// Create script and append it to head
 		const script = document.createElement('script');
-		script.setAttribute('async', 'async');
-		script.setAttribute('src', uri);
+		script.type = 'text/javascript';
+		script.async = true;
+		script.src = uri;
 		document.head.appendChild(script);
 	}
 }
