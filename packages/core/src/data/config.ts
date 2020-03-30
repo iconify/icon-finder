@@ -17,8 +17,8 @@ import { Data, DataStorage, DataChildStorage } from '../data';
  * API servers hosted at different providers.
  */
 const fallBackAPISources = [
-	'https://api1.simplesvg.com',
-	'https://api2.iconify.design',
+	'https://api.simplesvg.com',
+	'https://api.unisvg.com',
 ];
 
 // Shuffle fallback API
