@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@iconify/types": "^1.0.0",
-		"@cyberalien/redundancy": "^0.0.6",
+		"@cyberalien/redundancy": "^0.1.0",
 		"axios": "^0.19.1"
 	}
 }

@@ -13,5 +13,14 @@
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/iconify/icon-finder.git"
+	},
+	"scripts": {
+		"bootstrap": "lerna bootstrap --force-local",
+		"clean": "lerna clean",
+		"link": "lerna link --force-local",
+		"setup": "npm run clean && npm run bootstrap"
+	},
+	"devDependencies": {
+		"lerna": "^3.20.2"
 	}
 }

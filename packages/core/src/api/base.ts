@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
-import { Redundancy, RedundancyPendingItem } from '@cyberalien/redundancy';
+import {
+	initRedundancy,
+	Redundancy,
+	RedundancyPendingItem,
+	RedundancyQueryCallback,
+} from '@cyberalien/redundancy';
 import { Registry } from '../registry';
 
 export interface APIParams {
@@ -116,19 +121,20 @@ export class BaseAPI {
 				? this._initRedundancy()
 				: this._redundancy;
 
-		const query = redundancy.find(
-			item => item.status === 'pending' && item.payload === uri
-		);
+		const query = redundancy.find(item => {
+			const status = item();
+			return status.status === 'pending' && status.payload === uri;
+		});
 		if (query !== null) {
 			// Attach callback to existing query
-			query.doneCallback(data => {
+			query().subscribe(data => {
 				callback(data, false);
 			});
 			return;
 		}
 
 		// Create new query. Query will start on next tick, so no need to set timeout
-		redundancy.query(uri, this._query, data => {
+		redundancy.query(uri, this._query as RedundancyQueryCallback, data => {
 			callback(data, false);
 		});
 	}
@@ -150,9 +156,10 @@ export class BaseAPI {
 		}
 
 		const uri = mergeQuery(endpoint, params);
-		const query = this._redundancy.find(
-			item => item.status === 'pending' && item.payload === uri
-		);
+		const query = this._redundancy.find(item => {
+			const status = item();
+			return status.status === 'pending' && status.payload === uri;
+		});
 
 		return query !== null;
 	}
@@ -170,7 +177,7 @@ export class BaseAPI {
 	 */
 	_initRedundancy(): Redundancy {
 		const config = this._registry.config;
-		return (this._redundancy = new Redundancy(config.data.API));
+		return (this._redundancy = initRedundancy(config.data.API));
 	}
 
 	/**
