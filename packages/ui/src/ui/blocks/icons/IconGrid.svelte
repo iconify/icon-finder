@@ -35,10 +35,10 @@
 	let svg = false;
 	$: {
 		const newSVG = exists
-			? Iconify.getSVG(name, {
-					'data-width': '1em',
-					'data-height': '1em',
-					'data-inline': false,
+			? Iconify.renderHTML(name, {
+					width: '1em',
+					height: '1em',
+					inline: false,
 			  })
 			: false;
 		if (newSVG !== svg) {

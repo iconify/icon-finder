@@ -40,7 +40,7 @@
 
 	// Event listener
 	let updateCounter = 0;
-	let assignedEvent = false;
+	let abortLoader = null;
 	const loadingEvent = () => {
 		updateCounter++;
 	};
@@ -53,18 +53,17 @@
 
 		loaded = selectedIcon ? Iconify.iconExists(iconName) : false;
 		if (selectedIcon && !loaded) {
-			if (!assignedEvent) {
-				assignedEvent = true;
-				document.addEventListener('IconifyAddedIcons', loadingEvent, true);
+			if (abortLoader !== null) {
+				abortLoader();
 			}
-			Iconify.preloadImages([iconName]);
+			abortLoader = Iconify.loadIcons([iconName], loadingEvent);
 		}
 	}
 
 	// Remove event listener
 	onDestroy(() => {
-		if (assignedEvent) {
-			document.removeEventListener('IconifyAddedIcons', loadingEvent, true);
+		if (abortLoader !== null) {
+			abortLoader();
 		}
 	});
 </script>

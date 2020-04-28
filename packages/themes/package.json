@@ -15,12 +15,13 @@
 	"homepage": "https://github.com/iconify/icon-finder",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/iconify/icon-finder.git"
+		"url": "https://github.com/iconify/icon-finder.git",
+		"directory": "packages/themes"
 	},
 	"devDependencies": {
 		"@cyberalien/conditional-replacements": "^0.0.2",
-		"node-sass": "^4.13.1",
-		"nodemon": "^2.0.2"
+		"node-sass": "^4.14.0",
+		"nodemon": "^2.0.3"
 	},
 	"nodemonConfig": {
 		"ignore": [

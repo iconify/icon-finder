@@ -1,4 +1,6 @@
 <script context="module">
+	import Iconify from '@iconify/iconify';
+
 	// List of key maps: key = block name, value = icon attribute
 	const filtersMap = {
 		tags: 'tags',
@@ -45,10 +47,10 @@
 	let svg = false;
 	$: {
 		const newSVG = exists
-			? Iconify.getSVG(name, {
-					'data-width': '1em',
-					'data-height': '1em',
-					'data-inline': false,
+			? Iconify.renderHTML(name, {
+					width: '1em',
+					height: '1em',
+					inline: false,
 			  })
 			: false;
 		if (newSVG !== svg) {

@@ -30,7 +30,7 @@
 
 	// Event listener
 	let loadingIconName = '';
-	let assignedEvent = false;
+	let abortLoader = null;
 	const loadingEvent = () => {
 		if (
 			lastIconName !== loadingIconName &&
@@ -56,18 +56,18 @@
 		}
 
 		// Attempt to load icon from API
-		if (!assignedEvent) {
-			assignedEvent = true;
-			document.addEventListener('IconifyAddedIcons', loadingEvent, true);
-		}
 		loadingIconName = value;
-		Iconify.preloadImages([loadingIconName]);
+		if (abortLoader !== null) {
+			abortLoader();
+		}
+		abortLoader = Iconify.loadIcons([loadingIconName], loadingEvent);
 	}
 
 	// Remove event listener
 	onDestroy(() => {
-		if (assignedEvent) {
-			document.removeEventListener('IconifyAddedIcons', loadingEvent, true);
+		if (abortLoader !== null) {
+			abortLoader();
+			abortLoader = null;
 		}
 	});
 </script>

@@ -1,8 +1,8 @@
 <script context="module">
 	import Iconify from '@iconify/iconify';
 
-	Iconify.setConfig('localStorage', false);
-	Iconify.setConfig('sessionStorage', false);
+	Iconify.enableCache('local', false);
+	Iconify.enableCache('session', false);
 
 	// @iconify-replacement: 'uiIcons = {}'
 	const uiIcons = {};
@@ -50,7 +50,7 @@
 	let loaded = false;
 	let svg = '';
 	let updateCounter = 0;
-	let assignedEvent = false;
+	let abortLoader = null;
 
 	// Resolve icon name
 	$: {
@@ -98,32 +98,32 @@
 			if (loaded !== Iconify.iconExists(name)) {
 				// Update variable only if it needs to be updated
 				loaded = !loaded;
-				if (typeof onLoad === 'function') {
+				if (loaded && typeof onLoad === 'function') {
 					onLoad();
 				}
 			}
 			if (!loaded) {
-				// Icon is not loaded - assign loading event listener and load it
-				if (!assignedEvent) {
-					assignedEvent = true;
-					document.addEventListener('IconifyAddedIcons', loadingEvent, true);
+				// Icon is not loaded
+				if (abortLoader !== null) {
+					abortLoader();
 				}
-				Iconify.preloadImages([name]);
+				abortLoader = Iconify.loadIcons([name], loadingEvent);
 			} else {
 				// Icon is loaded - generate SVG
 				const iconProps = Object.assign(
 					{
-						'data-inline': false,
-						'data-height': height ? height : defaultHeight,
+						inline: false,
+						height: height ? height : defaultHeight,
 					},
 					typeof props === 'object' ? props : {}
 				);
-				let newSVG = Iconify.getSVG(name, iconProps);
+				console.log('Rendering:', name, iconProps);
+				let newSVG = Iconify.renderHTML(name, iconProps);
+				console.log('Got:', newSVG);
 				if (uiIcons['class'] !== void 0) {
-					// Temporary fix until Iconify 2 is available
 					newSVG = newSVG.replace(
-						'<svg ',
-						'<svg class="' + uiIcons['class'] + '" '
+						' class="iconify ',
+						' class="iconify ' + uiIcons['class'] + ' '
 					);
 				}
 
@@ -140,8 +140,9 @@
 
 	// Remove event listener
 	onDestroy(() => {
-		if (assignedEvent) {
-			document.removeEventListener('IconifyAddedIcons', loadingEvent, true);
+		if (abortLoader !== null) {
+			abortLoader();
+			abortLoader = null;
 		}
 	});
 </script>

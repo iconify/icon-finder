@@ -19,7 +19,8 @@
 	"homepage": "https://github.com/iconify/icon-finder",
 	"repository": {
 		"type": "git",
-		"url": "git://github.com/iconify/icon-finder.git"
+		"url": "https://github.com/iconify/icon-finder.git",
+		"directory": "packages/core"
 	},
 	"devDependencies": {
 		"@types/chai": "^4.2.11",

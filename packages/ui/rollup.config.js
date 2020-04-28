@@ -118,16 +118,12 @@ if (typeof config.options === 'object') {
 	replacementPairs['options = {}'] =
 		'options = ' + JSON.stringify(config.options);
 }
-if (typeof config.iconify === 'object') {
-	replacementPairs['iconifyOptions = {}'] =
-		'iconifyOptions = ' + JSON.stringify(config.iconify);
-}
 
 // Icons
 if (typeof config.theme.icons !== 'object') {
 	throw new Error('Theme error: missing "icons" object.');
 }
-requiredIcons.forEach(icon => {
+requiredIcons.forEach((icon) => {
 	if (config.theme.icons[icon] === void 0) {
 		throw new Error(`Theme error: missing icon "${icon}`);
 	}
@@ -207,9 +203,9 @@ if (!Object.keys(config.iconProps).length) {
 		},
 	];
 
-	tests.forEach(item => {
+	tests.forEach((item) => {
 		let exists = false;
-		item.test.forEach(key => {
+		item.test.forEach((key) => {
 			if (config.iconProps[key]) {
 				exists = true;
 			}
@@ -249,12 +245,12 @@ export default {
 		resolve({
 			browser: true,
 			extensions: ['.ts', '.js', '.svelte'],
-			dedupe: importee =>
+			dedupe: (importee) =>
 				importee === 'svelte' || importee.startsWith('svelte/'),
 		}),
 		svelte({
 			preprocess: {
-				script: input => {
+				script: (input) => {
 					return {
 						code: replacements.parse(input.content),
 					};
@@ -263,7 +259,7 @@ export default {
 		}),
 		commonjs(),
 		typescript({
-			preprocess: code => {
+			preprocess: (code) => {
 				const result = replacements.parse(code);
 				// console.log(result);
 				return result;
@@ -282,7 +278,7 @@ export default {
  * @param {*} source
  */
 function merge(target, source, parentKey = '') {
-	Object.keys(source).forEach(key => {
+	Object.keys(source).forEach((key) => {
 		if (target[key] === void 0) {
 			target[key] = source[key];
 			return;
@@ -349,11 +345,11 @@ function parseConfig(config, file) {
 function setConfig(str) {
 	const files = str
 		.split(',')
-		.map(item => item.trim())
-		.filter(item => item.match(/^[a-z0-9_.-]+$/g));
+		.map((item) => item.trim())
+		.filter((item) => item.match(/^[a-z0-9_.-]+$/g));
 
 	console.log(`Configuration: ${files.join(', ')}`);
-	files.forEach(file => {
+	files.forEach((file) => {
 		parseConfig(config, file);
 	});
 }
@@ -410,7 +406,7 @@ function parseThemeConfig(config, theme) {
 function capitalise(text) {
 	return text
 		.split('-')
-		.map(item => item.slice(0, 1).toUpperCase() + item.slice(1))
+		.map((item) => item.slice(0, 1).toUpperCase() + item.slice(1))
 		.join('');
 }
 
@@ -440,9 +436,9 @@ function normaliseConfig(config) {
 			(() => {
 				const buttons = footer.buttons
 					.split(/[,|]/)
-					.filter(item => item !== '' && item !== 'none');
+					.filter((item) => item !== '' && item !== 'none');
 				footer.buttons = {};
-				buttons.forEach(button => {
+				buttons.forEach((button) => {
 					footer.buttons[button] = true;
 				});
 			})();
@@ -603,7 +599,7 @@ function normaliseConfig(config) {
 	const props = {};
 
 	Object.keys(config.customisations ? config.customisations : {}).forEach(
-		prop => {
+		(prop) => {
 			const customisations = config.customisations;
 
 			switch (prop) {

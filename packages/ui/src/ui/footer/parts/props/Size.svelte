@@ -1,8 +1,6 @@
 <script>
-	import {
-		calculateDimension,
-		getDimensions,
-	} from '../../../../misc/icon-size';
+	import Iconify from '@iconify/iconify';
+	import { getDimensions } from '../../../../misc/icon-size';
 	import Block from './Block.svelte';
 	import SizeInput from './SizeInput.svelte';
 
@@ -76,7 +74,7 @@
 					type === 'width'
 						? iconData.height / iconData.width
 						: iconData.width / iconData.height;
-				value = calculateDimension(value, ratio);
+				value = Iconify.calculateSize(value, ratio);
 			}
 			placeholders = {
 				[type]: value,

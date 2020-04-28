@@ -5,8 +5,8 @@
 	import IconList from './IconList.svelte';
 	import IconGrid from './IconGrid.svelte';
 
-	Iconify.setConfig('localStorage', false);
-	Iconify.setConfig('sessionStorage', false);
+	Iconify.enableCache('local', false);
+	Iconify.enableCache('session', false);
 
 	const baseClass = 'iif-icons';
 
@@ -40,7 +40,7 @@
 	}
 
 	// Event listener for loading icons
-	let assignedEvent = false;
+	let abortLoader = null;
 	let updateCounter = 0;
 	const loadingEvent = () => {
 		updateCounter++;
@@ -173,11 +173,10 @@
 
 		// Load pending images
 		if (pending.length) {
-			if (!assignedEvent) {
-				assignedEvent = true;
-				document.addEventListener('IconifyAddedIcons', loadingEvent, true);
+			if (abortLoader !== null) {
+				abortLoader();
 			}
-			Iconify.preloadImages(pending);
+			abortLoader = Iconify.loadIcons(pending, loadingEvent);
 		}
 
 		// Overwrite parseIcons variable only if something was updated, triggering component re-render
@@ -199,8 +198,9 @@
 
 	// Remove event listener
 	onDestroy(() => {
-		if (assignedEvent) {
-			document.removeEventListener('IconifyAddedIcons', loadingEvent, true);
+		if (abortLoader !== null) {
+			abortLoader();
+			abortLoader = null;
 		}
 	});
 </script>
