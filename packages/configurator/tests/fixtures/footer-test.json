@@ -1,0 +1,11 @@
+{
+	"showFooter": false,
+	"footer": {
+		"components": {
+			"name": "simple-editable"
+		},
+		"customisations": {
+			"color": false
+		}
+	}
+}

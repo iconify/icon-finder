@@ -1,4 +1,4 @@
-import { Data as DataClass, DataStorage, DataChildStorage } from './data';
+import { Data, DataStorage, DataChildStorage } from './data';
 import { Registry as RegistryClass } from './registry';
 import { getRegistry } from './registry/storage';
 import { PartialRoute, objectToRoute } from './route/types';
@@ -59,8 +59,7 @@ export { Router, RouterEvent };
 export type Registry = RegistryClass;
 
 // From config
-export type Data = DataClass;
-export { DataStorage, DataChildStorage };
+export { Data, DataStorage, DataChildStorage };
 
 // From views
 export { ViewBlocks } from './views/types';
@@ -72,6 +71,9 @@ export { IconsList, CustomViewBlocks } from './views/custom';
 // From icons
 export { Icon };
 export { iconToString, validateIcon, compareIcons, stringToIcon } from './icon';
+
+// Objects
+export { compareObjects, cloneObject } from './objects';
 
 /**
  * API core configuration
@@ -119,7 +121,7 @@ export class APICore {
 		// Subscribe to events
 		events.subscribe('render', this._routerEvent.bind(this));
 		if (typeof config.custom === 'object' && config.custom !== null) {
-			Object.keys(config.custom).forEach(customType => {
+			Object.keys(config.custom).forEach((customType) => {
 				events.subscribe(
 					'load-' + customType,
 					this._loadCustomIconsEvent.bind(

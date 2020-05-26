@@ -1,0 +1,26 @@
+{
+	"name": "@iconify/search-configurator",
+	"private": true,
+	"description": "Iconify Search, configuration builder",
+	"version": "0.0.0-dev",
+	"author": "Vjacheslav Trushkin",
+	"license": "(Apache-2.0 OR GPL-2.0)",
+	"main": "./lib/index.js",
+	"scripts": {
+		"build": "tsc -b",
+		"test": "npx mocha tests/*_test.js"
+	},
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/iconify/icon-finder.git",
+		"directory": "packages/builder"
+	},
+	"devDependencies": {
+		"chai": "^4.2.0",
+		"mocha": "^7.2.0",
+		"typescript": "^3.9.3"
+	},
+	"dependencies": {}
+}

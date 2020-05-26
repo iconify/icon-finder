@@ -4,15 +4,15 @@
  * This function does not handle anything other than primitive types + Arrays.
  * This function is on average 10 times faster than JSON.parse(JSON.stringify(obj)) on small objects, several times faster on big objects
  */
-export function clone(obj: unknown): unknown {
+export function cloneObject(obj: unknown): unknown {
 	if (typeof obj !== 'object' || obj === null) {
 		return obj;
 	}
 
 	if (obj instanceof Array) {
-		return obj.map(item => {
+		return obj.map((item) => {
 			if (typeof item === 'object') {
-				return clone(item);
+				return cloneObject(item);
 			} else {
 				return item;
 			}
@@ -25,7 +25,7 @@ export function clone(obj: unknown): unknown {
 		if (typeof (obj as Record<string, unknown>)[key] !== 'object') {
 			result[key] = (obj as Record<string, unknown>)[key];
 		} else {
-			result[key] = clone((obj as Record<string, object>)[key]);
+			result[key] = cloneObject((obj as Record<string, object>)[key]);
 		}
 	}
 	return result;
@@ -36,7 +36,7 @@ export function clone(obj: unknown): unknown {
  *
  * This function does not handle anything other than primitive types + Arrays.
  */
-export function compare(obj1: unknown, obj2: unknown): boolean {
+export function compareObjects(obj1: unknown, obj2: unknown): boolean {
 	if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
 		return obj1 === obj2;
 	}
@@ -66,7 +66,7 @@ export function compare(obj1: unknown, obj2: unknown): boolean {
 				if (
 					typeof value1 !== 'object' ||
 					typeof value2 !== 'object' ||
-					!compare(value1, value2)
+					!compareObjects(value1, value2)
 				) {
 					return false;
 				}
@@ -95,7 +95,7 @@ export function compare(obj1: unknown, obj2: unknown): boolean {
 
 		if (typeof (obj1 as Record<string, unknown>)[key] === 'object') {
 			if (
-				!compare(
+				!compareObjects(
 					(obj1 as Record<string, object>)[key],
 					(obj2 as Record<string, object>)[key]
 				)

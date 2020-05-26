@@ -1,0 +1,30 @@
+{
+	"name": "@iconify/search-components",
+	"private": true,
+	"description": "Iconify Search, UI components",
+	"version": "0.0.0-dev",
+	"author": "Vjacheslav Trushkin",
+	"license": "(Apache-2.0 OR GPL-2.0)",
+	"scripts": {
+		"build": "node build",
+		"build:configure": "node configure",
+		"build:lib": "tsc --project tsconfig-configured.json"
+	},
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/iconify/icon-finder.git",
+		"directory": "packages/components"
+	},
+	"devDependencies": {
+		"@iconify/search-core": "0.0.0-dev",
+		"@cyberalien/conditional-replacements": "^0.0.2",
+		"typescript": "^3.8.3"
+	},
+	"dependencies": {
+		"@iconify/iconify": "^2.0.0-beta.2",
+		"@iconify/types": "^1.0.2",
+		"cyberalien-color": "^1.0.0"
+	}
+}

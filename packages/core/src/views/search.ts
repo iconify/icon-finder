@@ -15,7 +15,7 @@ import {
 } from '../blocks/pagination';
 import { getRegistry } from '../registry/storage';
 import { View } from './types';
-import { clone } from '../objects';
+import { cloneObject } from '../objects';
 
 /**
  * Blocks
@@ -263,7 +263,7 @@ export class SearchView extends BaseView {
 		}
 		const blocks = this.render();
 		return blocks !== null && blocks.collections !== null
-			? (clone(blocks.collections) as FiltersBlock)
+			? (cloneObject(blocks.collections) as FiltersBlock)
 			: null;
 	}
 
@@ -342,7 +342,7 @@ export class SearchView extends BaseView {
 			// Store collections in global data
 			const registry = getRegistry(this._instance);
 			const collections = registry.collections;
-			prefixes.forEach(prefix => {
+			prefixes.forEach((prefix) => {
 				collections.set(prefix, parsedData.collections[prefix]);
 			});
 
@@ -352,7 +352,7 @@ export class SearchView extends BaseView {
 				this._blocks.collections = block;
 				block.filterType = 'collections';
 
-				prefixes.forEach(prefix => {
+				prefixes.forEach((prefix) => {
 					block.filters[prefix] = defaultFilter(
 						parsedData.collections[prefix].name
 					);

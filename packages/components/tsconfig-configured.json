@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"rootDir": "./src-configured",
+		"outDir": "./lib",
+		"target": "ES2019",
+		"module": "commonjs",
+		"declaration": true,
+		"strict": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["./src-configured/"],
+	"exclude": ["./src/"]
+}

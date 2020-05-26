@@ -1,0 +1,10 @@
+{
+	"footer": {
+		"buttons": {
+			"submit": {
+				"type": "primary",
+				"title": "Submit"
+			}
+		}
+	}
+}

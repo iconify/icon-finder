@@ -1,6 +1,5 @@
 {
 	"parent": "default",
-	"rotation": 13,
 	"icons": {
 		"size": 16,
 		"class": "iconify arty-animated",

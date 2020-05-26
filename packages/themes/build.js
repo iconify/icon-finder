@@ -1,128 +1,89 @@
 const fs = require('fs');
-const path = require('path');
 const sass = require('node-sass');
 
 // Config and constants
+const rootDir = __dirname.replace(/\\/g, '/');
+
 const requiredFiles = ['theme.json'];
 const split = /[\\/]/;
-const themeMatch = /^[a-z0-9_.-]+$/gi;
-const rootDir = __dirname.replace(/\\/g, '/');
-const allowedRootDir = rootDir;
 
-// Get list of themes to parse
-let themes = [];
-let gotParams = false;
+const themeMatch = /^[a-z0-9][a-z0-9_.-]+[a-z0-9]$/gi;
+const outDir = 'dist';
+const reservedDirs = [outDir, 'node_modules'];
+
+// Options
+let verbose = false;
+let themes = Object.create(null);
+
+// Add themes
+const addThemes = (value, err) => {
+	const parts = value.split(',');
+	parts.forEach((theme) => {
+		if (!theme.match(themeMatch)) {
+			console.error(err);
+			process.exit(1);
+		}
+
+		if (reservedDirs.indexOf(theme.toLowerCase()) !== -1) {
+			console.error(err);
+			process.exit(1);
+		}
+
+		themes[theme] = true;
+	});
+};
+
+// Parse parameters
 if (process.argv.length > 2) {
-	process.argv.slice(2).forEach(cmd => {
-		if (cmd.slice(0, 1) === '-') {
-			// Some command? Not supported for now.
-			return;
+	let nextTheme = true; // Assume first argument is list of themes
+	process.argv.slice(2).forEach((param) => {
+		if (param.slice(0, 2) === '--') {
+			nextTheme = false;
+			switch (param) {
+				case '--verbose':
+					verbose = true;
+					return;
+
+				case '--theme':
+					// next argument is theme
+					nextTheme = true;
+					return;
+
+				default:
+					const parts = param.split('=');
+					if (parts.length === 2 && parts.shift() === '--theme') {
+						// `--theme=name`
+						addThemes(parts.pop(), `Invalid parameter "${param}".`);
+						return;
+					}
+					console.error(`Invalid parameter "${param}".`);
+					process.exit(1);
+			}
 		}
 
-		// Add theme from parameter
-		gotParams = true;
-		const result = addTheme(cmd);
-		if (typeof result === 'string') {
-			console.error(`Theme "${cmd}" cannot be parsed: ${result}`);
+		if (!nextTheme) {
+			console.error(`Invalid parameter "${param}".`);
+			process.exit(1);
 		}
+		nextTheme = false;
+
+		addThemes(param, `Invalid parameter "${param}".`);
 	});
-	if (!themes.length) {
-		return;
-	}
 }
+
+// Try UI_THEME env variable
 if (typeof process.env.UI_THEME === 'string') {
-	gotParams = true;
-	process.env.UI_THEME.split(',').forEach(theme => {
-		const result = addTheme(theme);
-		if (typeof result === 'string') {
-			console.error(`Theme "${theme}" cannot be parsed: ${result}`);
-		}
-	});
+	const param = process.env.UI_THEME;
+	addThemes(param, `Invalid UI_THEME environment variable "${param}".`);
 }
 
-if (!gotParams) {
-	findAllThemes();
-	if (!themes.length) {
-		console.error('No valid themes found');
-		return;
-	}
-}
-
-// Parse themes
-const built = [];
-const failed = [];
-const log = Object.create(null);
-
-nextTheme();
-
-/**
- * Find all themes
- */
-function findAllThemes() {
-	fs.readdirSync(rootDir).forEach(file => {
-		addTheme(file);
-	});
-}
-
-/**
- * Add theme to queue
- *
- * @param {string} theme
- */
-function addTheme(theme) {
-	if (!theme.match(themeMatch)) {
-		console.error('invalid theme');
-		return;
-	}
-
-	if (themes.indexOf(theme) === -1) {
-		// Check directory
-		try {
-			const stat = fs.lstatSync(rootDir + '/' + theme);
-			if (!stat.isDirectory()) {
-				return 'no such directory';
-			}
-		} catch (err) {
-			return 'no such directory';
-		}
-
-		// Check for required files
-		for (let i = 0; i < requiredFiles.length; i++) {
-			const file = requiredFiles[i];
-			try {
-				fs.lstatSync(rootDir + '/' + theme + '/' + file);
-			} catch (err) {
-				return 'missing ' + file;
-			}
-		}
-
-		// Check for style.scss
-		const style = findStyle(theme);
-		if (style === null) {
-			return 'missing style.scss';
-		}
-
-		// Add to queue
-		themes.push(theme);
-		return true;
-	}
-	return false;
-}
-
-/**
- * Log stuff
- */
-function doneBuilding() {
-	fs.writeFileSync(
-		__dirname + '/build.log',
-		JSON.stringify(log, null, 4),
-		'utf8'
+// Check all themes
+themes = Object.keys(themes);
+if (!themes.length) {
+	console.error(
+		'Missing theme name parameter. Use `node build --theme theme-name`'
 	);
-	if (failed.length) {
-		process.kill(process.pid, 'SIGINT');
-	} else {
-		process.exit(0);
-	}
+	process.exit(1);
 }
 
 /**
@@ -131,332 +92,412 @@ function doneBuilding() {
 function nextTheme() {
 	const theme = themes.shift();
 	if (theme === void 0) {
-		doneBuilding();
 		return;
 	}
+	requiredFiles.forEach((file) => {
+		const filename = theme + '/' + file;
+		if (!fileExists(rootDir + '/' + filename)) {
+			console.error(`Missing required file: ${filename}`);
+			process.exit(1);
+		}
+	});
 
-	if (built.indexOf(theme) !== -1 || failed.indexOf(theme) !== -1) {
-		// Duplicate
-		setTimeout(nextTheme);
-		return;
+	if (verbose) {
+		console.log('Parsing theme:', theme);
 	}
 
-	if (built.length || failed.length) {
-		console.log('\n------');
-	}
-	console.log('Bulding theme:', theme);
-	buildTheme(theme)
-		.then(css => {
-			built.push(theme);
-			console.log(`Success (${css.length} bytes)`);
-			log[theme] = {
-				success: true,
-				length: css.length,
-			};
+	// Get theme config and parent themes
+	const themesTree = [];
+	const config = getConfig(theme);
+
+	// Root directory for current theme
+	const themeRootDir = rootDir + '/' + theme;
+
+	// Build theme
+	buildTheme()
+		.then((css) => {
+			const dir = rootDir + '/' + outDir;
+			try {
+				fs.mkdirSync(dir, 0o755);
+			} catch (err) {}
+
+			// Write stylesheet
+			fs.writeFileSync(`${dir}/${theme}.css`, css);
+			console.log(`Saved ${outDir}/${theme}.css (${css.length} bytes)`);
+
+			// Write config
+			delete config.parent;
+			config.theme = theme;
+			config.parent = themesTree.slice(1);
+
+			const content = JSON.stringify(config, null, 4);
+			fs.writeFileSync(`${dir}/${theme}.json`, content);
+			console.log(
+				`Saved ${outDir}/${theme}.json (${content.length} bytes)`
+			);
 			setTimeout(nextTheme);
 		})
-		.catch(err => {
-			failed.push(theme);
-
-			if (typeof err !== 'string') {
-				try {
-					err = err.toString();
-				} catch (e) {}
-			}
-			if (typeof err === 'string' && allowedRootDir.length > 0) {
-				while (err.indexOf(allowedRootDir + '/') !== -1) {
-					err = err.replace(allowedRootDir + '/', '');
-				}
-			}
+		.catch((err) => {
 			console.error(err);
-
-			log[theme] = {
-				success: false,
-				error: typeof err === 'string' ? err : 'Error',
-			};
-			setTimeout(nextTheme);
+			process.exit(1);
 		});
-}
 
-/**
- * Build theme
- *
- * @param {string} theme
- */
-function buildTheme(theme) {
-	return new Promise((fulfill, reject) => {
-		// Get parent themes
-		let parents = [];
+	/**
+	 * Check if file exists
+	 */
+	function fileExists(filename) {
 		try {
-			checkParent(theme);
+			fs.lstatSync(filename);
+			return true;
 		} catch (err) {
-			reject(
-				typeof err === 'string'
-					? `Cannot find parent theme "${err}"`
-					: `Cannot find parent theme`
-			);
-			return;
+			return false;
+		}
+	}
+
+	/**
+	 * Get theme configuration
+	 */
+	function getConfig(theme) {
+		const filename = theme + '/theme.json';
+		if (!fileExists(rootDir + '/' + filename)) {
+			console.error(`Missing required file: ${filename}`);
+			process.exit(1);
 		}
 
-		// Get style.scss
-		let content;
-		const rootFile = `${rootDir}/${theme}/style.scss`;
-		const actualFile = findStyle(theme);
-		if (actualFile === null) {
-			reject(`Cannot find style.scss for theme "${theme}"`);
-			return;
-		}
-		try {
-			content = fs.readFileSync(actualFile, 'utf8');
-		} catch (err) {
-			reject(`Cannot find style.scss for theme "${theme}"`);
-			return;
+		// Get config
+		const config = JSON.parse(
+			fs.readFileSync(rootDir + '/' + filename, 'utf8')
+		);
+		if (typeof config !== 'object') {
+			console.error(`Invalid config file: ${filename}`);
+			process.exit(1);
 		}
 
-		sass.render(
-			{
-				file: rootFile,
-				data: content,
-				outputStyle: 'expanded',
-				indentType: 'tab',
-				indentWidth: 1,
-				importer: (url, prev, done) => {
-					let entry;
-					try {
-						entry = relativeFile(url, prev);
-					} catch (err) {
-						reject(err);
-						return;
-					}
+		// Add theme to tree
+		themesTree.push(theme);
 
-					// Get all possible filenames
-					let actualFile = null;
-					let returnedFile = null;
-					let contents = null;
-					try {
-						// Check if file is in current theme, add parent themes as possible directories
-						const baseThemeDir = `${rootDir}/${theme}`;
-						const dirs = [entry.dir];
+		// Check parent theme
+		if (config.parent !== void 0) {
+			const parent = config.parent;
+
+			// Check for valid name
+			if (
+				typeof parent !== 'string' ||
+				!parent.match(themeMatch) ||
+				reservedDirs.indexOf(parent.toLowerCase()) !== -1
+			) {
+				console.error(
+					`Invalid parent theme in config file: ${filename}`
+				);
+				process.exit(1);
+			}
+
+			// Check for loop
+			if (parent === theme || themesTree.indexOf(parent) !== -1) {
+				console.error(
+					`Invalid parent theme in config file: ${filename}`
+				);
+				process.exit(1);
+			}
+
+			// Get parent config and merge it
+			const parentConfig = getConfig(parent);
+			Object.keys(parentConfig).forEach((key) => {
+				if (config[key] === void 0) {
+					config[key] = parentConfig[key];
+					return;
+				}
+
+				// Merge / ignore
+				switch (key) {
+					case 'icons':
+						// Merge objects
 						if (
-							entry.dir.slice(0, baseThemeDir.length) ===
-							baseThemeDir
+							typeof config[key] !== 'object' ||
+							typeof parentConfig[key] !== 'object'
 						) {
-							const extra = entry.dir.slice(baseThemeDir.length);
-							if (extra === '' || extra.slice(0, 1) === '/') {
-								parents.forEach(parent => {
-									dirs.push(`${rootDir}/${parent}` + extra);
-								});
+							return;
+						}
+						Object.keys(parentConfig[key]).forEach((key2) => {
+							if (config[key][key2] === void 0) {
+								config[key][key2] = parentConfig[key][key2];
 							}
+						});
+						return;
+
+					default:
+					// Do nothing - config overwrites parentConfig value
+				}
+			});
+		}
+
+		return config;
+	}
+
+	/**
+	 * Build theme
+	 */
+	function buildTheme() {
+		return new Promise((fulfill, reject) => {
+			// Get theme.scss
+			let content;
+			const actualFile = locateFile('theme.scss');
+			if (actualFile === null) {
+				reject(`Cannot find theme.scss for theme "${theme}"`);
+				return;
+			}
+			try {
+				content = fs.readFileSync(actualFile, 'utf8');
+			} catch (err) {
+				reject(`Cannot find style.scss for theme "${theme}"`);
+				return;
+			}
+
+			if (verbose) {
+				console.log('Importing:', actualFile.slice(rootDir.length + 1));
+			}
+
+			sass.render(
+				{
+					file: themeRootDir + '/theme.scss',
+					data: content,
+					outputStyle: 'expanded',
+					indentType: 'tab',
+					indentWidth: 1,
+					importer: (url, prev, done) => {
+						let entry;
+						try {
+							entry = relativeFile(url, prev);
+						} catch (err) {
+							reject(err);
+							return;
 						}
 
-						// Parse all combinations of: directories, prefixes, extensions
-						dirs.forEach(dir => {
-							(entry.filename.slice(0, 1) === '_'
-								? ['']
-								: ['_', '']
-							).forEach(prefix => {
-								['.scss', '.css', ''].forEach(ext => {
-									actualFile =
-										dir +
-										'/' +
-										prefix +
-										entry.filename +
-										ext;
+						// Get all possible filenames
+						const filenames = [];
+						const parts = entry.filename.split('.');
+						const ext = parts.length > 1 ? parts.pop() : '';
 
-									if (returnedFile === null) {
-										// Use first entry as filename because it contains current theme, so it won't mess up theme hierarchy
-										returnedFile = actualFile;
-									}
+						(entry.filename.slice(0, 1) === '_'
+							? ['']
+							: ['_', '']
+						).forEach((prefix) => {
+							let extensions;
+							switch (ext) {
+								case 'css':
+								case 'scss':
+								case 'json':
+									extensions = [''];
+									break;
 
-									// console.log(`Testing: ${file}`);
-									try {
-										contents = fs.readFileSync(
-											actualFile,
-											'utf8'
-										);
-									} catch (e) {
-										return;
-									}
+								default:
+									extensions = ['.json', '.scss', '.css'];
+							}
 
-									// Got content. Break loops
-									throw new Error(`Found file ${actualFile}`);
-								});
+							extensions.forEach((ext) => {
+								filenames.push(prefix + entry.filename + ext);
 							});
 						});
-					} catch (err) {}
 
-					if (typeof contents !== 'string') {
-						reject(
-							`Cannot find import "${entry.filename}" in directory "${entry.dir}" (imported from "${prev}")`
-						);
-						return;
-					}
+						// Debug
+						// console.log(entry);
+						// console.log(filenames);
 
-					done({
-						file: returnedFile,
-						contents,
-					});
+						// Locate file
+						const locatedFile = locateFile(filenames, entry.dir);
+						if (locateFile === null) {
+							reject(
+								`Cannot find import "${entry.filename}" in directory "${entry.dir}" (imported from "${prev}")`
+							);
+							return;
+						}
+
+						// Get contents
+						let contents;
+						try {
+							contents = getStylesheet(locatedFile);
+						} catch (err) {
+							reject(
+								`Cannot read import "${entry.filename}" in directory "${entry.dir}" (imported from "${prev}")`
+							);
+							return;
+						}
+						if (verbose) {
+							console.log(
+								'Importing:',
+								locatedFile.slice(rootDir.length + 1)
+							);
+						}
+
+						done({
+							file:
+								themeRootDir + '/' + entry.dir + entry.filename,
+							contents,
+						});
+					},
 				},
-			},
-			(error, result) => {
-				if (error) {
-					if (
-						typeof error === 'object' &&
-						typeof error.formatted === 'string'
-					) {
-						reject(error.formatted);
+				(error, result) => {
+					if (error) {
+						if (
+							typeof error === 'object' &&
+							typeof error.formatted === 'string'
+						) {
+							reject(error.formatted);
+						} else {
+							reject(error);
+						}
 					} else {
-						reject(error);
+						const css = result.css.toString('utf8');
+						if (!css.length) {
+							reject('Theme is empty');
+							return;
+						}
+						fulfill(css);
 					}
-				} else {
-					const css = result.css.toString('utf8');
-					if (!css.length) {
-						reject('Theme is empty');
-						return;
-					}
+				}
+			);
+		});
+	}
 
-					fs.writeFileSync(
-						`${rootDir}/${theme}/style.css`,
-						result.css
+	/**
+	 * Get stylesheet
+	 */
+	function getStylesheet(filename) {
+		const ext = filename.split('.').pop();
+		const raw = fs.readFileSync(filename, 'utf8');
+
+		if (ext !== 'json') {
+			return raw;
+		}
+
+		// Get filename without extension, use it as variable name
+		let prefix = filename.split(split).pop().split('.').shift();
+		if (prefix.slice(0, 1) === '_') {
+			prefix = prefix.slice(1);
+		}
+
+		// Use "eval" to allow comments in file
+		let data;
+		eval('data = ' + raw);
+		const vars = [];
+
+		function parse(prefix, data) {
+			switch (typeof data) {
+				case 'object':
+					break;
+
+				case 'boolean':
+					vars.push(
+						'$' +
+							prefix +
+							': ' +
+							(data ? 'true !default;' : 'false !default;')
 					);
-					fulfill(css);
-				}
-			}
-		);
+					return;
 
-		/**
-		 * Find parent theme
-		 * Throws failed theme name on error
-		 *
-		 * @param {string} theme
-		 */
-		function checkParent(theme) {
-			// Get theme data
-			let data;
-			try {
-				data = fs.readFileSync(
-					`${rootDir}/${theme}/theme.json`,
-					'utf8'
+				default:
+					vars.push('$' + prefix + ': ' + data + ' !default;');
+					return;
+			}
+
+			// Object
+			if (data instanceof Array) {
+				// Only simple arrays allowed: strings and numbers
+				vars.push(
+					'$' + prefix + ': (' + data.join(', ') + ') !default;'
 				);
-				data = JSON.parse(data);
-			} catch (err) {
-				throw theme;
-			}
-
-			if (typeof data !== 'object') {
-				throw theme;
-			}
-
-			// Check if parent theme is set
-			if (typeof data.parent !== 'string' || data.parent === '') {
 				return;
 			}
 
-			// Validate parent theme
-			const parent = data.parent;
-			if (!parent.match(themeMatch)) {
-				throw parent;
-			}
-			if (parents.indexOf(parent) !== -1) {
-				console.error(
-					`Circular parent theme reference: "${theme}" - "${parent}"`
-				);
-				throw parent;
-			}
-
-			parents.push(parent);
-			checkParent(parent);
+			Object.keys(data).forEach((key) => {
+				parse(prefix + '-' + key, data[key]);
+			});
 		}
-	});
-}
 
-/**
- * Get absolute filename for imported file
- *
- * @param {string} url
- * @param {string} prev
- */
-function relativeFile(url, prev) {
-	function fail(message) {
-		throw message;
+		parse(prefix, data);
+
+		return vars.join('\n');
 	}
 
-	// console.log('Parsing URL:', url);
-	// console.log('Relative to:', prev);
-
-	// Get previous directory
-	let dir = prev.split(split);
-	dir.pop(); // Remove filename
-
-	const urlParts = url.split(split);
-	const filename = urlParts.pop();
-
-	urlParts.forEach(part => {
-		switch (part) {
-			case '':
-				fail(`Invalid import "${url}" in "${prev}".`);
-				return;
-
-			case '.':
-				return;
-
-			case '..':
-				dir.pop();
-				return;
-
-			default:
-				if (part.slice(0, 1) === '.') {
-					// No hidden files!
-					fail(`Invalid import "${url}" in "${prev}".`, theme);
+	/**
+	 * Locate file(s) using themes tree
+	 */
+	function locateFile(file, dir = '') {
+		const files = typeof file === 'string' ? [file] : file;
+		for (let i = 0; i < themesTree.length; i++) {
+			for (let j = 0; j < files.length; j++) {
+				const filename = `${rootDir}/${themesTree[i]}/${dir}${files[j]}`;
+				if (fileExists(filename)) {
+					return filename;
 				}
-				dir.push(part);
+			}
 		}
-	});
 
-	dir = dir.join('/');
-	if (dir.slice(0, allowedRootDir.length) !== allowedRootDir) {
-		fail(`Invalid import "${url}" in "${prev}".`, theme);
-	}
-
-	// console.log(`Returning: "${dir}" "${filename}"`);
-	return {
-		dir,
-		filename,
-	};
-}
-
-/**
- * Find style.scss, taking into consideration themes hierarchy
- *
- * @param {string} theme
- * @param {string[]} parents
- */
-function findStyle(theme, parents = []) {
-	// Check for style.scss in theme
-	const filename = `${rootDir}/${theme}/style.scss`;
-	try {
-		fs.lstatSync(filename);
-		return filename;
-	} catch (err) {}
-
-	// Check parent themes
-	let data;
-	try {
-		data = fs.readFileSync(`${rootDir}/${theme}/theme.json`, 'utf8');
-		data = JSON.parse(data);
-	} catch (err) {
 		return null;
 	}
 
-	// Validate theme.json
-	if (
-		typeof data !== 'object' ||
-		typeof data.parent !== 'string' ||
-		data.parent === '' ||
-		parents.indexOf(data.parent) !== -1
-	) {
-		return null;
-	}
+	/**
+	 * Get absolute filename for imported file
+	 *
+	 * @param {string} url
+	 * @param {string} prev
+	 */
+	function relativeFile(url, prev) {
+		function fail(message) {
+			throw message;
+		}
 
-	return findStyle(data.parent, parents.concat([data.parent]));
+		// console.log('Parsing URL:', url);
+		// console.log('Relative to:', prev);
+
+		// Get parent directories
+		const dirs = prev.split(split);
+		dirs.pop(); // Remove filename
+
+		const urlParts = url.split(split);
+		const filename = urlParts.pop();
+
+		urlParts.forEach((part) => {
+			switch (part) {
+				case '':
+					fail(`Invalid import "${url}" in "${prev}".`);
+					return;
+
+				case '.':
+					return;
+
+				case '..':
+					dirs.pop();
+					return;
+
+				default:
+					if (part.slice(0, 1) === '.') {
+						// No hidden files!
+						fail(`Invalid import "${url}" in "${prev}".`, theme);
+					}
+					dirs.push(part);
+			}
+		});
+
+		fullDir = dirs.join('/');
+		// console.log('Full directory:', fullDir);
+
+		// Get part after theme directory
+		if (fullDir.slice(0, themeRootDir.length) !== themeRootDir) {
+			fail(`Invalid import "${url}" in "${prev}".`, theme);
+		}
+		const dir = fullDir.slice(themeRootDir.length);
+
+		// console.log(`Returning: "${dir}" "${filename}"`);
+		const level = dir.split(split).length - 1;
+
+		return {
+			// Move '/' from start to end
+			dir: level ? dir.slice(1) + '/' : '',
+			level,
+			filename,
+		};
+	}
 }
+
+nextTheme();

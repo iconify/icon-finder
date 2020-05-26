@@ -1,5 +1,6 @@
 {
 	"name": "@iconify/search-core",
+	"private": true,
 	"description": "Iconify Search, core functions",
 	"version": "0.0.0-dev",
 	"author": "Vjacheslav Trushkin",

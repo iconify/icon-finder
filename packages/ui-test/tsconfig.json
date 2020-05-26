@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "lib",
+		"target": "ESNext",
+		"module": "ESNext",
+		"declaration": false,
+		"sourceMap": false,
+		"strict": true,
+		"types": ["svelte"],
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
+	}
+}

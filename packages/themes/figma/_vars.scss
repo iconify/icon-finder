@@ -1,4 +1,5 @@
 // Based on figma-plugin-ds
+@import 'rotation'; // Imports $rotation as array of colors / strings
 
 //font-stack
 $plugin-font-stack: 'Inter', sans-serif;
@@ -72,35 +73,10 @@ $plugin-palette-background-green: #00ad64; // Error message background
 
 // Rotation backgrounds
 $plugin-palette-background-rotation-blue: $plugin-palette-darker-blue; // Blue background in rotation
-$plugin-palette-background-colored-overlay: rgba(
-	255,
-	255,
-	255,
-	0.1
-); // Slightly modified blue background, used for samples in collections list
-$plugin-palette-background-rotation: (
-	// $plugin-palette-background-rotation-blue, // blue, used as default without rotation
-		#6f53fe,
-	// purple
-		#588542,
-	// desaturated green
-		#c600c6,
-	// pink,
-		#009e9e,
-	// cyan
-		#824e00,
-	// brown
-		#c6006b,
-	// dark red
-		#6786ab,
-	// desaturated blue
-		#00ad64,
-	// green,
-		#275cc6,
-	// blue 2
-		#ca8706,
-	// orange
-);
+$plugin-palette-background-colored-overlay: rgba(255, 255, 255, 0.1);
+
+// Slightly modified blue background, used for samples in collections list
+$plugin-palette-background-rotation: $rotation;
 $plugin-palette-background-rotation-total: length(
 	$plugin-palette-background-rotation
 );

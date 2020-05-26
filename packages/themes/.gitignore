@@ -1,5 +1,6 @@
 .idea
 .DS_Store
 node_modules
+dist
 */style.css
 build.log

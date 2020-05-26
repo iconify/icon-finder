@@ -1,5 +1,5 @@
 {
-	"name": "@iconify/search-theme",
+	"name": "@iconify/search-themes",
 	"private": true,
 	"description": "Iconify Search, Theme",
 	"version": "0.0.0-dev",
@@ -26,6 +26,7 @@
 	"nodemonConfig": {
 		"ignore": [
 			"*/style.css",
+			"dist/",
 			"node_modules/*"
 		]
 	}

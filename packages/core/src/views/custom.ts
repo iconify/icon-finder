@@ -14,7 +14,7 @@ import { getRegistry } from '../registry/storage';
 import { Icon, validateIcon, stringToIcon } from '../icon';
 import { SearchBlock, defaultSearchBlock } from '../blocks/search';
 import { View } from './types';
-import { clone } from '../objects';
+import { cloneObject } from '../objects';
 
 /**
  * Blocks
@@ -211,7 +211,7 @@ export class CustomView extends BaseView {
 
 		// Filter data
 		const parsedData: Icon[] = dataArray
-			.map(item => {
+			.map((item) => {
 				// Convert strings
 				if (typeof item === 'string') {
 					item = stringToIcon(item);
@@ -229,7 +229,7 @@ export class CustomView extends BaseView {
 				// Invalid icon
 				return null;
 			})
-			.filter(icon => icon !== null) as Icon[];
+			.filter((icon) => icon !== null) as Icon[];
 
 		// Save data
 		this._data = parsedData;
@@ -290,6 +290,6 @@ export class CustomView extends BaseView {
 		if (this.loading || this._blocks === null || this._data === null) {
 			return null;
 		}
-		return clone(this._data) as Icon[];
+		return cloneObject(this._data) as Icon[];
 	}
 }

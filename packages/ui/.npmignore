@@ -1,6 +1,0 @@
-.idea
-.vscode
-.DS_Store
-node_modules
-src
-dev.config.json

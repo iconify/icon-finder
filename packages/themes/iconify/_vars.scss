@@ -1,3 +1,5 @@
+@import 'rotation'; // Imports $rotation as array of colors / strings
+
 // Spacing between items
 $iif-spacing: 8px;
 
@@ -33,20 +35,7 @@ $iif-simple-border-color: palette('gray', 100);
 $iif-solid-border-color: palette('gray', 200);
 
 // Rotation
-$iif-rotation-palettes: (
-	'purple',
-	'teal',
-	'orange',
-	'blue-gray',
-	'green',
-	'indigo',
-	'brown',
-	'deep-purple',
-	'pink',
-	'cyan',
-	'light-green',
-	'red'
-);
+$iif-rotation-palettes: $rotation;
 $iif-rotation-palettes-length: length($iif-rotation-palettes);
 $iif-rotation-default-palette: 'light-blue';
 
