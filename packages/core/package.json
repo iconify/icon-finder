@@ -5,7 +5,8 @@
 	"version": "0.0.0-dev",
 	"author": "Vjacheslav Trushkin",
 	"license": "(Apache-2.0 OR GPL-2.0)",
-	"main": "./lib",
+	"main": "./lib/index.js",
+	"types": "./lib/index.d.ts",
 	"scripts": {
 		"cleanup": "rm -rf lib compiled-tests",
 		"lint": "npx eslint {src,tests}/**/*.ts",
