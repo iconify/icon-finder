@@ -1,4 +1,5 @@
 <script context="module">
+	// Footer options: buttons, customisations
 	// @iconify-replacement: 'footerOptions = {}'
 	let footerOptions = {};
 </script>
@@ -10,10 +11,15 @@
 
 	// @iconify-replacement: '/footer/Simple.svelte'
 	import Footer from './footer/Simple.svelte';
+	import {
+		emptyCustomisations,
+		mergeCustomisations,
+		filterCustomisations,
+	} from '../misc/customisations';
 
 	export let registry; /** @type {Registry} */
 	export let selectedIcon; /** @type {Icon | null} */
-	export let iconProps; /** @type {PartialIconProperties} */
+	export let customisations; /** @type {PartialIconCustomisations} */
 	export let route; /** @type {PartialRoute} */
 
 	// Translate buttons
@@ -31,6 +37,38 @@
 					: phrases.footerButtons[key];
 		}
 	});
+
+	// Customisations
+	let iconCustomisations;
+	$: {
+		iconCustomisations = mergeCustomisations(
+			emptyCustomisations,
+			customisations
+		);
+	}
+
+	// Change icon customisation value
+	function customise(prop, value) {
+		if (
+			iconCustomisations[prop] !== void 0 &&
+			iconCustomisations[prop] !== value &&
+			typeof iconCustomisations[prop] === typeof value
+		) {
+			// Change value then change object to force Svelte update components
+			iconCustomisations[prop] = value;
+			iconCustomisations = mergeCustomisations(
+				emptyCustomisations,
+				iconCustomisations
+			);
+
+			// Send event
+			registry.callback('prop', {
+				prop,
+				value,
+				filtered: filterCustomisations(iconCustomisations),
+			});
+		}
+	}
 
 	// Get icon name as string
 	let iconName = '';
@@ -74,5 +112,6 @@
 	{loaded}
 	{selectedIcon}
 	{iconName}
-	{iconProps}
+	{customise}
+	{iconCustomisations}
 	{route} />

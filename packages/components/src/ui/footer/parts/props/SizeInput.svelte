@@ -5,10 +5,9 @@
 	export let type; /** @type {string} */
 	export let value; /** @type {string} */
 	export let placeholder; /** @type {string} */
+	export let customise; /** @type {function} */
 
-	const defaultValue = registry.defaultProps[type].defaultValue;
 	const title = registry.phrases.footerBlocks[type];
-	const callback = registry.callback;
 
 	let lastValue = value;
 	let inputValue = value;
@@ -26,10 +25,7 @@
 
 		let num = newValue === '' ? '' : parseFloat(newValue);
 		if (!isNaN(num) && '' + num === newValue) {
-			callback('prop', {
-				prop: type,
-				value: num,
-			});
+			customise(type, '' + num);
 		}
 	}
 

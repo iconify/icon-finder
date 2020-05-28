@@ -7,6 +7,7 @@
 	"license": "(Apache-2.0 OR GPL-2.0)",
 	"scripts": {
 		"build": "node build",
+		"build:iconify": "node build --config-file configurator.iconify.json",
 		"build:dist": "rollup -c rollup.config.js"
 	},
 	"bugs": "https://github.com/iconify/icon-finder/issues",

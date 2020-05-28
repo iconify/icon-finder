@@ -6,7 +6,7 @@
 	// export let loaded; /** @type {boolean} */
 	// export let selectedIcon; /** @type {Icon} */
 	// export let iconName; /** @type {string} */
-	// export let iconProps; /** @type {PartialIconProperties} */
+	// export let iconCustomisations; /** @type {IconCustomisations} */
 	// export let route; /** @type {PartialRoute} */
 	export let footerOptions; /** @type {object} */
 </script>

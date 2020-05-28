@@ -18,12 +18,7 @@ import {
 } from '@iconify/search-components/lib/misc/options';
 
 import { phrases } from '@iconify/search-components/lib/modules/phrases';
-import {
-	exportCustomProperties,
-	PartialIconProperties,
-	ExtendedIconProperties,
-	iconProps,
-} from '@iconify/search-components/lib/misc/icon-properties';
+import { PropEventPayload } from '@iconify/search-components/lib/misc/events';
 
 /**
  * Function called by UI when something changes
@@ -49,8 +44,8 @@ export interface UIParams {
 	// Selected icon
 	selectedIcon?: Icon | null;
 
-	// Icon properties
-	iconProps?: PartialIconProperties;
+	// Icon customisations
+	// customisations?: PartialIconCustomisations;
 
 	// Default route
 	defaultRoute?: PartialRoute;
@@ -83,8 +78,8 @@ export class UI {
 	// Currently selected icon
 	protected _selectedIcon: Icon | null = null;
 
-	// Icon properties
-	protected _iconProps: PartialIconProperties;
+	// Customisations
+	// protected _customisations: PartialIconCustomisations;
 
 	/**
 	 * Constructor
@@ -129,23 +124,14 @@ export class UI {
 			this._selectedIcon = Object.assign({}, params.selectedIcon) as Icon;
 		}
 
-		// Icon properties
-		this._iconProps = {};
-		const props =
-			typeof params.iconProps === 'object' && params.iconProps !== null
-				? params.iconProps
+		// Icon customisations
+		/*
+		this._customisations =
+			typeof params.customisations === 'object' &&
+			params.customisations !== null
+				? params.customisations
 				: {};
-
-		Object.keys(iconProps).forEach((key) => {
-			const prop = key as keyof ExtendedIconProperties;
-			const defaultValue = iconProps[prop]!.emptyValue;
-
-			(this._iconProps as Record<string, unknown>)[prop] =
-				typeof props[prop] === typeof defaultValue
-					? props[prop]
-					: iconProps[prop]!.emptyValue;
-		});
-		registry.setCustom('defaultProps', iconProps);
+		*/
 	}
 
 	/**
@@ -189,7 +175,7 @@ export class UI {
 				: Object.assign({}, this._selectedIcon);
 
 		// Icon properties
-		result.iconProps = exportCustomProperties(iconProps, this._iconProps);
+		// result.customisations = exportCustomisations(iconProps, this._iconProps);
 
 		return result;
 	}
@@ -202,7 +188,7 @@ export class UI {
 		const props = {
 			...data,
 			selectedIcon: this._selectedIcon,
-			iconProps: this._iconProps,
+			// iconProps: this._iconProps,
 			registry: this._core.getInternalRegistry(),
 		};
 
@@ -258,29 +244,6 @@ export class UI {
 	}
 
 	/**
-	 * Icon property was changed
-	 */
-	_iconPropertyChanged(value: PropertyEventPayload): void {
-		// Replace properties object to trigger footer re-render
-		const props: PartialIconProperties = { ...this._iconProps };
-		(props as Record<string, unknown>)[value.prop] = value.value;
-		this._iconProps = props;
-
-		// Trigger event
-		this._triggerEvent(
-			'properties',
-			exportCustomProperties(iconProps, this._iconProps)
-		);
-
-		// Update container
-		if (this._container !== null) {
-			this._container.$set({
-				iconProps: props,
-			});
-		}
-	}
-
-	/**
 	 * Trigger event
 	 */
 	_triggerEvent(event: string, payload: unknown): void {
@@ -307,7 +270,10 @@ export class UI {
 
 			case 'prop':
 				// Property was changed
-				this._iconPropertyChanged(payload as PropertyEventPayload);
+				console.log(
+					'Changed property:',
+					(payload as PropEventPayload).prop
+				);
 				return;
 
 			case 'footer':

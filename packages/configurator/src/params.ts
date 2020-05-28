@@ -540,7 +540,7 @@ export class Params {
 		// Sample button to make sure fields are set correctly
 		const sampleButton: Required<FooterButton> = {
 			type: 'primary',
-			title: '',
+			text: '',
 			icon: '',
 			always: true,
 		};

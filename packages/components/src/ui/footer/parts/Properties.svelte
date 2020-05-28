@@ -5,32 +5,35 @@
 	// @iconify-replacement: 'showPropsTitle = false'
 	const showPropsTitle = false;
 
-	// @iconify-replacement: 'canShowColorProp = true'
-	const canShowColorProp = true;
-	// @iconify-replacement: 'canShowSizeProp = true'
-	const canShowSizeProp = true;
-	// @iconify-replacement: 'canShowRotateProp = true'
-	const canShowRotateProp = true;
-	// @iconify-replacement: 'canShowFlipProp = true'
-	const canShowFlipProp = true;
+	// @iconify-replacement: 'customiseColor = true'
+	const customiseColor = true;
+	// @iconify-replacement: 'customiseSize = true'
+	const customiseSize = true;
+	// @iconify-replacement: 'customiseRotate = true'
+	const customiseRotate = true;
+	// @iconify-replacement: 'customiseFlip = true'
+	const customiseFlip = true;
 </script>
 
 <script>
 	import Iconify from '@iconify/iconify';
-	// @iconify-replacement: '/props/Color.svelte'
-	import ColorBlock from './props/Color.svelte';
-	// @iconify-replacement: '/props/Size.svelte'
-	import SizeBlock from './props/Size.svelte';
-	// @iconify-replacement: '/props/Rotate.svelte'
-	import RotateBlock from './props/Rotate.svelte';
-	// @iconify-replacement: '/props/Flip.svelte'
-	import FlipBlock from './props/Flip.svelte';
+
+	// Important: for dynamic component replacements to work, component names below
+	// must match directory name with capitalized first letter!
+
+	// @iconify-replacement: '/props/color/Color.svelte'
+	import ColorBlock from './props/color/Color.svelte';
+	// @iconify-replacement: '/props/size/Size.svelte'
+	import SizeBlock from './props/size/Size.svelte';
+	// @iconify-replacement: '/props/rotate/Rotate.svelte'
+	import RotateBlock from './props/rotate/Rotate.svelte';
+	// @iconify-replacement: '/props/flip/Flip.svelte'
+	import FlipBlock from './props/flip/Flip.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let iconName; /** @type {string} */
-	export let iconProps; /** @type {PartialIconProperties} */
-
-	const defaultProps = registry.defaultProps;
+	export let customise; /** @type {function} */
+	export let iconCustomisations; /** @type {IconCustomisations} */
 
 	// Title
 	const title = showPropsTitle ? registry.phrases.footerBlocks.title : '';
@@ -47,17 +50,25 @@
 		<p class="iif-footer-options-block-title">{title}</p>
 	{/if}
 	<div class="iif-footer-options-blocks">
-		{#if canShowColorProp && defaultProps.color}
-			<ColorBlock {registry} {iconData} value={iconProps.color} />
+		{#if customiseColor}
+			<ColorBlock
+				{registry}
+				{iconData}
+				value={iconCustomisations.color}
+				{customise} />
 		{/if}
-		{#if canShowSizeProp && (defaultProps.width || defaultProps.height)}
-			<SizeBlock {registry} {iconData} {iconProps} />
+		{#if customiseSize}
+			<SizeBlock {registry} {iconData} {iconCustomisations} {customise} />
 		{/if}
-		{#if canShowFlipProp && defaultProps.hFlip}
-			<FlipBlock {registry} {iconData} {iconProps} />
+		{#if customiseFlip}
+			<FlipBlock {registry} {iconData} {iconCustomisations} {customise} />
 		{/if}
-		{#if canShowRotateProp && defaultProps.rotate}
-			<RotateBlock {registry} {iconData} value={iconProps.rotate} />
+		{#if customiseRotate}
+			<RotateBlock
+				{registry}
+				{iconData}
+				value={iconCustomisations.rotate}
+				{customise} />
 		{/if}
 	</div>
 {/if}

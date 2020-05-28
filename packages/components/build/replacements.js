@@ -157,9 +157,10 @@ function footerReplacements(replacements, config) {
 	}
 
 	// Customisations
-	footerCustomisations(replacements, config);
+	footerOptions.customisations = footerCustomisations(replacements, config);
 
 	// Footer options replacement
+	console.log(footerOptions);
 	replacements['footerOptions = {}'] =
 		'footerOptions = ' + JSON.stringify(footerOptions);
 }
@@ -187,12 +188,13 @@ function footerButtons(replacements, config) {
 function footerCustomisations(replacements, config) {
 	const footerConfig = config.footer;
 	const customisationsConfig = footerConfig.customisations;
+	const customisations = {};
 
 	let showCustomisations =
 		config.showFooter && footerConfig.showCustomisations;
 	if (showCustomisations) {
 		const enabledItems = Object.keys(customisationsConfig).filter(
-			(key) => customisationsConfig[key]
+			(key) => customisationsConfig[key].show
 		);
 		if (!enabledItems.length) {
 			showCustomisations = false;
@@ -204,7 +206,7 @@ function footerCustomisations(replacements, config) {
 		replacements['./parts/Properties.svelte'] = '../Empty.svelte';
 		replacements['canShowIconProperties = true'] =
 			'canShowIconProperties = false';
-		return false;
+		return void 0;
 	}
 
 	// Enabled
@@ -212,48 +214,81 @@ function footerCustomisations(replacements, config) {
 		replacements['showPropsTitle = false'] = 'showPropsTitle = true';
 	}
 
-	// Replace unused properties
-	const tests = [
-		{
-			test: ['color'],
-			replace: 'Color.svelte',
-			const: 'canShowColorProp',
-		},
-		{
-			test: ['rotate'],
-			replace: 'Rotate.svelte',
-			const: 'canShowRotateProp',
-		},
-		{
-			test: ['width', 'height'],
-			replace: 'Size.svelte',
-			const: 'canShowSizeProp',
-		},
-		{
-			test: ['hFlip'],
-			replace: 'Flip.svelte',
-			const: 'canShowFlipProp',
-		},
-	];
+	// Parse all properties
+	Object.keys(customisationsConfig).forEach((key) => {
+		const item = customisationsConfig[key];
+		const varName = key.slice(0, 1).toUpperCase() + key.slice(1);
+		if (!item.show) {
+			// Disable
+			replacements[
+				`customise${varName} = true`
+			] = `customise${varName} = false`;
 
-	tests.forEach((item) => {
-		let exists = false;
-		item.test.forEach((key) => {
-			if (customisationsConfig[key]) {
-				exists = true;
-			}
-		});
-		if (!exists) {
-			if (item.replace) {
-				replacements['/props/' + item.replace] = '/props/Empty.svelte';
-			}
-			if (item.const) {
-				replacements[item.const + ' = true'] = item.const + ' = false';
-			}
+			// Replace with empty component to avoid bundling it
+			replacements[
+				`/props/${key}/${varName}.svelte`
+			] = `/props/Empty.svelte`;
+			return;
 		}
+
+		// Replace component
+		if (typeof item.component === 'string' && item.component !== key) {
+			const replacementName =
+				item.component.slice(0, 1).toUpperCase() +
+				item.component.slice(1);
+			replacements[
+				`/props/${key}/${varName}.svelte`
+			] = `/props/${key}/${replacementName}.svelte`;
+		}
+
+		// Replace other properties
+		Object.keys(item).forEach((attr) => {
+			if (attr === 'show' || attr === 'component') {
+				return;
+			}
+
+			const value = item[attr];
+			const customValue = JSON.stringify(value);
+
+			// List of possible old values
+			let possibleDefaultValues = [];
+
+			switch (typeof value) {
+				case 'boolean':
+					// toggle boolean value
+					possibleDefaultValues.push(JSON.stringify(!value));
+					break;
+
+				case 'number':
+					// Assume default number is 0
+					possibleDefaultValues.push('0');
+					break;
+
+				case 'string':
+					// Assume default value is empty string
+					possibleDefaultValues.push("''");
+					possibleDefaultValues.push('""');
+					break;
+
+				default:
+					return;
+			}
+
+			// Attribute specific old values
+			/*
+			switch (attr) {
+			}
+			*/
+
+			possibleDefaultValues.forEach((defaultValue) => {
+				replacements[
+					`${attr} = ${defaultValue}`
+				] = `${attr} = ${customValue}`;
+			});
+		});
 	});
 
-	return true;
+	return;
 }
 
 /**

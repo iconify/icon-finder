@@ -16,7 +16,8 @@
 	export let loaded; /** @type {boolean} */
 	export let selectedIcon; /** @type {Icon} */
 	export let iconName; /** @type {string} */
-	export let iconProps; /** @type {PartialIconProperties} */
+	export let customise; /** @type {function} */
+	export let iconCustomisations; /** @type {IconCustomisations} */
 	export let route; /** @type {PartialRoute} */
 	export let footerOptions; /** @type {object} */
 </script>
@@ -24,11 +25,20 @@
 {#if loaded | footerOptions.showButtons}
 	<Block type="footer">
 		<div class="iif-footer-full">
-			<Sample {registry} {loaded} {iconName} {iconProps} {footerOptions} />
+			<Sample
+				{registry}
+				{loaded}
+				{iconName}
+				{iconCustomisations}
+				{footerOptions} />
 			<div class="iif-footer-full-content">
 				<IconName {registry} {iconName} {loaded} {selectedIcon} {route} />
 				{#if canShowIconProperties && loaded}
-					<PropertiesContainer {registry} {iconName} {iconProps} />
+					<PropertiesContainer
+						{registry}
+						{iconName}
+						{customise}
+						{iconCustomisations} />
 				{/if}
 				<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />
 			</div>

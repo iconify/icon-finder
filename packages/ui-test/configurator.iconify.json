@@ -1,0 +1,14 @@
+{
+	"theme": "iconify",
+	"footer": {
+		"components": {
+			"footer": "full",
+			"name": "simple-editable"
+		},
+		"customisations": {
+			"color": {
+				"defaultColor": "#f80"
+			}
+		}
+	}
+}

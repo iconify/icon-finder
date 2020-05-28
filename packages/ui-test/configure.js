@@ -5,8 +5,8 @@ const params = prepare();
 // Log theme and config file
 console.log(
 	`Using config file: ${
-		params.config.configFile
-			? params.config.configFile
+		params.params.configFile
+			? params.params.configFile
 			: 'configurator.json'
 	}`
 );

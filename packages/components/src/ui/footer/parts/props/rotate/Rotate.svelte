@@ -1,11 +1,12 @@
 <script>
-	import Block from './Block.svelte';
-	import Button from '../../../forms/OptionButton.svelte';
+	import Block from '../Block.svelte';
+	import Button from '../../../../forms/OptionButton.svelte';
 
 	export let registry; /** @type {Registry} */
 	// export let iconData; /** @type {IconifyIcon} */
 	// export let footerOptions; /** @type {object} */
 	export let value; /** @type {string} */
+	export let customise; /** @type {function} */
 
 	const phrases = registry.phrases.footerOptionButtons;
 
@@ -29,10 +30,7 @@
 		if (!count && !value) {
 			return;
 		}
-		registry.callback('prop', {
-			prop: 'rotate',
-			value: count === value ? 0 : count,
-		});
+		customise('rotate', count === value ? 0 : count);
 	}
 </script>
 

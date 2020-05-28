@@ -3,22 +3,25 @@
 	import { getDimensions } from '../../../misc/icon-size';
 	import Icon from '../../misc/Icon.svelte';
 
-	export let registry; /** @type {Registry} */
+	// export let registry; /** @type {Registry} */
 	export let loaded; /** @type {boolean} */
 	export let iconName; /** @type {string} */
-	export let iconProps; /** @type {PartialIconProperties} */
+	export let iconCustomisations; /** @type {IconCustomisations} */
 	export let footerOptions; /** @type {object} */
 
 	const divisions = [2.5, 3, 3.5];
-	const defaultProps = registry.defaultProps;
+
+	// @iconify-replacement: 'defaultColor = '''
+	const defaultColor = '';
+
+	// @iconify-replacement: 'defaultWidth = '''
+	const defaultWidth = '';
+	// @iconify-replacement: 'defaultHeight = '''
+	const defaultHeight = '';
 
 	// Get maximum width/height from options
-	const maxWidth = footerOptions.fullSample
-		? footerOptions.fullSample.width
-		: 200;
-	const maxHeight = footerOptions.fullSample
-		? footerOptions.fullSample.height
-		: 300;
+	const maxWidth = footerOptions.fullSample.width;
+	const maxHeight = footerOptions.fullSample.height;
 
 	const minWidth = Math.floor(maxWidth / 2);
 	const minHeight = Math.floor(maxHeight / 2);
@@ -35,8 +38,8 @@
 		rotated =
 			loaded &&
 			iconData.width !== iconData.height &&
-			iconProps.rotate &&
-			iconProps.rotate % 2 === 1;
+			iconCustomisations.rotate &&
+			iconCustomisations.rotate % 2 === 1;
 	}
 
 	// Width / height ratio
@@ -89,20 +92,17 @@
 	let style;
 	$: {
 		style = '';
-		if (iconProps.color) {
-			style += 'color: ' + iconProps.color + ';';
+		if (iconCustomisations.color) {
+			style += 'color: ' + iconCustomisations.color + ';';
+		} else if (defaultColor) {
+			style += 'color: ' + defaultColor + ';';
 		}
-		if (loaded && !iconProps.width && !iconProps.height) {
+		if (loaded && !iconCustomisations.width && !iconCustomisations.height) {
 			// Calculate size
 			let size;
 
-			if (defaultProps.width.defaultValue || defaultProps.height.defaultValue) {
-				size = getDimensions(
-					defaultProps.width.defaultValue,
-					defaultProps.height.defaultValue,
-					ratio,
-					rotated
-				);
+			if (defaultWidth || defaultHeight) {
+				size = getDimensions(defaultWidth, defaultHeight, ratio, rotated);
 			} else {
 				size = getDimensions(iconData.width, iconData.height, ratio, rotated);
 			}
@@ -117,26 +117,26 @@
 	$: {
 		if (loaded) {
 			props = {};
-			if (iconProps.hFlip || iconProps.vFlip) {
-				props['data-flip'] = iconProps.hFlip
-					? iconProps.vFlip
-						? 'horizontal,vertical'
-						: 'horizontal'
-					: 'vertical';
-			}
-			if (iconProps.rotate) {
-				props['data-rotate'] = iconProps.rotate;
-			}
-			if (iconProps.width || iconProps.height) {
-				let size = getDimensions(
-					iconProps.width,
-					iconProps.height,
+			['hFlip', 'vFlip', 'rotate'].forEach(prop => {
+				if (iconCustomisations[prop]) {
+					props[prop] = iconCustomisations[prop];
+				}
+			});
+			let size;
+			if (iconCustomisations.width || iconCustomisations.height) {
+				size = getDimensions(
+					iconCustomisations.width,
+					iconCustomisations.height,
 					ratio,
 					rotated
 				);
+			} else if (defaultWidth || defaultHeight) {
+				size = getDimensions(defaultWidth, defaultHeight, ratio, rotated);
+			}
+			if (size !== void 0) {
 				scaleSample(size, false);
-				props['data-width'] = size.width;
-				props['data-height'] = size.height;
+				props['width'] = size.width;
+				props['height'] = size.height;
 			}
 		}
 	}

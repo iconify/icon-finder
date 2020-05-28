@@ -10,10 +10,10 @@ export interface FooterButton {
 	// Button type. Default = 'primary'
 	type?: FooterButtonType;
 
-	// Button title. If missing, title will be generated using this logic:
+	// Button text. If missing, text will be generated using this logic:
 	// 1. phrases for key will be checked: footerButtons[key]
 	// 2. key will be capitalised: 'submit' => 'Submit'
-	title?: string;
+	text?: string;
 
 	// Optional icon. Iconify icon name. Use "iif-custom" prefix for icons defined in theme
 	icon?: string;
@@ -51,13 +51,36 @@ export interface IconFinderConfig {
 		};
 
 		// Icon customisations
-		showCustoisations: boolean;
+		showCustomisations: boolean;
 		customisations: {
-			color: boolean; // Color picker
-			width: boolean; // Width
-			height: boolean; // Height
-			flip: boolean; // Horizontal and vertical flip
-			rotate: boolean;
+			// Color picker
+			color: {
+				show: boolean;
+				component: string;
+				defaultColor: string;
+			};
+
+			// Dimensions
+			size: {
+				show: boolean;
+				component: string;
+				customiseWidth: boolean;
+				customiseHeight: boolean;
+				defaultWidth: number | string;
+				defaultHeight: number | string;
+			};
+
+			// Flip
+			flip: {
+				show: boolean;
+				component: string;
+			};
+
+			// Rotation
+			rotate: {
+				show: boolean;
+				component: string;
+			};
 		};
 		showCustomisationsTitle: boolean; // Shows title in customisations block
 
@@ -66,7 +89,7 @@ export interface IconFinderConfig {
 		buttons: Record<string, FooterButton>;
 
 		// Full sample maximum dimensions
-		fullSample?: {
+		fullSample: {
 			width: number;
 			height: number;
 		};
@@ -106,18 +129,40 @@ export const config: IconFinderConfig = {
 		},
 
 		// Customisations
-		showCustoisations: true,
+		showCustomisations: true,
 		customisations: {
-			color: true,
-			width: true,
-			height: true,
-			flip: true,
-			rotate: true,
+			color: {
+				show: true,
+				component: 'color',
+				defaultColor: '',
+			},
+			size: {
+				show: true,
+				component: 'size',
+				customiseWidth: true,
+				customiseHeight: true,
+				defaultWidth: '',
+				defaultHeight: '',
+			},
+			flip: {
+				show: true,
+				component: 'flip',
+			},
+			rotate: {
+				show: true,
+				component: 'rotate',
+			},
 		},
 		showCustomisationsTitle: false,
 
 		// Buttons
 		showButtons: true,
 		buttons: {},
+
+		// Footer sample dimensions
+		fullSample: {
+			width: 200,
+			height: 300,
+		},
 	},
 };

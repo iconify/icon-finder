@@ -1,21 +1,23 @@
 <script>
 	import colors from 'cyberalien-color';
-	import Input from '../../../forms/Input.svelte';
-	import Block from './Block.svelte';
+	import Input from '../../../../forms/Input.svelte';
+	import Block from '../Block.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let iconData; /** @type {IconifyIcon} */
 	// export let footerOptions; /** @type {object} */
 	export let value; /** @type {string} */
+	export let customise; /** @type {function} */
+
+	// @iconify-replacement: 'defaultColor = '''
+	const defaultColor = '';
 
 	let hasColor;
 	$: {
 		hasColor = iconData.body.indexOf('currentColor') !== -1;
 	}
 
-	const placeholder = registry.defaultProps.color.defaultValue;
 	const title = registry.phrases.footerBlocks.color;
-	const callback = registry.callback;
 
 	let lastValue = value;
 	let inputValue = value;
@@ -48,10 +50,7 @@
 
 		// Check for valid color
 		if (newValue === '') {
-			callback('prop', {
-				prop: 'color',
-				value: '',
-			});
+			customise('color', '');
 			return;
 		}
 
@@ -59,10 +58,7 @@
 		if (validatedValue !== null) {
 			// Change lastValue to avoid triggering component refresh
 			lastValue = value = validatedValue;
-			callback('prop', {
-				prop: 'color',
-				value: validatedValue,
-			});
+			customise('color', validatedValue);
 		}
 	}
 
@@ -77,12 +73,12 @@
 	<Block type="color" {registry}>
 		<Input
 			value={inputValue}
-			{placeholder}
+			placeholder={defaultColor}
 			{title}
 			{onInput}
 			{onBlur}
-			icon={value === '' ? 'color' : 'color-filled'}
-			extra={value}
+			icon={value === void 0 || value === '' ? 'color' : 'color-filled'}
+			extra={value === void 0 ? '' : value}
 			type="color" />
 	</Block>
 {/if}

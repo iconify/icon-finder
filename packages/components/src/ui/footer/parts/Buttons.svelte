@@ -12,7 +12,9 @@
 
 		return {
 			key,
-			className: 'iif-form-button iif-form-button--' + button.type,
+			className:
+				'iif-form-button' +
+				(button.type ? ' iif-form-button--' + button.type : ''),
 			...button,
 		};
 	});
