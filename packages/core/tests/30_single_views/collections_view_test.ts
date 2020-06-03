@@ -24,7 +24,7 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('/collections', {}, 'collections');
+		api.loadFixture('', '/collections', {}, 'collections');
 		return registry;
 	}
 
@@ -34,6 +34,7 @@ describe('Testing collections list view', () => {
 	function setupView(
 		callback: EventCallback,
 		routeParams: CollectionsRouteParams = {
+			provider: '',
 			filter: '',
 			category: null,
 		}
@@ -60,7 +61,7 @@ describe('Testing collections list view', () => {
 	/**
 	 * Do tests
 	 */
-	it('Creating view', done => {
+	it('Creating view', (done) => {
 		const registry = setupRegistry();
 
 		// Set variables
@@ -68,7 +69,7 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -97,6 +98,7 @@ describe('Testing collections list view', () => {
 		expect(view.route).to.be.eql({
 			type: 'collections',
 			params: {
+				provider: '',
 				filter: '',
 				category: null,
 			},
@@ -105,22 +107,22 @@ describe('Testing collections list view', () => {
 	});
 
 	// Same as previous test, but combined to one function for simpler tests
-	it('Test using setupView code', done => {
-		const view = setupView(data => {
+	it('Test using setupView code', (done) => {
+		const view = setupView((data) => {
 			expect(data).to.be.equal(view);
 			done();
 		});
 	});
 
-	it('Test not found error', done => {
+	it('Test not found error', (done) => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('/collections', {}, null);
+		api.setFakeData('', '/collections', {}, null);
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			const view = data as CollectionsView;
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
@@ -138,15 +140,15 @@ describe('Testing collections list view', () => {
 		view.startLoading();
 	});
 
-	it('Test rendering blocks', done => {
-		const view = setupView(data => {
+	it('Test rendering blocks', (done) => {
+		const view = setupView((data) => {
 			const blocks = view.render() as NonNullable<CollectionsViewBlocks>;
 			expect(blocks).to.not.be.equal(null);
 
 			// Test categories block
 			const categories = Object.keys(blocks.categories.filters);
 			expect(categories).to.be.eql(['General', 'Emoji', 'Thematic']);
-			categories.forEach(category => {
+			categories.forEach((category) => {
 				expect(
 					blocks.categories.filters[category].disabled
 				).to.be.equal(false);
@@ -162,9 +164,9 @@ describe('Testing collections list view', () => {
 		});
 	});
 
-	it('Test filter', done => {
+	it('Test filter', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				let blocks = view.render() as NonNullable<
 					CollectionsViewBlocks
 				>;
@@ -173,7 +175,7 @@ describe('Testing collections list view', () => {
 				// Test categories block
 				const categories = Object.keys(blocks.categories.filters);
 				expect(categories).to.be.eql(['General', 'Emoji', 'Thematic']);
-				categories.forEach(category => {
+				categories.forEach((category) => {
 					// Everything except 'General' should be disabled
 					expect(
 						blocks.categories.filters[category].disabled
@@ -211,7 +213,7 @@ describe('Testing collections list view', () => {
 				// Test filter block
 				expect(blocks.filter.keyword).to.be.equal('20');
 
-				categories.forEach(category => {
+				categories.forEach((category) => {
 					// Everything except 'Emoji' should be enabled
 					expect(
 						blocks.categories.filters[category].disabled
@@ -222,15 +224,16 @@ describe('Testing collections list view', () => {
 				done();
 			},
 			{
+				provider: '',
 				filter: 'mdi',
 				category: null,
 			}
 		);
 	});
 
-	it('Test collections', done => {
+	it('Test collections', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				const blocks = view.render() as NonNullable<
 					CollectionsViewBlocks
 				>;
@@ -239,7 +242,7 @@ describe('Testing collections list view', () => {
 				// Test categories block
 				const categories = Object.keys(blocks.categories.filters);
 				expect(categories).to.be.eql(['General', 'Emoji', 'Thematic']);
-				categories.forEach(category => {
+				categories.forEach((category) => {
 					// Everything should be enabled
 					expect(
 						blocks.categories.filters[category].disabled
@@ -258,6 +261,7 @@ describe('Testing collections list view', () => {
 				done();
 			},
 			{
+				provider: '',
 				filter: '32',
 				category: 'Thematic',
 			}
@@ -267,11 +271,12 @@ describe('Testing collections list view', () => {
 	/**
 	 * Bad data
 	 */
-	it('Bad data (object)', done => {
+	it('Bad data (object)', (done) => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.setFakeData(
+			'',
 			'/collections',
 			{},
 			JSON.stringify({
@@ -281,7 +286,7 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			const view = data as CollectionsView;
 			expect(view.loading).to.be.equal(false);
 			expect(view.error).to.be.equal('empty');
@@ -298,15 +303,15 @@ describe('Testing collections list view', () => {
 		view.startLoading();
 	});
 
-	it('Bad data (string)', done => {
+	it('Bad data (string)', (done) => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('/collections', {}, 'whatever');
+		api.setFakeData('', '/collections', {}, 'whatever');
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			const view = data as CollectionsView;
 			expect(view.loading).to.be.equal(false);
 			expect(view.error).to.be.equal('empty');

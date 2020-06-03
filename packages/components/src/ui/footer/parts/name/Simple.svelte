@@ -22,6 +22,7 @@
 				selectedIcon &&
 				route &&
 				route.type === 'collection' &&
+				route.params.provider === selectedIcon.provider &&
 				route.params.prefix === selectedIcon.prefix
 					? selectedIcon.name
 					: iconName;

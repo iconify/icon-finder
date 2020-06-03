@@ -9,8 +9,10 @@
 	const defaultHeight = uiIcons.size;
 
 	// Add custom icons to Iconify
+	const customProvider = 'iif-custom';
 	const customPrefix = 'iif-custom';
 	const customIcons = {
+		provider: customProvider,
 		prefix: customPrefix,
 		icons: Object.create(null),
 		aliases: Object.create(null),
@@ -64,7 +66,7 @@
 
 			case 'object':
 				// Custom icon
-				newName = customPrefix + ':' + icon;
+				newName = '@' + customProvider + ':' + customPrefix + ':' + icon;
 				break;
 
 			case 'undefined':

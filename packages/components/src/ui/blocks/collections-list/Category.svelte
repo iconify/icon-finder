@@ -6,6 +6,7 @@
 	export let showCategories; /** @type {boolean} */
 	export let category; /** @type {string} */
 	export let items; /** @type {Record<string, CollectionInfo>} */
+	export let provider; /** @type {string} */
 	export let onClick; /** @type {function} */
 </script>
 
@@ -15,7 +16,7 @@
 	{/if}
 	<ul class="iif-collections-list-items">
 		{#each Object.entries(items) as [prefix, info], i (prefix)}
-			<Item {registry} {phrases} {prefix} {info} {onClick} />
+			<Item {registry} {phrases} {provider} {prefix} {info} {onClick} />
 		{/each}
 	</ul>
 </div>

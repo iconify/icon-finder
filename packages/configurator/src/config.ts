@@ -97,6 +97,14 @@ export interface IconFinderConfig {
 			height: number;
 		};
 	};
+
+	// API providers
+	providers: {
+		// Default API
+		default: string;
+
+		// custom: Record<string, IconFinderProvider>;
+	};
 }
 
 /**
@@ -168,5 +176,10 @@ export const config: IconFinderConfig = {
 			width: 200,
 			height: 300,
 		},
+	},
+
+	// API providers
+	providers: {
+		default: '',
 	},
 };

@@ -21,6 +21,9 @@ export interface CollectionInfo extends IconifyInfo {
  * Important: keys for filters must match keys in CollectionViewBlocksIconFilters interface for easy iteration!
  */
 export interface CollectionData {
+	// Provider
+	provider: string;
+
 	// Prefix
 	prefix: string;
 
@@ -131,7 +134,7 @@ export function dataToCollectionInfo(
 
 	// Add samples
 	if (source.samples instanceof Array) {
-		source.samples.forEach(item => {
+		source.samples.forEach((item) => {
 			if (result.samples.length < 3 && typeof item === 'string') {
 				result.samples.push(item);
 			}
@@ -150,7 +153,7 @@ export function dataToCollectionInfo(
 	}
 
 	if (source.height instanceof Array) {
-		source.height.forEach(item => {
+		source.height.forEach((item) => {
 			const num = parseInt(item);
 			if (num > 0) {
 				if (!(result.height instanceof Array)) {
@@ -220,7 +223,7 @@ export function dataToCollectionInfo(
 	}
 
 	// Parse all old keys
-	Object.keys(source).forEach(key => {
+	Object.keys(source).forEach((key) => {
 		const value = source[key];
 		if (typeof value !== 'string') {
 			return;
@@ -249,7 +252,10 @@ export function dataToCollectionInfo(
 /**
  * Convert collection data
  */
-export function dataToCollection(data: unknown): CollectionData | null {
+export function dataToCollection(
+	provider: string,
+	data: unknown
+): CollectionData | null {
 	if (typeof data !== 'object' || data === null) {
 		return null;
 	}
@@ -263,6 +269,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 
 	// Create result
 	const result: CollectionData = {
+		provider,
 		prefix: source.prefix,
 		name: '',
 		total: 0,
@@ -301,7 +308,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	let hasUncategorised = false,
 		uncategorisedKey = 'uncategorized';
 
-	['uncategorized', 'uncategorised'].forEach(attr => {
+	['uncategorized', 'uncategorised'].forEach((attr) => {
 		if (
 			typeof source[attr] === 'object' &&
 			source[attr] instanceof Array &&
@@ -314,15 +321,16 @@ export function dataToCollection(data: unknown): CollectionData | null {
 
 	// Find all icons
 	const icons: Record<string, Icon> = Object.create(null);
-	tags.forEach(tag => {
+	tags.forEach((tag) => {
 		const list = (source.categories as Record<string, string[]>)[tag];
-		list.forEach(name => {
+		list.forEach((name) => {
 			if (typeof name !== 'string') {
 				return;
 			}
 			if (icons[name] === void 0) {
 				// Add new icon
 				const icon: Icon = {
+					provider,
 					prefix: result.prefix,
 					name: name,
 					tags: [tag],
@@ -343,13 +351,14 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	// Add uncategorised icons
 	if (hasUncategorised) {
 		const list = source[uncategorisedKey] as string[];
-		list.forEach(name => {
+		list.forEach((name) => {
 			if (typeof name !== 'string') {
 				return;
 			}
 			if (icons[name] === void 0) {
 				// Add new icon
 				const icon: Icon = {
+					provider,
 					prefix: result.prefix,
 					name: name,
 				};
@@ -368,7 +377,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	// Add characters and aliases
 	if (typeof source.chars === 'object') {
 		const chars = source.chars as Record<string, string>;
-		Object.keys(chars).forEach(char => {
+		Object.keys(chars).forEach((char) => {
 			const name = chars[char];
 			if (icons[name] !== void 0) {
 				const icon = icons[name];
@@ -383,7 +392,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	// Add aliases
 	if (typeof source.aliases === 'object') {
 		const aliases = source.aliases as Record<string, string>;
-		Object.keys(aliases).forEach(alias => {
+		Object.keys(aliases).forEach((alias) => {
 			const name = aliases[alias];
 			if (icons[name] !== void 0) {
 				const icon = icons[name];
@@ -399,7 +408,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 	const sortedIcons: Icon[] = [];
 	Object.keys(icons)
 		.sort((a, b) => a.localeCompare(b))
-		.forEach(key => {
+		.forEach((key) => {
 			sortedIcons.push(icons[key]);
 		});
 
@@ -408,7 +417,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 		result.tags = tags;
 	} else if (hasTags) {
 		// Only one tag - delete tags
-		sortedIcons.forEach(icon => {
+		sortedIcons.forEach((icon) => {
 			delete icon.tags;
 		});
 	}
@@ -419,7 +428,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 
 	if (typeof source.themes === 'object' && source.themes !== null) {
 		const themes = source.themes as IconifyThemes;
-		Object.keys(themes).forEach(key => {
+		Object.keys(themes).forEach((key) => {
 			const theme = themes[key];
 
 			// Find and validate all prefixes
@@ -431,7 +440,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 				const length = themePrefix.length;
 
 				let found = false;
-				sortedIcons.forEach(icon => {
+				sortedIcons.forEach((icon) => {
 					if (icon.name.slice(0, length) === themePrefix) {
 						icon.themePrefix = theme.title;
 						found = true;
@@ -452,7 +461,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 				const length = 0 - themeSuffix.length;
 
 				let found = false;
-				sortedIcons.forEach(icon => {
+				sortedIcons.forEach((icon) => {
 					if (icon.name.slice(length) === themeSuffix) {
 						icon.themeSuffix = theme.title;
 						found = true;
@@ -468,7 +477,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 		// Check for icons without prefix and validate prefixes
 		if (themePrefixes.length) {
 			let missing = false;
-			sortedIcons.forEach(icon => {
+			sortedIcons.forEach((icon) => {
 				if (icon.themePrefix === void 0) {
 					icon.themePrefix = '';
 					missing = true;
@@ -483,14 +492,14 @@ export function dataToCollection(data: unknown): CollectionData | null {
 				result.themePrefixes = themePrefixes;
 			} else {
 				// All icons have same prefix - delete it
-				sortedIcons.forEach(icon => delete icon.themePrefix);
+				sortedIcons.forEach((icon) => delete icon.themePrefix);
 			}
 		}
 
 		// Same for suffixes
 		if (themeSuffixes.length) {
 			let missing = false;
-			sortedIcons.forEach(icon => {
+			sortedIcons.forEach((icon) => {
 				if (icon.themeSuffix === void 0) {
 					icon.themeSuffix = '';
 					missing = true;
@@ -505,7 +514,7 @@ export function dataToCollection(data: unknown): CollectionData | null {
 				result.themeSuffixes = themeSuffixes;
 			} else {
 				// All icons have same suffix - delete it
-				sortedIcons.forEach(icon => delete icon.themeSuffix);
+				sortedIcons.forEach((icon) => delete icon.themeSuffix);
 			}
 		}
 	}

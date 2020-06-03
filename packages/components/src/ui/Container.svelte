@@ -34,7 +34,7 @@
 		<br />
 	{/if}
 	{#if selectedIcon}
-		Icon: {selectedIcon.prefix}:{selectedIcon.name}
+		Icon: {(selectedIcon.provider === '' ? '' : '@' + selectedIcon.provider + ':') + selectedIcon.prefix}:{selectedIcon.name}
 		<br />
 	{/if}
 	{#if blocks}

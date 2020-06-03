@@ -5,32 +5,42 @@ interface CollectionInfoList {
 }
 
 export class CollectionsData {
-	public data: CollectionInfoList = Object.create(null);
+	public data: Record<string, CollectionInfoList> = Object.create(null);
 
 	/**
 	 * Set data
 	 */
-	set(prefix: string, data: CollectionInfo): void {
-		if (this.data[prefix] === void 0 || data.index) {
+	set(provider: string, prefix: string, data: CollectionInfo): void {
+		if (this.data[provider] === void 0) {
+			this.data[provider] = Object.create(null);
+		}
+		const providerData = this.data[provider];
+		if (providerData[prefix] === void 0 || data.index) {
 			// Overwrite previous entry only if index is set
-			this.data[prefix] = data;
+			providerData[prefix] = data;
 		}
 	}
 
 	/**
 	 * Get data
 	 */
-	get(prefix: string): CollectionInfo | null {
-		return this.data[prefix] === void 0 ? null : this.data[prefix];
+	get(provider: string, prefix: string): CollectionInfo | null {
+		return this.data[provider] !== void 0 &&
+			this.data[provider][prefix] === void 0
+			? null
+			: this.data[provider][prefix];
 	}
 
 	/**
 	 * Get collection title (or prefix if not available)
 	 */
-	title(prefix: string): string {
-		if (this.data[prefix] === void 0) {
+	title(provider: string, prefix: string): string {
+		if (
+			this.data[provider] === void 0 ||
+			this.data[provider][prefix] === void 0
+		) {
 			return prefix;
 		}
-		return this.data[prefix].name;
+		return this.data[provider][prefix].name;
 	}
 }

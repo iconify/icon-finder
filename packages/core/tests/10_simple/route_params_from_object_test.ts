@@ -18,6 +18,7 @@ describe('Testing route parameters', () => {
 		// Empty route
 		result = objectToRouteParams(routeType, {}) as CollectionsRouteParams;
 		expect(result).to.be.eql({
+			provider: '',
 			filter: '',
 			category: null,
 		});
@@ -27,6 +28,7 @@ describe('Testing route parameters', () => {
 		// @ts-ignore
 		result = objectToRouteParams(routeType, true) as CollectionsRouteParams;
 		expect(result).to.be.eql({
+			provider: '',
 			filter: '',
 			category: null,
 		});
@@ -36,28 +38,33 @@ describe('Testing route parameters', () => {
 			category: '',
 		}) as CollectionsRouteParams;
 		expect(result).to.be.eql({
+			provider: '',
 			filter: '',
 			category: '',
 		});
 
 		// Add all parameters
 		result = objectToRouteParams(routeType, {
+			provider: 'custom',
 			filter: 'MDI', // should be changed to lower case
 			category: 'General',
 		}) as ResultType;
 		expect(result).to.be.eql({
+			provider: 'custom',
 			filter: 'mdi',
 			category: 'General',
 		});
 
 		// Invalid type and invalid attribute
 		result = objectToRouteParams(routeType, {
+			provider: true, // must be string
 			filter: null, // must be string
 			category: true, // must be string or null,
 			page: 10, // no such attribute
 			query: 'Whatever', // no such attribute
 		} as object) as ResultType;
 		expect(result).to.be.eql({
+			provider: '',
 			filter: '',
 			category: null,
 		});
@@ -73,6 +80,7 @@ describe('Testing route parameters', () => {
 			prefix: 'md',
 		}) as ResultType;
 		expect(result).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			filter: '',
 			page: 0,
@@ -83,6 +91,7 @@ describe('Testing route parameters', () => {
 
 		// Add all parameters
 		result = objectToRouteParams(routeType, {
+			provider: 'test',
 			prefix: 'foo-bar',
 			filter: 'Arrow', // should be changed to lower case
 			page: 2,
@@ -91,6 +100,7 @@ describe('Testing route parameters', () => {
 			themeSuffix: 'twotone',
 		}) as ResultType;
 		expect(result).to.be.eql({
+			provider: 'test',
 			prefix: 'foo-bar',
 			filter: 'arrow',
 			page: 2,
@@ -112,6 +122,7 @@ describe('Testing route parameters', () => {
 			prefixes: ['foo', 'bar'], // no such attribute
 		} as object) as ResultType;
 		expect(result).to.be.eql({
+			provider: '',
 			prefix: 'required-prefix',
 			filter: '',
 			page: 0,
@@ -121,11 +132,11 @@ describe('Testing route parameters', () => {
 		});
 
 		// No prefix
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {}) as ResultType;
 		}).to.throw(Error);
 
-		expect(function() {
+		expect(function () {
 			// Intentionally breaking TS types
 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 			// @ts-ignore
@@ -133,14 +144,14 @@ describe('Testing route parameters', () => {
 		}).to.throw(Error);
 
 		// Empty prefix
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {
 				prefix: '',
 			}) as ResultType;
 		}).to.throw(Error);
 
 		// Non-string prefix
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {
 				prefix: true,
 			} as object) as ResultType;
@@ -157,6 +168,7 @@ describe('Testing route parameters', () => {
 			search: 'home',
 		}) as ResultType;
 		expect(result).to.be.eql({
+			provider: '',
 			search: 'home',
 			short: true,
 			page: 0,
@@ -164,11 +176,13 @@ describe('Testing route parameters', () => {
 
 		// Add all parameters
 		result = objectToRouteParams(routeType, {
+			provider: 'custom',
 			search: 'Arrow', // should be changed to lower case
 			short: false,
 			page: 10,
 		}) as ResultType;
 		expect(result).to.be.eql({
+			provider: 'custom',
 			search: 'arrow',
 			short: false,
 			page: 10,
@@ -176,6 +190,7 @@ describe('Testing route parameters', () => {
 
 		// Invalid parameter types and extra parameters
 		result = objectToRouteParams(routeType, {
+			provider: ['test'], // must be string
 			search: 'arrows',
 			short: 0, // must be boolean
 			page: '1', // must be number
@@ -183,25 +198,26 @@ describe('Testing route parameters', () => {
 			tag: 'Outline', // no such parameter
 		} as object) as ResultType;
 		expect(result).to.be.eql({
+			provider: '',
 			search: 'arrows',
 			short: true,
 			page: 0,
 		});
 
 		// No query
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {}) as ResultType;
 		}).to.throw(Error);
 
 		// Empty query
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {
 				search: '',
 			}) as ResultType;
 		}).to.throw(Error);
 
 		// Non-string query
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {
 				search: true,
 			} as object) as ResultType;
@@ -250,19 +266,19 @@ describe('Testing route parameters', () => {
 		});
 
 		// No type
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {}) as ResultType;
 		}).to.throw(Error);
 
 		// Empty type
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {
 				customType: '',
 			}) as ResultType;
 		}).to.throw(Error);
 
 		// Non-string type
-		expect(function() {
+		expect(function () {
 			result = objectToRouteParams(routeType, {
 				customType: true,
 			} as object) as ResultType;
@@ -271,17 +287,17 @@ describe('Testing route parameters', () => {
 
 	it('objectToRouteParams(invalid)', () => {
 		// Wrong type
-		expect(function() {
+		expect(function () {
 			objectToRouteParams(('bookmark' as unknown) as RouteType, {});
 		}).to.throw(Error);
 
 		// Wrong case
-		expect(function() {
+		expect(function () {
 			objectToRouteParams(('Collections' as unknown) as RouteType, {});
 		}).to.throw(Error);
 
 		// Non-string type
-		expect(function() {
+		expect(function () {
 			// Intentionally breaking TS types
 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 			// @ts-ignore

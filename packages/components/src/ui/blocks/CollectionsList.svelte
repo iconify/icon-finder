@@ -6,6 +6,7 @@
 	export let registry; /** @type {Registry} */
 	export let name; /** @type {string} */
 	export let block; /** @type {CollectionsListBlock} */
+	export let provider; /** @type {string} */
 
 	const phrases = registry.phrases; /** @type {UITranslation} */
 
@@ -22,6 +23,7 @@
 			{onClick}
 			showCategories={block.showCategories}
 			{category}
+			{provider}
 			{items} />
 	{:else}
 		<Error error={phrases.errors.noCollections} />

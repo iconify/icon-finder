@@ -46,11 +46,17 @@ export class API extends BaseAPI {
 	/**
 	 * Send query, callback from Redundancy
 	 *
+	 * @param provider Provider
 	 * @param host Host string
 	 * @param params End point and parameters as string
 	 * @param status Query status
 	 */
-	_query(host: string, params: string, status: RedundancyPendingItem): void {
+	_query(
+		provider: string,
+		host: string,
+		params: string,
+		status: RedundancyPendingItem
+	): void {
 		// Expose global
 		const w = (window as unknown) as Window;
 		if (w[externalGlobal] === void 0) {
@@ -68,7 +74,7 @@ export class API extends BaseAPI {
 
 		// Create callback
 		root[func] = (data: unknown): void => {
-			this._storeCache(params, data);
+			this._storeCache(provider, params, data);
 			status.done(data);
 		};
 

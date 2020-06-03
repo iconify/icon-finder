@@ -39,6 +39,7 @@ export interface CollectionsViewBlocks extends BaseViewBlocks {
  * Class
  */
 export class CollectionsView extends BaseView {
+	public readonly provider: string;
 	public readonly route: CollectionsRoute;
 	protected _data: CollectionsList | null = null;
 	protected _blocks: CollectionsViewBlocks | null = null;
@@ -55,6 +56,7 @@ export class CollectionsView extends BaseView {
 		this.type = 'collections';
 		this._instance = instance;
 		this.route = route;
+		this.provider = route.params.provider;
 		this.parent = parent;
 	}
 
@@ -63,7 +65,7 @@ export class CollectionsView extends BaseView {
 	 */
 	_startLoading(): void {
 		this._startedLoading = true;
-		this._loadAPI('/collections', {});
+		this._loadAPI(this.provider, '/collections', {});
 	}
 
 	/**
@@ -78,7 +80,7 @@ export class CollectionsView extends BaseView {
 
 			// Global search
 			case 'search':
-				this._searchAction(value);
+				this._searchAction(this.provider, value);
 				return;
 
 			// Filter collections
@@ -161,6 +163,7 @@ export class CollectionsView extends BaseView {
 			{
 				type: 'collection',
 				params: {
+					provider: this.provider,
 					prefix: prefix,
 				},
 			} as PartialRoute,
@@ -277,7 +280,7 @@ export class CollectionsView extends BaseView {
 					// Set category filters
 					this._blocks.collections.showCategories = true;
 					const filters = this._blocks.categories.filters;
-					categories.forEach(category => {
+					categories.forEach((category) => {
 						filters[category] = defaultFilter(category);
 					});
 					autoIndexFilters(this._blocks.categories);
@@ -292,7 +295,7 @@ export class CollectionsView extends BaseView {
 				iterateCollectionsBlock(
 					this._blocks.collections,
 					(item, prefix) => {
-						collections.set(prefix, item);
+						collections.set(this.provider, prefix, item);
 					}
 				);
 			}

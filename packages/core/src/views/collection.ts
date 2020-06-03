@@ -75,6 +75,7 @@ export interface CollectionViewBlocks
  * Class
  */
 export class CollectionView extends BaseView {
+	public readonly provider: string;
 	public readonly route: CollectionRoute;
 	protected _data: CollectionData | null = null;
 	protected _blocks: CollectionViewBlocks | null = null;
@@ -94,6 +95,7 @@ export class CollectionView extends BaseView {
 		this.type = 'collection';
 		this._instance = instance;
 		this.route = route;
+		this.provider = route.params.provider;
 		this.parent = parent;
 		this.prefix = route.params.prefix;
 
@@ -108,7 +110,7 @@ export class CollectionView extends BaseView {
 	 */
 	_startLoading(): void {
 		this._startedLoading = true;
-		this._loadAPI('/collection', {
+		this._loadAPI(this.provider, '/collection', {
 			info: 'true',
 			chars: 'true',
 			prefix: this.prefix,
@@ -127,7 +129,7 @@ export class CollectionView extends BaseView {
 
 			// Global search
 			case 'search':
-				this._searchAction(value);
+				this._searchAction(this.provider, value);
 				return;
 
 			// Search icons
@@ -270,8 +272,8 @@ export class CollectionView extends BaseView {
 			blocks.icons,
 			blocks.filter,
 			filterKeys
-				.filter(key => blocks[key] !== null)
-				.map(key => blocks[key]) as FiltersBlock[]
+				.filter((key) => blocks[key] !== null)
+				.map((key) => blocks[key]) as FiltersBlock[]
 		);
 
 		// Check pagination
@@ -299,7 +301,7 @@ export class CollectionView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		this._data = dataToCollection(data);
+		this._data = dataToCollection(this.provider, data);
 
 		// Mark as loaded, mark blocks for re-render and reset error
 		this.loading = false;
@@ -354,11 +356,14 @@ export class CollectionView extends BaseView {
 		initialisedBlocks.info.prefix = this.prefix;
 		if (parsedData.info !== void 0) {
 			// Store info in collections storage
-			collections.set(this.prefix, parsedData.info);
+			collections.set(this.provider, this.prefix, parsedData.info);
 		}
 
 		// Get info from collections storage because it might include index for color scheme
-		initialisedBlocks.info.info = collections.get(this.prefix);
+		initialisedBlocks.info.info = collections.get(
+			this.provider,
+			this.prefix
+		);
 		if (initialisedBlocks.info.info !== null) {
 			initialisedBlocks.filter.title = initialisedBlocks.info.info.name;
 		}
@@ -395,7 +400,7 @@ export class CollectionView extends BaseView {
 
 			// Icon filters
 			let startIndex = 0;
-			filterKeys.forEach(key => {
+			filterKeys.forEach((key) => {
 				const dataKey = key as keyof CollectionData;
 				if (parsedData[dataKey] !== void 0) {
 					const list = parsedData[dataKey] as string[];
@@ -406,7 +411,7 @@ export class CollectionView extends BaseView {
 						initialisedBlocks[key] = filter;
 
 						// Copy all filters
-						list.forEach(tag => {
+						list.forEach((tag) => {
 							filter.filters[tag] = defaultFilter(tag);
 						});
 
@@ -433,7 +438,7 @@ export class CollectionView extends BaseView {
 		}
 
 		const collections = collectionsPrefixesWithInfo(collectionsBlock);
-		const match = collections.find(item => item.prefix === this.prefix);
+		const match = collections.find((item) => item.prefix === this.prefix);
 		if (match === void 0 || collections.length < 2) {
 			return null;
 		}
@@ -472,7 +477,7 @@ export class CollectionView extends BaseView {
 		block.filterType = 'collections';
 		block.active = this.prefix;
 
-		display.forEach(item => {
+		display.forEach((item) => {
 			const filter = defaultFilter(item.name);
 			filter.index = item.index;
 			block.filters[item.prefix] = filter;

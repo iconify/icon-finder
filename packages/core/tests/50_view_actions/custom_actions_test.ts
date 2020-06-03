@@ -37,13 +37,13 @@ describe('Testing custom actions', () => {
 	 * Get icon names from block
 	 */
 	function getIconNames(block: IconsListBlock): string[] {
-		return (block.icons as Icon[]).map(icon => iconToString(icon));
+		return (block.icons as Icon[]).map((icon) => iconToString(icon));
 	}
 
 	/**
 	 * Do tests
 	 */
-	it('"pagination", "filter" and "set" actions', done => {
+	it('"pagination", "filter" and "set" actions', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -56,7 +56,7 @@ describe('Testing custom actions', () => {
 		expect(router.render()).to.be.equal(null);
 
 		// Generate icons
-		events.subscribe('load-recent', callback => {
+		events.subscribe('load-recent', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -72,7 +72,7 @@ describe('Testing custom actions', () => {
 		let eventCounter = 0;
 		let blocks: CustomViewBlocks;
 		let icons: string[];
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -224,7 +224,7 @@ describe('Testing custom actions', () => {
 		} as unknown) as PartialRoute;
 	});
 
-	it('"parent" action', done => {
+	it('"parent" action', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -237,7 +237,7 @@ describe('Testing custom actions', () => {
 		expect(router.render()).to.be.equal(null);
 
 		// Generate icons
-		events.subscribe('load-recent', callback => {
+		events.subscribe('load-recent', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -248,7 +248,7 @@ describe('Testing custom actions', () => {
 
 			(callback as CustomViewLoadCallback)(icons);
 		});
-		events.subscribe('load-favorites', callback => {
+		events.subscribe('load-favorites', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 10; i++) {
@@ -257,7 +257,7 @@ describe('Testing custom actions', () => {
 
 			(callback as CustomViewLoadCallback)(icons);
 		});
-		events.subscribe('load-bookmarks', callback => {
+		events.subscribe('load-bookmarks', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 20; i++) {
@@ -269,7 +269,7 @@ describe('Testing custom actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -367,14 +367,14 @@ describe('Testing custom actions', () => {
 		} as unknown) as PartialRoute;
 	});
 
-	it('"parent" action with collections', done => {
+	it('"parent" action with collections', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
 		// Load collections
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('/collections', {}, 'collections', {
+		api.loadFixture('', '/collections', {}, 'collections', {
 			responseDelay: 300,
 		});
 
@@ -387,7 +387,7 @@ describe('Testing custom actions', () => {
 		expect(router.render()).to.be.equal(null);
 
 		// Generate icons
-		events.subscribe('load-recent', callback => {
+		events.subscribe('load-recent', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -398,7 +398,7 @@ describe('Testing custom actions', () => {
 
 			(callback as CustomViewLoadCallback)(icons);
 		});
-		events.subscribe('load-favorites', callback => {
+		events.subscribe('load-favorites', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 10; i++) {
@@ -407,7 +407,7 @@ describe('Testing custom actions', () => {
 
 			(callback as CustomViewLoadCallback)(icons);
 		});
-		events.subscribe('load-bookmarks', callback => {
+		events.subscribe('load-bookmarks', (callback) => {
 			const icons: string[] = [];
 
 			for (let i = 0; i < 20; i++) {
@@ -419,7 +419,7 @@ describe('Testing custom actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

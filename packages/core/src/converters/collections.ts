@@ -28,7 +28,7 @@ export function dataToCollections(data: unknown): CollectionsList {
 	}
 
 	// Assume Record<prefix, item> structure
-	Object.keys(data).forEach(prefix => {
+	Object.keys(data).forEach((prefix) => {
 		const row = (data as Record<string, unknown>)[prefix] as Record<
 			string,
 			unknown
@@ -72,7 +72,7 @@ export function dataToCollections(data: unknown): CollectionsList {
  */
 export function collectionsPrefixes(collections: CollectionsList): string[] {
 	let prefixes: string[] = [];
-	Object.keys(collections).forEach(category => {
+	Object.keys(collections).forEach((category) => {
 		prefixes = prefixes.concat(Object.keys(collections[category]));
 	});
 	return prefixes;
@@ -89,13 +89,13 @@ export function filterCollections(
 	const result = Object.create(null);
 
 	// Parse each category
-	Object.keys(collections).forEach(category => {
+	Object.keys(collections).forEach((category) => {
 		if (keepEmptyCategories) {
 			result[category] = Object.create(null);
 		}
 
 		// Parse each item in category
-		Object.keys(collections[category]).forEach(prefix => {
+		Object.keys(collections[category]).forEach((prefix) => {
 			const item = collections[category][prefix];
 
 			if (!callback(item, category, prefix)) {
@@ -122,9 +122,9 @@ export function autoIndexCollections(
 ): void {
 	let index = start;
 
-	Object.keys(collections).forEach(category => {
+	Object.keys(collections).forEach((category) => {
 		const items = collections[category];
-		Object.keys(items).forEach(prefix => {
+		Object.keys(items).forEach((prefix) => {
 			items[prefix].index = index++;
 		});
 	});

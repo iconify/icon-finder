@@ -45,6 +45,7 @@ describe('Testing collection view', () => {
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -95,7 +96,7 @@ describe('Testing collection view', () => {
 	 * Get icon names from block
 	 */
 	function getIconNames(block: IconsListBlock): string[] {
-		return (block.icons as Icon[]).map(icon => {
+		return (block.icons as Icon[]).map((icon) => {
 			return icon.name;
 		});
 	}
@@ -105,14 +106,14 @@ describe('Testing collection view', () => {
 	 */
 	function filterTags(block: FiltersBlock, disabled: boolean): string[] {
 		return Object.keys(block.filters).filter(
-			key => block.filters[key].disabled === disabled
+			(key) => block.filters[key].disabled === disabled
 		);
 	}
 
 	/**
 	 * Do tests
 	 */
-	it('Creating view', done => {
+	it('Creating view', (done) => {
 		const registry = setupRegistry('fa-regular');
 
 		// Set variables
@@ -120,7 +121,7 @@ describe('Testing collection view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -152,6 +153,7 @@ describe('Testing collection view', () => {
 		expect(view.route).to.be.eql({
 			type: 'collection',
 			params: {
+				provider: '',
 				prefix: 'fa-regular',
 				filter: '',
 				page: 0,
@@ -164,14 +166,14 @@ describe('Testing collection view', () => {
 	});
 
 	// Same as previous test, but combined to one function for simpler tests
-	it('Test using setupView code', done => {
-		const view = setupView(data => {
+	it('Test using setupView code', (done) => {
+		const view = setupView((data) => {
 			expect(data).to.be.equal(view);
 			done();
 		}, 'fa-regular');
 	});
 
-	it('Not found', done => {
+	it('Not found', (done) => {
 		const prefix = 'foo';
 		const registry = new Registry(namespace + nsCounter++);
 
@@ -179,6 +181,7 @@ describe('Testing collection view', () => {
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.setFakeData(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -190,7 +193,7 @@ describe('Testing collection view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			const view = data as CollectionView;
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
@@ -211,9 +214,9 @@ describe('Testing collection view', () => {
 		view.startLoading();
 	});
 
-	it('Test fa-regular ()', done => {
+	it('Test fa-regular ()', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				let iconNames: string[];
 				let tags: FiltersBlock;
 				let tagsList: string[];
@@ -323,7 +326,7 @@ describe('Testing collection view', () => {
 				// Check for window-minimize
 				expect(
 					blocks.icons.icons.filter(
-						icon => icon.name === 'window-minimize'
+						(icon) => icon.name === 'window-minimize'
 					).length
 				).to.be.equal(1);
 
@@ -422,9 +425,9 @@ describe('Testing collection view', () => {
 		);
 	});
 
-	it('Test mdi (uncategorised)', done => {
+	it('Test mdi (uncategorised)', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				let tagsList: string[];
 
 				const blocks = view.render() as NonNullable<
@@ -475,9 +478,9 @@ describe('Testing collection view', () => {
 		);
 	});
 
-	it('Test ant-design (filter by suffix)', done => {
+	it('Test ant-design (filter by suffix)', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				let suffixesList: string[];
 
 				const blocks = view.render() as NonNullable<
@@ -518,7 +521,7 @@ describe('Testing collection view', () => {
 
 				// Check icons block for "git*" icons
 				const iconNames = getIconNames(blocks.icons).filter(
-					name => name.slice(0, 3) === 'git'
+					(name) => name.slice(0, 3) === 'git'
 				);
 				expect(iconNames).to.be.eql([
 					'github-outline',

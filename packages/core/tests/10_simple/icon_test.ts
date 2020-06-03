@@ -15,6 +15,7 @@ describe('Testing icon', () => {
 		// Simple prefix-name
 		icon = stringToIcon('fa-home') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: 'fa',
 			name: 'home',
 		});
@@ -24,6 +25,7 @@ describe('Testing icon', () => {
 		// Simple prefix:name
 		icon = stringToIcon('fa:arrow-left') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: 'fa',
 			name: 'arrow-left',
 		});
@@ -33,11 +35,46 @@ describe('Testing icon', () => {
 		// Longer prefix:name
 		icon = stringToIcon('mdi-light:home-outline') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: 'mdi-light',
 			name: 'home-outline',
 		});
 		expect(validateIcon(icon)).to.be.equal(true);
 		expect(iconToString(icon)).to.be.equal('mdi-light:home-outline');
+
+		// Provider
+		icon = stringToIcon('@iconify:mdi-light:home-outline') as Icon;
+		expect(icon).to.be.eql({
+			provider: 'iconify',
+			prefix: 'mdi-light',
+			name: 'home-outline',
+		});
+		expect(validateIcon(icon)).to.be.equal(true);
+		expect(iconToString(icon)).to.be.equal(
+			'@iconify:mdi-light:home-outline'
+		);
+
+		// Provider without @
+		icon = stringToIcon('iconify:mdi-light:home-outline') as Icon;
+		expect(icon).to.be.eql({
+			provider: 'iconify',
+			prefix: 'mdi-light',
+			name: 'home-outline',
+		});
+		expect(validateIcon(icon)).to.be.equal(true);
+		expect(iconToString(icon)).to.be.equal(
+			'@iconify:mdi-light:home-outline'
+		);
+
+		// Provider with short prefix
+		icon = stringToIcon('@fa:arrow-left') as Icon;
+		expect(icon).to.be.eql({
+			provider: 'fa',
+			prefix: 'arrow',
+			name: 'left',
+		});
+		expect(validateIcon(icon)).to.be.equal(true);
+		expect(iconToString(icon)).to.be.equal('@fa:arrow:left');
 
 		// Underscore is not an acceptable separator
 		icon = stringToIcon('fa_home');
@@ -47,6 +84,7 @@ describe('Testing icon', () => {
 		// Invalid character '_': fail validateIcon
 		icon = stringToIcon('fa:home_outline') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: 'fa',
 			name: 'home_outline',
 		});
@@ -54,13 +92,14 @@ describe('Testing icon', () => {
 		expect(iconToString(icon)).to.be.equal('fa:home_outline');
 
 		// Too many colons: fail stringToIcon
-		icon = stringToIcon('mdi-light:home:outline');
+		icon = stringToIcon('mdi:light:home:outline');
 		expect(icon).to.be.eql(null);
 		expect(validateIcon(icon)).to.be.equal(false);
 
 		// Upper case: fail validateIcon
 		icon = stringToIcon('MD:Home') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: 'MD',
 			name: 'Home',
 		});
@@ -70,6 +109,7 @@ describe('Testing icon', () => {
 		// Numbers: pass
 		icon = stringToIcon('1:foo') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: '1',
 			name: 'foo',
 		});
@@ -79,6 +119,7 @@ describe('Testing icon', () => {
 		// Accented letters: fail validateIcon
 		icon = stringToIcon('md-fõö') as Icon;
 		expect(icon).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'fõö',
 		});
@@ -93,10 +134,12 @@ describe('Testing icon', () => {
 		icon1 = stringToIcon('md-home');
 		icon2 = stringToIcon('md:home');
 		expect(icon1).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'home',
 		});
 		expect(icon2).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'home',
 		});
@@ -106,10 +149,27 @@ describe('Testing icon', () => {
 		icon1 = stringToIcon('md-home');
 		icon2 = stringToIcon('md-twotone:home');
 		expect(icon1).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'home',
 		});
 		expect(icon2).to.be.eql({
+			provider: '',
+			prefix: 'md-twotone',
+			name: 'home',
+		});
+		expect(compareIcons(icon1, icon2)).to.be.equal(false);
+
+		// Different provider
+		icon1 = stringToIcon('@iconify:md-twotone:home');
+		icon2 = stringToIcon('md-twotone:home');
+		expect(icon1).to.be.eql({
+			provider: 'iconify',
+			prefix: 'md-twotone',
+			name: 'home',
+		});
+		expect(icon2).to.be.eql({
+			provider: '',
 			prefix: 'md-twotone',
 			name: 'home',
 		});
@@ -119,10 +179,12 @@ describe('Testing icon', () => {
 		icon1 = stringToIcon('md-home');
 		icon2 = stringToIcon('md:house');
 		expect(icon1).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'home',
 		});
 		expect(icon2).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'house',
 		});
@@ -131,11 +193,13 @@ describe('Testing icon', () => {
 		// Extra properties
 		icon1 = stringToIcon('md:thin-home-outline');
 		expect(icon1).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'thin-home-outline',
 		});
 		icon2 = stringToIcon('md:thin-home-outline') as Icon;
 		expect(icon2).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'thin-home-outline',
 		});
@@ -148,6 +212,7 @@ describe('Testing icon', () => {
 			themeSuffix: 'outline',
 		});
 		expect(icon2).to.be.eql({
+			provider: '',
 			prefix: 'md',
 			name: 'thin-home-outline',
 			tags: ['Navigation'],

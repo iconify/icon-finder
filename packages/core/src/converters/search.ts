@@ -5,6 +5,9 @@ import { CollectionInfo, dataToCollectionInfo } from './collection';
  * Search results
  */
 export interface SearchResults {
+	// Provider
+	provider: string;
+
 	// Query
 	query: string;
 
@@ -21,7 +24,10 @@ export interface SearchResults {
 	};
 }
 
-export function dataToSearchResults(data: unknown): SearchResults | null {
+export function dataToSearchResults(
+	provider: string,
+	data: unknown
+): SearchResults | null {
 	if (typeof data !== 'object' || data === null) {
 		return null;
 	}
@@ -43,6 +49,7 @@ export function dataToSearchResults(data: unknown): SearchResults | null {
 
 	// Create result
 	const result: SearchResults = {
+		provider,
 		query: request.query,
 		total: source.total,
 		limit: source.limit,
@@ -61,8 +68,8 @@ export function dataToSearchResults(data: unknown): SearchResults | null {
 	const sourceIcons = source.icons as string[];
 	const sourceCollections = source.collections as Record<string, unknown>;
 	try {
-		sourceIcons.forEach(item => {
-			const icon = stringToIcon(item) as NonNullable<Icon>;
+		sourceIcons.forEach((item) => {
+			const icon = stringToIcon(item, provider) as NonNullable<Icon>;
 			if (!validateIcon(icon)) {
 				throw new Error('Invalid icon');
 			}

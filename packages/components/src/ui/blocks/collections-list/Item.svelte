@@ -32,6 +32,7 @@
 
 	export let registry; /** @type {Registry} */
 	export let phrases; /** @type {UITranslation} */
+	export let provider; /** @type {string} */
 	export let prefix; /** @type {string} */
 	export let info; /** @type {CollectionInfo} */
 	export let onClick; /** @type {function} */
@@ -39,7 +40,9 @@
 	const options = registry.options;
 
 	// Get link
-	const link = options.links.collection.replace('{prefix}', prefix);
+	const link = options.links.collection
+		.replace('{provider}', provider)
+		.replace('{prefix}', prefix);
 
 	// Get container class name
 	let className; /** @type {string} */
@@ -48,8 +51,9 @@
 			baseClass +
 			' ' +
 			baseClass +
-			'--' +
+			'--prefix--' +
 			prefix +
+			(provider === '' ? '' : ' ' + baseClass + '--provider--' + provider) +
 			(collectionClickable ? ' ' + baseClass + '--clickable' : '') +
 			(info.index ? ' ' + baseClass + '--' + (info.index % maxIndex) : '');
 	}
@@ -93,7 +97,7 @@
 				{#each samples as sample}
 					<span
 						class="iconify"
-						data-icon={prefix + ':' + sample}
+						data-icon={(provider === '' ? '' : '@' + provider + ':') + prefix + ':' + sample}
 						data-inline="false" />
 				{/each}
 			</div>

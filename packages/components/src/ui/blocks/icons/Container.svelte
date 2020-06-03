@@ -149,6 +149,7 @@
 				icon: cloneObject(icon),
 				exists,
 				link: options.links.icon
+					.replace('{provider}', icon.provider)
 					.replace('{prefix}', icon.prefix)
 					.replace('{name}', icon.name),
 				selected: name === selectedName,

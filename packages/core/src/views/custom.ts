@@ -221,6 +221,7 @@ export class CustomView extends BaseView {
 				if (typeof item === 'object' && validateIcon(item)) {
 					const icon = item as Icon;
 					return {
+						provider: icon.provider,
 						prefix: icon.prefix,
 						name: icon.name,
 					} as Icon;

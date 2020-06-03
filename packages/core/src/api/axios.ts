@@ -8,21 +8,27 @@ export class API extends BaseAPI {
 	/**
 	 * Send query, callback from Redundancy
 	 *
+	 * @param provider Provider string
 	 * @param host Host string
 	 * @param params End point and parameters as string
 	 * @param status Query status
 	 */
-	_query(host: string, params: string, status: RedundancyPendingItem): void {
+	_query(
+		provider: string,
+		host: string,
+		params: string,
+		status: RedundancyPendingItem
+	): void {
 		console.log('API request: ' + host + params);
 		const instance = axios.create({
 			baseURL: host,
 		});
 		instance
 			.get(params)
-			.then(response => {
+			.then((response) => {
 				if (response.status === 404) {
 					// Not found. Should be called in error handler
-					this._storeCache(params, null);
+					this._storeCache(provider, params, null);
 					status.done(null);
 					return;
 				}
@@ -38,10 +44,10 @@ export class API extends BaseAPI {
 				}
 
 				// Store cache and complete
-				this._storeCache(params, data);
+				this._storeCache(provider, params, data);
 				status.done(data);
 			})
-			.catch(err => {
+			.catch((err) => {
 				if (
 					typeof err === 'object' &&
 					err.response &&
@@ -49,7 +55,7 @@ export class API extends BaseAPI {
 					err.response.status === 404
 				) {
 					// Not found
-					this._storeCache(params, null);
+					this._storeCache(provider, params, null);
 					status.done(null);
 				}
 			});

@@ -5,6 +5,13 @@
 
 	export let registry; /** @type {Registry} */
 	export let blocks; /** @type {CollectionsViewBlocks | null} */
+	export let route; /** @type {PartialRoute} */
+
+	let provider;
+	$: {
+		provider =
+			route.params && route.params.provider ? route.params.provider : '';
+	}
 </script>
 
 <div class="iif-view iif-view--collections">
@@ -16,6 +23,7 @@
 	</div>
 	<CollectionsListBlock
 		{registry}
+		{provider}
 		name="collections"
 		block={blocks.collections} />
 </div>

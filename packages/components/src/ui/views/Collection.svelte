@@ -1,5 +1,6 @@
 <script context="module">
 	const filterBlocks = ['tags', 'themePrefixes', 'themeSuffixes'];
+	const baseClass = 'iif-view--collection';
 </script>
 
 <script>
@@ -13,15 +14,19 @@
 	export let blocks; /** @type {CollectionViewBlocks | null} */
 	export let route; /** @type {PartialRoute} */
 
+	let provider; /** @type {string} */
 	let prefix; /** @type {string} */
 	let info; /** @type {CollectionInfo | null} */
 	$: {
+		provider = route.params.provider;
 		prefix = route.params.prefix;
 		info = blocks.info === null ? null : blocks.info.info;
 	}
 </script>
 
-<div class="iif-view iif-view--collection iif-view--collection--{prefix}">
+<div
+	class="iif-view {baseClass}
+	{baseClass}--prefix--{prefix + (provider === '' ? '' : ' ' + baseClass + '--provider--' + provider)}">
 	{#if blocks.collections}
 		<FiltersBlock
 			{registry}

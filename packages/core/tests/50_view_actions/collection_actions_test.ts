@@ -23,8 +23,9 @@ describe('Testing collection actions', () => {
 
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('/collections', {}, 'collections');
+		api.loadFixture('', '/collections', {}, 'collections');
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -36,7 +37,7 @@ describe('Testing collection actions', () => {
 		return registry;
 	}
 
-	it('"pagination", "filter" and "tags" actions', done => {
+	it('"pagination", "filter" and "tags" actions', (done) => {
 		const registry = setupRegistry('mdi');
 		const events = registry.events;
 
@@ -51,7 +52,7 @@ describe('Testing collection actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let blocks: CollectionViewBlocks;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -217,7 +218,7 @@ describe('Testing collection actions', () => {
 		} as PartialRoute;
 	});
 
-	it('"collections" action', done => {
+	it('"collections" action', (done) => {
 		const registry = setupRegistry('el');
 		const events = registry.events;
 		const config = registry.config;
@@ -226,6 +227,7 @@ describe('Testing collection actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -237,6 +239,7 @@ describe('Testing collection actions', () => {
 			}
 		);
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -258,7 +261,7 @@ describe('Testing collection actions', () => {
 		let eventCounter = 0;
 		let blocks: CollectionViewBlocks;
 		let collectionsBlock: FiltersBlock;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -375,7 +378,7 @@ describe('Testing collection actions', () => {
 		} as PartialRoute;
 	});
 
-	it('"search" action', done => {
+	it('"search" action', (done) => {
 		const registry = setupRegistry('ant-design');
 		const events = registry.events;
 		const config = registry.config;
@@ -384,6 +387,7 @@ describe('Testing collection actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'nav',
@@ -402,7 +406,7 @@ describe('Testing collection actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -476,7 +480,7 @@ describe('Testing collection actions', () => {
 		} as PartialRoute;
 	});
 
-	it('"search" action, 2 levels', done => {
+	it('"search" action, 2 levels', (done) => {
 		const registry = setupRegistry('ant-design');
 		const events = registry.events;
 		const config = registry.config;
@@ -485,6 +489,7 @@ describe('Testing collection actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'nav',
@@ -493,6 +498,7 @@ describe('Testing collection actions', () => {
 			'search-nav'
 		);
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -511,7 +517,7 @@ describe('Testing collection actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

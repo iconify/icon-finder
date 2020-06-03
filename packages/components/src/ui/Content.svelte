@@ -38,10 +38,30 @@
 			className +=
 				' ' + baseClass + '--view ' + baseClass + '--view--' + route.type;
 
-			if (route.type === 'collection') {
-				// Add prefix: '{base} {base}--view {base}--view--collection {base}--view--collection--{prefix}'
+			if (
+				route.params &&
+				(route.type === 'search' ||
+					route.type === 'collections' ||
+					route.type === 'collection') &&
+				route.params.provider
+			) {
+				// Add provider: '{base}--view--{type}--provider--{provider}'
 				className +=
-					' ' + baseClass + '--view--collection--' + route.params.prefix;
+					' ' +
+					baseClass +
+					'--view--' +
+					route.type +
+					'--provider--' +
+					route.params.provider;
+			}
+
+			if (route.type === 'collection') {
+				// Add prefix: '{base}--view--collection--prefix--{prefix}'
+				className +=
+					' ' +
+					baseClass +
+					'--view--collection--prefix--' +
+					route.params.prefix;
 			} else if (supportCustomView && route.type === 'custom') {
 				// Add custom type: '{base} {base}--view {base}--view--custom {base}--view--custom--{customType}'
 				className +=
@@ -81,7 +101,7 @@
 				error={error !== '' ? error : 'bad_route'}
 				{route} />
 		{:else if route.type === 'collections'}
-			<CollectionsView {registry} {blocks} />
+			<CollectionsView {registry} {route} {blocks} />
 		{:else if route.type === 'collection'}
 			<CollectionView {registry} {route} {blocks} {selectedIcon} />
 		{:else if route.type === 'search'}

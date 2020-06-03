@@ -20,11 +20,11 @@ describe('Testing search actions', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('/collections', {}, 'collections');
+		api.loadFixture('', '/collections', {}, 'collections');
 		return registry;
 	}
 
-	it('Pagination with "more" from second page', done => {
+	it('Pagination with "more" from second page', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -33,6 +33,7 @@ describe('Testing search actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -41,6 +42,7 @@ describe('Testing search actions', () => {
 			'search-home'
 		);
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -59,7 +61,7 @@ describe('Testing search actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -139,7 +141,7 @@ describe('Testing search actions', () => {
 		} as unknown) as PartialRoute;
 	});
 
-	it('Pagination with "more" from first page', done => {
+	it('Pagination with "more" from first page', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -148,6 +150,7 @@ describe('Testing search actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -156,6 +159,7 @@ describe('Testing search actions', () => {
 			'search-home'
 		);
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -169,7 +173,7 @@ describe('Testing search actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -247,7 +251,7 @@ describe('Testing search actions', () => {
 		} as unknown) as PartialRoute;
 	});
 
-	it('Loading full results by triggering second page', done => {
+	it('Loading full results by triggering second page', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -256,6 +260,7 @@ describe('Testing search actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -264,6 +269,7 @@ describe('Testing search actions', () => {
 			'search-home'
 		);
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -277,7 +283,7 @@ describe('Testing search actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -355,7 +361,7 @@ describe('Testing search actions', () => {
 		} as unknown) as PartialRoute;
 	});
 
-	it('"search" action', done => {
+	it('"search" action', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -364,6 +370,7 @@ describe('Testing search actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -372,6 +379,7 @@ describe('Testing search actions', () => {
 			'search-home'
 		);
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'nav',
@@ -385,7 +393,7 @@ describe('Testing search actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -459,7 +467,7 @@ describe('Testing search actions', () => {
 		} as unknown) as PartialRoute;
 	});
 
-	it('"pagination" action', done => {
+	it('"pagination" action', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -468,6 +476,7 @@ describe('Testing search actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -483,7 +492,7 @@ describe('Testing search actions', () => {
 		let eventCounter = 0;
 		let blocks: SearchViewBlocks;
 		let expectedPagination: PaginationBlock;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

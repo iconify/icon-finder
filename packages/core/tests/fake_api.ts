@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
 import { mergeQuery, BaseAPI, APIParams } from '../lib/api/base';
-import { RedundancyPendingItem } from '@cyberalien/redundancy';
+import {
+	Redundancy,
+	RedundancyPendingItem,
+	initRedundancy,
+} from '@cyberalien/redundancy';
+import { getAPIConfig } from './fake_api_config';
 import { getFixture } from './get_fixture';
 
 /**
@@ -34,23 +39,50 @@ interface FakeAPIStorage {
  */
 export class API extends BaseAPI {
 	public log: string[] = [];
-	public fakeData: FakeAPIStorage = Object.create(null);
+	public fakeData: Record<string, FakeAPIStorage> = Object.create(null);
+	protected _redundancy: Record<string, Redundancy | null> = Object.create(
+		null
+	);
+
+	/**
+	 * Get Redundancy instance
+	 */
+	_getRedundancy(provider: string): Redundancy | null {
+		if (this._redundancy[provider] === void 0) {
+			const config = getAPIConfig('');
+			if (!config) {
+				throw new Error('Failed to get API config!');
+			}
+			this._redundancy[provider] = initRedundancy(config);
+		}
+		return this._redundancy[provider];
+	}
 
 	/**
 	 * Send query, callback from Redundancy
 	 *
+	 * @param provider Provider
 	 * @param host Host string
 	 * @param params End point and parameters as string
 	 * @param status Query status
 	 */
-	_query(host: string, params: string, status: RedundancyPendingItem): void {
+	_query(
+		provider: string,
+		host: string,
+		params: string,
+		status: RedundancyPendingItem
+	): void {
 		const uri = host + params;
 		this.log.push(uri);
-		if (this.fakeData[params] === void 0) {
+
+		if (
+			this.fakeData[provider] === void 0 ||
+			this.fakeData[provider][params] === void 0
+		) {
 			// Missing fixture. Throw error
 			throw new Error(`Missing fake API data for ${params}`);
 		}
-		const data = this.fakeData[params];
+		const data = this.fakeData[provider][params];
 
 		// Check attempt
 		if (status.attempt !== data.attempt) {
@@ -66,7 +98,7 @@ export class API extends BaseAPI {
 				response = data.data;
 			}
 			if (data.cacheResult) {
-				this._storeCache(params, response);
+				this._storeCache(provider, params, response);
 			}
 			status.done(response);
 		}, data.responseDelay);
@@ -76,13 +108,17 @@ export class API extends BaseAPI {
 	 * Set fake API data
 	 */
 	setFakeData(
+		provider: string,
 		query: string,
 		queryParams: APIParams,
 		data: string | null,
 		params: FakeAPIParams = {}
 	): void {
 		const uri = mergeQuery(query, queryParams);
-		this.fakeData[uri] = Object.assign(
+		if (this.fakeData[provider] === void 0) {
+			this.fakeData[provider] = Object.create(null);
+		}
+		this.fakeData[provider][uri] = Object.assign(
 			{
 				data: data,
 			},
@@ -95,12 +131,13 @@ export class API extends BaseAPI {
 	 * Load fixture
 	 */
 	loadFixture(
+		provider: string,
 		query: string,
 		queryParams: APIParams,
 		filename: string,
 		params: FakeAPIParams = {}
 	): void {
 		const data = getFixture(filename + '.json');
-		this.setFakeData(query, queryParams, data, params);
+		this.setFakeData(provider, query, queryParams, data, params);
 	}
 }

@@ -56,7 +56,7 @@
 			let key = item.route.type + '-' + index + '-';
 			switch (item.route.type) {
 				case 'collection':
-					key += item.route.params.prefix;
+					key += item.route.params.provider + ':' + item.route.params.prefix;
 					break;
 
 				case 'custom':

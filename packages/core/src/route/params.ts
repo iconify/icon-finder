@@ -17,13 +17,19 @@ export type RouteType =
 /**
  * Interfaces and default values
  */
+// Common parameter for routes that are provider specific
+interface ProviderRouteParams {
+	provider: string;
+}
+
 // Collections list
-export interface CollectionsRouteParams {
+export interface CollectionsRouteParams extends ProviderRouteParams {
 	filter: string; // Filter collections by keyword
 	category: string | null; // Active category, null if none
 }
 
 export const collectionsRouteDefaults: CollectionsRouteParams = {
+	provider: '',
 	filter: '',
 	category: null,
 };
@@ -35,13 +41,16 @@ export interface CollectionRouteFilterParams {
 	themeSuffix: string | null;
 }
 
-export interface CollectionRouteParams extends CollectionRouteFilterParams {
+export interface CollectionRouteParams
+	extends CollectionRouteFilterParams,
+		ProviderRouteParams {
 	prefix: string; // Required prefix
 	filter: string; // Search inside collection
 	page: number; // Pagination
 }
 
 export const collectionRouteDefaults: CollectionRouteParams = {
+	provider: '',
 	prefix: '',
 	filter: '',
 	page: 0,
@@ -51,13 +60,14 @@ export const collectionRouteDefaults: CollectionRouteParams = {
 };
 
 // Search results
-export interface SearchRouteParams {
+export interface SearchRouteParams extends ProviderRouteParams {
 	search: string; // Search keyword
 	short: boolean; // True if previewing only few pages, false if showing all search results
 	page: number; // Pagination
 }
 
 export const searchRouteDefaults: SearchRouteParams = {
+	provider: '',
 	search: '',
 	short: true,
 	page: 0,
@@ -150,7 +160,7 @@ export const routeParamsToObject = (
 /**
  * List of parameters to change to lower case
  */
-const toLowerCaseStrings = ['filter', 'search'];
+const toLowerCaseStrings = ['filter', 'search', 'provider'];
 
 /**
  * Convert object to RouteParams

@@ -17,6 +17,7 @@ describe('Testing route parameters', () => {
 
 		// Empty route
 		result = routeParamsToObject(routeType, {
+			provider: '',
 			filter: '',
 			category: null,
 		} as ParamType);
@@ -30,6 +31,7 @@ describe('Testing route parameters', () => {
 
 		// Empty category: uncategorized
 		result = routeParamsToObject(routeType, {
+			provider: '',
 			filter: '',
 			category: '',
 		} as ParamType);
@@ -39,10 +41,12 @@ describe('Testing route parameters', () => {
 
 		// All parameters
 		result = routeParamsToObject(routeType, {
+			provider: 'custom',
 			filter: 'mdi',
 			category: 'General',
 		} as ParamType);
 		expect(result).to.be.eql({
+			provider: 'custom',
 			filter: 'mdi',
 			category: 'General',
 		});
@@ -55,6 +59,7 @@ describe('Testing route parameters', () => {
 
 		// Empty route
 		result = routeParamsToObject(routeType, {
+			provider: '',
 			// Prefix cannot be empty in real code, but check is done when view is
 			// initialized or converted from object, not when exporting to object
 			prefix: '',
@@ -74,6 +79,7 @@ describe('Testing route parameters', () => {
 
 		// Empty strings for tags and theme, defaults for everything else except prefix
 		result = routeParamsToObject(routeType, {
+			provider: '',
 			prefix: 'md',
 			filter: '',
 			page: 0,
@@ -90,6 +96,7 @@ describe('Testing route parameters', () => {
 
 		// Custom values for everything
 		result = routeParamsToObject(routeType, {
+			provider: 'test',
 			prefix: 'md-light',
 			filter: 'outline',
 			page: 1,
@@ -98,6 +105,7 @@ describe('Testing route parameters', () => {
 			themeSuffix: 'twotone',
 		} as ParamType);
 		expect(result).to.be.eql({
+			provider: 'test',
 			prefix: 'md-light',
 			filter: 'outline',
 			page: 1,
@@ -114,6 +122,7 @@ describe('Testing route parameters', () => {
 
 		// Empty route
 		result = routeParamsToObject(routeType, {
+			provider: '',
 			// Search query cannot be empty in real code, but check is done when view is
 			// initialized or converted from object, not when exporting to object
 			search: '',
@@ -130,11 +139,13 @@ describe('Testing route parameters', () => {
 
 		// Custom values for everything
 		result = routeParamsToObject(routeType, {
+			provider: 'custom',
 			search: 'arrow left',
 			short: false,
 			page: 1,
 		} as ParamType);
 		expect(result).to.be.eql({
+			provider: 'custom',
 			search: 'arrow left',
 			short: false,
 			page: 1,

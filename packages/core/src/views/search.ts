@@ -33,6 +33,7 @@ export interface SearchViewBlocks extends BaseViewBlocks {
  * Class
  */
 export class SearchView extends BaseView {
+	public readonly provider: string;
 	public readonly route: SearchRoute;
 	protected _data: SearchResults | null = null;
 	protected _blocks: SearchViewBlocks | null = null;
@@ -54,6 +55,7 @@ export class SearchView extends BaseView {
 		this.type = 'search';
 		this._instance = instance;
 		this.route = route;
+		this.provider = route.params.provider;
 		this.parent = parent;
 		this.keyword = route.params.search;
 
@@ -76,7 +78,7 @@ export class SearchView extends BaseView {
 	 */
 	_startLoading(): void {
 		this._startedLoading = true;
-		this._loadAPI('/search', {
+		this._loadAPI(this.provider, '/search', {
 			query: this.keyword,
 			limit: this.itemsLimit,
 		});
@@ -101,7 +103,7 @@ export class SearchView extends BaseView {
 				if (value === this.keyword) {
 					return;
 				}
-				this._searchAction(value);
+				this._searchAction(this.provider, value);
 				return;
 
 			// Change current page
@@ -182,6 +184,7 @@ export class SearchView extends BaseView {
 			{
 				type: 'collection',
 				params: {
+					provider: this.provider,
 					prefix,
 					filter: this.keyword,
 				},
@@ -282,7 +285,7 @@ export class SearchView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		this._data = dataToSearchResults(data);
+		this._data = dataToSearchResults(this.provider, data);
 
 		// Mark as loaded, mark blocks for re-render and reset error
 		this.loading = false;
@@ -343,7 +346,11 @@ export class SearchView extends BaseView {
 			const registry = getRegistry(this._instance);
 			const collections = registry.collections;
 			prefixes.forEach((prefix) => {
-				collections.set(prefix, parsedData.collections[prefix]);
+				collections.set(
+					this.provider,
+					prefix,
+					parsedData.collections[prefix]
+				);
 			});
 
 			// Collections filter

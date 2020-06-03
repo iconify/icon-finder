@@ -20,15 +20,16 @@ describe('Testing collections actions', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('/collections', {}, 'collections');
+		api.loadFixture('', '/collections', {}, 'collections');
 		return registry;
 	}
 
-	it('Navigating to collection', done => {
+	it('Navigating to collection', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -48,7 +49,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -102,7 +103,7 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
-	it('"collections" and "parent" actions', done => {
+	it('"collections" and "parent" actions', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -110,6 +111,7 @@ describe('Testing collections actions', () => {
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -127,7 +129,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -208,7 +210,7 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
-	it('"collections" before home page has loaded', done => {
+	it('"collections" before home page has loaded', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 50;
@@ -216,10 +218,11 @@ describe('Testing collections actions', () => {
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture('/collections', {}, 'collections', {
+		api.loadFixture('', '/collections', {}, 'collections', {
 			responseDelay: 300,
 		});
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -232,6 +235,7 @@ describe('Testing collections actions', () => {
 			}
 		);
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -250,7 +254,7 @@ describe('Testing collections actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -366,7 +370,7 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
-	it('"collections" action with invalid collection', done => {
+	it('"collections" action with invalid collection', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -375,7 +379,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -414,7 +418,7 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
-	it('"search" action', done => {
+	it('"search" action', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -425,6 +429,7 @@ describe('Testing collections actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -435,7 +440,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -489,7 +494,7 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
-	it('"filter" and "categories" actions', done => {
+	it('"filter" and "categories" actions', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -500,6 +505,7 @@ describe('Testing collections actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -511,7 +517,7 @@ describe('Testing collections actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let blocks: CollectionsViewBlocks;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -606,7 +612,7 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
-	it('"search" action', done => {
+	it('"search" action', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -617,6 +623,7 @@ describe('Testing collections actions', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'nav',
@@ -627,7 +634,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

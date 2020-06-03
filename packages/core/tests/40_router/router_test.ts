@@ -21,14 +21,14 @@ describe('Testing router', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('/collections', {}, 'collections');
+		api.loadFixture('', '/collections', {}, 'collections');
 		return registry;
 	}
 
 	/**
 	 * Do tests
 	 */
-	it('Creating router, navigating to home', done => {
+	it('Creating router, navigating to home', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -42,7 +42,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -78,10 +78,11 @@ describe('Testing router', () => {
 		router.home();
 	});
 
-	it('Custom home route', done => {
+	it('Custom home route', (done) => {
 		const registry = setupRegistry();
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -112,7 +113,7 @@ describe('Testing router', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -159,10 +160,11 @@ describe('Testing router', () => {
 		router.home();
 	});
 
-	it('Loading route from object', done => {
+	it('Loading route from object', (done) => {
 		const registry = setupRegistry();
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -187,7 +189,7 @@ describe('Testing router', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -266,11 +268,12 @@ describe('Testing router', () => {
 		} as CollectionRoute;
 	});
 
-	it('Creating child view', done => {
+	it('Creating child view', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -290,7 +293,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -349,7 +352,7 @@ describe('Testing router', () => {
 		router.home();
 	});
 
-	it('Creating child view with delay, testing parent view', done => {
+	it('Creating child view with delay, testing parent view', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -357,6 +360,7 @@ describe('Testing router', () => {
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -379,7 +383,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -465,17 +469,18 @@ describe('Testing router', () => {
 		router.home();
 	});
 
-	it('Child view loading faster than parent view, no delay', done => {
+	it('Child view loading faster than parent view, no delay', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture('/collections', {}, 'collections', {
+		api.loadFixture('', '/collections', {}, 'collections', {
 			responseDelay: 500,
 		});
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -488,6 +493,7 @@ describe('Testing router', () => {
 			}
 		);
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -510,7 +516,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -619,7 +625,7 @@ describe('Testing router', () => {
 		} as PartialRoute;
 	});
 
-	it('Child view loading faster than parent view, with delay', done => {
+	it('Child view loading faster than parent view, with delay', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
 		config.data.display.viewUpdateDelay = 100;
@@ -628,6 +634,7 @@ describe('Testing router', () => {
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: 'home',
@@ -639,6 +646,7 @@ describe('Testing router', () => {
 			}
 		);
 		api.loadFixture(
+			'',
 			'/collection',
 			{
 				info: 'true',
@@ -661,7 +669,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -742,7 +750,7 @@ describe('Testing router', () => {
 		} as PartialRoute;
 	});
 
-	it('Creating sibling view', done => {
+	it('Creating sibling view and custom provider', (done) => {
 		const registry = setupRegistry();
 		const events = registry.events;
 
@@ -751,6 +759,7 @@ describe('Testing router', () => {
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
+			'custom',
 			'/search',
 			{
 				query: 'home',
@@ -759,6 +768,7 @@ describe('Testing router', () => {
 			'search-home'
 		);
 		api.loadFixture(
+			'custom',
 			'/search',
 			{
 				query: 'home',
@@ -777,7 +787,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', data => {
+		events.subscribe('render', (data) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -787,11 +797,15 @@ describe('Testing router', () => {
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
+							provider: 'custom',
 							search: 'home',
 							page: 1,
 						},
 						parent: {
 							type: 'collections',
+							params: {
+								provider: 'custom',
+							},
 						},
 					});
 					expect(params.viewChanged).to.be.equal(true);
@@ -803,11 +817,15 @@ describe('Testing router', () => {
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
+							provider: 'custom',
 							search: 'home',
 							page: 1,
 						},
 						parent: {
 							type: 'collections',
+							params: {
+								provider: 'custom',
+							},
 						},
 					});
 					expect(params.viewChanged).to.be.equal(false);
@@ -818,6 +836,7 @@ describe('Testing router', () => {
 						{
 							type: 'search',
 							params: {
+								provider: 'custom',
 								search: 'home',
 								page: 2,
 								short: false,
@@ -832,12 +851,16 @@ describe('Testing router', () => {
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
+							provider: 'custom',
 							search: 'home',
 							page: 2,
 							short: false,
 						},
 						parent: {
 							type: 'collections',
+							params: {
+								provider: 'custom',
+							},
 						},
 					});
 					expect(params.viewChanged).to.be.equal(true);
@@ -857,12 +880,16 @@ describe('Testing router', () => {
 		router.route = ({
 			type: 'search',
 			params: {
+				provider: 'custom',
 				search: 'home',
 				page: 1,
 				short: true,
 			},
 			parent: {
 				type: 'collections',
+				params: {
+					provider: 'custom',
+				},
 			},
 		} as unknown) as PartialRoute;
 	});

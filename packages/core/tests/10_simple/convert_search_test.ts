@@ -16,11 +16,11 @@ describe('Testing converting search results', () => {
 		let result, expected: SearchResults;
 
 		// Empty block
-		result = dataToSearchResults({});
+		result = dataToSearchResults('', {});
 		expect(result).to.be.equal(null);
 
 		// Add minimum data
-		result = dataToSearchResults({
+		result = dataToSearchResults('', {
 			icons: ['foo:bar'],
 			total: 1,
 			limit: 64,
@@ -34,6 +34,7 @@ describe('Testing converting search results', () => {
 			},
 		});
 		expected = {
+			provider: '',
 			query: 'bar',
 			total: 1,
 			limit: 64,
@@ -50,7 +51,7 @@ describe('Testing converting search results', () => {
 		expect(result).to.be.eql(expected);
 
 		// Missing collection info
-		result = dataToSearchResults({
+		result = dataToSearchResults('', {
 			icons: ['foo:bar'],
 			total: 1,
 			limit: 64,
@@ -62,7 +63,7 @@ describe('Testing converting search results', () => {
 		expect(result).to.be.equal(null);
 
 		// Missing limit
-		result = dataToSearchResults({
+		result = dataToSearchResults('', {
 			icons: ['foo:bar'],
 			total: 1,
 			collections: {
@@ -77,7 +78,7 @@ describe('Testing converting search results', () => {
 		expect(result).to.be.equal(null);
 
 		// Missing query
-		result = dataToSearchResults({
+		result = dataToSearchResults('', {
 			icons: ['foo:bar'],
 			total: 1,
 			limit: 64,
@@ -91,7 +92,7 @@ describe('Testing converting search results', () => {
 		expect(result).to.be.equal(null);
 
 		// Empty results
-		result = dataToSearchResults({
+		result = dataToSearchResults('', {
 			icons: [],
 			total: 0,
 			limit: 64,
@@ -101,6 +102,7 @@ describe('Testing converting search results', () => {
 			},
 		});
 		expected = {
+			provider: '',
 			query: 'bar',
 			total: 0,
 			limit: 64,
@@ -110,18 +112,21 @@ describe('Testing converting search results', () => {
 		expect(result).to.be.eql(expected);
 	});
 
-	it('fa-home', () => {
+	it('fa-home with custom provider', () => {
 		const raw = JSON.parse(getFixture('search-fa-home.json'));
-		const result = dataToSearchResults(raw);
+		const result = dataToSearchResults('custom-provider', raw);
 
 		const expected: SearchResults = {
+			provider: 'custom-provider',
 			query: 'home',
 			total: 3,
 			limit: 64,
 			icons: [
-				stringToIcon('fa-solid:home') as Icon,
-				stringToIcon('fa:home') as Icon,
-				stringToIcon('fa-solid:tachometer-alt') as Icon,
+				stringToIcon('@custom-provider:fa-solid:home') as Icon,
+				stringToIcon('@custom-provider:fa:home') as Icon,
+				stringToIcon(
+					'@custom-provider:fa-solid:tachometer-alt'
+				) as Icon,
 			],
 			collections: {
 				'fa-solid': dataToCollectionInfo(

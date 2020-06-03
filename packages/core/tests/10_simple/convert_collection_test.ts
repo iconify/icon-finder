@@ -12,21 +12,22 @@ describe('Testing converting collection information', () => {
 		let result, expected: CollectionData;
 
 		// Empty block
-		result = dataToCollection({});
+		result = dataToCollection('', {});
 		expect(result).to.be.equal(null);
 
 		// Add prefix
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 		});
 		expect(result).to.be.equal(null);
 
 		// Add name
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 0,
@@ -35,12 +36,13 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 
 		// Add few icons
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			uncategorized: ['home', 'arrow-left'],
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 2,
@@ -53,7 +55,7 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 
 		// Add one category
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -61,6 +63,7 @@ describe('Testing converting collection information', () => {
 			},
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 2,
@@ -73,7 +76,7 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 
 		// Add two categories
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -82,6 +85,7 @@ describe('Testing converting collection information', () => {
 			},
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 3,
@@ -102,7 +106,7 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 
 		// One category + uncategorised
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -111,6 +115,7 @@ describe('Testing converting collection information', () => {
 			uncategorised: ['arrows'],
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 3,
@@ -131,7 +136,7 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 
 		// Aliases, characters, multiple categories
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -149,6 +154,7 @@ describe('Testing converting collection information', () => {
 			},
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 3,
@@ -172,7 +178,7 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 
 		// Themes
-		result = dataToCollection({
+		result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			uncategorised: [
@@ -198,6 +204,7 @@ describe('Testing converting collection information', () => {
 			},
 		});
 		expected = {
+			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 5,
@@ -233,14 +240,17 @@ describe('Testing converting collection information', () => {
 		expect(result).to.be.eql(expected);
 	});
 
-	it('ant-design', () => {
+	it('ant-design with provider', () => {
 		const raw = JSON.parse(getFixture('ant-design.json'));
-		const result = dataToCollection(raw) as NonNullable<CollectionData>;
+		const result = dataToCollection('test', raw) as NonNullable<
+			CollectionData
+		>;
 
 		expect(result).to.not.be.equal(null);
 
 		expect(result.total).to.be.equal(728);
 		expect(result.icons.length).to.be.equal(result.total);
+		expect(result.icons[0].provider).to.be.equal('test');
 
 		expect(result.info).to.not.be.equal(void 0);
 

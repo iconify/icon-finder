@@ -1,6 +1,7 @@
 import { APIParams } from '../api/base';
 import { getRegistry } from '../registry/storage';
 import { PartialRoute } from '../route/types';
+import { getProvider } from '../data/providers';
 
 /**
  * View error
@@ -83,7 +84,7 @@ export class BaseView {
 	/**
 	 * Search action
 	 */
-	_searchAction(value: unknown): void {
+	_searchAction(provider: string, value: unknown): void {
 		if (typeof value !== 'string' || value.trim() === '') {
 			return;
 		}
@@ -108,6 +109,7 @@ export class BaseView {
 			{
 				type: 'search',
 				params: {
+					provider,
 					search: keyword,
 				},
 			} as PartialRoute,
@@ -118,15 +120,16 @@ export class BaseView {
 	/**
 	 * Load data from API
 	 */
-	_loadAPI(query: string, params: APIParams): void {
+	_loadAPI(provider: string, query: string, params: APIParams): void {
 		const registry = getRegistry(this._instance);
+		const providerData = getProvider(provider);
+		const configAPIData = providerData ? providerData.config : null;
 		const api = registry.api;
-		const config = registry.config;
-		const configAPIData = config.data.API;
 
 		// Calculate and create timer
 		let timeout = 0;
 		if (
+			configAPIData &&
 			typeof configAPIData.rotate === 'number' &&
 			typeof configAPIData.timeout === 'number' &&
 			typeof configAPIData.limit === 'number' &&
@@ -154,7 +157,7 @@ export class BaseView {
 		}
 
 		// Send query
-		api.query(query, params, data => {
+		api.query(provider, query, params, (data) => {
 			// Clear timeout
 			if (this._loadingTimer !== null) {
 				clearTimeout(this._loadingTimer as number);

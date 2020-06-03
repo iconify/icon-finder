@@ -41,6 +41,7 @@ describe('Testing search view', () => {
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.loadFixture(
+			'',
 			'/search',
 			{
 				query: search,
@@ -92,7 +93,7 @@ describe('Testing search view', () => {
 	 * Get icon names from block
 	 */
 	function getIconNames(block: IconsListBlock): string[] {
-		return (block.icons as Icon[]).map(icon => {
+		return (block.icons as Icon[]).map((icon) => {
 			return icon.name;
 		});
 	}
@@ -102,7 +103,7 @@ describe('Testing search view', () => {
 	 */
 	function filterTags(block: FiltersBlock, disabled: boolean): string[] {
 		return Object.keys(block.filters).filter(
-			key => block.filters[key].disabled === disabled
+			(key) => block.filters[key].disabled === disabled
 		);
 	}
 
@@ -111,7 +112,7 @@ describe('Testing search view', () => {
 	 */
 	function getFilterTitles(block: FiltersBlock): Record<string, string> {
 		const result = Object.create(null);
-		Object.keys(block.filters).forEach(filter => {
+		Object.keys(block.filters).forEach((filter) => {
 			result[filter] = block.filters[filter].title;
 		});
 		return result;
@@ -120,7 +121,7 @@ describe('Testing search view', () => {
 	/**
 	 * Do tests
 	 */
-	it('Creating view', done => {
+	it('Creating view', (done) => {
 		const registry = setupRegistry('home');
 
 		// Set variables
@@ -128,7 +129,7 @@ describe('Testing search view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -160,6 +161,7 @@ describe('Testing search view', () => {
 		expect(view.route).to.be.eql({
 			type: 'search',
 			params: {
+				provider: '',
 				search: 'home',
 				short: true,
 				page: 0,
@@ -169,14 +171,14 @@ describe('Testing search view', () => {
 	});
 
 	// Same as previous test, but combined to one function for simpler tests
-	it('Test using setupView code', done => {
-		const view = setupView(data => {
+	it('Test using setupView code', (done) => {
+		const view = setupView((data) => {
 			expect(data).to.be.equal(view);
 			done();
 		}, 'home');
 	});
 
-	it('Not found', done => {
+	it('Not found', (done) => {
 		const keyword = 'home';
 		const registry = new Registry(namespace + nsCounter++);
 
@@ -188,6 +190,7 @@ describe('Testing search view', () => {
 		const api = new FakeAPI(registry);
 		registry.api = api;
 		api.setFakeData(
+			'',
 			'/search',
 			{
 				query: keyword,
@@ -198,7 +201,7 @@ describe('Testing search view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			const view = data as SearchView;
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
@@ -219,8 +222,8 @@ describe('Testing search view', () => {
 		view.startLoading();
 	});
 
-	it('Test "home" search"', done => {
-		const view = setupView(data => {
+	it('Test "home" search"', (done) => {
+		const view = setupView((data) => {
 			expect(data).to.be.equal(view);
 
 			// Check view
@@ -269,6 +272,7 @@ describe('Testing search view', () => {
 			expect(isIconsListBlockEmpty(blocks.icons)).to.be.equal(false);
 			expect(blocks.icons.icons.length).to.be.equal(32);
 			expect(blocks.icons.icons[0]).to.be.eql({
+				provider: '',
 				prefix: 'ant-design',
 				name: 'home-fill',
 			});
@@ -290,9 +294,9 @@ describe('Testing search view', () => {
 		}, 'home');
 	});
 
-	it('Test "home" search", full results', done => {
+	it('Test "home" search", full results', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				let expectedPagination: PaginationBlock;
 
 				expect(data).to.be.equal(view);
@@ -355,6 +359,7 @@ describe('Testing search view', () => {
 				expect(isIconsListBlockEmpty(blocks.icons)).to.be.equal(false);
 				expect(blocks.icons.icons.length).to.be.equal(32);
 				expect(blocks.icons.icons[0]).to.be.eql({
+					provider: '',
 					prefix: 'ant-design',
 					name: 'home-fill',
 				});
@@ -385,12 +390,14 @@ describe('Testing search view', () => {
 				expect(isIconsListBlockEmpty(blocks.icons)).to.be.equal(false);
 				expect(blocks.icons.icons.length).to.be.equal(22);
 				expect(blocks.icons.icons[0]).to.be.eql({
+					provider: '',
 					prefix: 'subway',
 					name: 'home',
 				});
 				expect(
 					blocks.icons.icons[blocks.icons.icons.length - 1]
 				).to.be.eql({
+					provider: '',
 					prefix: 'uil',
 					name: 'tachometer-fast',
 				});

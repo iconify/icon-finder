@@ -23,6 +23,7 @@ describe('Testing route', () => {
 		expect(result).to.be.eql({
 			type: routeType,
 			params: {
+				provider: '',
 				filter: '',
 				category: null,
 			},
@@ -39,6 +40,7 @@ describe('Testing route', () => {
 		expect(result).to.be.eql({
 			type: routeType,
 			params: {
+				provider: '',
 				filter: '',
 				category: 'General',
 			},
@@ -73,6 +75,7 @@ describe('Testing route', () => {
 		expect(result).to.be.eql({
 			type: routeType,
 			params: {
+				provider: '',
 				prefix: 'md',
 				filter: '',
 				page: 0,
@@ -107,6 +110,7 @@ describe('Testing route', () => {
 		expect(result).to.be.eql({
 			type: routeType,
 			params: {
+				provider: '',
 				prefix: 'md',
 				filter: 'arrow',
 				page: 10,
@@ -117,6 +121,7 @@ describe('Testing route', () => {
 			parent: {
 				type: 'collections',
 				params: {
+					provider: '',
 					filter: '',
 					category: null,
 				},
@@ -157,6 +162,7 @@ describe('Testing route', () => {
 		expect(result).to.be.eql({
 			type: routeType,
 			params: {
+				provider: '',
 				search: 'arrow',
 				short: true,
 				page: 0,
@@ -185,6 +191,7 @@ describe('Testing route', () => {
 		expect(result).to.be.eql({
 			type: routeType,
 			params: {
+				provider: '',
 				search: 'arrow',
 				short: false,
 				page: 1,
@@ -192,6 +199,7 @@ describe('Testing route', () => {
 			parent: {
 				type: 'collections',
 				params: {
+					provider: '',
 					filter: '',
 					category: null,
 				},

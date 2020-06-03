@@ -19,6 +19,7 @@ describe('Testing route', () => {
 			type: routeType,
 			params: {
 				// Default values, so params should be skipped
+				provider: '',
 				filter: '',
 				category: null,
 			},
@@ -32,6 +33,7 @@ describe('Testing route', () => {
 		result = routeToObject({
 			type: routeType,
 			params: {
+				provider: '',
 				filter: '',
 				category: 'General',
 			},
@@ -39,6 +41,7 @@ describe('Testing route', () => {
 				// Use collections as parent, but in real code collections should have no parent
 				type: routeType,
 				params: {
+					provider: '',
 					filter: 'home',
 					category: '', // Empty string, not null
 				},
@@ -69,6 +72,7 @@ describe('Testing route', () => {
 			type: routeType,
 			params: {
 				// Default values, so params should be skipped
+				provider: '',
 				prefix: '', // No prefix to test result without params
 				filter: '',
 				page: 0,
@@ -86,6 +90,7 @@ describe('Testing route', () => {
 		result = routeToObject({
 			type: routeType,
 			params: {
+				provider: '',
 				prefix: 'md',
 				filter: '',
 				page: 0,
@@ -106,6 +111,7 @@ describe('Testing route', () => {
 		result = routeToObject({
 			type: routeType,
 			params: {
+				provider: '',
 				prefix: 'md',
 				filter: 'arrow',
 				page: 1,
@@ -145,6 +151,7 @@ describe('Testing route', () => {
 			type: routeType,
 			params: {
 				// Default values, so params should be skipped
+				provider: '',
 				search: '', // No query to test result without params
 				short: true,
 				page: 0,
@@ -159,6 +166,7 @@ describe('Testing route', () => {
 		result = routeToObject({
 			type: routeType,
 			params: {
+				provider: '',
 				search: 'home',
 				short: false,
 				page: 0,
@@ -177,6 +185,7 @@ describe('Testing route', () => {
 		result = routeToObject({
 			type: routeType,
 			params: {
+				provider: '',
 				search: 'home',
 				short: false,
 				page: 2,
@@ -184,6 +193,7 @@ describe('Testing route', () => {
 			parent: {
 				type: 'collections',
 				params: {
+					provider: '',
 					filter: '',
 					category: null,
 				},

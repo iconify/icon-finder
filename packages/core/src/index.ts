@@ -33,8 +33,19 @@ export { PaginationBlock, showPagination, maxPage } from './blocks/pagination';
 export { SearchBlock } from './blocks/search';
 
 /**
- * Export various types
+ * Export functions that are not specific to instance
  */
+
+/**
+ * Export various types and functions that do not depend on core instance
+ */
+// Provider
+export {
+	APIProviderSource,
+	addProvider,
+	listProviders,
+} from './data/providers';
+
 // From routes
 export { PartialRoute };
 export {
@@ -152,9 +163,9 @@ export class APICore {
 	/**
 	 * Get collection information
 	 */
-	getCollection(prefix: string): CollectionInfo | null {
+	getCollection(provider: string, prefix: string): CollectionInfo | null {
 		const collections = this.registry.collections;
-		return collections.get(prefix);
+		return collections.get(provider, prefix);
 	}
 
 	/**
