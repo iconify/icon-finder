@@ -73,7 +73,26 @@ function listFiles(dir) {
 			}
 		});
 	}
-	rec('');
+
+	if (typeof dir === 'object') {
+		// Scan multiple directories
+		dir.forEach((dir) => {
+			results = results.concat(listFiles(dir));
+		});
+
+		// Unique files
+		results.sort();
+		let lastFile = '';
+		results = results.filter((file) => {
+			if (file === lastFile) {
+				return false;
+			}
+			lastFile = file;
+			return true;
+		});
+	} else {
+		rec('');
+	}
 
 	return results;
 }
@@ -90,6 +109,19 @@ function writeFile(filename, data) {
 }
 
 /**
+ * Read file from multiple possible locations
+ */
+function readFile(dirs, filename) {
+	for (let i = 0; i < dirs.length; i++) {
+		try {
+			const content = fs.readFileSync(dirs[i] + filename, 'utf8');
+			return content;
+		} catch (err) {}
+	}
+	throw new Error(`Cannot locate file ${filename}`);
+}
+
+/**
  * Export
  */
 module.exports = {
@@ -97,4 +129,5 @@ module.exports = {
 	unlink,
 	listFiles,
 	writeFile,
+	readFile,
 };

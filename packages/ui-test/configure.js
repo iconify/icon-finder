@@ -1,6 +1,5 @@
 const { prepare, build } = require('@iconify/search-configurator');
-
-const params = prepare();
+const params = prepare(__dirname + '/src/components');
 
 // Log theme and config file
 console.log(

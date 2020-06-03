@@ -1,13 +1,10 @@
-const fs = require('fs');
-const path = require('path');
 const { Replacements } = require('@cyberalien/conditional-replacements');
 const getConfig = require('./build/config');
 const getReplacements = require('./build/replacements');
-// const compile = require('./build/typescript');
-const { mkdir, unlink, listFiles, writeFile } = require('./build/fs');
+const { mkdir, unlink, listFiles, writeFile, readFile } = require('./build/fs');
 
 const rootDir = __dirname;
-const sourceDir = rootDir + '/src';
+const defaultSourceDir = rootDir + '/src';
 const configuredDir = rootDir + '/src-configured';
 const compiledDir = rootDir + '/lib';
 
@@ -23,8 +20,14 @@ const replacements = new Replacements(replacementsList, '@iconify-replacement');
 mkdir(configuredDir);
 mkdir(compiledDir);
 
-// Get all files from source directory
-const sourceFiles = listFiles(sourceDir);
+// Get source directories
+let sourceDirs = [defaultSourceDir];
+if (config.customFilesDir !== '') {
+	sourceDirs.unshift(config.customFilesDir);
+}
+
+// Get all files from source directories
+const sourceFiles = listFiles(sourceDirs);
 
 // Remove all outdated files
 listFiles(configuredDir).forEach((file) => {
@@ -72,7 +75,8 @@ sourceFiles.forEach((file) => {
 			);
 			process.exit(1);
 	}
-	const oldContent = fs.readFileSync(sourceDir + '/' + file, 'utf8');
+
+	const oldContent = readFile(sourceDirs, '/' + file);
 	const newContent = replacements.parse(oldContent);
 
 	// Write files to compile by TypeScript

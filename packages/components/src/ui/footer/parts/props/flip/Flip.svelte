@@ -13,15 +13,16 @@
 	let list;
 	$: {
 		list = [
-			addItem('hFlip', iconCustomisations.hFlip),
-			addItem('vFlip', iconCustomisations.vFlip),
+			addItem('h', iconCustomisations.hFlip),
+			addItem('v', iconCustomisations.vFlip),
 		];
 	}
 
-	function addItem(type, selected) {
+	function addItem(key, selected) {
 		return {
-			type: type,
-			key: type + (selected ? '!' : ''),
+			type: key + 'Flip',
+			icon: key + '-flip',
+			key: key + 'Flip' + (selected ? '!' : ''),
 		};
 	}
 
@@ -32,9 +33,9 @@
 </script>
 
 <Block type="flip" {registry}>
-	{#each list as { type, key }, i (key)}
+	{#each list as { type, key, icon }, i (key)}
 		<Button
-			icon={type}
+			{icon}
 			title={phrases[type]}
 			status={iconCustomisations[type] ? 'checked' : 'unchecked'}
 			onClick={() => flipClicked(type)} />

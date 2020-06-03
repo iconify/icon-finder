@@ -5,7 +5,9 @@
 			"name": "simple-editable"
 		},
 		"customisations": {
-			"color": false
+			"color": {
+				"show": false
+			}
 		}
 	}
 }

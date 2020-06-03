@@ -29,6 +29,9 @@ export interface IconFinderConfig {
 	// Theme name
 	theme: string;
 
+	// Custom files directory
+	customFilesDir: string;
+
 	// Language pack
 	language: string;
 
@@ -110,6 +113,7 @@ export type PartialIconFinderConfig = RecursivePartial<IconFinderConfig>;
  */
 export const config: IconFinderConfig = {
 	theme: '',
+	customFilesDir: '',
 	language: 'en',
 	views: {
 		custom: true,

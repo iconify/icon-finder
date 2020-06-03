@@ -55,6 +55,7 @@
 	// Resolve icon name
 	$: {
 		let newName;
+		// console.log('Rendering icon:', icon);
 		switch (typeof uiIcons[icon]) {
 			case 'string':
 				// Icon value is icon name
@@ -108,6 +109,7 @@
 					abortLoader();
 				}
 				abortLoader = Iconify.loadIcons([name], loadingEvent);
+				// console.log('Missing icon:', name);
 			} else {
 				// Icon is loaded - generate SVG
 				const iconProps = Object.assign(
@@ -117,9 +119,9 @@
 					},
 					typeof props === 'object' ? props : {}
 				);
-				console.log('Rendering:', name, iconProps);
+				// console.log('Rendering:', name, iconProps);
 				let newSVG = Iconify.renderHTML(name, iconProps);
-				console.log('Got:', newSVG);
+				// console.log('Got:', newSVG);
 				if (uiIcons['class'] !== void 0) {
 					newSVG = newSVG.replace(
 						' class="iconify ',

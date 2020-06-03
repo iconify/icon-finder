@@ -1,12 +1,21 @@
-import { Params } from './params';
+import { Params, ConfiguratorParams } from './params';
 export { build } from './builder';
 export { Params };
 
 /**
  * Prepare params instance for building
  */
-export function prepare(): Params {
+export function prepare(customFilesDir: string = ''): Params {
 	const params = new Params();
+	if (customFilesDir !== '') {
+		console.log('Using custom files from', customFilesDir);
+		params.applyArguments([
+			'--config=' +
+				JSON.stringify({
+					customFilesDir,
+				}),
+		]);
+	}
 	params.applyEnv();
 	params.applyArguments();
 	params.buildConfig();

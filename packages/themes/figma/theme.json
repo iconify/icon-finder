@@ -47,11 +47,11 @@
 		"color-filled": {
 			"body": "<rect width=\"12\" height=\"12\" rx=\"2\" fill=\"currentColor\"/>"
 		},
-		"hFlip": {
+		"h-flip": {
 			"parent": "icon-height",
 			"rotate": 3
 		},
-		"vFlip": {
+		"v-flip": {
 			"parent": "icon-height"
 		},
 		"rotate0": {

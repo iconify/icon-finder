@@ -24,8 +24,8 @@
 		"rotate1": "arty-animated:16-arc-90",
 		"rotate2": "arty-animated:16-arc-180",
 		"rotate3": "arty-animated:16-arc-270",
-		"hFlip": "arty-animated:16-double-arrow-horizontal",
-		"vFlip": "arty-animated:16-double-arrow-vertical",
+		"h-flip": "arty-animated:16-double-arrow-horizontal",
+		"v-flip": "arty-animated:16-double-arrow-vertical",
 		"width": 16,
 		"height": 16
 	}

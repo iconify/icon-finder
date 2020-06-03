@@ -65,7 +65,7 @@ describe('Testing Params class: reading configuration', () => {
 		// Make changes same as in config file
 		expected.showFooter = false;
 		expected.footer.components.name = 'simple-editable';
-		expected.footer.customisations.color = false;
+		expected.footer.customisations.color.show = false;
 
 		expect(params.config).to.be.eql(expected);
 	});
@@ -87,7 +87,7 @@ describe('Testing Params class: reading configuration', () => {
 		expected.footer.buttons = {
 			submit: {
 				type: 'primary',
-				title: 'Submit',
+				text: 'Submit',
 			},
 		};
 

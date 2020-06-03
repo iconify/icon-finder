@@ -15,6 +15,25 @@ const defaultFooterButtons = {
 };
 
 /**
+ * Check if source file exists
+ */
+function sourceFileExists(config, filename) {
+	let sourceDirs = [sourceDir];
+	if (config.customFilesDir !== '') {
+		sourceDirs.unshift(config.customFilesDir);
+	}
+
+	for (let i = 0; i < sourceDirs.length; i++) {
+		try {
+			const testFile = sourceDirs[i] + filename;
+			fs.lstatSync(testFile, 'utf8');
+			return true;
+		} catch (err) {}
+	}
+	return false;
+}
+
+/**
  * Capitalise text
  */
 function capitalise(text) {
@@ -124,10 +143,7 @@ function footerReplacements(replacements, config) {
 			: 'none'
 	);
 
-	try {
-		const testFile = `${sourceDir}/ui/footer/${footerComponent}.svelte`;
-		fs.lstatSync(testFile, 'utf8');
-	} catch (err) {
+	if (!sourceFileExists(config, `/ui/footer/${footerComponent}.svelte`)) {
 		throw new Error(`Invalid footer component: ${footerComponent}`);
 	}
 	replacements['/footer/Simple.svelte'] = `/footer/${footerComponent}.svelte`;
@@ -137,10 +153,12 @@ function footerReplacements(replacements, config) {
 		// Name component
 		const footerNameComponent = capitalise(config.footer.components.name);
 
-		try {
-			const testFile = `${sourceDir}/ui/footer/parts/name/${footerNameComponent}.svelte`;
-			fs.lstatSync(testFile, 'utf8');
-		} catch (err) {
+		if (
+			!sourceFileExists(
+				config,
+				`/ui/footer/parts/name/${footerNameComponent}.svelte`
+			)
+		) {
 			throw new Error(
 				`Invalid footer name component: ${footerNameComponent}`
 			);
@@ -157,7 +175,7 @@ function footerReplacements(replacements, config) {
 	}
 
 	// Customisations
-	footerOptions.customisations = footerCustomisations(replacements, config);
+	footerCustomisations(replacements, config);
 
 	// Footer options replacement
 	console.log(footerOptions);
