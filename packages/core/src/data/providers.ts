@@ -1,46 +1,14 @@
+import {
+	APIProviderRawDataLinks,
+	APIProviderRawDataNPM,
+	APIProviderRawData,
+} from '@iconify/types/provider';
 import Iconify, { IconifyAPIConfig } from '@iconify/iconify';
 import { Redundancy } from '@cyberalien/redundancy';
 import { match } from '../icon';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
 function assertNever(s: never): void {}
-
-/**
- * Raw data sent by API
- */
-interface APIProviderRawDataLinks {
-	// Collections list
-	home?: string;
-	// Collection. Available variables: {prefix}
-	collection?: string;
-	// Icon. Available variables: {prefix}, {name}
-	icon?: string;
-}
-
-interface APIProviderRawDataNPM {
-	// Package name for installation. Available variables: {prefix}
-	package?: string;
-
-	// Icon import source. Available variables: {prefix}, {name}
-	icon?: string;
-}
-
-export interface APIProviderRawData {
-	// Provider name (as used in icon names)
-	provider: string;
-
-	// Provider name (human readable version)
-	title?: string;
-
-	// API link(s), though they are usually redundant because API end point is used to retrieve data
-	api?: string | string[];
-
-	// Links to website
-	links?: APIProviderRawDataLinks;
-
-	// NPM packages for icons, used when showing code samples
-	npm?: APIProviderRawDataNPM;
-}
 
 /**
  * Default values
