@@ -99,8 +99,6 @@
 			// Get current provider
 			if (route && route.params && typeof route.params.provider === 'string') {
 				activeProvider = route.params.provider;
-			} else {
-				activeProvider = registry.router.defaultProvider;
 			}
 
 			// Create new list of providers
@@ -114,12 +112,12 @@
 </script>
 
 <div class={className}>
-	{#if showGlobalSearch}
-		<SearchBlock {registry} {viewChanged} {error} {route} />
-	{/if}
-
 	{#if showProviders}
 		<ProvidersBlock {registry} {route} {providers} {activeProvider} />
+	{/if}
+
+	{#if showGlobalSearch}
+		<SearchBlock {registry} {viewChanged} {error} {route} />
 	{/if}
 
 	{#if route && route.parent}

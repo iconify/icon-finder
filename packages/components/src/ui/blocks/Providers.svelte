@@ -11,10 +11,9 @@
 	export let activeProvider; /** @type {string} */
 	export let providers; /** @type {string[]} */
 
-	const title = registry.phrases.filters.providers;
+	// const title = registry.phrases.filters.providers;
 
 	function handleClick(key) {
-		console.log('Changing provider to:', key);
 		registry.router.action('provider', key);
 	}
 
@@ -38,7 +37,6 @@
 </script>
 
 <Block type="filters" name="providers">
-	<div class="iif-filters-header">{title}</div>
 	<div class="iif-filters-list">
 		{#each list as provider, i (provider.provider)}
 			<Filter
