@@ -118,6 +118,8 @@ function layoutReplacements(replacements, config) {
 	// Shorten icon name when viewing collection
 	if (config.layout.canShortenName === false) {
 		replacements['canShortenName = true'] = 'canShortenName = false';
+		replacements['/misc/shorten-icon-name'] =
+			'/misc/shorten-icon-name-empty';
 	}
 }
 

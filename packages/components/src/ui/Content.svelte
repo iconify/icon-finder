@@ -91,7 +91,6 @@
 	let activeProvider = '';
 	let providers = [''];
 	$: {
-		console.log('Updating providers');
 		const providersList = listProviders();
 		if (providersList.length > 1) {
 			showProviders = true;

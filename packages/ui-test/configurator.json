@@ -1,5 +1,8 @@
 {
 	"theme": "figma",
+	"layout": {
+		"canShortenName": true
+	},
 	"providers": {
 		"default": "local",
 		"custom": {

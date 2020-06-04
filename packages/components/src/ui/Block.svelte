@@ -20,7 +20,7 @@
 		if (extra !== '') {
 			className += ' ' + baseClass + '--' + extra;
 		}
-		console.log(`Rendering Block at ${Date.now()}: ${className}`);
+		// console.log(`Rendering Block at ${Date.now()}: ${className}`);
 	}
 </script>
 

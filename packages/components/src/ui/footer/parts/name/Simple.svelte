@@ -1,4 +1,7 @@
 <script context="module">
+	// @iconify-replacement: '/misc/shorten-icon-name'
+	import { shortenIconName } from '../../../../misc/shorten-icon-name';
+
 	// @iconify-replacement: 'canShortenName = true'
 	const canShortenName = true;
 </script>
@@ -18,14 +21,7 @@
 	$: {
 		// Do not show prefix if viewing collection
 		if (canShortenName) {
-			text =
-				selectedIcon &&
-				route &&
-				route.type === 'collection' &&
-				route.params.provider === selectedIcon.provider &&
-				route.params.prefix === selectedIcon.prefix
-					? selectedIcon.name
-					: iconName;
+			text = shortenIconName(route, selectedIcon, iconName);
 		}
 		if (!canShortenName) {
 			text = iconName;
