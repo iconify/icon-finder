@@ -1,3 +1,4 @@
+import { APIProviderRawData } from '@iconify/types/provider';
 import { readFileSync } from 'fs';
 import {
 	IconFinderConfig,
@@ -578,6 +579,16 @@ export class Params {
 			target[key] = copiedButton;
 		}
 
+		// Merge providers
+		function mergeProviders(
+			target: Record<string, APIProviderRawData>,
+			custom: Record<string, APIProviderRawData>
+		) {
+			for (let key in custom) {
+				target[key] = custom[key];
+			}
+		}
+
 		// Merge objects
 		function merge(source: unknown, target: unknown, prefix: string) {
 			Object.keys(source).forEach((key) => {
@@ -589,6 +600,15 @@ export class Params {
 						target as Record<string, FooterButton>,
 						value as FooterButton,
 						key
+					);
+					return;
+				}
+
+				// Providers
+				if (prefix === 'providers.' && key === 'custom') {
+					mergeProviders(
+						target[key] as Record<string, APIProviderRawData>,
+						value as Record<string, APIProviderRawData>
 					);
 					return;
 				}

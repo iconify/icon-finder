@@ -310,6 +310,32 @@ function footerCustomisations(replacements, config) {
 }
 
 /**
+ * Add provider replacements
+ */
+function providerReplacements(replacements, config) {
+	const providerConfig = config.providers;
+
+	// Custom providers
+	if (providerConfig.custom && Object.keys(providerConfig.custom).length) {
+		replacements['customProviders = {}'] =
+			'customProviders = ' + JSON.stringify(providerConfig.custom);
+
+		// Change default provider
+		if (providerConfig.default !== '') {
+			const defaultProvider = providerConfig.default;
+			if (providerConfig.custom[defaultProvider] !== void 0) {
+				replacements["defaultProvider = ''"] =
+					"defaultProvider = '" + defaultProvider + "'";
+			}
+		}
+	} else {
+		// No custom providers
+		replacements['importProviders(customProviders);'] = '';
+		replacements['/misc/import-providers'] = '/misc/import-providers-empty';
+	}
+}
+
+/**
  * Get replacements for config
  */
 module.exports = (config) => {
@@ -320,6 +346,7 @@ module.exports = (config) => {
 	toggleViews(replacements, config);
 	footerReplacements(replacements, config);
 	layoutReplacements(replacements, config);
+	providerReplacements(replacements, config);
 
 	return replacements;
 };

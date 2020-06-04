@@ -1,3 +1,5 @@
+import { APIProviderRawData } from '@iconify/types/provider';
+
 /**
  * Footer button type
  */
@@ -100,10 +102,13 @@ export interface IconFinderConfig {
 
 	// API providers
 	providers: {
-		// Default API
+		canAdd: boolean;
+
+		// Default provider name
 		default: string;
 
-		// custom: Record<string, IconFinderProvider>;
+		// Custom providers list
+		custom: Record<string, APIProviderRawData>;
 	};
 }
 
@@ -180,6 +185,8 @@ export const config: IconFinderConfig = {
 
 	// API providers
 	providers: {
+		canAdd: false,
 		default: '',
+		custom: Object.create(null),
 	},
 };
