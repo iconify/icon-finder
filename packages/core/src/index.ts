@@ -43,6 +43,8 @@ export { SearchBlock } from './blocks/search';
 export {
 	APIProviderSource,
 	addProvider,
+	getProvider,
+	convertProviderData,
 	listProviders,
 } from './data/providers';
 

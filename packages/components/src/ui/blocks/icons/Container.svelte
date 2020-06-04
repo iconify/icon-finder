@@ -23,6 +23,7 @@
 </script>
 
 <script>
+	import { getProvider } from '@iconify/search-core';
 	import { onDestroy } from 'svelte';
 
 	export let registry; /** @type {Registry} */
@@ -124,6 +125,7 @@
 			const data = Iconify.getIcon(name);
 			const exists = data !== null;
 
+			// Tooltip
 			let tooltip = showPrefix ? name : icon.name;
 			if (exists) {
 				tooltip += tooltipText.size.replace(
@@ -142,16 +144,26 @@
 						data.body.indexOf('currentColor') === -1 ? 'colorful' : 'colorless'
 					];
 			}
+
+			// Link
+			const providerData = getProvider(icon.provider);
+			let link;
+			if (providerData) {
+				link = providerData.links.icon
+					.replace('{prefix}', icon.prefix)
+					.replace('{name}', icon.name);
+			} else {
+				link = '';
+			}
+
+			// Item
 			let item = {
 				name,
 				text: showPrefix ? name : icon.name,
 				tooltip,
 				icon: cloneObject(icon),
 				exists,
-				link: options.links.icon
-					.replace('{provider}', icon.provider)
-					.replace('{prefix}', icon.prefix)
-					.replace('{name}', icon.name),
+				link,
 				selected: name === selectedName,
 			};
 

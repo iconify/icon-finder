@@ -28,21 +28,26 @@
 </script>
 
 <script>
+	import { getProvider } from '@iconify/search-core';
 	import Height from './Height.svelte';
 
-	export let registry; /** @type {Registry} */
+	// export let registry; /** @type {Registry} */
 	export let phrases; /** @type {UITranslation} */
 	export let provider; /** @type {string} */
 	export let prefix; /** @type {string} */
 	export let info; /** @type {CollectionInfo} */
 	export let onClick; /** @type {function} */
 
-	const options = registry.options;
-
 	// Get link
-	const link = options.links.collection
-		.replace('{provider}', provider)
-		.replace('{prefix}', prefix);
+	let link;
+	$: {
+		const providerData = getProvider(provider);
+		if (providerData) {
+			link = providerData.links.collection.replace('{prefix}', prefix);
+		} else {
+			link = '';
+		}
+	}
 
 	// Get container class name
 	let className; /** @type {string} */

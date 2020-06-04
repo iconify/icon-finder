@@ -9,10 +9,6 @@ const defaultOptions: DataStorage = {
 		// True if icons list mode can be changed.
 		toggleList: true,
 	},
-	links: {
-		collection: 'https://iconify.design/icon-sets/{prefix}/',
-		icon: 'https://iconify.design/icon-sets/{prefix}/{name}.html',
-	},
 };
 
 /**
