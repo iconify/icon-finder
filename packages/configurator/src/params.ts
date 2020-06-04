@@ -585,7 +585,19 @@ export class Params {
 			custom: Record<string, APIProviderRawData>
 		) {
 			for (let key in custom) {
-				target[key] = custom[key];
+				const item = custom[key];
+
+				// Use provider as key, make sure it is correct
+				let targetKey = key;
+				if (item.provider !== void 0) {
+					targetKey = item.provider;
+					delete item.provider;
+				}
+
+				if (targetKey === '') {
+					continue;
+				}
+				target[targetKey] = item;
 			}
 		}
 

@@ -17,11 +17,11 @@ describe('Testing router', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(): Registry {
+	function setupRegistry(provider = ''): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('', '/collections', {}, 'collections');
+		api.loadFixture(provider, '/collections', {}, 'collections');
 		return registry;
 	}
 

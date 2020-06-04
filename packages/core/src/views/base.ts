@@ -57,6 +57,22 @@ export class BaseView {
 	}
 
 	/**
+	 * Change provider
+	 */
+	_providerAction(value: unknown): void {
+		if (typeof value !== 'string') {
+			return;
+		}
+		const providerData = getProvider(value);
+		if (!providerData) {
+			return;
+		}
+		const registry = getRegistry(this._instance);
+		const router = registry.router;
+		router.home(value);
+	}
+
+	/**
 	 * Start loading
 	 */
 	startLoading(): void {

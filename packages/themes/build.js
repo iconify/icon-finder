@@ -155,6 +155,23 @@ function nextTheme() {
 	}
 
 	/**
+	 * Get rotation count
+	 */
+	function getRotation(dir) {
+		if (!fileExists(dir + '/rotation.json')) {
+			return null;
+		}
+		const raw = fs.readFileSync(dir + '/rotation.json');
+		// Use "eval" to allow comments in file
+		let data;
+		eval('data = ' + raw);
+		if (typeof data !== 'object' && !data instanceof Array) {
+			throw new Error('Invalid rotation.json content');
+		}
+		return data.length;
+	}
+
+	/**
 	 * Get theme configuration
 	 */
 	function getConfig(theme) {
@@ -171,6 +188,12 @@ function nextTheme() {
 		if (typeof config !== 'object') {
 			console.error(`Invalid config file: ${filename}`);
 			process.exit(1);
+		}
+
+		// Get rotation
+		const rotation = getRotation(rootDir + '/' + theme);
+		if (rotation !== null) {
+			config.rotation = rotation;
 		}
 
 		// Add theme to tree
@@ -210,6 +233,10 @@ function nextTheme() {
 
 				// Merge / ignore
 				switch (key) {
+					case 'rotation':
+						// Ignore rotation if it is already set
+						return;
+
 					case 'icons':
 						// Merge objects
 						if (

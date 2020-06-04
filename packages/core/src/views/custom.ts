@@ -96,6 +96,11 @@ export class CustomView extends BaseView {
 				this._parentAction(value);
 				return;
 
+			// Change provider
+			case 'provider':
+				this._providerAction(value);
+				return;
+
 			// Set icons
 			case 'set':
 				this.setIcons(value as IconsList);

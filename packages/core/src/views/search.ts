@@ -94,6 +94,13 @@ export class SearchView extends BaseView {
 				this._parentAction(value);
 				return;
 
+			// Change provider
+			case 'provider':
+				if (value !== this.provider) {
+					this._providerAction(value);
+				}
+				return;
+
 			// Global search
 			case 'search':
 				if (typeof value !== 'string') {

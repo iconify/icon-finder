@@ -1,6 +1,8 @@
 <script>
+	import { listProviders } from '@iconify/search-core';
 	import SearchBlock from './blocks/GlobalSearch.svelte';
 	import ParentBlock from './blocks/Parent.svelte';
+	import ProvidersBlock from './blocks/Providers.svelte';
 	import ViewError from './views/Error.svelte';
 	import CollectionsView from './views/Collections.svelte';
 	import CollectionView from './views/Collection.svelte';
@@ -83,11 +85,41 @@
 			}
 		}
 	}
+
+	// Get providers
+	let showProviders = false;
+	let activeProvider = '';
+	let providers = [''];
+	$: {
+		console.log('Updating providers');
+		const providersList = listProviders();
+		if (providersList.length > 1) {
+			showProviders = true;
+
+			// Get current provider
+			if (route && route.params && typeof route.params.provider === 'string') {
+				activeProvider = route.params.provider;
+			} else {
+				activeProvider = registry.router.defaultProvider;
+			}
+
+			// Create new list of providers
+			if (!providers || providers.length !== providersList.length) {
+				providers = providersList;
+			}
+		} else {
+			showProviders = false;
+		}
+	}
 </script>
 
 <div class={className}>
 	{#if showGlobalSearch}
 		<SearchBlock {registry} {viewChanged} {error} {route} />
+	{/if}
+
+	{#if showProviders}
+		<ProvidersBlock {registry} {route} {providers} {activeProvider} />
 	{/if}
 
 	{#if route && route.parent}

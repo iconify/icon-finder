@@ -45,8 +45,16 @@ export class EmptyView extends BaseView {
 	 * Run action on view
 	 */
 	action(action: string, value: unknown): void {
-		if (action === 'parent') {
-			this._parentAction(value);
+		switch (action) {
+			// Navigate to parent view
+			case 'parent':
+				this._parentAction(value);
+				return;
+
+			// Change provider
+			case 'provider':
+				this._providerAction(value);
+				return;
 		}
 	}
 

@@ -1,6 +1,5 @@
 [
 	// Palettes, imported as strings to be used in palette() mixin
-	"'light-blue'",
 	"'purple'",
 	"'teal'",
 	"'orange'",

@@ -1,10 +1,11 @@
 {
 	"theme": "figma",
 	"providers": {
+		"default": "local",
 		"custom": {
 			"local": {
-				"provider": "local",
-				"api": "http://localhost:3100"
+				"api": "http://localhost:3100",
+				"title": "Local Test"
 			}
 		}
 	}

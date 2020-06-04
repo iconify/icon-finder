@@ -7,6 +7,9 @@ import Iconify, { IconifyAPIConfig } from '@iconify/iconify';
 import { Redundancy } from '@cyberalien/redundancy';
 import { match } from '../icon';
 
+// Export imported types
+export { APIProviderRawDataLinks, APIProviderRawDataNPM, APIProviderRawData };
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
 function assertNever(s: never): void {}
 
@@ -127,6 +130,9 @@ export function convertProviderData(
 					data.api = [raw.api];
 				} else if (raw.api instanceof Array) {
 					data.api = raw.api;
+				} else if (host === '') {
+					// Missing host
+					return null;
 				} else {
 					data.api = [host];
 				}

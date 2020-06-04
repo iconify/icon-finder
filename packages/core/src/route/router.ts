@@ -6,6 +6,7 @@ import { CollectionView } from '../views/collection';
 import { SearchView } from '../views/search';
 import { CustomView, IconsList } from '../views/custom';
 import { EmptyView } from '../views/empty';
+import { CollectionsRouteParams } from './params';
 
 /**
  * TypeScript guard
@@ -58,10 +59,10 @@ export class Router {
 
 		// Subscribe to view events, handle them in same handler
 		const events = registry.events;
-		events.subscribe('view-loaded', view => {
+		events.subscribe('view-loaded', (view) => {
 			this._viewEvent(view as View);
 		});
-		events.subscribe('view-updated', view => {
+		events.subscribe('view-updated', (view) => {
 			this._viewEvent(view as View);
 		});
 	}
@@ -114,7 +115,7 @@ export class Router {
 	/**
 	 * Navigate to home
 	 */
-	home(): void {
+	home(provider: string | null = null): void {
 		const registry = getRegistry(this._instance);
 		const config = registry.config;
 
@@ -124,6 +125,14 @@ export class Router {
 		);
 		if (route === null) {
 			throw new Error('Error resetting route');
+		}
+
+		// Set provider
+		if (typeof provider === 'string') {
+			if (!route.params) {
+				route.params = {};
+			}
+			(route.params as CollectionsRouteParams).provider = provider;
 		}
 
 		// Generate view

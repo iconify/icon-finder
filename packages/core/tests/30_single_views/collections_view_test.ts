@@ -20,11 +20,11 @@ describe('Testing collections list view', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(): Registry {
+	function setupRegistry(provider = ''): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('', '/collections', {}, 'collections');
+		api.loadFixture(provider, '/collections', {}, 'collections');
 		return registry;
 	}
 
@@ -39,7 +39,7 @@ describe('Testing collections list view', () => {
 			category: null,
 		}
 	): CollectionsView {
-		const registry = setupRegistry();
+		const registry = setupRegistry(routeParams.provider);
 
 		// Sign up for event
 		const events = registry.events;
@@ -110,8 +110,68 @@ describe('Testing collections list view', () => {
 	it('Test using setupView code', (done) => {
 		const view = setupView((data) => {
 			expect(data).to.be.equal(view);
+			expect(view.route).to.be.eql({
+				type: 'collections',
+				params: {
+					provider: '',
+					filter: '',
+					category: null,
+				},
+				parent: null,
+			});
 			done();
 		});
+	});
+
+	it('Test custom provider', (done) => {
+		const view = setupView(
+			(data) => {
+				expect(data).to.be.equal(view);
+				expect(view.route).to.be.eql({
+					type: 'collections',
+					params: {
+						provider: 'test',
+						filter: '',
+						category: null,
+					},
+					parent: null,
+				});
+				done();
+			},
+			{
+				provider: 'test',
+				filter: '',
+				category: null,
+			}
+		);
+	});
+
+	it('Provider mismatch', (done) => {
+		// Load fixture only for 'test' provider
+		const registry = new Registry(namespace + nsCounter++);
+		const api = new FakeAPI(registry);
+		registry.api = api;
+		api.setFakeData('', '/collections', {}, null);
+		api.loadFixture('test', '/collections', {}, 'collections');
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', (data) => {
+			const view = data as CollectionsView;
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionsView(
+			registry.id,
+			objectToRoute({
+				type: 'collections',
+			}) as CollectionsRoute
+		);
+		view.startLoading();
 	});
 
 	it('Test not found error', (done) => {

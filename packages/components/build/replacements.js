@@ -50,7 +50,9 @@ function themeReplacements(replacements, config) {
 	const theme = config.themeData;
 
 	// Colors rotation
-	replacements['maxIndex = 10'] = 'maxIndex = ' + Math.max(1, theme.rotation);
+	replacements['maxIndex = 10'] =
+		'maxIndex = ' + Math.max(1, theme.rotation + 1);
+	console.log('Rotation:', theme.rotation);
 
 	// Focus search
 	if (!theme['focus-search']) {
@@ -206,7 +208,6 @@ function footerButtons(replacements, config) {
 function footerCustomisations(replacements, config) {
 	const footerConfig = config.footer;
 	const customisationsConfig = footerConfig.customisations;
-	const customisations = {};
 
 	let showCustomisations =
 		config.showFooter && footerConfig.showCustomisations;

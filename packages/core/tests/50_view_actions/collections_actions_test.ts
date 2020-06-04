@@ -8,6 +8,7 @@ import { getCollectionsBlockPrefixes } from '../../lib/blocks/collections-list';
 import { FiltersBlock } from '../../lib/blocks/filters';
 import { CollectionViewBlocks } from '../../lib/views/collection';
 import { isBlockEmpty } from '../../lib/blocks/types';
+import { addProvider, convertProviderData } from '../../lib/data/providers';
 
 describe('Testing collections actions', () => {
 	const namespace = __filename;
@@ -16,11 +17,11 @@ describe('Testing collections actions', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(): Registry {
+	function setupRegistry(provider = ''): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('', '/collections', {}, 'collections');
+		api.loadFixture(provider, '/collections', {}, 'collections');
 		return registry;
 	}
 
@@ -86,6 +87,94 @@ describe('Testing collections actions', () => {
 						},
 						parent: {
 							type: 'collections',
+						},
+					});
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to home
+		router.home();
+	});
+
+	it('Changing provider', (done) => {
+		const provider = 'testing-provider';
+		const registry = setupRegistry();
+		const events = registry.events;
+		const api = registry.api as FakeAPI;
+		api.loadFixture(provider, '/collections', {}, 'collections');
+
+		// Add provider
+		const providerData = convertProviderData('https://localhost', {
+			provider,
+			api: 'https://localhost',
+		});
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		addProvider(provider, providerData!);
+
+		// Create router
+		const router = registry.router;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.route).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', (data) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// Loading page
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					expect(params.route).to.be.eql({
+						type: 'collections',
+					});
+					break;
+
+				case 2:
+					// Home page has loaded
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collections',
+					});
+
+					// Change provider
+					router.action('provider', provider);
+					break;
+
+				case 3:
+					// New provider
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					expect(params.route).to.be.eql({
+						type: 'collections',
+						params: {
+							provider,
+						},
+					});
+					break;
+
+				case 4:
+					// New provider has loaded
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collections',
+						params: {
+							provider,
 						},
 					});
 

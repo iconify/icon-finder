@@ -127,6 +127,13 @@ export class CollectionView extends BaseView {
 				this._parentAction(value);
 				return;
 
+			// Change provider
+			case 'provider':
+				if (value !== this.provider) {
+					this._providerAction(value);
+				}
+				return;
+
 			// Global search
 			case 'search':
 				this._searchAction(this.provider, value);

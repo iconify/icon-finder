@@ -53,6 +53,7 @@ export const phrases: UITranslation = {
 		'tags': 'Filter by tag:',
 		'themePrefixes': 'Icon type:',
 		'themeSuffixes': 'Icon type:',
+		'providers': 'Icons source:',
 	},
 	collectionInfo: {
 		total: 'Number of icons:',

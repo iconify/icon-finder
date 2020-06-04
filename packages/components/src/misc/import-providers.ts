@@ -9,10 +9,8 @@ export function importProviders(
 ): void {
 	Object.keys(providers).forEach((provider) => {
 		const item = providers[provider];
-		const host = (item.api instanceof Array
-			? item.api[0]
-			: item.api) as string;
-		const data = convertProviderData(host, item);
+		item.provider = provider;
+		const data = convertProviderData('', item);
 		if (data) {
 			addProvider(item.provider, data);
 		}
