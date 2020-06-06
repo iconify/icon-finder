@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
@@ -27,8 +28,8 @@ describe('Testing custom actions', () => {
 		const registry = new Registry(namespace + nsCounter++);
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
-		config.data.display.viewUpdateDelay = 50;
+		config.ui!.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 50;
 
 		return registry;
 	}

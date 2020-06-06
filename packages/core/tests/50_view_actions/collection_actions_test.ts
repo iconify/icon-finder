@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
@@ -19,7 +20,7 @@ describe('Testing collection actions', () => {
 		const registry = new Registry(namespace + nsCounter++);
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 48;
+		config.ui!.itemsPerPage = 48;
 
 		const api = new FakeAPI(registry);
 		registry.api = api;
@@ -222,8 +223,8 @@ describe('Testing collection actions', () => {
 		const registry = setupRegistry('el');
 		const events = registry.events;
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
@@ -382,8 +383,8 @@ describe('Testing collection actions', () => {
 		const registry = setupRegistry('ant-design');
 		const events = registry.events;
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
@@ -484,8 +485,8 @@ describe('Testing collection actions', () => {
 		const registry = setupRegistry('ant-design');
 		const events = registry.events;
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(

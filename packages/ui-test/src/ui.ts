@@ -9,13 +9,13 @@ import {
 	validateIcon,
 	compareObjects,
 	cloneObject,
-	Data,
 } from '@iconify/search-core';
 import { init } from '@iconify/search-components/lib/misc/init';
 import Container from '@iconify/search-components/lib/ui/Container.svelte';
 import {
-	Options,
-	DataStorage,
+	IconFinderOptions,
+	createOptions,
+	customisedOptions,
 } from '@iconify/search-components/lib/misc/options';
 
 import { phrases } from '@iconify/search-components/lib/modules/phrases';
@@ -38,9 +38,8 @@ export interface UIParams {
 	// Callback
 	callback: (event: string, payload: unknown) => void;
 
-	// Custom options (includes core config) and changes to default options
-	options?: DataStorage;
-	defaultOptions?: DataStorage;
+	// Custom options (includes core config)
+	options?: IconFinderOptions;
 
 	// Selected icon
 	selectedIcon?: Icon | null;
@@ -107,15 +106,8 @@ export class UI {
 		registry.setCustom('callback', this._internalCallback.bind(this));
 
 		// Options
-		const options = new Options(params.options, params.defaultOptions);
-		registry.setCustom('optionsInstance', options);
-		registry.setCustom('options', options.data);
-
-		if (typeof params.options === 'object') {
-			// Merge custom options with core config
-			const coreConfig = registry.config;
-			coreConfig.set(params.options);
-		}
+		const options = createOptions(params.options);
+		registry.setCustom('options', options);
 
 		// Selected icon
 		if (
@@ -158,19 +150,15 @@ export class UI {
 		result.route = registry.router.route;
 
 		// Get customised options
-		result.options = (registry.getCustom(
-			'optionsInstance'
-		) as Data).customised();
-		Object.assign(result.options, registry.config.customised());
+		result.options = customisedOptions(
+			registry.getCustom('options') as IconFinderOptions
+		);
 
 		// Selected icon
 		result.selectedIcon =
 			this._selectedIcon === null
 				? null
 				: Object.assign({}, this._selectedIcon);
-
-		// Icon properties
-		// result.customisations = exportCustomisations(iconProps, this._iconProps);
 
 		return result;
 	}

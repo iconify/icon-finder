@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import {
@@ -39,7 +40,7 @@ describe('Testing collection view', () => {
 
 		// Change pagination limit for tests to 48
 		const config = registry.config;
-		config.data.display.itemsPerPage = 48;
+		config.ui!.itemsPerPage = 48;
 
 		// Change API to fake API and load fixture
 		const api = new FakeAPI(registry);

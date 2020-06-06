@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import { SearchView, SearchViewBlocks } from '../../lib/views/search';
@@ -35,7 +36,7 @@ describe('Testing search view', () => {
 
 		// Change pagination limit for tests to 32
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		// Change API to fake API and load fixture
 		const api = new FakeAPI(registry);
@@ -184,7 +185,7 @@ describe('Testing search view', () => {
 
 		// Change pagination limit for tests to 32
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		// Change API to fake API and load fixture
 		const api = new FakeAPI(registry);

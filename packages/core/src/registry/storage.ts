@@ -1,4 +1,4 @@
-import { Config } from '../data/config';
+import { IconFinderConfig } from '../data/config';
 import { Events } from '../events';
 import { API } from '../api/axios';
 import { Router } from '../route/router';
@@ -24,7 +24,7 @@ const namespaces: RegistryNamespaces = Object.create(null);
  */
 export interface RegistryDataStorage {
 	// Shared
-	config?: Config;
+	config?: IconFinderConfig;
 	events?: Events;
 	api?: API;
 	collections?: CollectionsData;
@@ -106,7 +106,7 @@ export function destroyRegistry(item: Registry): void {
 
 	// Remove id from shared namespaces
 	namespaces[item.namespace].ids = namespaces[item.namespace].ids.filter(
-		id => id !== item.id
+		(id) => id !== item.id
 	);
 }
 

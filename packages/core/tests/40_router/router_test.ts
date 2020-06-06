@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
@@ -94,7 +95,7 @@ describe('Testing router', () => {
 
 		// Set custom home page
 		const config = registry.config;
-		config.data.router.home = JSON.stringify({
+		config.router!.home = JSON.stringify({
 			type: 'collection',
 			params: {
 				prefix: 'mdi',
@@ -175,7 +176,7 @@ describe('Testing router', () => {
 		);
 
 		const config = registry.config;
-		config.data.display.showSiblingCollections = 3;
+		config.ui!.showSiblingCollections = 3;
 
 		// Create router and events
 		const router = registry.router;
@@ -355,7 +356,7 @@ describe('Testing router', () => {
 	it('Creating child view with delay, testing parent view', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
+		config.ui!.viewUpdateDelay = 100;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
@@ -472,7 +473,7 @@ describe('Testing router', () => {
 	it('Child view loading faster than parent view, no delay', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
+		config.ui!.viewUpdateDelay = 100;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
@@ -628,8 +629,8 @@ describe('Testing router', () => {
 	it('Child view loading faster than parent view, with delay', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
@@ -755,7 +756,7 @@ describe('Testing router', () => {
 		const events = registry.events;
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(

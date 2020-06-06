@@ -1,35 +1,64 @@
-import { Data, DataStorage, DataChildStorage } from '@iconify/search-core';
+import {
+	cloneObject,
+	DataStorage,
+	setData,
+	customisedData,
+} from '@iconify/search-core';
 
-export { DataStorage, DataChildStorage };
+/**
+ * Layout options
+ */
+export interface IconFinderLayoutOptions {
+	// Icons list mode.
+	list?: boolean;
+	// True if icons list mode can be changed.
+	toggleList?: boolean;
+}
 
-const defaultOptions: DataStorage = {
-	layout: {
-		// Icons list mode.
-		list: false,
-		// True if icons list mode can be changed.
-		toggleList: true,
-	},
+/**
+ * Options
+ */
+export interface IconFinderOptions {
+	layout?: IconFinderLayoutOptions;
+}
+
+/**
+ * Default values
+ */
+const defaultLayoutOptions: Required<IconFinderLayoutOptions> = {
+	// Icons list mode.
+	list: false,
+	// True if icons list mode can be changed.
+	toggleList: true,
+};
+
+const defaultOptions: Required<IconFinderOptions> = {
+	layout: defaultLayoutOptions,
 };
 
 /**
- * Options class
+ * Create options object
  */
-export class Options extends Data {
-	constructor(
-		customOptions?: DataStorage,
-		defaultOptionsChanges?: DataStorage
-	) {
-		super();
-
-		this._default = Object.assign(
-			{},
-			defaultOptions,
-			defaultOptionsChanges === void 0 ? {} : defaultOptionsChanges
-		);
-
-		this._merge(this._default);
-		if (customOptions !== void 0) {
-			this._merge(customOptions, false);
-		}
+export function createOptions(
+	customValues: IconFinderOptions = {}
+): IconFinderOptions {
+	const options: IconFinderOptions = cloneObject(
+		defaultOptions
+	) as IconFinderOptions;
+	if (customValues) {
+		setData(options as DataStorage, customValues as DataStorage);
 	}
+	return options;
+}
+
+/**
+ * Get customised Optionsuration values
+ */
+export function customisedOptions(
+	options: IconFinderOptions
+): IconFinderOptions {
+	return customisedData(
+		options as DataStorage,
+		(defaultOptions as unknown) as DataStorage
+	) as IconFinderOptions;
 }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import {
@@ -29,7 +30,7 @@ describe('Testing custom view', () => {
 	 * Convert array of strings to array of icons
 	 */
 	function convertIcons(icons: string[]): IconsList {
-		return icons.map(item => stringToIcon(item));
+		return icons.map((item) => stringToIcon(item));
 	}
 
 	/**
@@ -40,7 +41,7 @@ describe('Testing custom view', () => {
 
 		// Change pagination limit for tests to 32
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		return registry;
 	}
@@ -61,7 +62,7 @@ describe('Testing custom view', () => {
 
 		// Set icons
 		if (icons !== null) {
-			events.subscribe('load-recent', param => {
+			events.subscribe('load-recent', (param) => {
 				const callback = param as CustomViewLoadCallback;
 				callback(convertIcons(icons));
 			});
@@ -92,13 +93,13 @@ describe('Testing custom view', () => {
 	 * Get icon names from block
 	 */
 	function getIconNames(block: IconsListBlock): string[] {
-		return (block.icons as Icon[]).map(icon => iconToString(icon));
+		return (block.icons as Icon[]).map((icon) => iconToString(icon));
 	}
 
 	/**
 	 * Do tests
 	 */
-	it('Creating view', done => {
+	it('Creating view', (done) => {
 		const registry = setupRegistry();
 
 		// Set variables
@@ -106,7 +107,7 @@ describe('Testing custom view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -121,7 +122,7 @@ describe('Testing custom view', () => {
 		});
 
 		// Event to send data
-		events.subscribe('load-recent', param => {
+		events.subscribe('load-recent', (param) => {
 			const callback = param as CustomViewLoadCallback;
 			callback(
 				convertIcons(['foo-bar', 'foo-bar2', 'foo-bar3', 'foo-bar4'])
@@ -163,7 +164,7 @@ describe('Testing custom view', () => {
 		});
 	});
 
-	it('Creating view, not using events, icons as strings', done => {
+	it('Creating view, not using events, icons as strings', (done) => {
 		const registry = setupRegistry();
 
 		// Set variables
@@ -171,7 +172,7 @@ describe('Testing custom view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -181,7 +182,7 @@ describe('Testing custom view', () => {
 		});
 
 		// Event to send data
-		events.subscribe('load-recent', param => {
+		events.subscribe('load-recent', (param) => {
 			done('load-recent should not be called');
 		});
 
@@ -220,9 +221,9 @@ describe('Testing custom view', () => {
 	});
 
 	// Same as previous test, but combined to one function for simpler tests
-	it('Test using setupView code', done => {
+	it('Test using setupView code', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				expect(data).to.be.equal(view);
 				done();
 			},
@@ -231,12 +232,12 @@ describe('Testing custom view', () => {
 		);
 	});
 
-	it('Not found', done => {
+	it('Not found', (done) => {
 		const registry = setupRegistry();
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data) => {
 			const view = data as CustomView;
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
@@ -244,7 +245,7 @@ describe('Testing custom view', () => {
 		});
 
 		// Event to send data
-		events.subscribe('load-recent', param => {
+		events.subscribe('load-recent', (param) => {
 			(param as (data: unknown) => void)(null);
 		});
 
@@ -261,9 +262,9 @@ describe('Testing custom view', () => {
 		view.startLoading();
 	});
 
-	it('Simple set of icons', done => {
+	it('Simple set of icons', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				expect(data).to.be.equal(view);
 
 				// Check view
@@ -304,9 +305,9 @@ describe('Testing custom view', () => {
 		);
 	});
 
-	it('Filter and updating icons', done => {
+	it('Filter and updating icons', (done) => {
 		const view = setupView(
-			data => {
+			(data) => {
 				expect(data).to.be.equal(view);
 
 				// Check view

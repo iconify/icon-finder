@@ -1,5 +1,4 @@
-import { DataStorage } from '../data';
-import { Config } from '../data/config';
+import { IconFinderConfig, createConfig } from '../data/config';
 import { Events } from '../events';
 import { API } from '../api/axios';
 import { PartialRoute } from '../route/types';
@@ -19,7 +18,7 @@ import {
  */
 export interface RegistryParams {
 	namespace?: string;
-	config?: DataStorage;
+	config?: IconFinderConfig;
 }
 
 /**
@@ -70,17 +69,14 @@ export class Registry {
 	/**
 	 * Get/set config
 	 */
-	get config(): Config {
+	get config(): IconFinderConfig {
 		if (this._sharedData.config === void 0) {
-			const item = (this._sharedData.config = new Config());
-			if (this.params.config) {
-				item.set(this.params.config);
-			}
+			this._sharedData.config = createConfig(this.params.config);
 		}
 		return this._sharedData.config;
 	}
 
-	set config(value: Config) {
+	set config(value: IconFinderConfig) {
 		this._sharedData.config = value;
 	}
 

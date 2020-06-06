@@ -1,4 +1,4 @@
-import { Data, DataStorage, DataChildStorage } from './data';
+import { IconFinderConfig } from './data/config';
 import { Registry as RegistryClass } from './registry';
 import { getRegistry } from './registry/storage';
 import { PartialRoute, objectToRoute } from './route/types';
@@ -71,8 +71,12 @@ export { Router, RouterEvent };
 // From registry
 export type Registry = RegistryClass;
 
+// From data
+export { setData, DataStorage, customisedData } from './data';
+
 // From config
-export { Data, DataStorage, DataChildStorage };
+export { IconFinderConfig };
+export { customisedConfig } from './data/config';
 
 // From views
 export { ViewBlocks } from './views/types';
@@ -96,7 +100,7 @@ export interface APICoreConfig {
 	namespace?: string;
 
 	// Custom configuration
-	config?: DataStorage;
+	config?: IconFinderConfig;
 
 	// Default route. Null if no route should be set
 	route?: PartialRoute | null;

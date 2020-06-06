@@ -176,7 +176,8 @@ export class CustomView extends BaseView {
 		// Get items per page
 		const registry = getRegistry(this._instance);
 		const config = registry.config;
-		const itemsPerPage = config.data.display.itemsPerPage as number;
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const itemsPerPage = config.ui!.itemsPerPage!;
 
 		// Check pagination
 		blocks.pagination.length = blocks.icons.icons.length;
@@ -277,7 +278,8 @@ export class CustomView extends BaseView {
 
 			// Create pagination
 			const pagination = initialisedBlocks.pagination;
-			pagination.perPage = config.data.display.itemsPerPage as number;
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			pagination.perPage = config.ui!.itemsPerPage!;
 			pagination.fullLength = pagination.length = parsedData.length;
 			pagination.page = Math.min(
 				this.route.params.page,

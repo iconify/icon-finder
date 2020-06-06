@@ -62,7 +62,8 @@ export class SearchView extends BaseView {
 		// Get number of items per page
 		const registry = getRegistry(this._instance);
 		const config = registry.config;
-		this.itemsPerPage = config.data.display.itemsPerPage as number;
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		this.itemsPerPage = config.ui!.itemsPerPage!;
 
 		// Check if full results need to be shown
 		if (this.route.params.page > 1) {

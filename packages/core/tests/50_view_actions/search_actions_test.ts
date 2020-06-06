@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
@@ -29,7 +30,7 @@ describe('Testing search actions', () => {
 		const events = registry.events;
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
@@ -146,7 +147,7 @@ describe('Testing search actions', () => {
 		const events = registry.events;
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
@@ -256,7 +257,7 @@ describe('Testing search actions', () => {
 		const events = registry.events;
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
@@ -366,7 +367,7 @@ describe('Testing search actions', () => {
 		const events = registry.events;
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
@@ -472,7 +473,7 @@ describe('Testing search actions', () => {
 		const events = registry.events;
 
 		const config = registry.config;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.itemsPerPage = 32;
 
 		const api = registry.api as FakeAPI;
 		api.loadFixture(

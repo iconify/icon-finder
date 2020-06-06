@@ -381,7 +381,8 @@ export class CollectionView extends BaseView {
 		} else {
 			// Create pagination
 			const pagination = initialisedBlocks.pagination;
-			pagination.perPage = config.data.display.itemsPerPage as number;
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			pagination.perPage = config.ui!.itemsPerPage!;
 			pagination.fullLength = pagination.length = parsedData.icons.length;
 			pagination.page = Math.min(
 				this.route.params.page,
@@ -453,7 +454,8 @@ export class CollectionView extends BaseView {
 		// Get limit
 		const registry = getRegistry(this._instance);
 		const config = registry.config;
-		const limit = config.data.display.showSiblingCollections as number;
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const limit = config.ui!.showSiblingCollections!;
 
 		// Get items before and after current prefix
 		let display: CollectionInfo[] = [];

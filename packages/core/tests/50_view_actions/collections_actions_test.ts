@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
@@ -195,7 +196,7 @@ describe('Testing collections actions', () => {
 	it('"collections" and "parent" actions', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
+		config.ui!.viewUpdateDelay = 100;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
@@ -302,8 +303,8 @@ describe('Testing collections actions', () => {
 	it('"collections" before home page has loaded', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 50;
-		config.data.display.showSiblingCollections = 3;
+		config.ui!.viewUpdateDelay = 50;
+		config.ui!.showSiblingCollections = 3;
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
@@ -462,7 +463,7 @@ describe('Testing collections actions', () => {
 	it('"collections" action with invalid collection', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
+		config.ui!.viewUpdateDelay = 100;
 		const events = registry.events;
 		const router = registry.router;
 
@@ -510,8 +511,8 @@ describe('Testing collections actions', () => {
 	it('"search" action', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const events = registry.events;
 		const router = registry.router;
@@ -586,8 +587,8 @@ describe('Testing collections actions', () => {
 	it('"filter" and "categories" actions', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const events = registry.events;
 		const router = registry.router;
@@ -704,8 +705,8 @@ describe('Testing collections actions', () => {
 	it('"search" action', (done) => {
 		const registry = setupRegistry();
 		const config = registry.config;
-		config.data.display.viewUpdateDelay = 100;
-		config.data.display.itemsPerPage = 32;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
 
 		const events = registry.events;
 		const router = registry.router;

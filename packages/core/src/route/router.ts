@@ -140,9 +140,8 @@ export class Router {
 		const config = registry.config;
 
 		// Generate route
-		const route = objectToRoute(
-			JSON.parse(config.data.router.home as string)
-		);
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const route = objectToRoute(JSON.parse(config.router!.home!));
 		if (route === null) {
 			throw new Error('Error resetting route');
 		}
@@ -416,7 +415,8 @@ export class Router {
 		const registry = getRegistry(this._instance);
 		const config = registry.config;
 
-		const timeout = config.data.display.viewUpdateDelay as number;
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const timeout = config.ui!.viewUpdateDelay;
 		if (!timeout) {
 			this._changeVisibleView();
 		} else {
