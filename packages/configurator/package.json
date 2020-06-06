@@ -21,7 +21,7 @@
 		"@iconify/types": "^1.0.3",
 		"chai": "^4.2.0",
 		"mocha": "^7.2.0",
-		"typescript": "^3.9.3"
+		"typescript": "^3.9.5"
 	},
 	"dependencies": {}
 }

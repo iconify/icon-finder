@@ -144,7 +144,7 @@ export const config: IconFinderConfig = {
 	showFooter: true,
 	footer: {
 		components: {
-			footer: 'simple',
+			footer: 'full',
 			name: 'simple',
 		},
 
