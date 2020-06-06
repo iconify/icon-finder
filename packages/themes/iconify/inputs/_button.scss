@@ -3,6 +3,7 @@
 	white-space: nowrap;
 	display: inline-block;
 	flex-shrink: 0;
+	position: relative;
 
 	font-size: $iif-button-font-size; // changed for search
 	line-height: $iif-button-line-height; // changed for search
@@ -62,12 +63,15 @@
 	}
 
 	// Icon
+	&--with-icon {
+		padding-left: $iif-spacing * 2 + $iif-icon-size;
+	}
 	svg {
-		display: inline-block;
-		vertical-align: -0.125em;
-		margin: 0;
-		position: relative;
-		left: (0 - $iif-spacing / 2); // assuming button is before text
+		position: absolute;
+		font-size: $iif-icon-size;
+		left: $iif-spacing;
+		top: 50%;
+		margin-top: (0 - $iif-icon-size / 2);
 		opacity: 0.5;
 	}
 	&:hover svg {

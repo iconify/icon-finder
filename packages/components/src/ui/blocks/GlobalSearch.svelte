@@ -1,7 +1,6 @@
 <script>
 	import Input from '../forms/Input.svelte';
 	import Block from '../Block.svelte';
-	// import Icon from '../misc/Icon.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let viewChanged; /** @type {boolean} */
@@ -80,7 +79,6 @@
 				{autofocus} />
 		{/each}
 		<button class="iif-form-button iif-form-button--primary" type="submit">
-			<!-- <Icon icon="search" /> -->
 			{phrases.button}
 		</button>
 	</form>

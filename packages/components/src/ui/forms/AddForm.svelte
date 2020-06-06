@@ -16,6 +16,13 @@
 		valid = validateValue(value);
 	}
 
+	let buttonClass;
+	$: {
+		buttonClass =
+			'iif-form-button iif-form-button--primary' +
+			(buttonIcon ? ' iif-form-button--with-icon' : '');
+	}
+
 	/**
 	 * Validate current value
 	 */
@@ -44,7 +51,7 @@
 			bind:value
 			placeholder={phrases.placeholder}
 			bind:icon={inputIcon} />
-		<button class="iif-form-button iif-form-button--primary" type="submit">
+		<button class={buttonClass} type="submit">
 			{#if buttonIcon}
 				<Icon icon="plus" />
 			{/if}

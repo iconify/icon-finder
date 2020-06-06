@@ -1,7 +1,6 @@
 <script>
 	import Input from '../forms/Input.svelte';
 	import Block from '../Block.svelte';
-	// import Icon from '../misc/Icon.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let name; /** @type {string} */
@@ -42,7 +41,6 @@
 		icon="search"
 		autofocus={canFocusSearch} />
 	<button class="iif-form-button iif-form-button--primary" focusable="false">
-		<!-- <Icon icon="search" /> -->
 		{phrases.button}
 	</button>
 </Block>

@@ -25,12 +25,16 @@
 		padding: $iif-spacing;
 		margin: ($iif-spacing - $iif-border-width) ($iif-spacing / 2)
 			(0 - $iif-border-width);
+
+		@include iif-font($iif-base-font-size, 'normal');
 		text-decoration: none;
 		color: $iif-text-dimmed-color;
 		text-align: center;
 		min-width: $iif-spacing * 2;
 		background: $iif-background-color2;
 		border: $iif-border-width solid $iif-simple-border-color;
+		border-top-left-radius: $iif-border-radius-medium;
+		border-top-right-radius: $iif-border-radius-medium;
 		position: relative;
 		z-index: 2;
 
@@ -58,7 +62,11 @@
 		}
 
 		svg {
-			vertical-align: -0.125em;
+			@if $iif-icon-size == $iif-base-line-height {
+				display: block;
+			}
+			font-size: $iif-icon-size;
+			line-height: $iif-base-line-height;
 		}
 	}
 }

@@ -14,7 +14,8 @@
 			key,
 			className:
 				'iif-form-button' +
-				(button.type ? ' iif-form-button--' + button.type : ''),
+				(button.type ? ' iif-form-button--' + button.type : '') +
+				(button.icon ? ' iif-form-button--with-icon' : ''),
 			...button,
 		};
 	});
