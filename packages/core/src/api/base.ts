@@ -22,7 +22,11 @@ export interface APICache {
 }
 
 // Interface for sendQuery function exported by API modules
-export type APISendQueryCallback = (success: boolean, data: unknown) => void;
+export type APISendQueryStatus = 'success' | 'not_found' | 'error';
+export type APISendQueryCallback = (
+	status: APISendQueryStatus,
+	data: unknown
+) => void;
 
 /**
  * Add parameters to query

@@ -26,22 +26,24 @@ export class API extends BaseAPI {
 			.then((response) => {
 				if (response.status === 404) {
 					// Not found. Should be called in error handler
-					callback(false, null);
+					callback('not_found', null);
 					return;
 				}
 
 				if (response.status !== 200) {
+					callback('error', null);
 					return;
 				}
 
 				// Copy data. No need to parse it, axios parses JSON data
 				const data = response.data;
 				if (typeof data !== 'object' || data === null) {
+					callback('error', null);
 					return;
 				}
 
 				// Store cache and complete
-				callback(true, data);
+				callback('success', data);
 			})
 			.catch((err) => {
 				if (
@@ -51,7 +53,9 @@ export class API extends BaseAPI {
 					err.response.status === 404
 				) {
 					// Not found
-					callback(false, null);
+					callback('not_found', null);
+				} else {
+					callback('error', null);
 				}
 			});
 	}
@@ -71,16 +75,13 @@ export class API extends BaseAPI {
 		status: RedundancyPendingItem
 	): void {
 		// console.log('API request: ' + host + params);
-		this.sendQuery(host, params, (success, data) => {
-			if (!success) {
-				if (data === null) {
-					this._storeCache(provider, params, null);
-				}
-				status.done(null);
-				return;
+		this.sendQuery(host, params, (response, data) => {
+			switch (response) {
+				case 'success':
+				case 'not_found':
+					this._storeCache(provider, params, data);
+					status.done(data);
 			}
-			this._storeCache(provider, params, data);
-			status.done(data);
 		});
 	}
 }

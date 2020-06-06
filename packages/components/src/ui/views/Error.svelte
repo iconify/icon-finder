@@ -12,7 +12,11 @@
 	let canReturn;
 	$: {
 		canReturn =
-			route && route.type !== 'collections' && phrases.custom.home !== void 0;
+			route &&
+			(route.type !== 'collections' ||
+				route.parent ||
+				(route.params && route.params.provider)) &&
+			phrases.custom.home !== void 0;
 		text =
 			phrases.custom[error] === void 0
 				? phrases.defaultError

@@ -85,7 +85,7 @@ export const phrases: UITranslation = {
 		},
 		status: {
 			loading: 'Checking {host}...',
-			error: '{host} is not a valid Iconify API or cannot be reached.',
+			error: '{host} is not a valid Iconify API.',
 		},
 	},
 	footer: {
