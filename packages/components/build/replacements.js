@@ -328,6 +328,12 @@ function providerReplacements(replacements, config) {
 	if (providerConfig.custom && Object.keys(providerConfig.custom).length) {
 		replacements['customProviders = {}'] =
 			'customProviders = ' + JSON.stringify(providerConfig.custom);
+		replacements[
+			'customProviders: Record<string, APIProviderRawData> = {}'
+		] =
+			"customProviders: Record<string, APIProviderRawData> = JSON.parse('" +
+			JSON.stringify(providerConfig.custom) +
+			"')";
 
 		// Change default provider
 		if (providerConfig.default !== '') {
@@ -341,6 +347,7 @@ function providerReplacements(replacements, config) {
 		// No custom providers
 		replacements['importProviders(customProviders);'] = '';
 		replacements['/misc/import-providers'] = '/misc/import-providers-empty';
+		replacements['./import-providers'] = './import-providers-empty';
 	}
 
 	// Can add providers

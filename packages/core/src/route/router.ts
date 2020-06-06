@@ -6,7 +6,6 @@ import { CollectionView } from '../views/collection';
 import { SearchView } from '../views/search';
 import { CustomView, IconsList } from '../views/custom';
 import { EmptyView } from '../views/empty';
-import { CollectionsRouteParams } from './params';
 
 /**
  * TypeScript guard
@@ -32,6 +31,24 @@ export interface RouterEvent {
 }
 
 /**
+ * Change provider in home route
+ */
+function changeProvider(route: Route, provider: string): void {
+	switch (route.type) {
+		case 'collections':
+		case 'collection':
+		case 'search':
+			if (route.params === void 0) {
+				(route.params as Record<string, unknown>) = {};
+			}
+			route.params.provider = provider;
+	}
+	if (route.parent) {
+		changeProvider(route.parent, provider);
+	}
+}
+
+/**
  * Router class
  */
 export class Router {
@@ -45,6 +62,9 @@ export class Router {
 
 	// Timer for replacing view
 	protected _timer: unknown = null;
+
+	// Default API provider
+	public defaultProvider = '';
 
 	/**
 	 * Constructor
@@ -127,13 +147,11 @@ export class Router {
 			throw new Error('Error resetting route');
 		}
 
-		// Set provider
-		if (typeof provider === 'string') {
-			if (!route.params) {
-				route.params = {};
-			}
-			(route.params as CollectionsRouteParams).provider = provider;
-		}
+		// Change default provider
+		changeProvider(
+			route,
+			provider === null ? this.defaultProvider : provider
+		);
 
 		// Generate view
 		const view = this._viewFromRoute(route);

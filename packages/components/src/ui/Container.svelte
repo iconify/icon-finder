@@ -1,18 +1,3 @@
-<script context="module">
-	import Iconify from '@iconify/iconify';
-	// @iconify-replacement: '/misc/import-providers'
-	import { importProviders } from '../misc/import-providers';
-
-	// @iconify-replacement: 'customProviders = {}'
-	const customProviders = {};
-
-	// @iconify-replacement: 'defaultProvider = '''
-	const defaultProvider = '';
-
-	// @iconify-replacement: 'importProviders(customProviders);'
-	importProviders(customProviders);
-</script>
-
 <script>
 	// @iconify-replacement: '/wrapper/Default.svelte'
 	import Wrapper from './wrapper/Default.svelte';

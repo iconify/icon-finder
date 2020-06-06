@@ -11,6 +11,7 @@ import {
 	cloneObject,
 	Data,
 } from '@iconify/search-core';
+import { init } from '@iconify/search-components/lib/misc/init';
 import Container from '@iconify/search-components/lib/ui/Container.svelte';
 import {
 	Options,
@@ -124,14 +125,8 @@ export class UI {
 			this._selectedIcon = Object.assign({}, params.selectedIcon) as Icon;
 		}
 
-		// Icon customisations
-		/*
-		this._customisations =
-			typeof params.customisations === 'object' &&
-			params.customisations !== null
-				? params.customisations
-				: {};
-		*/
+		// Init UI
+		init(registry);
 	}
 
 	/**
