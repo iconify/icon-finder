@@ -23,7 +23,7 @@ const main = new UI({
 		},
 	} as unknown) as CollectionRoute,
 	*/
-	iconProps: {
-		rotate: 1,
-	},
+	// iconProps: {
+	// 	rotate: 1,
+	// },
 });

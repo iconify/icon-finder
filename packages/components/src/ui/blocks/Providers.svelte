@@ -9,6 +9,7 @@
 
 <script>
 	import { getProvider } from '@iconify/search-core';
+	import Tabs from '../misc/Tabs.svelte';
 	import Block from '../Block.svelte';
 	import AddForm from '../forms/AddForm.svelte';
 	import Icon from '../misc/Icon.svelte';
@@ -36,10 +37,10 @@
 	}
 
 	/**
-	 * Show form
+	 * Toggle form
 	 */
 	function toggleForm() {
-		formVisible = true;
+		formVisible = !formVisible;
 	}
 
 	/**
@@ -79,42 +80,31 @@
 		providers.forEach((provider, index) => {
 			const item = getProvider(provider);
 			if (item) {
-				const className =
-					baseProviderClass +
-					(activeProvider === provider
-						? ' ' + baseProviderClass + '--selected '
-						: ' ') +
-					baseProviderClass +
-					'--' +
-					(index % maxIndex);
 				list.push({
-					provider,
+					key: provider,
 					title: item.title,
-					className,
+					index,
 				});
 			}
 		});
+
+		if (canAddProviders) {
+			list.push({
+				key: 'add',
+				title: '',
+				hint: phrases.add,
+				onClick: toggleForm,
+				right: true,
+				index: 0,
+				type: 'icon',
+				icon: formVisible ? 'reset' : 'plus',
+			});
+		}
 	}
 </script>
 
 <Block type="providers">
-	<div class="iif-providers-list">
-		{#each list as provider, i (provider.provider)}
-			<button
-				class={provider.className}
-				on:click|preventDefault={() => handleClick(provider.provider)}>
-				{provider.title}
-			</button>
-		{/each}
-		{#if canAddProviders && !formVisible}
-			<button
-				class={baseProviderClass + ' ' + baseProviderClass + '--add ' + baseProviderClass + '--' + ((list.length + 1) % maxIndex)}
-				on:click|preventDefault={toggleForm}>
-				<Icon icon="plus" />
-				{phrases.add}
-			</button>
-		{/if}
-	</div>
+	<Tabs tabs={list} selected={activeProvider} onClick={handleClick} />
 	{#if formVisible}
 		<AddForm
 			{registry}

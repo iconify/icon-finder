@@ -25,7 +25,11 @@
 		"rotate3": "arty-animated:16-arc-270",
 		"h-flip": "arty-animated:16-double-arrow-horizontal",
 		"v-flip": "arty-animated:16-double-arrow-vertical",
-		"plus": "arty-animated:16-plus",
+		"plus": {
+			"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 64h112\" class=\"animation-delay-0 animation-duration-6 animate-stroke stroke-length-153\"/><path d=\"M64 8v112\" class=\"animation-delay-6 animation-duration-6 animate-stroke stroke-length-153\"/></g>",
+			"width": 128,
+			"height": 128
+		},
 		"link": "arty-animated:16-link-external",
 		"width": 16,
 		"height": 16

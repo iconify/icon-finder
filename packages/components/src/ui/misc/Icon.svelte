@@ -18,6 +18,7 @@
 	};
 	let hasCustomIcons = false;
 
+	const preload = [];
 	Object.keys(uiIcons).forEach(key => {
 		const value = uiIcons[key];
 		switch (typeof value) {
@@ -30,11 +31,20 @@
 				customIcons[
 					value.body === void 0 && value.parent !== void 0 ? 'aliases' : 'icons'
 				][key] = value;
+				break;
+
+			case 'string':
+				if (key !== 'class' && value.indexOf(':') !== -1) {
+					preload.push(value);
+				}
 		}
 	});
 
 	if (hasCustomIcons) {
 		Iconify.addCollection(customIcons);
+	}
+	if (preload.length) {
+		Iconify.loadIcons(preload);
 	}
 </script>
 
