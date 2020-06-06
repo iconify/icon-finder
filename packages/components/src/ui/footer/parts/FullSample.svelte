@@ -144,7 +144,7 @@
 
 {#if loaded}
 	<div class="iif-footer-sample iif-footer-sample--loaded" {style}>
-		<Icon icon={iconName} height="1em" {props} />
+		<Icon icon={iconName} {props} />
 	</div>
 {:else}
 	<div class="iif-footer-sample iif-footer-sample--empty" />

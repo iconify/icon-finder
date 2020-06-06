@@ -41,7 +41,7 @@
 
 {#each [error] as type (type)}
 	<Block type="error" extra={'error--' + type}>
-		<Icon icon={'error-' + type} height="1em" />
+		<Icon icon={'error-' + type} />
 		<p>
 			{text}
 			{#if canReturn}

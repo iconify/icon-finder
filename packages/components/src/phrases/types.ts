@@ -1,3 +1,10 @@
+export interface UITranslationAddForm {
+	title?: string;
+	placeholder: string;
+	submit: string;
+	invalid?: string;
+}
+
 export interface UITranslation {
 	lang: string;
 	search: {
@@ -43,6 +50,15 @@ export interface UITranslation {
 	parent: Record<string, string>;
 	collection: {
 		by: string;
+	};
+	providers: {
+		section: string;
+		add: string;
+		addForm: UITranslationAddForm;
+		status: {
+			loading: string;
+			error: string;
+		};
 	};
 	footer: {
 		iconName: string;

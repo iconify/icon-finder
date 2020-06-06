@@ -6,7 +6,6 @@
 
 	// @iconify-replacement: 'uiIcons = {}'
 	const uiIcons = {};
-	const defaultHeight = uiIcons.size;
 
 	// Add custom icons to Iconify
 	const customProvider = 'iif-custom';
@@ -43,7 +42,6 @@
 	import { onDestroy } from 'svelte';
 
 	export let icon; /** @type {string} */
-	export let height; /** @type {string|number} */
 	export let props; /** @type {object} */
 	export let onLoad; /** @type {function} */
 
@@ -117,7 +115,6 @@
 				const iconProps = Object.assign(
 					{
 						inline: false,
-						height: height ? height : defaultHeight,
 					},
 					typeof props === 'object' ? props : {}
 				);

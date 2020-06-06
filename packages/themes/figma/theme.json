@@ -1,7 +1,6 @@
 {
 	"parent": "default",
 	"icons": {
-		"size": 12,
 		"reset": {
 			"body": "<path d=\"M6 5.293l4.789-4.79.707.708-4.79 4.79 4.79 4.789-.707.707-4.79-4.79-4.789 4.79-.707-.707L5.293 6 .502 1.211 1.21.504 6 5.294v-.001z\" fill=\"currentColor\"/>"
 		},
@@ -65,6 +64,12 @@
 		},
 		"rotate3": {
 			"body": "<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M9 6a3 3 0 00-3-3V2a4 4 0 11-4 4V4.833h1V6a3 3 0 006 0z\" fill=\"currentColor\"/><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M2.5 3.793l2.354 2.353-.708.708L2.5 5.207.854 6.854l-.708-.708L2.5 3.793z\" fill=\"currentColor\"/>"
+		},
+		"plus": {
+			"body": "<path d=\"M5.5 5.5V0.5H6.5V5.5H11.5V6.5H6.5V11.5H5.5V6.5H0.5V5.5H5.5Z\" fill=\"currentColor\"/>"
+		},
+		"link": {
+			"body": "<path d=\"M10.293 1H6V0h6v6h-1V1.707L5.354 7.354l-.708-.708L10.293 1z\" fill=\"currentColor\"/><path d=\"M0 2h5v1H1v8h8V8h1v4H0V2z\" fill=\"currentColor\"/>"
 		},
 		"width": 12,
 		"height": 12

@@ -21,6 +21,9 @@ export interface APICache {
 	[index: string]: string | null;
 }
 
+// Interface for sendQuery function exported by API modules
+export type APISendQueryCallback = (success: boolean, data: unknown) => void;
+
 /**
  * Add parameters to query
  */

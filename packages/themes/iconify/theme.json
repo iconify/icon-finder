@@ -1,8 +1,6 @@
 {
 	"parent": "default",
 	"icons": {
-		"size": 16,
-		"class": "iconify arty-animated",
 		"reset": "arty-animated:16-close",
 		"search": "arty-animated:16-search",
 		"down": "arty-animated:16-chevron-down",
@@ -26,6 +24,8 @@
 		"rotate3": "arty-animated:16-arc-270",
 		"h-flip": "arty-animated:16-double-arrow-horizontal",
 		"v-flip": "arty-animated:16-double-arrow-vertical",
+		"plus": "arty-animated:16-plus",
+		"link": "arty-animated:16-link-external",
 		"width": 16,
 		"height": 16
 	}

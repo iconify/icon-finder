@@ -318,6 +318,12 @@ function footerCustomisations(replacements, config) {
 function providerReplacements(replacements, config) {
 	const providerConfig = config.providers;
 
+	// Show providers
+	if (!providerConfig.show) {
+		replacements['./blocks/Providers.svelte'] = './Empty.svelte';
+		replacements['canShowProviders = true'] = 'canShowProviders = false';
+	}
+
 	// Custom providers
 	if (providerConfig.custom && Object.keys(providerConfig.custom).length) {
 		replacements['customProviders = {}'] =
@@ -335,6 +341,11 @@ function providerReplacements(replacements, config) {
 		// No custom providers
 		replacements['importProviders(customProviders);'] = '';
 		replacements['/misc/import-providers'] = '/misc/import-providers-empty';
+	}
+
+	// Can add providers
+	if (providerConfig.canAdd) {
+		replacements['canAddProviders = false'] = 'canAddProviders = true';
 	}
 }
 

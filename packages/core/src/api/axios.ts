@@ -1,25 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars-experimental */
-import { BaseAPI } from './base';
+import { BaseAPI, APISendQueryCallback } from './base';
 import { RedundancyPendingItem } from '@cyberalien/redundancy';
 import axios from 'axios';
 
+/**
+ * API class
+ */
 export class API extends BaseAPI {
 	/**
-	 * Send query, callback from Redundancy
+	 * Send API query without provider
 	 *
-	 * @param provider Provider string
 	 * @param host Host string
 	 * @param params End point and parameters as string
-	 * @param status Query status
+	 * @param callback Callback
 	 */
-	_query(
-		provider: string,
+	sendQuery(
 		host: string,
 		params: string,
-		status: RedundancyPendingItem
+		callback: APISendQueryCallback
 	): void {
-		console.log('API request: ' + host + params);
 		const instance = axios.create({
 			baseURL: host,
 		});
@@ -28,8 +26,7 @@ export class API extends BaseAPI {
 			.then((response) => {
 				if (response.status === 404) {
 					// Not found. Should be called in error handler
-					this._storeCache(provider, params, null);
-					status.done(null);
+					callback(false, null);
 					return;
 				}
 
@@ -44,8 +41,7 @@ export class API extends BaseAPI {
 				}
 
 				// Store cache and complete
-				this._storeCache(provider, params, data);
-				status.done(data);
+				callback(true, data);
 			})
 			.catch((err) => {
 				if (
@@ -55,9 +51,36 @@ export class API extends BaseAPI {
 					err.response.status === 404
 				) {
 					// Not found
-					this._storeCache(provider, params, null);
-					status.done(null);
+					callback(false, null);
 				}
 			});
+	}
+
+	/**
+	 * Send query, callback from Redundancy
+	 *
+	 * @param provider Provider string
+	 * @param host Host string
+	 * @param params End point and parameters as string
+	 * @param status Query status
+	 */
+	_query(
+		provider: string,
+		host: string,
+		params: string,
+		status: RedundancyPendingItem
+	): void {
+		// console.log('API request: ' + host + params);
+		this.sendQuery(host, params, (success, data) => {
+			if (!success) {
+				if (data === null) {
+					this._storeCache(provider, params, null);
+				}
+				status.done(null);
+				return;
+			}
+			this._storeCache(provider, params, data);
+			status.done(data);
+		});
 	}
 }

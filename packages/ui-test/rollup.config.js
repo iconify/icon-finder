@@ -4,7 +4,7 @@ import typescript from 'rollup-plugin-typescript2';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
+// import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -56,6 +56,7 @@ export default [
 			clearScreen: false,
 		},
 	},
+	/*
 	{
 		input: `dist/${theme}.js`,
 		output: {
@@ -70,4 +71,5 @@ export default [
 		external: ['@iconify/iconify'],
 		plugins: [terser()],
 	},
+	*/
 ];

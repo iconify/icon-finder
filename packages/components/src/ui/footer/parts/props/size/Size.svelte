@@ -83,7 +83,7 @@
 				const ratio = customiseWidth
 					? iconData.height / iconData.width
 					: iconData.width / iconData.height;
-				value = Iconify.calculateSize(value, ratio);
+				value = Iconify._internal.calculateSize(value, ratio);
 			}
 			placeholders = {
 				[type]: value,

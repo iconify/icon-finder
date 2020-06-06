@@ -1,7 +1,15 @@
+<script context="module">
+	// @iconify-replacement: 'canShowProviders = true'
+	const canShowProviders = true;
+	// @iconify-replacement: 'canAddProviders = false'
+	const canAddProviders = false;
+</script>
+
 <script>
 	import { listProviders } from '@iconify/search-core';
 	import SearchBlock from './blocks/GlobalSearch.svelte';
 	import ParentBlock from './blocks/Parent.svelte';
+	// @iconify-replacement: './blocks/Providers.svelte'
 	import ProvidersBlock from './blocks/Providers.svelte';
 	import ViewError from './views/Error.svelte';
 	import CollectionsView from './views/Collections.svelte';
@@ -86,32 +94,49 @@
 		}
 	}
 
+	/**
+	 * Get active provider from route
+	 */
+	function getActiveProvider(route) {
+		if (!route) {
+			return '';
+		}
+
+		if (route.params && typeof route.params.provider === 'string') {
+			return route.params.provider;
+		}
+		if (route.parent) {
+			return getActiveProvider(route.parent);
+		}
+		return '';
+	}
+
 	// Get providers
-	let showProviders = false;
+	let showProviders = canAddProviders;
 	let activeProvider = '';
 	let providers = [''];
 	$: {
-		const providersList = listProviders();
-		if (providersList.length > 1) {
-			showProviders = true;
+		if (canShowProviders) {
+			const providersList = listProviders();
+			if (providersList.length > 1) {
+				showProviders = true;
 
-			// Get current provider
-			if (route && route.params && typeof route.params.provider === 'string') {
-				activeProvider = route.params.provider;
-			}
+				// Get current provider
+				activeProvider = getActiveProvider(route);
 
-			// Create new list of providers
-			if (!providers || providers.length !== providersList.length) {
-				providers = providersList;
+				// Create new list of providers
+				if (!providers || providers.length !== providersList.length) {
+					providers = providersList;
+				}
+			} else {
+				showProviders = canAddProviders;
 			}
-		} else {
-			showProviders = false;
 		}
 	}
 </script>
 
 <div class={className}>
-	{#if showProviders}
+	{#if canShowProviders && showProviders}
 		<ProvidersBlock {registry} {route} {providers} {activeProvider} />
 	{/if}
 

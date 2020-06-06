@@ -53,7 +53,6 @@ export const phrases: UITranslation = {
 		'tags': 'Filter by tag:',
 		'themePrefixes': 'Icon type:',
 		'themeSuffixes': 'Icon type:',
-		'providers': 'Icons source:',
 	},
 	collectionInfo: {
 		total: 'Number of icons:',
@@ -73,6 +72,21 @@ export const phrases: UITranslation = {
 	},
 	collection: {
 		by: 'by ',
+	},
+	providers: {
+		section: 'Icons source:',
+		add: 'Add Provider',
+		addForm: {
+			title: "Enter API provider's host name:",
+			placeholder: 'https://api.iconify.design',
+			submit: 'Add API Provider',
+			invalid:
+				'Example of a valid API host name: https://api.iconify.design',
+		},
+		status: {
+			loading: 'Checking {host}...',
+			error: '{host} is not a valid Iconify API or cannot be reached.',
+		},
 	},
 	footer: {
 		iconName: 'Selected icon:',

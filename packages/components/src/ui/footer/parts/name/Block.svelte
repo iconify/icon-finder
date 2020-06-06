@@ -57,7 +57,7 @@
 {#if loaded}
 	<div class="iif-footer-icon-name iif-footer-icon-name--block">
 		<div class={className}>
-			<Icon icon={iconName} height="1em" {onLoad} />
+			<Icon icon={iconName} {onLoad} />
 		</div>
 		<span>{text}</span>
 	</div>

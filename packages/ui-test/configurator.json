@@ -4,12 +4,16 @@
 		"canShortenName": true
 	},
 	"providers": {
-		"default": "local",
+		"show": true,
+		// "default": "local",
+		"canAdd": true
+		/*
 		"custom": {
 			"local": {
 				"api": "http://localhost:3100",
 				"title": "Local Test"
 			}
 		}
+		*/
 	}
 }

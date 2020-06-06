@@ -102,6 +102,9 @@ export interface IconFinderConfig {
 
 	// API providers
 	providers: {
+		show: boolean;
+
+		// Can add providers
 		canAdd: boolean;
 
 		// Default provider name
@@ -185,6 +188,7 @@ export const config: IconFinderConfig = {
 
 	// API providers
 	providers: {
+		show: false,
 		canAdd: false,
 		default: '',
 		custom: Object.create(null),
