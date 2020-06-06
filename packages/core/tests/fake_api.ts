@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
-import { mergeQuery, BaseAPI, APIParams } from '../lib/api/base';
+import {
+	mergeQuery,
+	BaseAPI,
+	APIParams,
+	APISendQueryCallback,
+} from '../lib/api/base';
 import {
 	Redundancy,
 	RedundancyPendingItem,
@@ -56,6 +61,21 @@ export class API extends BaseAPI {
 			this._redundancy[provider] = initRedundancy(config);
 		}
 		return this._redundancy[provider];
+	}
+
+	/**
+	 * Send query without provider
+	 *
+	 * @param host
+	 * @param params
+	 * @param callback
+	 */
+	sendQuery(
+		host: string,
+		params: string,
+		callback: APISendQueryCallback
+	): void {
+		throw new Error('Not supported by fake API');
 	}
 
 	/**
