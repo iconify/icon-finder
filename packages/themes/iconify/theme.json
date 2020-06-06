@@ -1,6 +1,7 @@
 {
 	"parent": "default",
 	"icons": {
+		"class": "arty-animated",
 		"reset": "arty-animated:16-close",
 		"search": "arty-animated:16-search",
 		"down": "arty-animated:16-chevron-down",

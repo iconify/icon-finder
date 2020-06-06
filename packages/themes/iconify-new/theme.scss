@@ -1,0 +1,36 @@
+// Overwrite icon size
+$iif-icon-size: 24px;
+
+@import 'normalize.css';
+
+@import 'palette';
+
+@import 'vars';
+@import 'mixins';
+
+@import 'wrapper';
+
+@import 'inputs/button';
+@import 'inputs/icon_button';
+@import 'inputs/input';
+@import 'inputs/search_form';
+@import 'inputs/option_button';
+@import 'inputs/add_form';
+
+@import 'components/collection_info';
+@import 'components/collections_list';
+@import 'components/content_error';
+@import 'components/filters';
+@import 'components/icons_block';
+@import 'components/icons_grid';
+@import 'components/icons_list';
+@import 'components/pagination';
+@import 'components/parent';
+
+@import 'footer/block';
+@import 'footer/icon_name_block';
+@import 'footer/icon_name_simple';
+@import 'footer/wrapper';
+
+@import 'views/collections';
+@import 'views/error';

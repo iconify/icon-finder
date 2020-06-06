@@ -23,6 +23,8 @@
 		}
 
 		svg {
+			font-size: $iif-icon-size;
+			line-height: 1em;
 			color: $iif-parent-icon-color;
 			position: absolute;
 			left: 2px;

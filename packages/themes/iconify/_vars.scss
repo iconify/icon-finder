@@ -55,8 +55,8 @@ $iif-border-radius-small: 2px;
 $iif-border-radius-medium: 5px;
 
 // Icon
-$iif-icon-size: 16px;
-$iif-icon-button-size: 24px;
+$iif-icon-size: 16px !default;
+$iif-icon-button-size: 24px !default;
 
 /*
     Inputs and form buttons
