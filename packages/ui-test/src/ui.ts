@@ -9,14 +9,11 @@ import {
 	validateIcon,
 	compareObjects,
 	cloneObject,
+	// customisedConfig,
+	// IconFinderConfig
 } from '@iconify/search-core';
 import { init } from '@iconify/search-components/lib/misc/init';
 import Container from '@iconify/search-components/lib/ui/Container.svelte';
-import {
-	IconFinderOptions,
-	createOptions,
-	customisedOptions,
-} from '@iconify/search-components/lib/misc/options';
 
 import { phrases } from '@iconify/search-components/lib/modules/phrases';
 import { PropEventPayload } from '@iconify/search-components/lib/misc/events';
@@ -37,9 +34,6 @@ export interface UIParams {
 
 	// Callback
 	callback: (event: string, payload: unknown) => void;
-
-	// Custom options (includes core config)
-	options?: IconFinderOptions;
 
 	// Selected icon
 	selectedIcon?: Icon | null;
@@ -105,10 +99,6 @@ export class UI {
 		// Callback
 		registry.setCustom('callback', this._internalCallback.bind(this));
 
-		// Options
-		const options = createOptions(params.options);
-		registry.setCustom('options', options);
-
 		// Selected icon
 		if (
 			typeof params.selectedIcon === 'object' &&
@@ -149,10 +139,8 @@ export class UI {
 		// Get route
 		result.route = registry.router.route;
 
-		// Get customised options
-		result.options = customisedOptions(
-			registry.getCustom('options') as IconFinderOptions
-		);
+		// Get customised config
+		// result.config = customisedConfig(registry.config);
 
 		// Selected icon
 		result.selectedIcon =

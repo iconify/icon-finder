@@ -32,7 +32,6 @@
 	export let blocks; /** @type {ViewBlocks} */
 	export let isList; /** @type {boolean} */
 
-	// const options = registry.options;
 	const phrases = registry.phrases;
 	const uncategorised = phrases.filters.uncategorised;
 	const tooltipText = phrases.icons.tooltip;

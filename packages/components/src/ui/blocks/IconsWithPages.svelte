@@ -11,7 +11,7 @@
 	export let blocks; /** @type {ViewBlocks | null} */
 
 	const phrases = registry.phrases; /** @type {UITranslation} */
-	const options = registry.options;
+	const config = registry.config;
 
 	// Generate header text
 	function generateHeaderText() {
@@ -48,12 +48,12 @@
 	}
 
 	// Layout mode
-	const canChangeLayout = options.layout.toggleList;
-	let isList = options.layout.list;
+	const canChangeLayout = config.ui.toggleList;
+	let isList = config.ui.list;
 
 	function changeLayout() {
 		if (canChangeLayout) {
-			isList = options.layout.list = !options.layout.list;
+			isList = config.ui.list = !config.ui.list;
 		}
 	}
 </script>

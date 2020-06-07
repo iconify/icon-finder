@@ -71,12 +71,9 @@ export { Router, RouterEvent };
 // From registry
 export type Registry = RegistryClass;
 
-// From data
-export { setData, DataStorage, customisedData } from './data';
-
 // From config
 export { IconFinderConfig };
-export { customisedConfig } from './data/config';
+export { customisedConfig, mergeConfig } from './data/config';
 
 // From views
 export { ViewBlocks } from './views/types';
