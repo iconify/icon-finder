@@ -102,7 +102,11 @@ export function convertProviderData(
 	raw: APIProviderRawData
 ): APIProviderSource | null {
 	const provider = raw.provider;
-	if (typeof provider !== 'string' || !provider.match(match)) {
+	if (
+		typeof provider !== 'string' ||
+		// Allow empty string
+		(provider !== '' && !provider.match(match))
+	) {
 		return null;
 	}
 

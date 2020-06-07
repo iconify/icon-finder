@@ -70,7 +70,8 @@
 				return;
 			}
 			status = '';
-			handleClick(provider);
+			formVisible = false;
+			registry.router.action('provider', provider);
 		});
 	}
 

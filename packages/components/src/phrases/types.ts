@@ -58,6 +58,8 @@ export interface UITranslation {
 		status: {
 			loading: string;
 			error: string;
+			exists: string;
+			unsupported: string;
 		};
 	};
 	footer: {

@@ -3,6 +3,7 @@ import {
 	Registry,
 	convertProviderData,
 	addProvider,
+	listProviders,
 	APIProviderSource,
 } from '@iconify/search-core';
 
@@ -71,28 +72,45 @@ export function retrieveProvider(
 	host: string,
 	callback: RetrieveProviderCallback
 ): void {
+	console.log('retrieveProvider:', host);
 	const api = registry.api;
 	api.sendQuery(host, '/provider', (status, data) => {
 		const providerData = data as APIProviderRawData;
 		let convertedData: APIProviderSource | null;
+		let error = 'error';
 		switch (status) {
 			case 'success':
-				if (
-					typeof providerData !== 'object' ||
-					typeof providerData.provider !== 'string'
-				) {
+				// Validate
+				if (typeof providerData !== 'object') {
 					break;
 				}
+
+				// Check if API supports provider
+				if (typeof providerData.provider !== 'string') {
+					error = 'unsupported';
+					break;
+				}
+
+				// Convert data
 				convertedData = convertProviderData(host, providerData);
 				if (!convertedData) {
 					console.log('Failed to convert data');
 					break;
 				}
 				const provider = providerData.provider;
+
+				// Check if provider exists
+				const list = listProviders();
+				if (list.indexOf(provider) !== -1) {
+					error = 'exists';
+					break;
+				}
+
+				// Add provider
 				addProvider(provider, convertedData);
 				callback(host, true, provider);
 				return;
 		}
-		callback(host, false, 'error');
+		callback(host, false, error);
 	});
 }
