@@ -39,7 +39,13 @@
 	}
 
 	function handleReturn() {
-		registry.router.home();
+		const router = registry.router;
+		if (route.type === 'collections') {
+			// Return to default provider
+			router.home('');
+		} else {
+			router.home();
+		}
 	}
 </script>
 

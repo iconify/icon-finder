@@ -130,7 +130,7 @@ export function convertProviderData(
 				break;
 
 			case 'api':
-				if (typeof raw.api === 'string') {
+				if (typeof raw.api === 'string' && raw.api !== '') {
 					data.api = [raw.api];
 				} else if (raw.api instanceof Array) {
 					data.api = raw.api;

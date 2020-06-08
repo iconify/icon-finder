@@ -30,7 +30,7 @@ try {
  */
 export default [
 	{
-		input: 'src/index.ts',
+		input: 'src/index-with-wrapper.ts',
 		output: {
 			sourcemap: true,
 			format: 'iife',
