@@ -52,6 +52,25 @@ const main = new Wrapper({
 	},
 });
 
+// Test changing values before first render
+// main.selectIcon('mdi:home');
+/*
+main.setCustomisations({
+	color: 'blue',
+});
+*/
+/*
+main.setRoute({
+	type: 'collection',
+	params: {
+		prefix: 'mdi-light',
+	},
+	parent: {
+		type: 'collections',
+	},
+} as PartialRoute);
+*/
+
 // Controls
 controls.innerHTML = `
 	Changing state:<br />
@@ -148,9 +167,12 @@ const cycles: Record<string, WrapperFunction> = {
 	'get state': () => {
 		console.log('State:', JSON.stringify(main.getState(), null, 4));
 	},
-	'loaded status': () => {
-		console.log('Loaded:', main.loaded());
+	'get status': () => {
+		console.log('Status:', main.getStatus());
 	},
+	'hide': main.hide.bind(main),
+	'show': main.show.bind(main),
+	'destroy': main.destroy.bind(main),
 };
 controls.querySelectorAll('span.life-cycle').forEach((parent) => {
 	Object.keys(cycles).forEach((text) => {

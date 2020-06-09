@@ -9,6 +9,7 @@ import {
 	compareIcons,
 	validateIcon,
 	customisedConfig,
+	Registry,
 } from '@iconify/search-core';
 import { phrases } from './modules/phrases';
 import { init } from './misc/init';
@@ -26,10 +27,12 @@ import {
 } from './wrapper/svelte';
 import { IconFinderEvent } from './wrapper/events';
 import { PartialIconCustomisations } from './misc/customisations';
-import { Registry } from '@iconify/search-core/lib/registry';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
 function assertNever(s: never) {}
+
+// Instance status
+export type WrapperStatus = '' | 'loading' | 'hidden' | 'destroyed';
 
 /**
  * Wrapper class
@@ -42,6 +45,9 @@ export class Wrapper {
 	protected _state: IconFinderState = {
 		icon: null,
 	};
+
+	// Status
+	protected _status: WrapperStatus = 'loading';
 
 	// Core instance and registry
 	protected readonly _core: APICore;
@@ -100,10 +106,10 @@ export class Wrapper {
 	}
 
 	/**
-	 * Check if container has been loaded
+	 * Get container status
 	 */
-	loaded(): boolean {
-		return this._container !== null;
+	getStatus(): WrapperStatus {
+		return this._status;
 	}
 
 	/**
@@ -114,10 +120,98 @@ export class Wrapper {
 	}
 
 	/**
+	 * Hide or destroy
+	 */
+	_hide(newStatus: WrapperStatus) {
+		switch (this._status) {
+			case 'hidden':
+			case 'destroyed':
+				// Cannot hide
+				return;
+
+			case 'loading':
+			case '':
+				// Hide
+				break;
+
+			default:
+				assertNever(this._status);
+		}
+
+		this._status = newStatus;
+		if (this._container) {
+			this._container.$set({
+				hidden: true,
+			});
+		}
+	}
+
+	/**
+	 * Hide
+	 */
+	hide(): void {
+		this._hide('hidden');
+	}
+
+	/**
+	 * Destroy
+	 */
+	destroy(): void {
+		if (this._status !== 'destroyed') {
+			this._hide('destroyed');
+			this._container = null;
+			this._registry.destroy();
+		}
+	}
+
+	/**
+	 * Show
+	 */
+	show(): void {
+		switch (this._status) {
+			// Cannot show or loading
+			case 'destroyed':
+			// Already visible or loading
+			case 'loading':
+			case '':
+				return;
+
+			case 'hidden':
+				// Show
+				break;
+
+			default:
+				assertNever(this._status);
+		}
+
+		this._status = '';
+		if (this._container) {
+			this._container.$set({
+				hidden: false,
+			});
+		}
+	}
+
+	/**
 	 * Create Container component
 	 */
 	_initContainer(data: RouterEvent): SvelteComponentInstance {
 		const state = this._state;
+
+		// Check if container should be visible
+		let hidden = false;
+		switch (this._status) {
+			case 'hidden':
+			case 'destroyed':
+				hidden = true;
+
+			case '':
+			case 'loading':
+				break;
+
+			default:
+				assertNever(this._status);
+		}
 
 		// Properties
 		const props = {
@@ -125,6 +219,7 @@ export class Wrapper {
 			selectedIcon: state.icon,
 			customisations: state.customisations,
 			registry: this._core.getInternalRegistry(),
+			hidden,
 		};
 
 		// Constructor parameters
@@ -143,7 +238,7 @@ export class Wrapper {
 	 * Trigger event
 	 */
 	_triggerEvent(event: IconFinderEvent): void {
-		if (this._params.callback) {
+		if (this._status !== 'destroyed' && this._params.callback) {
 			this._params.callback(event);
 		}
 	}
@@ -152,12 +247,17 @@ export class Wrapper {
 	 * Callback from core
 	 */
 	_coreCallback(data: RouterEvent): void {
-		if (this._container === void 0 || this._container === null) {
+		if (!this._container) {
 			// Create container on first render
 			this._container = this._initContainer(data);
-			this._triggerEvent({
-				type: 'load',
-			});
+
+			// Mark as loaded
+			if (this._status === 'loading') {
+				this._status = '';
+				this._triggerEvent({
+					type: 'load',
+				});
+			}
 
 			// Save route
 			this._setRoute(data.route, false);
@@ -278,6 +378,10 @@ export class Wrapper {
 	 * Set route
 	 */
 	setRoute(route: PartialRoute | null) {
+		if (this._status === 'destroyed') {
+			return;
+		}
+
 		const router = this._core.getRouter();
 		function loadRoute() {
 			if (route === null) {
@@ -304,7 +408,6 @@ export class Wrapper {
 
 		// Check if icon has changed
 		if (
-			!this._container ||
 			(!icon && !state.icon) ||
 			(state.icon && icon && compareIcons(icon, state.icon))
 		) {
@@ -314,9 +417,16 @@ export class Wrapper {
 		// Change state and container
 		state.icon = icon;
 		if (updateContainer) {
-			this._container.$set({
-				selectedIcon: icon,
-			});
+			if (this._container) {
+				this._container.$set({
+					selectedIcon: icon,
+				});
+			} else {
+				if (!this._params.state) {
+					this._params.state = {};
+				}
+				this._params.state.icon = icon;
+			}
 		}
 
 		// Trigger event
@@ -331,11 +441,11 @@ export class Wrapper {
 	 * Select icon
 	 */
 	selectIcon(icon: Icon | string | null): void {
-		let iconValue: Icon | null;
-
-		if (!this._container) {
+		if (this._status === 'destroyed') {
 			return;
 		}
+
+		let iconValue: Icon | null;
 
 		// Convert and validate icon
 		if (typeof icon === 'string') {
@@ -364,9 +474,8 @@ export class Wrapper {
 	): boolean {
 		const state = this._state;
 		if (
-			!this._container ||
-			(state.customisations !== void 0 &&
-				compareObjects(state.customisations, customisations))
+			state.customisations !== void 0 &&
+			compareObjects(state.customisations, customisations)
 		) {
 			return false;
 		}
@@ -376,9 +485,16 @@ export class Wrapper {
 
 		// Update container
 		if (updateContainer) {
-			this._container.$set({
-				customisations,
-			});
+			if (this._container) {
+				this._container.$set({
+					customisations,
+				});
+			} else {
+				if (!this._params.state) {
+					this._params.state = {};
+				}
+				this._params.state.customisations = customisations;
+			}
 		}
 
 		// Trigger evemt
@@ -393,6 +509,10 @@ export class Wrapper {
 	 * Change customisations
 	 */
 	setCustomisations(customisations: PartialIconCustomisations): void {
+		if (this._status === 'destroyed') {
+			return;
+		}
+
 		this._setCustomisations(customisations, true);
 	}
 }
