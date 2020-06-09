@@ -24,6 +24,7 @@ import {
 	SvelteComponentOptions,
 } from './wrapper/svelte';
 import { IconFinderEvent } from './wrapper/events';
+import { PartialIconCustomisations } from './misc/customisations';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
 function assertNever(s: never) {}
@@ -36,7 +37,7 @@ export class Wrapper {
 	protected _params: IconFinderWrapperParams;
 
 	// Current state, always up to date
-	public state: IconFinderState = {
+	protected _state: IconFinderState = {
 		icon: null,
 	};
 
@@ -69,15 +70,23 @@ export class Wrapper {
 		init(registry);
 
 		// Set initial state
+		const state = this._state;
 		if (!params.state) {
-			this.state.route = registry.route;
+			state.route = registry.route;
 		} else {
 			const customState = params.state;
-			if (customState.route) {
-				this.state.route = registry.route = customState.route;
-			}
 			if (customState.icon) {
-				this.state.icon = customState.icon;
+				state.icon = customState.icon;
+			}
+			if (customState.customisations) {
+				state.customisations = customState.customisations;
+			}
+			if (customState.route) {
+				setTimeout(() => {
+					// Set on next tick
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					registry.route = customState.route!;
+				});
 			}
 		}
 	}
@@ -90,15 +99,23 @@ export class Wrapper {
 	}
 
 	/**
+	 * Get current state
+	 */
+	getState(): IconFinderState {
+		return this._state;
+	}
+
+	/**
 	 * Create Container component
 	 */
 	_initContainer(data: RouterEvent): SvelteComponentInstance {
-		const state = this.state;
+		const state = this._state;
 
 		// Properties
 		const props = {
 			...data,
 			selectedIcon: state.icon,
+			customisations: state.customisations,
 			registry: this._core.getInternalRegistry(),
 		};
 
@@ -135,7 +152,7 @@ export class Wrapper {
 			});
 
 			// Save route
-			this._setRoute(data.route);
+			this._setRoute(data.route, false);
 		} else {
 			const container = this._container;
 
@@ -148,7 +165,7 @@ export class Wrapper {
 				container.$set(data);
 
 				// Save route
-				this._setRoute(data.route);
+				this._setRoute(data.route, false);
 			} else {
 				// Route is the same, so if error has changed, only error and blocks need update
 				if (
@@ -190,12 +207,14 @@ export class Wrapper {
 						  }
 						: null;
 				}
-				this._selectIcon(icon);
+				this._selectIcon(icon, true);
 				return;
 
 			case 'customisation':
-				// Property was changed
-				// console.log('Changed property:', event as UICustomisationEvent);
+				this._setCustomisations(
+					(event as UICustomisationEvent).customisations,
+					false
+				);
 				return;
 
 			case 'button':
@@ -211,22 +230,54 @@ export class Wrapper {
 	/**
 	 * Set route
 	 */
-	_setRoute(route: PartialRoute): void {
-		const state = this.state;
-		if (!compareObjects(route, state.route)) {
+	_setRoute(route: PartialRoute, updateContainer: boolean): boolean {
+		const state = this._state;
+
+		// Check if route has changed
+		if (state.route === void 0 || !compareObjects(route, state.route)) {
 			state.route = route;
 			this._triggerEvent({
 				type: 'route',
 				route,
 			});
+
+			// @TODO: update container
+			if (updateContainer) {
+				console.log('TODO: update route in container');
+			}
+
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Set route
+	 */
+	setRoute(route: PartialRoute | null) {
+		const router = this._core.getRouter();
+		function loadRoute() {
+			if (route === null) {
+				// Navigate to home page
+				router.home();
+			} else {
+				router.route = route;
+			}
+		}
+
+		if (!this._container) {
+			// Load on next tick
+			setTimeout(loadRoute);
+		} else {
+			loadRoute();
 		}
 	}
 
 	/**
 	 * Select icon
 	 */
-	_selectIcon(icon: Icon | null) {
-		const state = this.state;
+	_selectIcon(icon: Icon | null, updateContainer: boolean): boolean {
+		const state = this._state;
 
 		// Check if icon has changed
 		if (
@@ -234,18 +285,23 @@ export class Wrapper {
 			(!icon && !state.icon) ||
 			(state.icon && icon && compareIcons(icon, state.icon))
 		) {
-			return;
+			return false;
 		}
 
-		// Change state, container and trigger event
+		// Change state and container
 		state.icon = icon;
-		this._container.$set({
-			selectedIcon: icon,
-		});
+		if (updateContainer) {
+			this._container.$set({
+				selectedIcon: icon,
+			});
+		}
+
+		// Trigger event
 		this._triggerEvent({
 			type: 'icon',
 			icon,
 		});
+		return true;
 	}
 
 	/**
@@ -253,6 +309,12 @@ export class Wrapper {
 	 */
 	selectIcon(icon: Icon | string | null): void {
 		let iconValue: Icon | null;
+
+		if (!this._container) {
+			return;
+		}
+
+		// Convert and validate icon
 		if (typeof icon === 'string') {
 			// Convert from string. Allow empty string to reset selected icon
 			if (icon === '') {
@@ -267,6 +329,47 @@ export class Wrapper {
 			iconValue = icon;
 		}
 
-		this._selectIcon(iconValue);
+		this._selectIcon(iconValue, true);
+	}
+
+	/**
+	 * Change customisations
+	 */
+	_setCustomisations(
+		customisations: PartialIconCustomisations,
+		updateContainer: boolean
+	): boolean {
+		const state = this._state;
+		if (
+			!this._container ||
+			(state.customisations !== void 0 &&
+				compareObjects(state.customisations, customisations))
+		) {
+			return false;
+		}
+
+		// Change state
+		state.customisations = customisations;
+
+		// Update container
+		if (updateContainer) {
+			this._container.$set({
+				customisations,
+			});
+		}
+
+		// Trigger evemt
+		this._triggerEvent({
+			type: 'customisations',
+			customisations,
+		});
+		return true;
+	}
+
+	/**
+	 * Change customisations
+	 */
+	setCustomisations(customisations: PartialIconCustomisations): void {
+		this._setCustomisations(customisations, true);
 	}
 }

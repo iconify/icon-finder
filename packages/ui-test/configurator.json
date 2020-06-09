@@ -1,7 +1,7 @@
 {
 	"theme": "figma",
 	"layout": {
-		"canShortenName": true
+		"canShortenName": false
 	},
 	"providers": {
 		"show": true,

@@ -1,4 +1,5 @@
 import { Icon, PartialRoute } from '@iconify/search-core';
+import { PartialIconCustomisations } from '../misc/customisations';
 /**
  * Icon finder state.
  *
@@ -10,4 +11,7 @@ export interface IconFinderState {
 
 	// Current route
 	route?: PartialRoute;
+
+	// Customisations
+	customisations?: PartialIconCustomisations;
 }

@@ -14,7 +14,7 @@ export interface IconFinderWrapperParams {
 	component: SvelteComponent;
 
 	// Default state
-	state?: IconFinderState;
+	state?: Partial<IconFinderState>;
 
 	// Callback
 	callback: (event: IconFinderEvent) => void;

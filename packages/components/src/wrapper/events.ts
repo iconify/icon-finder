@@ -1,5 +1,6 @@
 import { IconFinderState } from './state';
 import { PartialRoute, Icon } from '@iconify/search-core';
+import { PartialIconCustomisations } from '../misc/customisations';
 
 /**
  * Life cycle events
@@ -28,7 +29,16 @@ export interface IconFinderSelectedIconEvent {
 	icon: Icon | null;
 }
 
-type IconFinderStateEvents = IconFinderRouteEvent | IconFinderSelectedIconEvent;
+// Even triggered when customisations have changed
+export interface IconFinderCustomisationsEvent {
+	type: 'customisations';
+	customisations: PartialIconCustomisations;
+}
+
+type IconFinderStateEvents =
+	| IconFinderRouteEvent
+	| IconFinderSelectedIconEvent
+	| IconFinderCustomisationsEvent;
 
 /**
  * All events
