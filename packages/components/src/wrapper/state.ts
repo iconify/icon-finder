@@ -1,4 +1,4 @@
-import { Icon, PartialRoute } from '@iconify/search-core';
+import { Icon, PartialRoute, IconFinderConfig } from '@iconify/search-core';
 import { PartialIconCustomisations } from '../misc/customisations';
 /**
  * Icon finder state.
@@ -14,4 +14,7 @@ export interface IconFinderState {
 
 	// Customisations
 	customisations?: PartialIconCustomisations;
+
+	// Config changes
+	config?: IconFinderConfig;
 }

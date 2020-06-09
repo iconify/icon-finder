@@ -10,6 +10,7 @@ import { RouterEvent } from '../../lib/route/router';
 import { FiltersBlock } from '../../lib/blocks/filters';
 import { CollectionViewBlocks } from '../../lib/views/collection';
 import { isBlockEmpty } from '../../lib/blocks/types';
+import { addProvider, convertProviderData } from '../../lib/data/providers';
 
 describe('Testing router', () => {
 	const namespace = __filename;
@@ -758,9 +759,19 @@ describe('Testing router', () => {
 		const config = registry.config;
 		config.ui!.itemsPerPage = 32;
 
+		// Add fake provider to avoid triggering errors
+		const provider = 'router-test-' + Date.now();
+		addProvider(
+			provider,
+			convertProviderData('http://localhost', {
+				provider: provider,
+			})!
+		);
+
+		// Add fixtures
 		const api = registry.api as FakeAPI;
 		api.loadFixture(
-			'custom',
+			provider,
 			'/search',
 			{
 				query: 'home',
@@ -769,7 +780,7 @@ describe('Testing router', () => {
 			'search-home'
 		);
 		api.loadFixture(
-			'custom',
+			provider,
 			'/search',
 			{
 				query: 'home',
@@ -798,14 +809,14 @@ describe('Testing router', () => {
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
-							provider: 'custom',
+							provider,
 							search: 'home',
 							page: 1,
 						},
 						parent: {
 							type: 'collections',
 							params: {
-								provider: 'custom',
+								provider,
 							},
 						},
 					});
@@ -818,14 +829,14 @@ describe('Testing router', () => {
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
-							provider: 'custom',
+							provider,
 							search: 'home',
 							page: 1,
 						},
 						parent: {
 							type: 'collections',
 							params: {
-								provider: 'custom',
+								provider,
 							},
 						},
 					});
@@ -837,7 +848,7 @@ describe('Testing router', () => {
 						{
 							type: 'search',
 							params: {
-								provider: 'custom',
+								provider,
 								search: 'home',
 								page: 2,
 								short: false,
@@ -852,7 +863,7 @@ describe('Testing router', () => {
 					expect(params.route).to.be.eql({
 						type: 'search',
 						params: {
-							provider: 'custom',
+							provider,
 							search: 'home',
 							page: 2,
 							short: false,
@@ -860,7 +871,7 @@ describe('Testing router', () => {
 						parent: {
 							type: 'collections',
 							params: {
-								provider: 'custom',
+								provider,
 							},
 						},
 					});
@@ -881,7 +892,7 @@ describe('Testing router', () => {
 		router.route = ({
 			type: 'search',
 			params: {
-				provider: 'custom',
+				provider,
 				search: 'home',
 				page: 1,
 				short: true,
@@ -889,7 +900,7 @@ describe('Testing router', () => {
 			parent: {
 				type: 'collections',
 				params: {
-					provider: 'custom',
+					provider,
 				},
 			},
 		} as unknown) as PartialRoute;

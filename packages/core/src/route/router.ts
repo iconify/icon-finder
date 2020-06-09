@@ -6,6 +6,8 @@ import { CollectionView } from '../views/collection';
 import { SearchView } from '../views/search';
 import { CustomView, IconsList } from '../views/custom';
 import { EmptyView } from '../views/empty';
+import { getProvider } from '../data/providers';
+import { CollectionsRouteParams } from './params';
 
 /**
  * TypeScript guard
@@ -110,8 +112,21 @@ export class Router {
 		let view;
 
 		// Clean up route
-		const cleanRoute: Route | null =
+		let cleanRoute: Route | null =
 			route === null ? null : objectToRoute(route);
+
+		// Check provider
+		if (cleanRoute && cleanRoute.params) {
+			const provider = (cleanRoute.params as CollectionsRouteParams)
+				.provider;
+			if (
+				typeof provider === 'string' &&
+				provider !== '' &&
+				!this._checkProvider(provider)
+			) {
+				cleanRoute = null;
+			}
+		}
 
 		// Attempt to create view
 		if (
@@ -149,7 +164,9 @@ export class Router {
 		// Change default provider
 		changeProvider(
 			route,
-			provider === null ? this.defaultProvider : provider
+			provider === null || !this._checkProvider(provider)
+				? this.defaultProvider
+				: provider
 		);
 
 		// Generate view
@@ -438,5 +455,12 @@ export class Router {
 			clearTimeout(this._timer as number);
 			this._timer = null;
 		}
+	}
+
+	/**
+	 * Check if provider exists
+	 */
+	_checkProvider(provider: string): boolean {
+		return getProvider(provider) !== null;
 	}
 }

@@ -8,6 +8,7 @@ import {
 	stringToIcon,
 	compareIcons,
 	validateIcon,
+	customisedConfig,
 } from '@iconify/search-core';
 import { phrases } from './modules/phrases';
 import { init } from './misc/init';
@@ -25,6 +26,7 @@ import {
 } from './wrapper/svelte';
 import { IconFinderEvent } from './wrapper/events';
 import { PartialIconCustomisations } from './misc/customisations';
+import { Registry } from '@iconify/search-core/lib/registry';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
 function assertNever(s: never) {}
@@ -41,8 +43,9 @@ export class Wrapper {
 		icon: null,
 	};
 
-	// Core instance
+	// Core instance and registry
 	protected readonly _core: APICore;
+	protected readonly _registry: Registry;
 
 	// Container component, added on first render
 	protected _container: SvelteComponentInstance | null = null;
@@ -52,13 +55,17 @@ export class Wrapper {
 	 */
 	constructor(params: IconFinderWrapperParams) {
 		this._params = params;
+		const customState = params.state;
 
 		// Initialise APICore
 		const config: APICoreConfig = {
 			callback: this._coreCallback.bind(this),
 		};
+		if (customState && customState.config) {
+			config.config = customState.config;
+		}
 		const core = (this._core = new APICore(config));
-		const registry = core.getInternalRegistry();
+		const registry = (this._registry = core.getInternalRegistry());
 
 		// Set phrases
 		registry.setCustom('phrases', phrases);
@@ -71,10 +78,11 @@ export class Wrapper {
 
 		// Set initial state
 		const state = this._state;
-		if (!params.state) {
-			state.route = registry.route;
-		} else {
-			const customState = params.state;
+		state.route = registry.route;
+		state.config = customisedConfig(registry.config);
+
+		if (customState) {
+			// Set custom stuff
 			if (customState.icon) {
 				state.icon = customState.icon;
 			}
@@ -185,7 +193,7 @@ export class Wrapper {
 	 * Select icon
 	 */
 	_internalCallback(event: UIEvent): void {
-		console.log('Internal event:', event);
+		// console.log('Internal event:', event);
 
 		let icon: Icon | null;
 		let selectionEvent: UISelectionEvent;
@@ -193,7 +201,7 @@ export class Wrapper {
 		const type = event.type;
 		switch (type) {
 			case 'selection':
-				// Selected icon changed
+				// Selected icon changed: trigger event and update container (this event does not automatically update container)
 				selectionEvent = event as UISelectionEvent;
 				if (typeof selectionEvent.icon === 'string') {
 					icon = stringToIcon(selectionEvent.icon);
@@ -211,6 +219,7 @@ export class Wrapper {
 				return;
 
 			case 'customisation':
+				// Customisation was clicked: trigger event
 				this._setCustomisations(
 					(event as UICustomisationEvent).customisations,
 					false
@@ -218,11 +227,25 @@ export class Wrapper {
 				return;
 
 			case 'button':
-				// Button was clicked
-				// console.log('Clicked button:', event as UIFooterButtonEvent);
+				// Button was clicked: trigger event
+				this._triggerEvent({
+					type: 'button',
+					button: (event as UIFooterButtonEvent).button,
+					state: this._state,
+				});
+				return;
+
+			case 'config':
+				// Configuration changed: trigger event
+				this._state.config = customisedConfig(this._registry.config);
+				this._triggerEvent({
+					type: 'config',
+					config: this._state.config,
+				});
 				return;
 
 			default:
+				// Should never reach this code
 				assertNever(type);
 		}
 	}

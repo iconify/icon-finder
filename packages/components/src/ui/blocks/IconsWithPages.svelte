@@ -54,6 +54,10 @@
 	function changeLayout() {
 		if (canChangeLayout) {
 			isList = config.ui.list = !config.ui.list;
+			// UIConfigEvent
+			registry.callback({
+				type: 'config',
+			});
 		}
 	}
 </script>

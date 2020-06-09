@@ -1,4 +1,8 @@
-import { IconFinderConfig, createConfig } from '../data/config';
+import {
+	FullIconFinderConfig,
+	IconFinderConfig,
+	createConfig,
+} from '../data/config';
 import { Events } from '../events';
 import { API } from '../api/axios';
 import { PartialRoute } from '../route/types';
@@ -69,14 +73,14 @@ export class Registry {
 	/**
 	 * Get/set config
 	 */
-	get config(): IconFinderConfig {
+	get config(): FullIconFinderConfig {
 		if (this._sharedData.config === void 0) {
 			this._sharedData.config = createConfig(this.params.config);
 		}
 		return this._sharedData.config;
 	}
 
-	set config(value: IconFinderConfig) {
+	set config(value: FullIconFinderConfig) {
 		this._sharedData.config = value;
 	}
 

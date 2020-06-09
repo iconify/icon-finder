@@ -28,9 +28,9 @@ describe('Testing converting provider data', () => {
 		).to.be.equal(null);
 
 		expect(
-			convertProviderData('https://localhost', {
-				provider: '',
-			} as APIProviderRawData)
+			convertProviderData('https://localhost', ({
+				provider: null,
+			} as unknown) as APIProviderRawData)
 		).to.be.equal(null);
 
 		expect(

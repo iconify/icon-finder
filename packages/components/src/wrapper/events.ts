@@ -1,6 +1,6 @@
-import { IconFinderState } from './state';
-import { PartialRoute, Icon } from '@iconify/search-core';
+import { PartialRoute, Icon, IconFinderConfig } from '@iconify/search-core';
 import { PartialIconCustomisations } from '../misc/customisations';
+import { IconFinderState } from './state';
 
 /**
  * Life cycle events
@@ -29,18 +29,41 @@ export interface IconFinderSelectedIconEvent {
 	icon: Icon | null;
 }
 
-// Even triggered when customisations have changed
+// Event triggered when customisations have changed
 export interface IconFinderCustomisationsEvent {
 	type: 'customisations';
 	customisations: PartialIconCustomisations;
 }
 
+// Event triggered when configuration changes
+export interface IconFinderConfigEvent {
+	type: 'config';
+	config: IconFinderConfig;
+}
+
 type IconFinderStateEvents =
 	| IconFinderRouteEvent
 	| IconFinderSelectedIconEvent
-	| IconFinderCustomisationsEvent;
+	| IconFinderCustomisationsEvent
+	| IconFinderConfigEvent;
+
+/**
+ * Actions
+ */
+
+// Event triggered when button was clicked in footer
+export interface IconFinderButtonEvent {
+	type: 'button';
+	button: string;
+	state: IconFinderState;
+}
+
+type IconFinderActionEvents = IconFinderButtonEvent;
 
 /**
  * All events
  */
-export type IconFinderEvent = IconFinderLifeCycleEvents | IconFinderStateEvents;
+export type IconFinderEvent =
+	| IconFinderLifeCycleEvents
+	| IconFinderStateEvents
+	| IconFinderActionEvents;

@@ -140,6 +140,9 @@ export class BaseAPI {
 		const redundancy = this._getRedundancy(provider);
 		if (!redundancy) {
 			// Error
+			setTimeout(() => {
+				callback(null, false);
+			});
 			return;
 		}
 

@@ -1,4 +1,4 @@
-import { IconFinderConfig } from '../data/config';
+import { FullIconFinderConfig } from '../data/config';
 import { Events } from '../events';
 import { API } from '../api/axios';
 import { Router } from '../route/router';
@@ -24,7 +24,7 @@ const namespaces: RegistryNamespaces = Object.create(null);
  */
 export interface RegistryDataStorage {
 	// Shared
-	config?: IconFinderConfig;
+	config?: FullIconFinderConfig;
 	events?: Events;
 	api?: API;
 	collections?: CollectionsData;

@@ -44,6 +44,11 @@ const main = new Wrapper({
 				} as CollectionsRouteParams,
 			} as CollectionsRoute,
 		},
+		config: {
+			ui: {
+				list: true,
+			},
+		},
 	},
 });
 
@@ -79,7 +84,7 @@ const props: Record<string, PartialIconCustomisations> = {
 		hFlip: true,
 	},
 	'color and height': {
-		color: '#0f2',
+		color: '#90f',
 		height: '48',
 	},
 };

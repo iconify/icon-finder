@@ -27,8 +27,14 @@ export interface UIFooterButtonEvent {
 	button: string;
 }
 
+// Config was changed
+export interface UIConfigEvent {
+	type: 'config';
+}
+
 // Combined type
 export type UIEvent =
 	| UISelectionEvent
 	| UICustomisationEvent
-	| UIFooterButtonEvent;
+	| UIFooterButtonEvent
+	| UIConfigEvent;
