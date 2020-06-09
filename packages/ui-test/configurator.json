@@ -13,5 +13,23 @@
 				"title": "Local Test"
 			}
 		}
+	},
+	"footer": {
+		"buttons": {
+			"submit": {
+				"type": "primary",
+				"text": "Submit",
+				"icon": "@local:line-md:confirm"
+			},
+			"cancel": {
+				"type": "secondary",
+				"text": "Cancel",
+				"icon": "@local:clarity:check-line"
+			},
+			"close": {
+				"type": "destructive",
+				"text": "Close"
+			}
+		}
 	}
 }
