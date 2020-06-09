@@ -23,10 +23,11 @@
 	}
 }
 
-.iif-filter {
+.iif-filter,
+a.iif-filter {
 	box-sizing: border-box;
 	display: inline-block;
-	text-decoration: none;
+	text-decoration: none !important;
 	white-space: nowrap;
 	cursor: pointer;
 

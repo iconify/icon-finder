@@ -44,8 +44,11 @@
 		const providerData = getProvider(provider);
 		if (providerData) {
 			link = providerData.links.collection.replace('{prefix}', prefix);
+			if (link === '') {
+				link = '#';
+			}
 		} else {
-			link = '';
+			link = '#';
 		}
 	}
 

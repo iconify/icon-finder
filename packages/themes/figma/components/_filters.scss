@@ -22,10 +22,11 @@
 	}
 }
 
-.iif-filter {
+.iif-filter,
+a.iif-filter {
 	box-sizing: border-box;
 	display: inline-block;
-	text-decoration: none;
+	text-decoration: none !important;
 	color: $plugin-palette-color-white;
 	white-space: nowrap;
 	margin: 0 8px 6px 0;

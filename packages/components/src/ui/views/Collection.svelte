@@ -4,6 +4,7 @@
 </script>
 
 <script>
+	import { getProvider } from '@iconify/search-core';
 	import FiltersBlock from '../blocks/Filters.svelte';
 	import CollectionInfoBlock from '../blocks/CollectionInfo.svelte';
 	import IconsWithPages from '../blocks/IconsWithPages.svelte';
@@ -17,10 +18,22 @@
 	let provider; /** @type {string} */
 	let prefix; /** @type {string} */
 	let info; /** @type {CollectionInfo | null} */
+	let collectionsLink;
 	$: {
 		provider = route.params.provider;
+		if (typeof provider !== 'string') {
+			provider = '';
+		}
 		prefix = route.params.prefix;
 		info = blocks.info === null ? null : blocks.info.info;
+
+		// Get collection link
+		const providerData = getProvider(provider);
+		if (providerData) {
+			collectionsLink = providerData.links.collection;
+		} else {
+			collectionsLink = '';
+		}
 	}
 </script>
 
@@ -32,6 +45,7 @@
 			{registry}
 			name="collections"
 			parent={route.parent ? route.parent.type : 'collections'}
+			link={collectionsLink}
 			block={blocks.collections} />
 	{/if}
 

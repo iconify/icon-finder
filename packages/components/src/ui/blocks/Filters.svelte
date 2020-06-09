@@ -6,6 +6,7 @@
 	export let name; /** @type {string} */
 	export let parent; /** @type {string} */
 	export let block; /** @type {FiltersBlock | null} */
+	export let link; /** @type {string} */
 
 	const phrases = registry.phrases; /** @type {UITranslation} */
 
@@ -48,6 +49,7 @@
 					active={key === block.active}
 					hasActive={block.active !== null}
 					{filter}
+					link={link ? link.replace('{prefix}', key) : link}
 					title={filter.title === '' ? phrases.filters.uncategorised : filter.title}
 					onClick={() => handleClick(key)} />
 			{/each}

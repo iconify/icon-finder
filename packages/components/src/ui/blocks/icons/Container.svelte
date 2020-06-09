@@ -151,8 +151,11 @@
 				link = providerData.links.icon
 					.replace('{prefix}', icon.prefix)
 					.replace('{name}', icon.name);
+				if (link === '') {
+					link = '#';
+				}
 			} else {
-				link = '';
+				link = '#';
 			}
 
 			// Item

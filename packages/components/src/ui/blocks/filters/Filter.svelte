@@ -10,6 +10,7 @@
 	export let filter; /** @type {FiltersFilter} */
 	export let title; /** @type {string} */
 	export let onClick; /** @type {function} */
+	export let link; /** @type {string} */
 
 	let className;
 	$: {
@@ -24,9 +25,13 @@
 	}
 </script>
 
-<button
-	class={className}
-	disabled={filter.disabled}
-	on:click|preventDefault={onClick}>
-	{title}
-</button>
+{#if link}
+	<a class={className} on:click|preventDefault={onClick} href={link}>{title}</a>
+{:else}
+	<button
+		class={className}
+		disabled={filter.disabled}
+		on:click|preventDefault={onClick}>
+		{title}
+	</button>
+{/if}
