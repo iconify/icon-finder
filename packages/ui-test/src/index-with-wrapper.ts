@@ -54,9 +54,12 @@ const main = new Wrapper({
 
 // Controls
 controls.innerHTML = `
+	Changing state:<br />
 	Select icon: <span class="select-icons"></span><br />
 	Customisations: <span class="change-props"></span><br />
 	Route: <span class="change-route"></span><br />
+	<br />
+	Life cycle: <span class="life-cycle"></span><br />
 `;
 
 const icons = ['', 'mdi-home', '@local:line-md:home-twotone'];
@@ -121,6 +124,9 @@ const routes: Record<string, PartialRoute | null> = {
 			} as CollectionsRouteParams,
 		} as CollectionsRoute,
 	},
+	'empty': {
+		type: 'empty',
+	},
 };
 controls.querySelectorAll('span.change-route').forEach((parent) => {
 	Object.keys(routes).forEach((text) => {
@@ -130,6 +136,30 @@ controls.querySelectorAll('span.change-route').forEach((parent) => {
 		link.addEventListener('click', (event) => {
 			event.preventDefault();
 			main.setRoute(route);
+		});
+		link.innerText = text;
+		link.style.marginRight = '.5em';
+		parent.appendChild(link);
+	});
+});
+
+type WrapperFunction = () => void;
+const cycles: Record<string, WrapperFunction> = {
+	'get state': () => {
+		console.log('State:', JSON.stringify(main.getState(), null, 4));
+	},
+	'loaded status': () => {
+		console.log('Loaded:', main.loaded());
+	},
+};
+controls.querySelectorAll('span.life-cycle').forEach((parent) => {
+	Object.keys(cycles).forEach((text) => {
+		const func = cycles[text];
+		const link = document.createElement('a');
+		link.href = '#';
+		link.addEventListener('click', (event) => {
+			event.preventDefault();
+			func();
 		});
 		link.innerText = text;
 		link.style.marginRight = '.5em';

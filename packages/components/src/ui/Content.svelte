@@ -111,12 +111,25 @@
 		return '';
 	}
 
+	/**
+	 * Check if route is capable of having provider
+	 */
+	function isProviderEnabledRoute(route) {
+		switch (route.type) {
+			case 'collections':
+			case 'collection':
+			case 'search':
+				return true;
+		}
+		return route.parent ? isProviderEnabledRoute(route.parent) : false;
+	}
+
 	// Get providers
 	let showProviders = canAddProviders;
 	let activeProvider = '';
 	let providers = [''];
 	$: {
-		if (canShowProviders) {
+		if (canShowProviders && isProviderEnabledRoute(route)) {
 			const providersList = listProviders();
 			if (providersList.length > 1) {
 				showProviders = true;
@@ -131,6 +144,8 @@
 			} else {
 				showProviders = canAddProviders;
 			}
+		} else {
+			showProviders = false;
 		}
 	}
 </script>
