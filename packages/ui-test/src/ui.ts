@@ -16,7 +16,12 @@ import { init } from '@iconify/search-components/lib/misc/init';
 import Container from '@iconify/search-components/lib/ui/Container.svelte';
 
 import { phrases } from '@iconify/search-components/lib/modules/phrases';
-import { PropEventPayload } from '@iconify/search-components/lib/misc/events';
+import {
+	UIEvent,
+	UISelectionEvent,
+	UICustomisationEvent,
+	UIFooterButtonEvent,
+} from '@iconify/search-components/lib/ui/events';
 
 /**
  * Function called by UI when something changes
@@ -226,30 +231,40 @@ export class UI {
 	/**
 	 * Callback for events
 	 */
-	_internalCallback(event: string, payload: unknown): void {
-		switch (event) {
+	_internalCallback(event: UIEvent): void {
+		let icon: Icon | null;
+		let selectionEvent: UISelectionEvent;
+		let customisationEvent: UICustomisationEvent;
+		let buttonEvent: UIFooterButtonEvent;
+
+		const type = event.type;
+		switch (type) {
 			case 'selection':
 				// Selected icon changed
-				if (typeof payload === 'string') {
-					payload = stringToIcon(payload);
-					if (!payload) {
-						return;
-					}
+				selectionEvent = event as UISelectionEvent;
+				if (typeof selectionEvent.icon === 'string') {
+					icon = stringToIcon(selectionEvent.icon);
+				} else {
+					icon = selectionEvent.icon;
 				}
-				this.selectIcon(payload as Icon);
+				this.selectIcon(icon);
 				return;
 
-			case 'prop':
+			case 'customisation':
 				// Property was changed
+				customisationEvent = event as UICustomisationEvent;
 				console.log(
 					'Changed property:',
-					(payload as PropEventPayload).prop
+					customisationEvent.changed
+						? customisationEvent.changed.prop
+						: 'unknown'
 				);
 				return;
 
-			case 'footer':
+			case 'button':
 				// Button was clicked in footer
-				this._footerButtonClicked(payload as string);
+				buttonEvent = event as UIFooterButtonEvent;
+				this._footerButtonClicked(buttonEvent.button);
 				return;
 		}
 	}

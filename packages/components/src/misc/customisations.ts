@@ -13,9 +13,37 @@ export interface IconCustomisations {
 	// Dimensions
 	width: string;
 	height: string;
+
+	// Note: when adding new property, do not forget to add key/value pair below
 }
 
 export type PartialIconCustomisations = Partial<IconCustomisations>;
+
+/**
+ * Key/value pairs used in events
+ */
+type Transform<T extends keyof IconCustomisations> = {
+	prop: T;
+	value: IconCustomisations[T];
+};
+type HorizontalFlipCustomisation = Transform<'hFlip'>;
+type VerticalFlipCustomisation = Transform<'vFlip'>;
+type RotationCustomisation = Transform<'rotate'>;
+type ColorCustomisation = Transform<'color'>;
+type WidthCustomisation = Transform<'width'>;
+type HeightCustomisation = Transform<'height'>;
+
+export type IconCustomisationPairs =
+	| HorizontalFlipCustomisation
+	| VerticalFlipCustomisation
+	| RotationCustomisation
+	| ColorCustomisation
+	| WidthCustomisation
+	| HeightCustomisation;
+
+/**
+ * Default values
+ */
 
 // @iconify-replacement: 'defaultColor = '''
 const defaultColor = '';

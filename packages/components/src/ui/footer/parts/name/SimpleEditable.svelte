@@ -24,7 +24,11 @@
 
 		// Check for icon
 		if (value !== lastIconName && (value === '') | Iconify.iconExists(value)) {
-			registry.callback('selection', value === '' ? null : value);
+			// UISelectionEvent
+			registry.callback({
+				type: 'selection',
+				icon: value,
+			});
 		}
 	}
 
@@ -37,7 +41,11 @@
 			lastIconName !== value &&
 			Iconify.iconExists(loadingIconName)
 		) {
-			registry.callback('selection', loadingIconName);
+			// UISelectionEvent
+			registry.callback({
+				type: 'selection',
+				icon: loadingIconName,
+			});
 		}
 	};
 
@@ -51,7 +59,11 @@
 
 		// Check if icon already exists
 		if (Iconify.iconExists(value)) {
-			registry.callback('selection', value);
+			// UISelectionEvent
+			registry.callback({
+				type: 'selection',
+				icon: value,
+			});
 			return;
 		}
 

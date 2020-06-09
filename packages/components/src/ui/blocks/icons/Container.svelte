@@ -204,8 +204,11 @@
 	// Icon or filter was clicked
 	function onClick(block, value) {
 		if (block === 'icons') {
-			const callback = registry.callback;
-			callback('selection', value);
+			// UISelectionEvent
+			registry.callback({
+				type: 'selection',
+				icon: value,
+			});
 			return;
 		}
 		registry.router.action(block, value);

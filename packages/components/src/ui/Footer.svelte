@@ -61,11 +61,15 @@
 				iconCustomisations
 			);
 
-			// Send event
-			registry.callback('prop', {
-				prop,
-				value,
-				filtered: filterCustomisations(iconCustomisations),
+			// Send event: UICustomisationEvent
+			registry.callback({
+				type: 'customisation',
+				// IconCustomisationPairs
+				changed: {
+					prop,
+					value,
+				},
+				customisations: filterCustomisations(iconCustomisations),
 			});
 		}
 	}

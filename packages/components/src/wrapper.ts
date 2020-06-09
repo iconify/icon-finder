@@ -11,7 +11,12 @@ import {
 } from '@iconify/search-core';
 import { phrases } from './modules/phrases';
 import { init } from './misc/init';
-import { PropEventPayload } from './misc/events';
+import {
+	UIEvent,
+	UISelectionEvent,
+	UICustomisationEvent,
+	UIFooterButtonEvent,
+} from './ui/events';
 import { IconFinderWrapperParams } from './wrapper/params';
 import { IconFinderState } from './wrapper/state';
 import {
@@ -19,6 +24,9 @@ import {
 	SvelteComponentOptions,
 } from './wrapper/svelte';
 import { IconFinderEvent } from './wrapper/events';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
+function assertNever(s: never) {}
 
 /**
  * Wrapper class
@@ -159,18 +167,44 @@ export class Wrapper {
 	/**
 	 * Select icon
 	 */
-	_internalCallback(event: string, payload: unknown): void {
-		switch (event) {
+	_internalCallback(event: UIEvent): void {
+		console.log('Internal event:', event);
+
+		let icon: Icon | null;
+		let selectionEvent: UISelectionEvent;
+
+		const type = event.type;
+		switch (type) {
 			case 'selection':
 				// Selected icon changed
-				if (typeof payload === 'string') {
-					payload = stringToIcon(payload);
-					if (!payload) {
-						return;
-					}
+				selectionEvent = event as UISelectionEvent;
+				if (typeof selectionEvent.icon === 'string') {
+					icon = stringToIcon(selectionEvent.icon);
+				} else {
+					// Copy object
+					icon = selectionEvent.icon
+						? {
+								provider: selectionEvent.icon.provider,
+								prefix: selectionEvent.icon.prefix,
+								name: selectionEvent.icon.name,
+						  }
+						: null;
 				}
-				this._selectIcon(payload as Icon);
+				this._selectIcon(icon);
 				return;
+
+			case 'customisation':
+				// Property was changed
+				// console.log('Changed property:', event as UICustomisationEvent);
+				return;
+
+			case 'button':
+				// Button was clicked
+				// console.log('Clicked button:', event as UIFooterButtonEvent);
+				return;
+
+			default:
+				assertNever(type);
 		}
 	}
 

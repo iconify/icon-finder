@@ -20,8 +20,12 @@
 		};
 	});
 
-	function onClick(key) {
-		registry.callback('footer', key);
+	function onClick(button) {
+		// UIFooterButtonEvent
+		registry.callback({
+			type: 'button',
+			button,
+		});
 	}
 </script>
 
