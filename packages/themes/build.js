@@ -7,7 +7,7 @@ const rootDir = __dirname.replace(/\\/g, '/');
 const requiredFiles = ['theme.json'];
 const split = /[\\/]/;
 
-const themeMatch = /^[a-z0-9][a-z0-9_.-]+[a-z0-9]$/gi;
+const themeMatch = /^[a-z0-9][a-z0-9_.-]*[a-z0-9]$/gi;
 const outDir = 'dist';
 const reservedDirs = [outDir, 'node_modules'];
 
