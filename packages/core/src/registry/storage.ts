@@ -1,6 +1,6 @@
 import { FullIconFinderConfig } from '../data/config';
 import { Events } from '../events';
-import { API } from '../api/axios';
+import { API } from '../api/fetch';
 import { Router } from '../route/router';
 import { CollectionsData } from '../data/collections';
 import { Registry } from './';

@@ -4,7 +4,7 @@ import {
 	createConfig,
 } from '../data/config';
 import { Events } from '../events';
-import { API } from '../api/axios';
+import { API } from '../api/fetch';
 import { PartialRoute } from '../route/types';
 import { Router } from '../route/router';
 import { CollectionsData } from '../data/collections';

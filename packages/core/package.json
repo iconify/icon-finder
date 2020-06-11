@@ -39,7 +39,9 @@
 	"dependencies": {
 		"@cyberalien/redundancy": "^1.0.0",
 		"@iconify/iconify": "^2.0.0-beta.2",
-		"@iconify/types": "^1.0.3",
-		"axios": "^0.19.1"
+		"@iconify/types": "^1.0.3"
+	},
+	"optionalDependencies": {
+		"axios": "^0.19.2"
 	}
 }
