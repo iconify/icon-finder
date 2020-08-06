@@ -20,11 +20,11 @@
 	"devDependencies": {
 		"@cyberalien/conditional-replacements": "^0.0.2",
 		"@iconify/search-core": "0.0.0-dev",
-		"svelte": "^3.23.0",
-		"typescript": "^3.9.5"
+		"svelte": "^3.24.1",
+		"typescript": "^3.9.7"
 	},
 	"dependencies": {
-		"@iconify/iconify": "^2.0.0-beta.2",
+		"@iconify/iconify": "^2.0.0-beta.4",
 		"@iconify/types": "^1.0.3",
 		"cyberalien-color": "^1.0.0"
 	}

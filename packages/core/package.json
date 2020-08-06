@@ -25,20 +25,20 @@
 		"directory": "packages/core"
 	},
 	"devDependencies": {
-		"@types/chai": "^4.2.11",
+		"@types/chai": "^4.2.12",
 		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.12.44",
+		"@types/node": "^12.12.54",
 		"@types/request": "^2.48.5",
 		"@typescript-eslint/eslint-plugin": "^2.34.0",
 		"@typescript-eslint/parser": "^2.34.0",
 		"chai": "^4.2.0",
 		"eslint": "^6.8.0",
 		"mocha": "^6.2.3",
-		"typescript": "^3.9.5"
+		"typescript": "^3.9.7"
 	},
 	"dependencies": {
 		"@cyberalien/redundancy": "^1.0.0",
-		"@iconify/iconify": "^2.0.0-beta.2",
+		"@iconify/iconify": "^2.0.0-beta.4",
 		"@iconify/types": "^1.0.3"
 	},
 	"optionalDependencies": {
