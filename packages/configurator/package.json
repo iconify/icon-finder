@@ -20,8 +20,8 @@
 	"devDependencies": {
 		"@iconify/types": "^1.0.3",
 		"chai": "^4.2.0",
-		"mocha": "^7.2.0",
-		"typescript": "^3.9.7"
+		"mocha": "^8.1.2",
+		"typescript": "^4.0.2"
 	},
 	"dependencies": {}
 }

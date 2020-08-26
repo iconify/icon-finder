@@ -22,16 +22,16 @@
 		"@iconify/search-configurator": "0.0.0-dev",
 		"@iconify/search-core": "0.0.0-dev",
 		"@rollup/plugin-buble": "^0.21.3",
-		"@rollup/plugin-commonjs": "^11.1.0",
-		"@rollup/plugin-node-resolve": "^7.1.3",
-		"rollup": "^2.25.0",
+		"@rollup/plugin-commonjs": "^15.0.0",
+		"@rollup/plugin-node-resolve": "^9.0.0",
+		"rollup": "^2.26.5",
 		"rollup-plugin-livereload": "^1.3.0",
 		"rollup-plugin-polyfill": "^3.0.0",
-		"rollup-plugin-svelte": "^5.2.3",
+		"rollup-plugin-svelte": "^6.0.0",
 		"rollup-plugin-terser": "^7.0.0",
 		"rollup-plugin-typescript2": "^0.27.2",
 		"svelte": "^3.24.1",
-		"typescript": "^3.9.7"
+		"typescript": "^4.0.2"
 	},
 	"dependencies": {}
 }
