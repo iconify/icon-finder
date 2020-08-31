@@ -2,7 +2,7 @@ const fs = require('fs');
 const child_process = require('child_process');
 
 // Directory where packages are
-const packagesDir = __dirname + '/packages';
+const packagesDirs = [__dirname + '/packages'];
 
 // package.json keys and install commands to install @latest versions of those dependencies
 const packagesInstallList = [
@@ -41,6 +41,7 @@ const specialTags = {
 	'vue': 'next',
 	'vue-jest': 'next',
 	'@vue/test-utils': 'next',
+	'@iconify/iconify': 'beta',
 };
 
 // Update modes
@@ -53,38 +54,47 @@ const modes = {
 
 // Get list of all packages
 const localPackagesMap = Object.create(null);
-const localDirs = [];
-fs.readdirSync(packagesDir).forEach((file) => {
-	try {
-		const data = JSON.parse(
-			fs.readFileSync(`${packagesDir}/${file}/package.json`, 'utf8')
-		);
-		if (typeof data.name === 'string') {
-			localPackagesMap[data.name] = file;
-		}
+const localDirs = {};
+packagesDirs.forEach((packagesDir) => {
+	fs.readdirSync(packagesDir).forEach((dir) => {
+		try {
+			const data = JSON.parse(
+				fs.readFileSync(`${packagesDir}/${dir}/package.json`, 'utf8')
+			);
+			if (typeof data.name === 'string') {
+				localPackagesMap[data.name] = {
+					package: data.name,
+					dir,
+					path: packagesDir + '/' + dir,
+				};
+			}
 
-		// Check if node_modules exists, ignore package if not
-		fs.lstatSync(`${packagesDir}/${file}/node_modules`);
-		localDirs.push(file);
-	} catch (err) {
-		// console.error(err);
-	}
+			// Check if node_modules exists, ignore package if not
+			fs.lstatSync(`${packagesDir}/${dir}/node_modules`);
+			localDirs[dir] = data.name;
+		} catch (err) {
+			// console.error(err);
+		}
+	});
 });
+
 const localPackages = Object.keys(localPackagesMap);
 console.log('Local packages:');
 console.log(
 	localPackages
-		.map((name) => '\t' + localPackagesMap[name] + ': ' + name)
+		.map((name) => '\t' + localPackagesMap[name].dir + ': ' + name)
 		.join('\n')
 );
 
-// Get list of directories to parse
-const parseDirs = [];
+// Get list of packages to parse
+const parsePackages = [];
 process.argv.slice(2).forEach((cmd) => {
 	if (cmd.slice(0, 2) === '--') {
 		// --all
 		if (cmd === '--all') {
-			localDirs.forEach(addDirToParse);
+			Object.keys(localDirs).forEach((dir) => {
+				addPackageToParse(localDirs[dir]);
+			});
 			return;
 		}
 
@@ -102,23 +112,20 @@ process.argv.slice(2).forEach((cmd) => {
 
 	// By package name: update-deps @iconify/core
 	if (localPackagesMap[cmd] !== void 0) {
-		const dir = localPackagesMap[cmd];
-		if (localDirs.indexOf(dir) !== -1) {
-			addDirToParse(dir);
-			return;
-		}
+		addPackageToParse(cmd);
+		return;
 	}
 
 	// By directory name: update-deps core
-	if (localDirs.indexOf(cmd) !== -1) {
-		addDirToParse(cmd);
+	if (localDirs[cmd] !== -1) {
+		addPackageToParse(localDirs[cmd]);
 		return;
 	}
 
 	invalidParam(cmd);
 });
 
-if (!parseDirs.length) {
+if (!parsePackages.length) {
 	usage();
 	return;
 }
@@ -131,10 +138,12 @@ next();
  * Parse next directory
  */
 function next() {
-	const dir = parseDirs.shift();
-	if (dir === void 0) {
+	const currentPackage = parsePackages.shift();
+	if (currentPackage === void 0) {
 		return;
 	}
+
+	const currentItem = localPackagesMap[currentPackage];
 
 	parse();
 	process.nextTick(next);
@@ -142,7 +151,7 @@ function next() {
 	function parse() {
 		// Update dependencies
 		if (modes.update) {
-			update(dir);
+			update(currentItem);
 		}
 
 		// Install @latest versions of everything
@@ -152,7 +161,7 @@ function next() {
 
 		// Get package.json
 		const packageJSON = JSON.parse(
-			fs.readFileSync(packagesDir + '/' + dir + '/package.json', 'utf8')
+			fs.readFileSync(currentItem.path + '/package.json', 'utf8')
 		);
 
 		// Get list of packages to ignore
@@ -161,7 +170,7 @@ function next() {
 			Object.keys(packageJSON.peerDependencies).forEach((peer) => {
 				if (ignorePeers[peer] === void 0) {
 					throw new Error(
-						`Unknown peer dependency "${peer}" in ${dir}`
+						`Unknown peer dependency "${peer}" in ${currentPackage}`
 					);
 				}
 				ignoreList = ignoreList.concat(ignorePeers[peer]);
@@ -184,7 +193,7 @@ function next() {
 
 			// Update all packages
 			exec(
-				packagesDir + '/' + dir,
+				currentItem.path,
 				'npm',
 				['install', item.cmd].concat(
 					packages.map((item) => {
@@ -204,8 +213,8 @@ function next() {
 /**
  * Update dependencies
  */
-function update(dir) {
-	exec(packagesDir + '/' + dir, 'npm', ['update']);
+function update(item) {
+	exec(item.path, 'npm', ['update']);
 }
 
 /**
@@ -233,11 +242,11 @@ function exec(cwd, cmd, args) {
 }
 
 /**
- * Add directory to list of directories to parse
+ * Add package to list of packages to parse
  */
-function addDirToParse(dir) {
-	if (parseDirs.indexOf(dir) === -1) {
-		parseDirs.push(dir);
+function addPackageToParse(name) {
+	if (parsePackages.indexOf(name) === -1) {
+		parsePackages.push(name);
 	}
 }
 
