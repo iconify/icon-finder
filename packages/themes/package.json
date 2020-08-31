@@ -19,7 +19,7 @@
 		"directory": "packages/themes"
 	},
 	"devDependencies": {
-		"@cyberalien/conditional-replacements": "^0.0.2",
+		"@cyberalien/conditional-replacements": "0.0.2",
 		"node-sass": "^4.14.1",
 		"nodemon": "^2.0.4"
 	},
