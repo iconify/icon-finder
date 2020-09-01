@@ -122,7 +122,7 @@ describe('Testing collection view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -168,7 +168,7 @@ describe('Testing collection view', () => {
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
-		const view = setupView((data) => {
+		const view = setupView((data: unknown) => {
 			expect(data).to.be.equal(view);
 			done();
 		}, 'fa-regular');
@@ -194,8 +194,9 @@ describe('Testing collection view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CollectionView;
+
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
 
@@ -217,7 +218,7 @@ describe('Testing collection view', () => {
 
 	it('Test fa-regular ()', (done) => {
 		const view = setupView(
-			(data) => {
+			() => {
 				let iconNames: string[];
 				let tags: FiltersBlock;
 				let tagsList: string[];
@@ -327,7 +328,7 @@ describe('Testing collection view', () => {
 				// Check for window-minimize
 				expect(
 					blocks.icons.icons.filter(
-						(icon) => icon.name === 'window-minimize'
+						(icon: Icon) => icon.name === 'window-minimize'
 					).length
 				).to.be.equal(1);
 
@@ -428,7 +429,7 @@ describe('Testing collection view', () => {
 
 	it('Test mdi (uncategorised)', (done) => {
 		const view = setupView(
-			(data) => {
+			() => {
 				let tagsList: string[];
 
 				const blocks = view.render() as NonNullable<
@@ -481,7 +482,7 @@ describe('Testing collection view', () => {
 
 	it('Test ant-design (filter by suffix)', (done) => {
 		const view = setupView(
-			(data) => {
+			() => {
 				let suffixesList: string[];
 
 				const blocks = view.render() as NonNullable<

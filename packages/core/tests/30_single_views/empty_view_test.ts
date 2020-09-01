@@ -2,10 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
 import 'mocha';
 import { expect } from 'chai';
-import { EmptyView, EmptyViewBlocks } from '../../lib/views/empty';
+import { EmptyView } from '../../lib/views/empty';
 import { Registry } from '../../lib/registry';
 import { objectToRoute, EmptyRoute, PartialRoute } from '../../lib/route/types';
-import { EmptyRouteParams, objectToRouteParams } from '../../lib/route/params';
 
 describe('Testing empty view', () => {
 	const namespace = __filename;
@@ -14,7 +13,7 @@ describe('Testing empty view', () => {
 	/**
 	 * Do tests
 	 */
-	it('Creating view', done => {
+	it('Creating view', (done) => {
 		const registry = new Registry(namespace + nsCounter++);
 
 		// Set variables
@@ -22,7 +21,7 @@ describe('Testing empty view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', data => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 

@@ -53,7 +53,7 @@ describe('Testing collection actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let blocks: CollectionViewBlocks;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -262,7 +262,7 @@ describe('Testing collection actions', () => {
 		let eventCounter = 0;
 		let blocks: CollectionViewBlocks;
 		let collectionsBlock: FiltersBlock;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -407,7 +407,7 @@ describe('Testing collection actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -518,7 +518,7 @@ describe('Testing collection actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

@@ -6,6 +6,7 @@ import {
 	APIParams,
 	APISendQueryCallback,
 } from '../lib/api/base';
+import { Registry } from '../lib/registry';
 import {
 	Redundancy,
 	RedundancyPendingItem,

@@ -16,7 +16,7 @@ import {
 	PartialRoute,
 } from '../../lib/route/types';
 import { CustomRouteParams, objectToRouteParams } from '../../lib/route/params';
-import { EventCallback } from '../../lib/events';
+import { EventCallback, EventCallbackData } from '../../lib/events';
 import { Icon, stringToIcon, iconToString } from '../../lib/icon';
 import { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isSearchBlockEmpty } from '../../lib/blocks/search';
@@ -62,8 +62,8 @@ describe('Testing custom view', () => {
 
 		// Set icons
 		if (icons !== null) {
-			events.subscribe('load-recent', (param) => {
-				const callback = param as CustomViewLoadCallback;
+			events.subscribe('load-recent', (data: unknown) => {
+				const callback = data as CustomViewLoadCallback;
 				callback(convertIcons(icons));
 			});
 		}
@@ -107,11 +107,12 @@ describe('Testing custom view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
 			const view = data as CustomView;
+
 			expect(view.error).to.be.equal('');
 			expect(view.loading).to.be.equal(false);
 			expect(view.getIcons()).to.be.eql(
@@ -122,8 +123,8 @@ describe('Testing custom view', () => {
 		});
 
 		// Event to send data
-		events.subscribe('load-recent', (param) => {
-			const callback = param as CustomViewLoadCallback;
+		events.subscribe('load-recent', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			callback(
 				convertIcons(['foo-bar', 'foo-bar2', 'foo-bar3', 'foo-bar4'])
 			);
@@ -172,17 +173,18 @@ describe('Testing custom view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
 			const view = data as CustomView;
+
 			expect(view.error).to.be.equal('');
 			expect(view.loading).to.be.equal(false);
 		});
 
 		// Event to send data
-		events.subscribe('load-recent', (param) => {
+		events.subscribe('load-recent', () => {
 			done('load-recent should not be called');
 		});
 
@@ -223,7 +225,7 @@ describe('Testing custom view', () => {
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
 		const view = setupView(
-			(data) => {
+			(data: unknown) => {
 				expect(data).to.be.equal(view);
 				done();
 			},
@@ -237,16 +239,18 @@ describe('Testing custom view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CustomView;
+
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
 			done();
 		});
 
 		// Event to send data
-		events.subscribe('load-recent', (param) => {
-			(param as (data: unknown) => void)(null);
+		events.subscribe('load-recent', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
+			callback((null as unknown) as IconsList);
 		});
 
 		// Create view
@@ -264,7 +268,7 @@ describe('Testing custom view', () => {
 
 	it('Simple set of icons', (done) => {
 		const view = setupView(
-			(data) => {
+			(data: unknown) => {
 				expect(data).to.be.equal(view);
 
 				// Check view
@@ -307,7 +311,7 @@ describe('Testing custom view', () => {
 
 	it('Filter and updating icons', (done) => {
 		const view = setupView(
-			(data) => {
+			(data: unknown) => {
 				expect(data).to.be.equal(view);
 
 				// Check view

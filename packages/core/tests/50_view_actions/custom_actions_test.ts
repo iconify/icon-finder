@@ -57,7 +57,8 @@ describe('Testing custom actions', () => {
 		expect(router.render()).to.be.equal(null);
 
 		// Generate icons
-		events.subscribe('load-recent', (callback) => {
+		events.subscribe('load-recent', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -66,14 +67,14 @@ describe('Testing custom actions', () => {
 				icons.push('foo:arrow-' + (i * 2 + 1));
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
 
 		// Create event listener
 		let eventCounter = 0;
 		let blocks: CustomViewBlocks;
 		let icons: string[];
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -238,7 +239,8 @@ describe('Testing custom actions', () => {
 		expect(router.render()).to.be.equal(null);
 
 		// Generate icons
-		events.subscribe('load-recent', (callback) => {
+		events.subscribe('load-recent', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -247,30 +249,32 @@ describe('Testing custom actions', () => {
 				icons.push('foo:arrow-' + (i * 2 + 1));
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
-		events.subscribe('load-favorites', (callback) => {
+		events.subscribe('load-favorites', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 10; i++) {
 				icons.push('foo:favicon-' + i);
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
-		events.subscribe('load-bookmarks', (callback) => {
+		events.subscribe('load-bookmarks', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 20; i++) {
 				icons.push('foo:bookmark-' + i);
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -388,7 +392,8 @@ describe('Testing custom actions', () => {
 		expect(router.render()).to.be.equal(null);
 
 		// Generate icons
-		events.subscribe('load-recent', (callback) => {
+		events.subscribe('load-recent', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -397,30 +402,32 @@ describe('Testing custom actions', () => {
 				icons.push('foo:arrow-' + (i * 2 + 1));
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
-		events.subscribe('load-favorites', (callback) => {
+		events.subscribe('load-favorites', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 10; i++) {
 				icons.push('foo:favicon-' + i);
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
-		events.subscribe('load-bookmarks', (callback) => {
+		events.subscribe('load-bookmarks', (data: unknown) => {
+			const callback = data as CustomViewLoadCallback;
 			const icons: string[] = [];
 
 			for (let i = 0; i < 20; i++) {
 				icons.push('foo:bookmark-' + i);
 			}
 
-			(callback as CustomViewLoadCallback)(icons);
+			callback(icons);
 		});
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

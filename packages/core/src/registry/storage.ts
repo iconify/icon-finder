@@ -10,7 +10,7 @@ import { Registry } from './';
  */
 interface RegistryNamespace {
 	ids: string[];
-	data: {};
+	data: Record<string, unknown>;
 }
 
 interface RegistryNamespaces {

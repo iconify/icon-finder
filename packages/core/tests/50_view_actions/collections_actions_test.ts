@@ -51,7 +51,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -130,7 +130,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -219,7 +219,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -344,7 +344,7 @@ describe('Testing collections actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -469,7 +469,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -530,7 +530,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -607,7 +607,7 @@ describe('Testing collections actions', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let blocks: CollectionsViewBlocks;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -724,7 +724,7 @@ describe('Testing collections actions', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

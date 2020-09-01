@@ -138,10 +138,10 @@ export class APICore {
 			Object.keys(config.custom).forEach((customType) => {
 				events.subscribe(
 					'load-' + customType,
-					this._loadCustomIconsEvent.bind(
+					(this._loadCustomIconsEvent.bind(
 						this,
 						customType
-					) as EventCallback
+					) as unknown) as EventCallback
 				);
 			});
 		}

@@ -23,9 +23,7 @@ describe('Testing route parameters', () => {
 		} as ParamType);
 		expect(result).to.be.eql({});
 
-		// Empty route with missing attributes (TS should not allow it, but testing it anyway)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore
+		// Empty route with missing attributes
 		result = routeParamsToObject(routeType, {});
 		expect(result).to.be.eql({});
 
@@ -71,9 +69,7 @@ describe('Testing route parameters', () => {
 		} as ParamType);
 		expect(result).to.be.eql({});
 
-		// Empty route with missing attributes (TS should not allow it, but testing it anyway)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore
+		// Empty route with missing attributes
 		result = routeParamsToObject(routeType, {});
 		expect(result).to.be.eql({});
 
@@ -131,9 +127,7 @@ describe('Testing route parameters', () => {
 		} as ParamType);
 		expect(result).to.be.eql({});
 
-		// Empty route with missing attributes (TS should not allow it, but testing it anyway)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore
+		// Empty route with missing attributes
 		result = routeParamsToObject(routeType, {});
 		expect(result).to.be.eql({});
 
@@ -167,9 +161,7 @@ describe('Testing route parameters', () => {
 		} as ParamType);
 		expect(result).to.be.eql({});
 
-		// Empty route with missing attributes (TS should not allow it, but testing it anyway)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore
+		// Empty route with missing attributes
 		result = routeParamsToObject(routeType, {});
 		expect(result).to.be.eql({});
 

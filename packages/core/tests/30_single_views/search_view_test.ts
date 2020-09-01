@@ -130,7 +130,7 @@ describe('Testing search view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
@@ -173,7 +173,7 @@ describe('Testing search view', () => {
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
-		const view = setupView((data) => {
+		const view = setupView((data: unknown) => {
 			expect(data).to.be.equal(view);
 			done();
 		}, 'home');
@@ -202,8 +202,9 @@ describe('Testing search view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as SearchView;
+
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
 
@@ -224,7 +225,7 @@ describe('Testing search view', () => {
 	});
 
 	it('Test "home" search"', (done) => {
-		const view = setupView((data) => {
+		const view = setupView((data: unknown) => {
 			expect(data).to.be.equal(view);
 
 			// Check view
@@ -297,7 +298,7 @@ describe('Testing search view', () => {
 
 	it('Test "home" search", full results', (done) => {
 		const view = setupView(
-			(data) => {
+			(data: unknown) => {
 				let expectedPagination: PaginationBlock;
 
 				expect(data).to.be.equal(view);

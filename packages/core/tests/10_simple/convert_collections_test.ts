@@ -230,26 +230,32 @@ describe('Testing converting collections list', () => {
 		let prefixes: string[];
 
 		// Filter by prefix
-		result = filterCollections(collections, (item, category, prefix) => {
-			expect(item.prefix).to.be.equal(prefix);
-			expect(item.category).to.be.equal(category);
+		result = filterCollections(
+			collections,
+			(item: CollectionInfo, category: string, prefix: string) => {
+				expect(item.prefix).to.be.equal(prefix);
+				expect(item.category).to.be.equal(category);
 
-			// Only "mdi", "mdi-*"
-			return item.prefix.split('-').shift() === 'mdi';
-		});
+				// Only "mdi", "mdi-*"
+				return item.prefix.split('-').shift() === 'mdi';
+			}
+		);
 
 		expect(Object.keys(result)).to.be.eql(['General']);
 		prefixes = collectionsPrefixes(result);
 		expect(prefixes).to.be.eql(['mdi', 'mdi-light']);
 
 		// Filter by prefix with multiple categories
-		result = filterCollections(collections, (item, category, prefix) => {
-			expect(item.prefix).to.be.equal(prefix);
-			expect(item.category).to.be.equal(category);
+		result = filterCollections(
+			collections,
+			(item: CollectionInfo, category: string, prefix: string) => {
+				expect(item.prefix).to.be.equal(prefix);
+				expect(item.category).to.be.equal(category);
 
-			// Only "fa", "fa-*"
-			return item.prefix.split('-').shift() === 'fa';
-		});
+				// Only "fa", "fa-*"
+				return item.prefix.split('-').shift() === 'fa';
+			}
+		);
 
 		expect(Object.keys(result)).to.be.eql(['General', 'Thematic']);
 		prefixes = collectionsPrefixes(result);
@@ -261,15 +267,19 @@ describe('Testing converting collections list', () => {
 		]);
 
 		// Filter by name and palette
-		result = filterCollections(collections, (item, category, prefix) => {
-			expect(item.prefix).to.be.equal(prefix);
-			expect(item.category).to.be.equal(category);
+		result = filterCollections(
+			collections,
+			(item: CollectionInfo, category: string, prefix: string) => {
+				expect(item.prefix).to.be.equal(prefix);
+				expect(item.category).to.be.equal(category);
 
-			// Only "Emoji" and only with palette
-			return (
-				item.palette && item.name.toLowerCase().indexOf('emoji') !== -1
-			);
-		});
+				// Only "Emoji" and only with palette
+				return (
+					item.palette &&
+					item.name.toLowerCase().indexOf('emoji') !== -1
+				);
+			}
+		);
 
 		expect(Object.keys(result)).to.be.eql(['Emoji']);
 		prefixes = collectionsPrefixes(result);

@@ -7,6 +7,7 @@ import {
 	SearchRouteParams,
 	CustomRouteParams,
 	RouteType,
+	PartialRouteParams,
 } from '../../lib/route/params';
 
 describe('Testing route parameters', () => {
@@ -23,9 +24,7 @@ describe('Testing route parameters', () => {
 			category: null,
 		});
 
-		// Testing non-object parameters. Intentionally breaking TS types
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore
+		// Testing non-object parameters
 		result = objectToRouteParams(routeType, true) as CollectionsRouteParams;
 		expect(result).to.be.eql({
 			provider: '',
@@ -62,7 +61,7 @@ describe('Testing route parameters', () => {
 			category: true, // must be string or null,
 			page: 10, // no such attribute
 			query: 'Whatever', // no such attribute
-		} as object) as ResultType;
+		} as PartialRouteParams) as ResultType;
 		expect(result).to.be.eql({
 			provider: '',
 			filter: '',
@@ -120,7 +119,7 @@ describe('Testing route parameters', () => {
 			theme: 'test', // no such attribute
 			total: 20, // no such attribute
 			prefixes: ['foo', 'bar'], // no such attribute
-		} as object) as ResultType;
+		} as PartialRouteParams) as ResultType;
 		expect(result).to.be.eql({
 			provider: '',
 			prefix: 'required-prefix',
@@ -137,9 +136,6 @@ describe('Testing route parameters', () => {
 		}).to.throw(Error);
 
 		expect(function () {
-			// Intentionally breaking TS types
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore
 			result = objectToRouteParams(routeType, 100) as ResultType;
 		}).to.throw(Error);
 
@@ -154,7 +150,7 @@ describe('Testing route parameters', () => {
 		expect(function () {
 			result = objectToRouteParams(routeType, {
 				prefix: true,
-			} as object) as ResultType;
+			} as PartialRouteParams) as ResultType;
 		}).to.throw(Error);
 	});
 
@@ -196,7 +192,7 @@ describe('Testing route parameters', () => {
 			page: '1', // must be number
 			total: 20, // no such parameter
 			tag: 'Outline', // no such parameter
-		} as object) as ResultType;
+		} as PartialRouteParams) as ResultType;
 		expect(result).to.be.eql({
 			provider: '',
 			search: 'arrows',
@@ -220,7 +216,7 @@ describe('Testing route parameters', () => {
 		expect(function () {
 			result = objectToRouteParams(routeType, {
 				search: true,
-			} as object) as ResultType;
+			} as PartialRouteParams) as ResultType;
 		}).to.throw(Error);
 	});
 
@@ -258,7 +254,7 @@ describe('Testing route parameters', () => {
 			page: false, // must be number
 			total: 20, // no such parameter
 			search: 'home', // no such parameter
-		} as object) as ResultType;
+		} as PartialRouteParams) as ResultType;
 		expect(result).to.be.eql({
 			customType: 'recent',
 			filter: '',
@@ -281,7 +277,7 @@ describe('Testing route parameters', () => {
 		expect(function () {
 			result = objectToRouteParams(routeType, {
 				customType: true,
-			} as object) as ResultType;
+			} as PartialRouteParams) as ResultType;
 		}).to.throw(Error);
 	});
 
@@ -298,10 +294,7 @@ describe('Testing route parameters', () => {
 
 		// Non-string type
 		expect(function () {
-			// Intentionally breaking TS types
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore
-			objectToRouteParams(true, {});
+			objectToRouteParams((true as unknown) as RouteType, {});
 		}).to.throw(Error);
 	});
 });

@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { Events } from '../../lib/events';
+import { Events, EventCallbackData } from '../../lib/events';
 
 describe('Testing events', () => {
 	it('Basic event', (done) => {
@@ -10,7 +10,7 @@ describe('Testing events', () => {
 		};
 
 		// Subscribe to event
-		e.subscribe('foo', (data) => {
+		e.subscribe('foo', (data: EventCallbackData) => {
 			expect(data).to.be.equal(payload);
 			done();
 		});
@@ -31,7 +31,7 @@ describe('Testing events', () => {
 		});
 
 		// Subscribe to foo2
-		e.subscribe('foo2', (data) => {
+		e.subscribe('foo2', (data: EventCallbackData) => {
 			expect(data).to.be.equal(payload);
 			done();
 		});
@@ -57,7 +57,7 @@ describe('Testing events', () => {
 			done('Foo event listener should not be called!');
 		});
 
-		e.subscribe('bar', (data) => {
+		e.subscribe('bar', (data: EventCallbackData) => {
 			expect(data).to.be.equal(payload);
 			// This should be called first - check and increase "bar" counter
 			expect(tracker).to.be.eql({
@@ -66,7 +66,7 @@ describe('Testing events', () => {
 			tracker.bar++;
 		});
 
-		e.subscribe('bar', (data) => {
+		e.subscribe('bar', (data: EventCallbackData) => {
 			expect(data).to.be.equal(payload);
 			// This should be called after previous listener - check "bar" counter
 			expect(tracker).to.be.eql({
@@ -90,7 +90,7 @@ describe('Testing events', () => {
 		};
 
 		// Subscribe to event
-		e.subscribe('foo', (data) => {
+		e.subscribe('foo', (data: EventCallbackData) => {
 			expect(data).to.be.equal(payload);
 
 			// This should be called after "bar" listener because "foo" call is delayed
@@ -103,7 +103,7 @@ describe('Testing events', () => {
 			done();
 		});
 
-		e.subscribe('bar', (data) => {
+		e.subscribe('bar', (data: EventCallbackData) => {
 			expect(data).to.be.equal(payload);
 
 			// This should have been called synchronously
@@ -137,13 +137,13 @@ describe('Testing events', () => {
 		};
 
 		// Create event listeners and subscribe to event
-		const callback = (data: object): void => {
+		const callback = (data: EventCallbackData): void => {
 			expect(data).to.be.equal(payload);
 			done('callback should have never been called!');
 		};
 		e.subscribe('foo', callback);
 
-		const callback2 = (data: object): void => {
+		const callback2 = (data: EventCallbackData): void => {
 			expect(data).to.be.equal(payload);
 			tracker.callback2 = true;
 		};
@@ -175,7 +175,7 @@ describe('Testing events', () => {
 		// Create event listeners and subscribe to event
 		e.subscribe(
 			'foo',
-			(data) => {
+			(data: EventCallbackData) => {
 				expect(data).to.be.equal(payload);
 				done('callback for foo should have never been called!');
 			},
@@ -185,7 +185,7 @@ describe('Testing events', () => {
 		// Same key, different event (making sure its not overwritten)
 		e.subscribe(
 			'bar',
-			(data) => {
+			(data: EventCallbackData) => {
 				expect(data).to.be.equal(payload);
 				expect(tracker).to.be.eql({
 					foo: true,
@@ -199,7 +199,7 @@ describe('Testing events', () => {
 		// Overwrite previous listener for "foo", but not for "bar"
 		e.subscribe(
 			'foo',
-			(data) => {
+			(data: EventCallbackData) => {
 				expect(data).to.be.equal(payload);
 				expect(tracker).to.be.eql({
 					foo: false,
@@ -212,7 +212,7 @@ describe('Testing events', () => {
 
 		e.subscribe(
 			'bar',
-			(data) => {
+			(data: EventCallbackData) => {
 				expect(data).to.be.equal(payload);
 				done('callback for bar should have never been called!');
 			},

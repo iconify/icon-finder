@@ -1,6 +1,9 @@
+// Callback payload
+export type EventCallbackData = unknown;
+
 // Callback format for event listener
 export interface EventCallback {
-	(data: object, event: string): void;
+	(data: EventCallbackData, event: string): void;
 }
 
 // Event subscriber
@@ -34,7 +37,7 @@ export class Events {
 		} else if (typeof key === 'string') {
 			// Remove previous subscribers with same key
 			this._subscribers[event] = this._subscribers[event].filter(
-				item => item.key !== key
+				(item) => item.key !== key
 			);
 		}
 
@@ -71,7 +74,7 @@ export class Events {
 		}
 
 		this._subscribers[event] = this._subscribers[event].filter(
-			item => item[key] !== value
+			(item) => item[key] !== value
 		);
 	}
 
@@ -94,7 +97,7 @@ export class Events {
 	 * @param data Payload
 	 * @param delay True if event should fire on next tick
 	 */
-	fire(event: string, data: object, delay = false): void {
+	fire(event: string, data: EventCallbackData, delay = false): void {
 		if (!this.hasListeners(event)) {
 			return;
 		}
@@ -114,8 +117,8 @@ export class Events {
 	 * @param event
 	 * @param data
 	 */
-	_fire(event: string, data: object): void {
-		this._subscribers[event].forEach(item => {
+	_fire(event: string, data: EventCallbackData): void {
+		this._subscribers[event].forEach((item) => {
 			item.callback(data, event);
 		});
 	}

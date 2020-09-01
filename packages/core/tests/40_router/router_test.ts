@@ -44,7 +44,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -115,7 +115,7 @@ describe('Testing router', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -191,7 +191,7 @@ describe('Testing router', () => {
 		// Create event listener
 		let eventCounter = 0;
 		let collectionsBlock: FiltersBlock | null;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -295,7 +295,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -385,7 +385,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -518,7 +518,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -671,7 +671,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 
@@ -799,7 +799,7 @@ describe('Testing router', () => {
 
 		// Create event listener
 		let eventCounter = 0;
-		events.subscribe('render', (data) => {
+		events.subscribe('render', (data: unknown) => {
 			const params = data as RouterEvent;
 			eventCounter++;
 

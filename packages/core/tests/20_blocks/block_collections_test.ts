@@ -11,6 +11,7 @@ import {
 	filterCollectionsBlock,
 } from '../../lib/blocks/collections-list';
 import { autoIndexCollections } from '../../lib/converters/collections';
+import { CollectionInfo } from '../../lib/converters/collection';
 import { defaultCollectionInfo } from '../collection_info';
 
 describe('Testing collections list block', () => {
@@ -85,7 +86,8 @@ describe('Testing collections list block', () => {
 		// Test filter
 		filteredBlock = filterCollectionsBlock(
 			block,
-			(item, category, prefix) => category === 'General',
+			(item: CollectionInfo, category: string, prefix: string) =>
+				category === 'General',
 			true
 		);
 
@@ -121,7 +123,8 @@ describe('Testing collections list block', () => {
 		// Test filter without third parameter
 		filteredBlock = filterCollectionsBlock(
 			block,
-			(item, category, prefix) => prefix === 'baz'
+			(item: CollectionInfo, category: string, prefix: string) =>
+				prefix === 'baz'
 		);
 
 		expect(filteredBlock).to.not.be.equal(block);

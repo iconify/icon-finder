@@ -69,7 +69,7 @@ describe('Testing collections filters block', () => {
 		expect(categories).to.be.eql(['General', 'Emoji', 'Thematic']);
 
 		// Set categories as filters
-		categories.forEach(category => {
+		categories.forEach((category: string) => {
 			categoriesFilter.filters[category] = defaultFilter(category);
 			expectedCategoriesFilter.filters[category] = defaultFilter(
 				category

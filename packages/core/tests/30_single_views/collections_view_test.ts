@@ -69,11 +69,12 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
 			const view = data as CollectionsView;
+
 			expect(view.error).to.be.equal('');
 			expect(view.loading).to.be.equal(false);
 
@@ -108,7 +109,7 @@ describe('Testing collections list view', () => {
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
-		const view = setupView((data) => {
+		const view = setupView((data: unknown) => {
 			expect(data).to.be.equal(view);
 			expect(view.route).to.be.eql({
 				type: 'collections',
@@ -125,7 +126,7 @@ describe('Testing collections list view', () => {
 
 	it('Test custom provider', (done) => {
 		const view = setupView(
-			(data) => {
+			(data: unknown) => {
 				expect(data).to.be.equal(view);
 				expect(view.route).to.be.eql({
 					type: 'collections',
@@ -156,8 +157,9 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CollectionsView;
+
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
 
@@ -182,8 +184,9 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CollectionsView;
+
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
 
@@ -201,7 +204,7 @@ describe('Testing collections list view', () => {
 	});
 
 	it('Test rendering blocks', (done) => {
-		const view = setupView((data) => {
+		const view = setupView(() => {
 			const blocks = view.render() as NonNullable<CollectionsViewBlocks>;
 			expect(blocks).to.not.be.equal(null);
 
@@ -226,7 +229,7 @@ describe('Testing collections list view', () => {
 
 	it('Test filter', (done) => {
 		const view = setupView(
-			(data) => {
+			() => {
 				let blocks = view.render() as NonNullable<
 					CollectionsViewBlocks
 				>;
@@ -293,7 +296,7 @@ describe('Testing collections list view', () => {
 
 	it('Test collections', (done) => {
 		const view = setupView(
-			(data) => {
+			() => {
 				const blocks = view.render() as NonNullable<
 					CollectionsViewBlocks
 				>;
@@ -346,8 +349,9 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CollectionsView;
+
 			expect(view.loading).to.be.equal(false);
 			expect(view.error).to.be.equal('empty');
 			done();
@@ -371,8 +375,9 @@ describe('Testing collections list view', () => {
 
 		// Sign up for event
 		const events = registry.events;
-		events.subscribe('view-loaded', (data) => {
+		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CollectionsView;
+
 			expect(view.loading).to.be.equal(false);
 			expect(view.error).to.be.equal('empty');
 			done();

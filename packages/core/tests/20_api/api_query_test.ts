@@ -2,6 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 import { API } from '../fake_api';
 import { Registry } from '../../lib/registry';
+import { CollectionInfo } from '../../lib/converters/collection';
 
 describe('Testing API', function () {
 	const namespace = __filename;
@@ -53,59 +54,66 @@ describe('Testing API', function () {
 			expect(api.isCached('', '/collections', {})).to.be.equal(false);
 			expect(api.isPending('', '/collections', {})).to.be.equal(false);
 
-			api.query('', '/collections', {}, (data, cached) => {
-				expect(cached).to.be.equal(false);
+			api.query(
+				'',
+				'/collections',
+				{},
+				(data: unknown, cached?: boolean) => {
+					expect(cached).to.be.equal(false);
 
-				// Check if response is object
-				expect(typeof data).to.be.equal('object');
-				const response = data as Record<string, object>;
+					// Check if response is object
+					expect(typeof data).to.be.equal('object');
+					const response = data as Record<string, CollectionInfo>;
 
-				// Callback should be called only once
-				expect(loaded).to.be.equal(false);
-				loaded = true;
+					// Callback should be called only once
+					expect(loaded).to.be.equal(false);
+					loaded = true;
 
-				// Check delay, should be almost instant
-				const diff = Date.now() - startTime;
-				if (
-					!testTimer(
-						diff,
-						0,
-						25,
-						`Loading should be instant, got ${diff}ms`,
-						test
-					)
-				) {
-					return;
+					// Check delay, should be almost instant
+					const diff = Date.now() - startTime;
+					if (
+						!testTimer(
+							diff,
+							0,
+							25,
+							`Loading should be instant, got ${diff}ms`,
+							test
+						)
+					) {
+						return;
+					}
+
+					// Check contents
+					expect(typeof response.jam).to.be.equal('object');
+					expect(response.jam).to.be.eql({
+						name: 'Jam Icons',
+						total: 896,
+						author: 'Michael Amprimo',
+						url: 'https://github.com/michaelampr/jam',
+						license: 'MIT',
+						licenseURL:
+							'https://raw.githubusercontent.com/michaelampr/jam/master/LICENSE',
+						height: 24,
+						samples: [
+							'chevrons-square-up-right',
+							'luggage-f',
+							'rubber',
+						],
+						palette: 'Colorless',
+						category: 'General',
+					});
+
+					// Check if response is cached or pending
+					expect(api.isCached('', '/collections', {})).to.be.equal(
+						false
+					);
+					expect(api.isPending('', '/collections', {})).to.be.equal(
+						false
+					);
+
+					done();
 				}
-
-				// Check contents
-				expect(typeof response.jam).to.be.equal('object');
-				expect(response.jam).to.be.eql({
-					name: 'Jam Icons',
-					total: 896,
-					author: 'Michael Amprimo',
-					url: 'https://github.com/michaelampr/jam',
-					license: 'MIT',
-					licenseURL:
-						'https://raw.githubusercontent.com/michaelampr/jam/master/LICENSE',
-					height: 24,
-					samples: [
-						'chevrons-square-up-right',
-						'luggage-f',
-						'rubber',
-					],
-					palette: 'Colorless',
-					category: 'General',
-				});
-
-				// Check if response is cached or pending
-				expect(api.isCached('', '/collections', {})).to.be.equal(false);
-				expect(api.isPending('', '/collections', {})).to.be.equal(
-					false
-				);
-
-				done();
-			});
+			);
 
 			// Make sure response is asynchronous
 			expect(loaded).to.be.equal(false);
@@ -161,69 +169,79 @@ describe('Testing API', function () {
 				cacheResult: true,
 			});
 
-			api.query('', '/collections', {}, (data, cached) => {
-				expect(cached).to.be.equal(false);
+			api.query(
+				'',
+				'/collections',
+				{},
+				(data: unknown, cached?: boolean) => {
+					expect(cached).to.be.equal(false);
 
-				// Check if response is object
-				expect(typeof data).to.be.equal('object');
-
-				// Callback should be called only once
-				expect(loaded).to.be.equal(false);
-				loaded = true;
-
-				// Check delay, should be just above 100ms
-				const diff = Date.now() - startTime;
-				if (
-					!testTimer(
-						diff,
-						90,
-						125,
-						`Delay should be just above 100ms, got ${diff}ms`,
-						test
-					)
-				) {
-					return;
-				}
-
-				let secondCallbackCalled = false;
-
-				// Send another query
-				api.query('', '/collections', {}, (data, cached) => {
-					// Response should have been cached and returned almost immediately
-					expect(cached).to.be.equal(true);
+					// Check if response is object
 					expect(typeof data).to.be.equal('object');
 
-					// Test isCached and isPending
-					expect(api.isCached('', '/collections', {})).to.be.equal(
-						true
-					);
-					expect(api.isPending('', '/collections', {})).to.be.equal(
-						false
-					);
+					// Callback should be called only once
+					expect(loaded).to.be.equal(false);
+					loaded = true;
 
-					expect(secondCallbackCalled).to.be.equal(false);
-					secondCallbackCalled = true;
-
-					// Check delay, should be same as in previous callback because cache response is instant
+					// Check delay, should be just above 100ms
 					const diff = Date.now() - startTime;
 					if (
 						!testTimer(
 							diff,
 							90,
 							125,
-							`Second delay should be just above 100ms, got ${diff}ms`,
+							`Delay should be just above 100ms, got ${diff}ms`,
 							test
 						)
 					) {
 						return;
 					}
 
-					done();
-				});
+					let secondCallbackCalled = false;
 
-				// Callback should be async
-				expect(secondCallbackCalled).to.be.equal(false);
-			});
+					// Send another query
+					api.query(
+						'',
+						'/collections',
+						{},
+						(data: unknown, cached?: boolean) => {
+							// Response should have been cached and returned almost immediately
+							expect(cached).to.be.equal(true);
+							expect(typeof data).to.be.equal('object');
+
+							// Test isCached and isPending
+							expect(
+								api.isCached('', '/collections', {})
+							).to.be.equal(true);
+							expect(
+								api.isPending('', '/collections', {})
+							).to.be.equal(false);
+
+							expect(secondCallbackCalled).to.be.equal(false);
+							secondCallbackCalled = true;
+
+							// Check delay, should be same as in previous callback because cache response is instant
+							const diff = Date.now() - startTime;
+							if (
+								!testTimer(
+									diff,
+									90,
+									125,
+									`Second delay should be just above 100ms, got ${diff}ms`,
+									test
+								)
+							) {
+								return;
+							}
+
+							done();
+						}
+					);
+
+					// Callback should be async
+					expect(secondCallbackCalled).to.be.equal(false);
+				}
+			);
 
 			// Make sure response is asynchronous
 			expect(loaded).to.be.equal(false);
