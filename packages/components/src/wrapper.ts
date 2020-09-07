@@ -71,7 +71,7 @@ export class Wrapper {
 			coreParams.config = customState.config;
 		}
 		const core = (this._core = new IconFinderCore(coreParams));
-		const registry = (this._registry = core.getInternalRegistry());
+		const registry = (this._registry = core.registry);
 
 		// Set phrases
 		registry.setCustom('phrases', phrases);
@@ -218,7 +218,7 @@ export class Wrapper {
 			...data,
 			selectedIcon: state.icon,
 			customisations: state.customisations,
-			registry: this._core.getInternalRegistry(),
+			registry: this._core.registry,
 			hidden,
 		};
 
@@ -382,7 +382,7 @@ export class Wrapper {
 			return;
 		}
 
-		const router = this._core.getRouter();
+		const router = this._core.router;
 		function loadRoute() {
 			if (route === null) {
 				// Navigate to home page

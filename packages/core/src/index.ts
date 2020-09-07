@@ -116,8 +116,8 @@ export interface IconFinderCoreParams {
  */
 export class IconFinderCore {
 	protected readonly params: IconFinderCoreParams;
-	protected readonly registry: Registry;
-	protected readonly router: Router;
+	public readonly registry: Registry;
+	public readonly router: Router;
 	public readonly id: string;
 
 	constructor(params: IconFinderCoreParams) {
@@ -189,20 +189,6 @@ export class IconFinderCore {
 			return;
 		}
 		this.params.custom[customType](callback);
-	}
-
-	/**
-	 * Get router instance
-	 */
-	getRouter(): Router {
-		return this.router;
-	}
-
-	/**
-	 * Get registry instance. Used for customise behavior
-	 */
-	getInternalRegistry(): Registry {
-		return this.registry;
 	}
 
 	/**
