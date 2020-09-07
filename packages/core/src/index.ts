@@ -90,9 +90,9 @@ export { iconToString, validateIcon, compareIcons, stringToIcon } from './icon';
 export { compareObjects, cloneObject } from './objects';
 
 /**
- * API core configuration
+ * Icon Finder core parameters
  */
-export interface APICoreConfig {
+export interface IconFinderCoreParams {
 	// Namespace. Used to share configuration and API cache between instances. Defaults to 'iconify'
 	namespace?: string;
 
@@ -103,7 +103,7 @@ export interface APICoreConfig {
 	route?: PartialRoute | null;
 
 	// Callback for view updates
-	callback: (data: RouterEvent, core: APICore) => void;
+	callback: (data: RouterEvent, core: IconFinderCore) => void;
 
 	// Callbacks for loading data
 	custom?: {
@@ -112,21 +112,21 @@ export interface APICoreConfig {
 }
 
 /**
- * API core class
+ * Icon Finder Core class
  */
-export class APICore {
-	protected readonly config: APICoreConfig;
+export class IconFinderCore {
+	protected readonly params: IconFinderCoreParams;
 	protected readonly registry: Registry;
 	protected readonly router: Router;
 	public readonly id: string;
 
-	constructor(config: APICoreConfig) {
-		this.config = config;
+	constructor(params: IconFinderCoreParams) {
+		this.params = params;
 
 		// Get Registry instance
-		const registry = (this.registry = new RegistryClass(config));
+		const registry = (this.registry = new RegistryClass(params));
 		this.id = registry.id;
-		registry.setCustom('APICore', this, true);
+		registry.setCustom('core', this, true);
 
 		// Get other required classes from Registry
 		const router = (this.router = registry.router);
@@ -134,8 +134,8 @@ export class APICore {
 
 		// Subscribe to events
 		events.subscribe('render', this._routerEvent.bind(this));
-		if (typeof config.custom === 'object' && config.custom !== null) {
-			Object.keys(config.custom).forEach((customType) => {
+		if (typeof params.custom === 'object' && params.custom !== null) {
+			Object.keys(params.custom).forEach((customType) => {
 				events.subscribe(
 					'load-' + customType,
 					(this._loadCustomIconsEvent.bind(
@@ -149,14 +149,14 @@ export class APICore {
 		// Change route on next tick, so callback would be called asynchronously
 		setTimeout(() => {
 			if (router.route === null) {
-				if (config.route !== void 0 && config.route !== null) {
-					const route = objectToRoute(config.route);
+				if (params.route !== void 0 && params.route !== null) {
+					const route = objectToRoute(params.route);
 					if (route !== null) {
 						router.route = route;
 					} else {
 						router.home();
 					}
-				} else if (config.route !== null) {
+				} else if (params.route !== null) {
 					router.home();
 				}
 			}
@@ -175,7 +175,7 @@ export class APICore {
 	 * Event was fired by router
 	 */
 	_routerEvent(data: unknown): void {
-		this.config.callback(data as RouterEvent, this);
+		this.params.callback(data as RouterEvent, this);
 	}
 
 	/**
@@ -185,10 +185,10 @@ export class APICore {
 		customType: string,
 		callback: CustomViewLoadCallback
 	): void {
-		if (this.config.custom === void 0) {
+		if (this.params.custom === void 0) {
 			return;
 		}
-		this.config.custom[customType](callback);
+		this.params.custom[customType](callback);
 	}
 
 	/**
@@ -208,15 +208,17 @@ export class APICore {
 	/**
 	 * Destroy instance
 	 */
-	destroy() {
+	destroy(): void {
 		this.registry.destroy();
 	}
 }
 
 /**
- * Find APICore instance for id
+ * Find Icon Finder Core instance for id
  */
-export function getAPICoreInstance(id: string): APICore | undefined {
+export function getCoreInstance(id: string): IconFinderCore | undefined {
 	const registry = getRegistry(id);
-	return registry ? (registry.getCustom('APICore', true) as APICore) : void 0;
+	return registry
+		? (registry.getCustom('core', true) as IconFinderCore)
+		: void 0;
 }

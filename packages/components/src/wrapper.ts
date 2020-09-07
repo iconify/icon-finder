@@ -1,8 +1,8 @@
 import {
 	Icon,
 	PartialRoute,
-	APICore,
-	APICoreConfig,
+	IconFinderCore,
+	IconFinderCoreParams,
 	RouterEvent,
 	compareObjects,
 	stringToIcon,
@@ -50,7 +50,7 @@ export class Wrapper {
 	protected _status: WrapperStatus = 'loading';
 
 	// Core instance and registry
-	protected readonly _core: APICore;
+	protected readonly _core: IconFinderCore;
 	protected readonly _registry: Registry;
 
 	// Container component, added on first render
@@ -63,14 +63,14 @@ export class Wrapper {
 		this._params = params;
 		const customState = params.state;
 
-		// Initialise APICore
-		const config: APICoreConfig = {
+		// Initialise IconFinderCore
+		const coreParams: IconFinderCoreParams = {
 			callback: this._coreCallback.bind(this),
 		};
 		if (customState && customState.config) {
-			config.config = customState.config;
+			coreParams.config = customState.config;
 		}
-		const core = (this._core = new APICore(config));
+		const core = (this._core = new IconFinderCore(coreParams));
 		const registry = (this._registry = core.getInternalRegistry());
 
 		// Set phrases
