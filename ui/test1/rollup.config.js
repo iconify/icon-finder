@@ -9,7 +9,7 @@ import commonjs from '@rollup/plugin-commonjs';
 const production = !process.env.ROLLUP_WATCH;
 
 // Get current theme name
-let theme = 'iconify';
+let theme;
 try {
 	const configuratorData = readFileSync(
 		dirname(require.resolve('@iconify/search-components/package.json')) +
@@ -27,8 +27,9 @@ try {
 		require.resolve(`@iconify/search-themes/dist/${theme}.css`, 'utf8')
 	);
 	writeFileSync(`dist/${theme}.css`, themeData, 'utf8');
+	console.log(`Saved dist/${theme}.css (${themeData.length} bytes)`);
 } catch (err) {
-	console.log(`Could not detect current theme, assuming "${theme}"`);
+	throw new Error('Could not detect current theme. Run `node configure`');
 }
 
 /**
