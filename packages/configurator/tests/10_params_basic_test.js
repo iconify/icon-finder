@@ -31,7 +31,7 @@ describe('Testing Params class', () => {
 	it('Applying environment', (done) => {
 		const env = {
 			UI_THEME: 'iconify',
-			UI_CONFIG_FILE: 'custom.json',
+			UI_CONFIG_FILE: 'tests/fixtures/empty.json',
 		};
 		const params = new Params();
 
@@ -49,7 +49,7 @@ describe('Testing Params class', () => {
 			components: false,
 		});
 		expect(params.params).to.be.eql({
-			configFile: 'custom.json',
+			configFile: 'tests/fixtures/empty.json',
 			theme: 'iconify',
 		});
 		expect(params.config).to.be.equal(void 0);
@@ -58,13 +58,14 @@ describe('Testing Params class', () => {
 		try {
 			expect(params.validateTheme()).to.be.equal('iconify');
 		} catch (err) {
+			console.error(err);
 			done('Did not expect exception when validating valid theme');
 		}
 
 		// Test getArguments()
 		expect(params.getArguments()).to.be.eql([
 			'--theme=iconify',
-			'--config-file=custom.json',
+			'--config-file=tests/fixtures/empty.json',
 		]);
 
 		done();
@@ -76,7 +77,7 @@ describe('Testing Params class', () => {
 			'--theme',
 			'default',
 			'--config-file',
-			'custom.json',
+			'tests/fixtures/empty.json',
 		];
 		const params = new Params();
 
@@ -87,7 +88,7 @@ describe('Testing Params class', () => {
 			components: false,
 		});
 		expect(params.params).to.be.eql({
-			configFile: 'custom.json',
+			configFile: 'tests/fixtures/empty.json',
 			theme: 'default',
 		});
 		expect(params.config).to.be.equal(void 0);
@@ -96,7 +97,7 @@ describe('Testing Params class', () => {
 		expect(params.getArguments()).to.be.eql([
 			'--build-theme',
 			'--theme=default',
-			'--config-file=custom.json',
+			'--config-file=tests/fixtures/empty.json',
 		]);
 	});
 
@@ -108,7 +109,7 @@ describe('Testing Params class', () => {
 			'--watch-core',
 			'--build-components',
 			'--theme=default',
-			'--config=custom.json',
+			'--config=tests/fixtures/empty.json',
 			'--config=' + str,
 			'ignored-value',
 		];
@@ -121,7 +122,7 @@ describe('Testing Params class', () => {
 			components: true,
 		});
 		expect(params.params).to.be.eql({
-			configFile: 'custom.json',
+			configFile: 'tests/fixtures/empty.json',
 			theme: 'default',
 			config: {
 				theme: 'figma',
@@ -134,7 +135,7 @@ describe('Testing Params class', () => {
 			'--build-core',
 			'--build-components',
 			'--theme=default',
-			'--config-file=custom.json',
+			'--config-file=tests/fixtures/empty.json',
 			'--config=' + str,
 		]);
 	});

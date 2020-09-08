@@ -28,6 +28,12 @@ export interface FooterButton {
  * Full configuration
  */
 export interface IconFinderConfig {
+	// Package names
+	packages: {
+		components: string;
+		themes: string;
+	};
+
 	// Theme name
 	theme: string;
 
@@ -128,6 +134,11 @@ export type PartialIconFinderConfig = RecursivePartial<IconFinderConfig>;
  * Default configuration
  */
 export const config: IconFinderConfig = {
+	packages: {
+		components: '@iconify/search-components',
+		themes: '@iconify/search-themes',
+	},
+
 	theme: '',
 	customFilesDir: '',
 	language: 'en',

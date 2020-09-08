@@ -1,7 +1,7 @@
 {
-	"name": "@iconify/search-ui-test",
+	"name": "@iconify/search-ui-test1",
 	"private": true,
-	"description": "Iconify Search, UI test",
+	"description": "Iconify Search, UI test 1",
 	"version": "0.0.0-dev",
 	"author": "Vjacheslav Trushkin",
 	"license": "(Apache-2.0 OR GPL-2.0)",
@@ -15,12 +15,13 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/iconify/icon-finder.git",
-		"directory": "packages/ui-test"
+		"directory": "ui/test1"
 	},
 	"devDependencies": {
 		"@iconify/search-components": "0.0.0-dev",
 		"@iconify/search-configurator": "0.0.0-dev",
 		"@iconify/search-core": "0.0.0-dev",
+		"@iconify/search-themes": "0.0.0-dev",
 		"@rollup/plugin-buble": "^0.21.3",
 		"@rollup/plugin-commonjs": "^15.0.0",
 		"@rollup/plugin-node-resolve": "^9.0.0",

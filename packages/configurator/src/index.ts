@@ -1,4 +1,4 @@
-import { Params, ConfiguratorParams } from './params';
+import { Params } from './params';
 export { build } from './builder';
 export { Params };
 

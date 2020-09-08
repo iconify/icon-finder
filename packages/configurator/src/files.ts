@@ -1,43 +1,45 @@
-import { statSync } from 'fs';
+import { statSync, readdirSync, readFileSync } from 'fs';
 import { dirname } from 'path';
-
-/**
- * Path to packages directory
- */
-export const packagesPath = dirname(dirname(__dirname));
+import { IconFinderConfig } from './config';
 
 /**
  * Test files to check if core has been compiled
  */
-export function coreTestFiles(): string[] {
-	return [packagesPath + '/core/lib/index.js'];
+export function coreTestFiles(config: IconFinderConfig): string[] {
+	return [packageDir('@iconify/search-core') + '/lib/index.js'];
 }
 
 /**
  * Test files to check if theme exists
  */
-export function themeSourceTestFiles(theme: string): string[] {
-	return [packagesPath + '/themes/' + theme + '/theme.json'];
+export function themeSourceTestFiles(
+	config: IconFinderConfig,
+	theme: string
+): string[] {
+	return [packageDir(config.packages.themes) + '/' + theme + '/theme.json'];
 }
 
 /**
  * Files to test if theme has been compiled
  */
-export function themeCompiledTestFiles(theme: string): string[] {
+export function themeCompiledTestFiles(
+	config: IconFinderConfig,
+	theme: string
+): string[] {
 	return [theme + '.json', theme + '.css'].map(
-		(file) => packagesPath + '/themes/dist/' + file
+		(file) => packageDir(config.packages.themes) + '/dist/' + file
 	);
 }
 
 /**
  * File to store config
  */
-export function componentsSourceConfigFile(): string {
-	return packagesPath + '/components/config.json';
+export function componentsSourceConfigFile(config: IconFinderConfig): string {
+	return packageDir(config.packages.components) + '/config.json';
 }
 
-export function componentsCompiledConfigFile(): string {
-	return packagesPath + '/components/lib/config.json';
+export function componentsCompiledConfigFile(config: IconFinderConfig): string {
+	return packageDir(config.packages.components) + '/lib/config.json';
 }
 
 /**
@@ -62,4 +64,57 @@ export function filesExist(files: string[]): boolean {
 		}
 	}
 	return true;
+}
+
+/**
+ * Get directory of a package
+ */
+export function packageDir(pack: string): string {
+	try {
+		return dirname(require.resolve(pack + '/package.json'));
+	} catch (err) {
+		// Something went wrong, try locating package in monorepo
+		const packs = getLocalPackages();
+		if (packs[pack] !== void 0) {
+			return packs[pack];
+		}
+		throw new Error(
+			`Failed to locate package ${pack}. Make sure dependencies are installed.`
+		);
+	}
+}
+
+let cachedLocalPackages: Record<string, string> | null = null;
+
+/**
+ * Get list of packages in monorepo (only checks 'packages' directory)
+ */
+function getLocalPackages(): Record<string, string> {
+	if (cachedLocalPackages !== null) {
+		return cachedLocalPackages;
+	}
+	cachedLocalPackages = Object.create(null);
+
+	// Check packages directory
+	[
+		dirname(dirname(__dirname)),
+		// dirname(process.cwd())
+	].forEach((dir) => {
+		readdirSync(dir).forEach((name) => {
+			const packDir = dir + '/' + name;
+			const packFile = packDir + '/package.json';
+			if (fileExists(packFile)) {
+				try {
+					const data = JSON.parse(readFileSync(packFile, 'utf8'));
+					if (typeof data.name === 'string') {
+						cachedLocalPackages[data.name] = packDir;
+					}
+				} catch (err) {
+					//
+				}
+			}
+		});
+	});
+
+	return cachedLocalPackages;
 }

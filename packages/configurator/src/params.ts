@@ -335,7 +335,11 @@ export class Params {
 				'Invalid theme. Theme value should be name of directory with theme that exists in packages/themes/'
 			);
 		}
-		if (!filesExist(themeSourceTestFiles(theme))) {
+
+		if (this.config === void 0) {
+			this.buildConfig();
+		}
+		if (!filesExist(themeSourceTestFiles(this.config, theme))) {
 			throw new Error('Selected theme does not exist or invalid');
 		}
 
@@ -351,7 +355,8 @@ export class Params {
 		}
 
 		// Check core
-		this.rebuild.core = this.rebuild.core || !filesExist(coreTestFiles());
+		this.rebuild.core =
+			this.rebuild.core || !filesExist(coreTestFiles(this.config));
 		if (this.rebuild.core) {
 			// Components depend on core
 			this.rebuild.components = true;
@@ -360,7 +365,7 @@ export class Params {
 		// Check theme
 		if (
 			!this.rebuild.theme &&
-			!filesExist(themeCompiledTestFiles(this.config.theme))
+			!filesExist(themeCompiledTestFiles(this.config, this.config.theme))
 		) {
 			this.rebuild.theme = true;
 		}
@@ -370,7 +375,7 @@ export class Params {
 		}
 
 		// Check components
-		const componentsConfig = componentsCompiledConfigFile();
+		const componentsConfig = componentsCompiledConfigFile(this.config);
 		if (!this.rebuild.components && !fileExists(componentsConfig)) {
 			this.rebuild.components = true;
 		}

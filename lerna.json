@@ -1,4 +1,4 @@
 {
-	"packages": ["packages/*"],
+	"packages": ["packages/*", "ui/*"],
 	"version": "0.0.0-dev"
 }

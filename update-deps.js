@@ -2,7 +2,7 @@ const fs = require('fs');
 const child_process = require('child_process');
 
 // Directory where packages are
-const packagesDirs = [__dirname + '/packages'];
+const packagesDirs = [__dirname + '/packages', __dirname + '/ui'];
 
 // package.json keys and install commands to install @latest versions of those dependencies
 const packagesInstallList = [

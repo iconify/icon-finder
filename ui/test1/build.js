@@ -2,8 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const child_process = require('child_process');
 
-const packagesDir = path.dirname(__dirname);
-
 // List of commands to run
 const commands = [];
 const params = process.argv.slice(2);
@@ -19,11 +17,11 @@ const fileExists = (file) => {
 };
 
 // Check if configurator requires compilation
-if (!fileExists(packagesDir + '/configurator/lib/index.js')) {
+if (!fileExists(packageDir('@iconify/search-configurator') + '/lib/index.js')) {
 	commands.push({
 		cmd: 'npm',
 		args: ['run', 'build'],
-		cwd: packagesDir + '/configurator',
+		cwd: packageDir('@iconify/search-configurator'),
 	});
 }
 
@@ -63,3 +61,10 @@ const next = () => {
 	}
 };
 next();
+
+/**
+ * Get directory of a package
+ */
+function packageDir(package) {
+	return path.dirname(require.resolve(package + '/package.json'));
+}

@@ -1,11 +1,7 @@
 import { writeFileSync } from 'fs';
 import { spawnSync } from 'child_process';
 import { Params, RebuildModules } from './params';
-import {
-	packagesPath,
-	componentsSourceConfigFile,
-	componentsCompiledConfigFile,
-} from './files';
+import { packageDir, componentsSourceConfigFile } from './files';
 
 // Build order
 const buildOrder: (keyof RebuildModules)[] = ['core', 'theme', 'components'];
@@ -45,13 +41,13 @@ export function build(params: Params): Promise<Params> {
 			let dir, cmd, args;
 			switch (key) {
 				case 'core':
-					dir = packagesPath + '/core';
+					dir = packageDir('@iconify/search-core');
 					cmd = 'npm';
 					args = ['run', 'build'];
 					break;
 
 				case 'theme':
-					dir = packagesPath + '/themes';
+					dir = packageDir(params.config.packages.themes);
 					cmd = 'node';
 					try {
 						args = ['build', '--theme=' + params.validateTheme()];
@@ -62,7 +58,7 @@ export function build(params: Params): Promise<Params> {
 					break;
 
 				case 'components':
-					dir = packagesPath + '/components';
+					dir = packageDir(params.config.packages.components);
 					cmd = 'node';
 					try {
 						args = ['build', '--theme=' + params.validateTheme()];
@@ -81,7 +77,7 @@ export function build(params: Params): Promise<Params> {
 			switch (key) {
 				case 'components':
 					writeFileSync(
-						componentsSourceConfigFile(),
+						componentsSourceConfigFile(params.config),
 						params.stringifyConfig(),
 						'utf8'
 					);
