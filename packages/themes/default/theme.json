@@ -1,5 +1,7 @@
 {
-	"collections-list-author-link": false,
-	"collections-list-clickable": true,
-	"focus-search": true
+	"collectionsList": {
+		"authorLink": false,
+		"clickable": true
+	},
+	"focusSearch": true
 }

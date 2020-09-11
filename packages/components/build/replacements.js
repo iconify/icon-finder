@@ -55,29 +55,52 @@ function themeReplacements(replacements, config) {
 	console.log('Rotation:', theme.rotation);
 
 	// Focus search
-	if (!theme['focus-search']) {
+	if (!theme.focusSearch) {
 		replacements['canFocusSearch = true'] = 'canFocusSearch = false';
 	}
 
 	// Collections list
-	if (!theme['collections-list-author-link']) {
+	if (theme.collectionsList && !theme.collectionsList.authorLink) {
 		replacements['authorLink = true'] = 'authorLink = false';
 	}
-	if (theme['collections-list-clickable']) {
+	if (theme.collectionsList && theme.collectionsList.clickable) {
 		replacements['collectionClickable = false'] =
 			'collectionClickable = true';
 	}
 
 	// Icons
-	if (typeof theme.icons !== 'object') {
+	if (
+		typeof theme.icons !== 'object' ||
+		typeof theme.icons.names !== 'object'
+	) {
 		throw new Error('Theme configuration error: missing "icons" object.');
 	}
 	requiredIcons.forEach((icon) => {
-		if (theme.icons[icon] === void 0) {
+		if (theme.icons.names[icon] === void 0) {
 			throw new Error(`Theme configuration error: missing icon "${icon}`);
 		}
 	});
-	replacements['uiIcons = {}'] = 'uiIcons = ' + JSON.stringify(theme.icons);
+	replacements['uiIcons = {}'] =
+		'uiIcons = ' + JSON.stringify(theme.icons.names);
+
+	if (typeof theme.icons.custom === 'object') {
+		// Custom icons data
+		const customIcons = theme.icons.custom;
+		const customIconsList =
+			customIcons instanceof Array ? customIcons : [customIcons];
+		customIconsList.forEach((item) => {
+			if (item.prefix === void 0) {
+				throw new Error('Missing prefix in custom icons');
+			}
+		});
+		replacements['uiCustomIcons = []'] =
+			'uiCustomIcons = ' + JSON.stringify(customIconsList);
+	}
+
+	if (typeof theme.icons['class'] === 'string') {
+		replacements["uiIconsClass = ''"] =
+			"uiIconsClass = '" + theme.icons['class'] + "'";
+	}
 }
 
 /**

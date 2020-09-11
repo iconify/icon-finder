@@ -6,46 +6,18 @@
 
 	// @iconify-replacement: 'uiIcons = {}'
 	const uiIcons = {};
+	// @iconify-replacement: 'uiCustomIcons = []'
+	const uiCustomIcons = [];
+	// @iconify-replacement: 'uiIconsClass = '''
+	const uiIconsClass = '';
 
 	// Add custom icons to Iconify
-	const customProvider = 'iif-custom';
-	const customPrefix = 'iif-custom';
-	const customIcons = {
-		provider: customProvider,
-		prefix: customPrefix,
-		icons: Object.create(null),
-		aliases: Object.create(null),
-	};
-	let hasCustomIcons = false;
-
-	const preload = [];
-	Object.keys(uiIcons).forEach(key => {
-		const value = uiIcons[key];
-		switch (typeof value) {
-			case 'number':
-				customIcons[key] = value;
-				break;
-
-			case 'object':
-				hasCustomIcons = true;
-				customIcons[
-					value.body === void 0 && value.parent !== void 0 ? 'aliases' : 'icons'
-				][key] = value;
-				break;
-
-			case 'string':
-				if (key !== 'class' && value.indexOf(':') !== -1) {
-					preload.push(value);
-				}
-		}
+	uiCustomIcons.forEach(data => {
+		Iconify.addCollection(data);
 	});
 
-	if (hasCustomIcons) {
-		Iconify.addCollection(customIcons);
-	}
-	if (preload.length) {
-		Iconify.loadIcons(preload);
-	}
+	// Preload icons
+	Iconify.loadIcons(Object.values(uiIcons));
 </script>
 
 <script>
@@ -64,31 +36,17 @@
 
 	// Resolve icon name
 	$: {
-		let newName;
+		let newName =
+			typeof uiIcons[icon] === 'string'
+				? uiIcons[icon]
+				: icon.indexOf(':') === -1
+				? null
+				: icon;
 		// console.log('Rendering icon:', icon);
-		switch (typeof uiIcons[icon]) {
-			case 'string':
-				// Icon value is icon name
-				newName = uiIcons[icon];
-				break;
 
-			case 'object':
-				// Custom icon
-				newName = '@' + customProvider + ':' + customPrefix + ':' + icon;
-				break;
-
-			case 'undefined':
-				// Icon key as icon name
-				newName = icon.indexOf(':') === -1 ? null : icon;
-				break;
-
-			default:
-				newName = null;
-		}
 		if (newName !== name) {
 			// Update variable only when changed because it is a watched variable
 			name = newName;
-			loaded = false;
 		}
 	}
 
@@ -113,6 +71,7 @@
 					onLoad();
 				}
 			}
+
 			if (!loaded) {
 				// Icon is not loaded
 				if (abortLoader !== null) {

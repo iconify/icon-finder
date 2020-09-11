@@ -1,4 +1,5 @@
 import { APIProviderRawData } from '@iconify/types/provider';
+import { PreparedIconFinderThemeConfig } from './theme';
 
 /**
  * Footer button type
@@ -129,6 +130,13 @@ type RecursivePartial<T> = {
 };
 
 export type PartialIconFinderConfig = RecursivePartial<IconFinderConfig>;
+
+/**
+ * Compiled config, including theme data
+ */
+export interface PreparedIconFinderConfig extends IconFinderConfig {
+	themeData: PreparedIconFinderThemeConfig;
+}
 
 /**
  * Default configuration

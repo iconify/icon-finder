@@ -2,36 +2,47 @@
 	"parent": "default",
 	"icons": {
 		"class": "arty-animated",
-		"reset": "arty-animated:16-close",
-		"search": "arty-animated:16-search",
-		"down": "arty-animated:16-chevron-down",
-		"left": "arty-animated:16-chevron-left",
-		"right": "arty-animated:16-chevron-right",
-		"parent": "arty-animated:16-chevron-left",
-		"grid": "arty-animated:20-grid-3",
-		"list": "arty-animated:20-list-3",
-		"error-loading": {
-			"body": "<g clip-path=\"url(#clip0)\"><path d=\"M9.9.2l-.2 1C12.7 2 15 4.7 15 8c0 3.9-3.1 7-7 7s-7-3.1-7-7c0-3.3 2.3-6 5.3-6.8l-.2-1C2.6 1.1 0 4.3 0 8c0 4.4 3.6 8 8 8s8-3.6 8-8c0-3.7-2.6-6.9-6.1-7.8z\" fill=\"currentColor\"/></g><defs><clipPath id=\"clip0\"><path fill=\"#fff\" d=\"M0 0h16v16H0z\"/></clipPath></defs>"
+		"custom": {
+			"provider": "icon-finder",
+			"prefix": "iconify",
+			"icons": {
+				"error-loading": {
+					"body": "<g clip-path=\"url(#clip0)\"><path d=\"M9.9.2l-.2 1C12.7 2 15 4.7 15 8c0 3.9-3.1 7-7 7s-7-3.1-7-7c0-3.3 2.3-6 5.3-6.8l-.2-1C2.6 1.1 0 4.3 0 8c0 4.4 3.6 8 8 8s8-3.6 8-8c0-3.7-2.6-6.9-6.1-7.8z\" fill=\"currentColor\"/></g><defs><clipPath id=\"clip0\"><path fill=\"#fff\" d=\"M0 0h16v16H0z\"/></clipPath></defs>"
+				},
+				"color-filled": {
+					"body": "<rect width=\"16\" height=\"16\" rx=\"2\" fill=\"currentColor\"/>"
+				},
+				"plus": {
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 64h112\" class=\"animation-delay-0 animation-duration-6 animate-stroke stroke-length-153\"/><path d=\"M64 8v112\" class=\"animation-delay-6 animation-duration-6 animate-stroke stroke-length-153\"/></g>",
+					"width": 128,
+					"height": 128
+				}
+			},
+			"width": 16,
+			"height": 16
 		},
-		"icon-width": "arty-animated:16-double-arrow-horizontal",
-		"icon-height": "arty-animated:16-double-arrow-vertical",
-		"color": "arty-animated:16-drop",
-		"color-filled": {
-			"body": "<rect width=\"16\" height=\"16\" rx=\"2\" fill=\"currentColor\"/>"
-		},
-		"rotate0": "arty-animated:16-close",
-		"rotate1": "arty-animated:16-arc-90",
-		"rotate2": "arty-animated:16-arc-180",
-		"rotate3": "arty-animated:16-arc-270",
-		"h-flip": "arty-animated:16-double-arrow-horizontal",
-		"v-flip": "arty-animated:16-double-arrow-vertical",
-		"plus": {
-			"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 64h112\" class=\"animation-delay-0 animation-duration-6 animate-stroke stroke-length-153\"/><path d=\"M64 8v112\" class=\"animation-delay-6 animation-duration-6 animate-stroke stroke-length-153\"/></g>",
-			"width": 128,
-			"height": 128
-		},
-		"link": "arty-animated:16-link-external",
-		"width": 16,
-		"height": 16
+		"names": {
+			"reset": "arty-animated:16-close",
+			"search": "arty-animated:16-search",
+			"down": "arty-animated:16-chevron-down",
+			"left": "arty-animated:16-chevron-left",
+			"right": "arty-animated:16-chevron-right",
+			"parent": "arty-animated:16-chevron-left",
+			"grid": "arty-animated:20-grid-3",
+			"list": "arty-animated:20-list-3",
+			"error-loading": "@icon-finder:iconify:error-loading",
+			"icon-width": "arty-animated:16-double-arrow-horizontal",
+			"icon-height": "arty-animated:16-double-arrow-vertical",
+			"color": "arty-animated:16-drop",
+			"color-filled": "@icon-finder:iconify:color-filled",
+			"rotate0": "arty-animated:16-close",
+			"rotate1": "arty-animated:16-arc-90",
+			"rotate2": "arty-animated:16-arc-180",
+			"rotate3": "arty-animated:16-arc-270",
+			"h-flip": "arty-animated:16-double-arrow-horizontal",
+			"v-flip": "arty-animated:16-double-arrow-vertical",
+			"plus": "@icon-finder:iconify:plus",
+			"link": "arty-animated:16-link-external"
+		}
 	}
 }
