@@ -3,7 +3,7 @@ const path = require('path');
 const child_process = require('child_process');
 
 const packagesDir = path.dirname(__dirname);
-const getConfig = require('./build/config');
+const { getConfig } = require('./build/config');
 
 // List of commands to run
 const commands = [];

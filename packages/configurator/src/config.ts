@@ -26,6 +26,14 @@ export interface FooterButton {
 }
 
 /**
+ * Footer sample data
+ */
+export interface IconFinderConfigFooterSample {
+	width: number;
+	height: number;
+}
+
+/**
  * Full configuration
  */
 export interface IconFinderConfig {
@@ -101,10 +109,7 @@ export interface IconFinderConfig {
 		buttons: Record<string, FooterButton>;
 
 		// Full sample maximum dimensions
-		fullSample: {
-			width: number;
-			height: number;
-		};
+		fullSample: IconFinderConfigFooterSample;
 	};
 
 	// API providers

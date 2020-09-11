@@ -1,6 +1,5 @@
 const { Replacements } = require('@cyberalien/conditional-replacements');
-const getConfig = require('./build/config');
-const getReplacements = require('./build/replacements');
+const { getConfig, getReplacements } = require('./build/config');
 const { mkdir, unlink, listFiles, writeFile, readFile } = require('./build/fs');
 
 const rootDir = __dirname;

@@ -49,7 +49,7 @@ function loadTheme(theme) {
 /**
  * Get configuration
  */
-module.exports = (verbose = true) => {
+function getConfig(verbose = true) {
 	// Get config file
 	let config = loadFile(rootDir + '/config.json');
 	if (config === null) {
@@ -76,4 +76,18 @@ module.exports = (verbose = true) => {
 	config.themeData = loadTheme(config.theme);
 
 	return config;
+}
+
+/**
+ * Get replacements
+ */
+function getReplacements(config) {
+	const { generateReplacements } = require(packagesDir +
+		'/configurator/lib/replacements');
+	return generateReplacements(config);
+}
+
+module.exports = {
+	getConfig,
+	getReplacements,
 };
