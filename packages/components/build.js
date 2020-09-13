@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const child_process = require('child_process');
+const packageJSON = require('./package.json');
 
 const packagesDir = path.dirname(__dirname);
-const { getConfig } = require('./build/config');
 
 // List of commands to run
 const commands = [];
@@ -11,8 +11,10 @@ const commands = [];
 // Parse command line
 const compile = {
 	core: false,
-	theme: false,
-	configure: true,
+	config: true,
+	configure: fileExists(
+		__dirname + '/' + packageJSON.configurator.config.current
+	),
 	lib: true,
 };
 
@@ -50,34 +52,14 @@ process.argv.slice(2).forEach((cmd) => {
 	}
 });
 
-// Check if required modules in same monorepo are available
-const fileExists = (file) => {
-	try {
-		fs.statSync(file);
-	} catch (e) {
-		return false;
-	}
-	return true;
-};
-
-// Always configure and build lib
-compile.configure = true;
-compile.lib = true;
-
-// Get config
-const config = getConfig(false);
-
-// Check if theme has been compiled
-if (
-	!compile.theme &&
-	!fileExists(packagesDir + '/themes/dist/' + config.theme + '.json')
-) {
-	compile.theme = true;
-}
-
 // Check if core has been compiled
 if (!compile.core && !fileExists(packagesDir + '/core/lib/index.js')) {
 	compile.core = true;
+}
+
+// Check if config has been compiled
+if (!compile.config && !fileExists(__dirname + '/config/config.js')) {
+	compile.config = true;
 }
 
 // Compile packages
@@ -86,29 +68,11 @@ Object.keys(compile).forEach((key) => {
 		return;
 	}
 	switch (key) {
-		case 'theme':
-			commands.push({
-				cmd: 'node',
-				args:
-					names.theme === ''
-						? ['build']
-						: ['build', '--theme', names.theme],
-				cwd: packagesDir + '/themes',
-			});
-			return;
-
 		case 'core':
 			commands.push({
 				cmd: 'npm',
 				args: ['run', 'build'],
 				cwd: packagesDir + '/' + key,
-			});
-			return;
-
-		case 'configure':
-			commands.push({
-				cmd: 'node',
-				args: ['configure'],
 			});
 			return;
 
@@ -145,3 +109,15 @@ const next = () => {
 	}
 };
 next();
+
+/**
+ * Check if required modules in same monorepo are available
+ */
+function fileExists(file) {
+	try {
+		fs.statSync(file);
+	} catch (e) {
+		return false;
+	}
+	return true;
+}

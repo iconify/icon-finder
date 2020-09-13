@@ -1,25 +1,17 @@
-import { Params } from './params';
-export { build } from './builder';
-export { Params };
+import { ConfiguratorParams } from './params/type';
+import { argsToParams } from './params/args';
+import { parse, ParseResult } from './parse';
 
 /**
- * Prepare params instance for building
+ * Get parameters
  */
-export function prepare(customFilesDir: string = ''): Params {
-	const params = new Params();
-	if (customFilesDir !== '') {
-		console.log('Using custom files from', customFilesDir);
-		params.applyArguments([
-			'--config=' +
-				JSON.stringify({
-					customFilesDir,
-				}),
-		]);
-	}
-	params.applyEnv();
-	params.applyArguments();
-	params.buildConfig();
-	params.validateTheme();
-	params.checkModules();
-	return params;
+export function getParams(): ConfiguratorParams {
+	return argsToParams(process.argv.slice(2), process.env);
+}
+
+/**
+ * Build
+ */
+export function build(params: ConfiguratorParams): ParseResult {
+	return parse(params);
 }

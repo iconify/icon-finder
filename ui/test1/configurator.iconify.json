@@ -1,13 +1,22 @@
 {
-	"theme": "iconify",
-	"footer": {
-		"components": {
-			"footer": "full",
-			"name": "simple-editable"
+	"common": {
+		"theme": {
+			"name": "iconify"
 		},
-		"customisations": {
-			"color": {
-				"defaultColor": "#f80"
+		"components": {
+			"customDir": "src/components"
+		}
+	},
+	"components": {
+		"footer": {
+			"components": {
+				"footer": "full",
+				"name": "simple-editable"
+			},
+			"customisations": {
+				"color": {
+					"defaultColor": "#f80"
+				}
 			}
 		}
 	}

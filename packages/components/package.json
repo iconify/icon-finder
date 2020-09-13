@@ -7,6 +7,7 @@
 	"license": "(Apache-2.0 OR GPL-2.0)",
 	"scripts": {
 		"build": "node build",
+		"build:config": "tsc --project config/tsconfig.json",
 		"build:configure": "node configure",
 		"build:lib": "tsc --project tsconfig-configured.json"
 	},
@@ -19,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@cyberalien/conditional-replacements": "0.0.2",
+		"@iconify/search-configurator": "0.0.0-dev",
 		"@iconify/search-core": "^0.0.0-dev",
 		"svelte": "^3.24.1",
 		"typescript": "^4.0.2"
@@ -27,5 +29,16 @@
 		"@iconify/iconify": "^2.0.0-rc.1",
 		"@iconify/types": "^1.0.3",
 		"cyberalien-color": "^1.0.0"
+	},
+	"configurator": {
+		"exports": {
+			"build": "npm run build:config",
+			"config": "config/config.js",
+			"replacements": "config/replacements.js"
+		},
+		"config": {
+			"current": "config/current.json",
+			"last": "config/last.json"
+		}
 	}
 }

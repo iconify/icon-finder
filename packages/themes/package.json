@@ -29,5 +29,11 @@
 			"dist/",
 			"node_modules/*"
 		]
+	},
+	"configurator": {
+		"multipleThemes": true,
+		"build": "node build --theme {theme}",
+		"stylesheet": "dist/{theme}.css",
+		"config": "dist/{theme}.json"
 	}
 }

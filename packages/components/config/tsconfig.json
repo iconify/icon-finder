@@ -1,0 +1,15 @@
+{
+	"extends": "../tsconfig-base.json",
+	"compilerOptions": {
+		"rootDir": ".",
+		"outDir": ".",
+		"target": "ES2019",
+		"module": "commonjs",
+		"strict": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
+	},
+	"include": ["."],
+	"exclude": ["../src/"]
+}

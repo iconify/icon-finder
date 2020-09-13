@@ -1,19 +1,28 @@
+const { readFileSync } = require('fs');
+const packageJSON = require('./package.json');
 const { Replacements } = require('@cyberalien/conditional-replacements');
-const { getConfig, getReplacements } = require('./build/config');
-const { mkdir, unlink, listFiles, writeFile, readFile } = require('./build/fs');
+const {
+	mkdir,
+	unlink,
+	listFiles,
+	writeFile,
+	readFile,
+} = require('./config/fs');
 
 const rootDir = __dirname;
 const defaultSourceDir = rootDir + '/src';
 const configuredDir = rootDir + '/src-configured';
 const compiledDir = rootDir + '/lib';
+const configFile = rootDir + '/' + packageJSON.configurator.config.current;
 
 // Get configuration
-const config = getConfig();
-const configCache = JSON.stringify(config);
+const config = JSON.parse(readFileSync(configFile, 'utf8'));
 
 // Get replacements
-const replacementsList = getReplacements(config);
-const replacements = new Replacements(replacementsList, '@iconify-replacement');
+const replacements = new Replacements(
+	config.replacements,
+	'@iconify-replacement'
+);
 
 // Create target directories
 mkdir(configuredDir);
@@ -21,8 +30,8 @@ mkdir(compiledDir);
 
 // Get source directories
 let sourceDirs = [defaultSourceDir];
-if (config.customFilesDir !== '') {
-	sourceDirs.unshift(config.customFilesDir);
+if (config.customFiles) {
+	sourceDirs.unshift(config.customFiles.path);
 }
 
 // Get all files from source directories
@@ -68,6 +77,9 @@ sourceFiles.forEach((file) => {
 		case 'svelte':
 			break;
 
+		case 'json':
+			return;
+
 		default:
 			console.error(
 				`Unsupported file "${file}". Only JavaScript, TypeScript and Svelte files are allowed.`
@@ -95,7 +107,5 @@ sourceFiles.forEach((file) => {
 	}
 });
 
-// Save config
-writeFile(compiledDir + '/config.json', configCache, 'utf8');
-
+// Done
 console.log(`Saved ${copied + modified} files (${modified} modified)`);

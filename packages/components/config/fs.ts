@@ -1,12 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 const rootDir = path.dirname(__dirname);
 
 /**
  * Create directory recursively, starting with rootDir
  */
-function mkdir(dir) {
+export function mkdir(dir: string): void {
 	if (dir.slice(0, rootDir.length) !== rootDir) {
 		return;
 	}
@@ -27,7 +27,7 @@ function mkdir(dir) {
 /**
  * Remove file
  */
-function unlink(file) {
+export function unlink(file: string): void {
 	try {
 		fs.unlinkSync(file);
 	} catch (err) {}
@@ -36,11 +36,12 @@ function unlink(file) {
 /**
  * List all files in directory
  */
-function listFiles(dir) {
-	let results = [];
+export function listFiles(dir: string | string[]): string[] {
+	let results: string[] = [];
 
-	function rec(extra) {
-		let files, base;
+	function rec(extra: string) {
+		let files: string[];
+		let base: string;
 
 		try {
 			files = fs.readdirSync(dir + extra);
@@ -76,7 +77,7 @@ function listFiles(dir) {
 
 	if (typeof dir === 'object') {
 		// Scan multiple directories
-		dir.forEach((dir) => {
+		dir.forEach((dir: string) => {
 			results = results.concat(listFiles(dir));
 		});
 
@@ -100,9 +101,9 @@ function listFiles(dir) {
 /**
  * Save file
  */
-function writeFile(filename, data) {
+export function writeFile(filename: string, data: string) {
 	const parts = filename.split('/');
-	const name = parts.pop();
+	const name = parts.pop()!;
 	const dir = filename.slice(0, filename.length - name.length - 1);
 	mkdir(dir);
 	fs.writeFileSync(filename, data, 'utf8');
@@ -111,7 +112,7 @@ function writeFile(filename, data) {
 /**
  * Read file from multiple possible locations
  */
-function readFile(dirs, filename) {
+export function readFile(dirs: string[], filename: string): string {
 	for (let i = 0; i < dirs.length; i++) {
 		try {
 			const content = fs.readFileSync(dirs[i] + filename, 'utf8');
@@ -120,14 +121,3 @@ function readFile(dirs, filename) {
 	}
 	throw new Error(`Cannot locate file ${filename}`);
 }
-
-/**
- * Export
- */
-module.exports = {
-	mkdir,
-	unlink,
-	listFiles,
-	writeFile,
-	readFile,
-};

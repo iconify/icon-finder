@@ -1,38 +1,7 @@
 /**
- * Deep clone simple object.
- *
- * This function does not handle anything other than primitive types + Arrays.
- * This function is on average 10 times faster than JSON.parse(JSON.stringify(obj)) on small objects, several times faster on big objects
- */
-export function cloneObject(obj: unknown): unknown {
-	if (typeof obj !== 'object' || obj === null) {
-		return obj;
-	}
-
-	if (obj instanceof Array) {
-		return obj.map((item) => {
-			if (typeof item === 'object') {
-				return cloneObject(item);
-			} else {
-				return item;
-			}
-		});
-	}
-
-	const result: Record<string, unknown> = {};
-	let key;
-	for (key in obj) {
-		if (typeof (obj as Record<string, unknown>)[key] !== 'object') {
-			result[key] = (obj as Record<string, unknown>)[key];
-		} else {
-			result[key] = cloneObject((obj as Record<string, unknown>)[key]);
-		}
-	}
-	return result;
-}
-
-/**
  * Compare two objects.
+ *
+ * Copied from Core package
  *
  * This function does not handle anything other than primitive types + Arrays.
  */
@@ -111,36 +80,4 @@ export function compareObjects(obj1: unknown, obj2: unknown): boolean {
 	}
 
 	return true;
-}
-
-/**
- * Find match of keyword in data.
- *
- * Comparison is case insensitive.
- */
-export function match(data: unknown, keyword: string): boolean {
-	if (typeof data === 'number') {
-		data = '' + data;
-	}
-	if (typeof data === 'string') {
-		return data.toLowerCase().indexOf(keyword) !== -1;
-	}
-
-	if (typeof data !== 'object' || data === null) {
-		return false;
-	}
-	if (data instanceof Array) {
-		for (let i = 0; i < data.length; i++) {
-			if (match(data[i], keyword)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	for (const key in data) {
-		if (match((data as Record<string, unknown>)[key], keyword)) {
-			return true;
-		}
-	}
-	return false;
 }

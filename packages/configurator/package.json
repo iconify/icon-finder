@@ -19,8 +19,6 @@
 		"directory": "packages/builder"
 	},
 	"devDependencies": {
-		"@iconify/search-components": "0.0.0-dev",
-		"@iconify/search-themes": "0.0.0-dev",
 		"@iconify/types": "^1.0.3",
 		"chai": "^4.2.0",
 		"mocha": "^8.1.3",

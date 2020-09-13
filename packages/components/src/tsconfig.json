@@ -1,0 +1,13 @@
+{
+	"extends": "../tsconfig-base.json",
+	"compilerOptions": {
+		"rootDir": ".",
+		"outDir": "../lib",
+		"target": "ES2019",
+		"module": "commonjs",
+		"strict": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
+	}
+}

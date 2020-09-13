@@ -1,5 +1,4 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { dirname } from 'path';
 import typescript from 'rollup-plugin-typescript2';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
@@ -11,16 +10,8 @@ const production = !process.env.ROLLUP_WATCH;
 // Get current theme name
 let theme;
 try {
-	const configuratorData = readFileSync(
-		dirname(require.resolve('@iconify/search-components/package.json')) +
-			'/lib/config.json',
-		'utf8'
-	);
-	const configuratorConfig = JSON.parse(configuratorData);
-	if (typeof configuratorConfig.theme !== 'string') {
-		throw new Error('Invalid theme');
-	}
-	theme = configuratorConfig.theme;
+	// Get from UI_THEME variable
+	theme = process.env.UI_THEME;
 
 	// Copy theme file
 	const themeData = readFileSync(
@@ -29,7 +20,7 @@ try {
 	writeFileSync(`dist/${theme}.css`, themeData, 'utf8');
 	console.log(`Saved dist/${theme}.css (${themeData.length} bytes)`);
 } catch (err) {
-	throw new Error('Could not detect current theme. Run `node configure`');
+	throw new Error('Could not detect current theme. Run `node build`');
 }
 
 /**

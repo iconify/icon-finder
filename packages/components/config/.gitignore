@@ -1,0 +1,6 @@
+*.js
+*.map
+*.d.ts
+last.json
+current.json
+tsconfig.tsbuildinfo

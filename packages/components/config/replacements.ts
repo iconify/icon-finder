@@ -1,13 +1,12 @@
 import { lstatSync } from 'fs';
 import { dirname } from 'path';
+import { IconFinderConfig } from '@iconify/search-configurator/lib/config/full';
+import { CustomFiles } from '@iconify/search-configurator/lib/parse/custom-files';
 import {
-	PreparedIconFinderConfig,
+	IconFinderComponentsConfig,
 	FooterButton,
 	IconFinderConfigFooterSample,
 } from './config';
-
-// Directory for source
-const componentsDir = dirname(dirname(__dirname)) + '/components/src';
 
 // Default footer buttons
 const defaultFooterButtons: Record<string, FooterButton> = {
@@ -20,39 +19,12 @@ const defaultFooterButtons: Record<string, FooterButton> = {
 };
 
 /**
- * Replacements type
- */
-export type IconFinderReplacements = Record<string, string>;
-
-/**
  * Types for various stuff
  */
 interface FooterOptions {
 	showButtons: boolean;
 	buttons?: Record<string, FooterButton>;
 	fullSample?: IconFinderConfigFooterSample;
-}
-
-/**
- * Check if source file exists
- */
-function sourceFileExists(
-	config: PreparedIconFinderConfig,
-	filename: string
-): boolean {
-	let sourceDirs = [componentsDir];
-	if (config.customFilesDir !== '') {
-		sourceDirs.unshift(config.customFilesDir);
-	}
-
-	for (let i = 0; i < sourceDirs.length; i++) {
-		try {
-			const testFile = sourceDirs[i] + filename;
-			lstatSync(testFile);
-			return true;
-		} catch (err) {}
-	}
-	return false;
 }
 
 /**
@@ -66,37 +38,54 @@ function capitalise(text: string): string {
 }
 
 /**
- * Generate replacements list from config
+ * Get replacements
  */
-export function generateReplacements(
-	config: PreparedIconFinderConfig
-): IconFinderReplacements {
+export function getReplacements(
+	fullConfig: IconFinderConfig,
+	customFiles: CustomFiles | null
+): Record<string, string> {
+	// Expand config
+	const components = (fullConfig.components as unknown) as IconFinderComponentsConfig;
+	const theme = fullConfig.theme;
+
+	// Custom files and directory for local files
+	const customFileNames = customFiles
+		? customFiles.files.map((item) => item.filename)
+		: [];
+	const sourcePath = dirname(__dirname) + '/src';
+	// console.log('sourcePath:', sourcePath);
+
+	// Replacements
 	const replacements = Object.create(null);
+
+	/**
+	 * Check if source file exists
+	 */
+	function sourceFileExists(filename: string): boolean {
+		// Check custom files
+		if (customFileNames.indexOf(filename) !== -1) {
+			return true;
+		}
+
+		// Check local files
+		try {
+			lstatSync(sourcePath + filename);
+			return true;
+		} catch (err) {
+			//
+		}
+
+		return false;
+	}
 
 	/**
 	 * Theme specific replacements
 	 */
 	function themeReplacements() {
-		const theme = config.themeData;
-
 		// Colors rotation
 		replacements['maxIndex = 10'] =
 			'maxIndex = ' + Math.max(1, theme.rotation + 1);
-		console.log('Rotation:', theme.rotation);
-
-		// Focus search
-		if (!theme.focusSearch) {
-			replacements['canFocusSearch = true'] = 'canFocusSearch = false';
-		}
-
-		// Collections list
-		if (theme.collectionsList && !theme.collectionsList.authorLink) {
-			replacements['authorLink = true'] = 'authorLink = false';
-		}
-		if (theme.collectionsList && theme.collectionsList.clickable) {
-			replacements['collectionClickable = false'] =
-				'collectionClickable = true';
-		}
+		// console.log('Rotation:', theme.rotation);
 
 		// Icons
 		if (
@@ -134,25 +123,11 @@ export function generateReplacements(
 	 * Toggle views
 	 */
 	function toggleViews() {
-		if (!config.views) {
-			return;
-		}
-
 		// Disable custom view
-		if (config.views.custom === false) {
+		if (components.views.custom === false) {
 			replacements['supportCustomView = true'] =
 				'supportCustomView = false';
 			replacements['./views/Custom.svelte'] = './Empty.svelte';
-		}
-	}
-
-	/**
-	 * Other stuff
-	 */
-	function miscStuff() {
-		// Language
-		if (typeof config.language === 'string' && config.language !== 'en') {
-			replacements['/phrases/en'] = '/phrases/' + config.language;
 		}
 	}
 
@@ -161,92 +136,39 @@ export function generateReplacements(
 	 */
 	function layoutReplacements() {
 		// Shorten icon name when viewing collection
-		if (config.layout.canShortenName === false) {
+		if (components.canShortenName === false) {
 			replacements['canShortenName = true'] = 'canShortenName = false';
 			replacements['/misc/shorten-icon-name'] =
 				'/misc/shorten-icon-name-empty';
 		}
-	}
 
-	/**
-	 * Footer
-	 */
-	function footerReplacements() {
-		// Check if buttons are visible
-		const showButtons = footerButtons();
-
-		// Generate options list
-		const footerOptions: FooterOptions = {
-			showButtons: showButtons,
-		};
-		if (showButtons) {
-			footerOptions.buttons = config.footer.buttons;
+		// Focus search
+		if (!components.focusSearch) {
+			replacements['canFocusSearch = true'] = 'canFocusSearch = false';
 		}
 
-		// Get footer file and make sure it exists
-		const footerComponent = capitalise(
-			config.showFooter
-				? config.footer.components.footer
-				: showButtons
-				? 'empty'
-				: 'none'
-		);
-
-		if (!sourceFileExists(config, `/ui/footer/${footerComponent}.svelte`)) {
-			throw new Error(`Invalid footer component: ${footerComponent}`);
+		// Collections list
+		if (!components.collectionsList.authorLink) {
+			replacements['authorLink = true'] = 'authorLink = false';
 		}
-		replacements[
-			'/footer/Simple.svelte'
-		] = `/footer/${footerComponent}.svelte`;
-
-		// Options
-		if (config.showFooter) {
-			// Name component
-			const footerNameComponent = capitalise(
-				config.footer.components.name
-			);
-
-			if (
-				!sourceFileExists(
-					config,
-					`/ui/footer/parts/name/${footerNameComponent}.svelte`
-				)
-			) {
-				throw new Error(
-					`Invalid footer name component: ${footerNameComponent}`
-				);
-			}
-			replacements['/parts/name/Simple.svelte'] =
-				'/parts/name/' + footerNameComponent + '.svelte';
-
-			// Copy options
-			['fullSample'].forEach((prop) => {
-				if (config.footer[prop] !== void 0) {
-					footerOptions[prop] = config.footer[prop];
-				}
-			});
+		if (components.collectionsList.clickable) {
+			replacements['collectionClickable = false'] =
+				'collectionClickable = true';
 		}
-
-		// Customisations
-		footerCustomisations();
-
-		// Footer options replacement
-		console.log(footerOptions);
-		replacements['footerOptions = {}'] =
-			'footerOptions = ' + JSON.stringify(footerOptions);
 	}
 
 	/**
 	 * Footer buttons
 	 */
 	function footerButtons() {
-		let showButtons = config.showFooter && config.footer.showButtons;
+		let showButtons =
+			components.showFooter && components.footer.showButtons;
 
 		// Validate buttons
 		if (showButtons) {
-			if (!Object.keys(config.footer.buttons).length) {
+			if (!Object.keys(components.footer.buttons).length) {
 				// Default buttons
-				config.footer.buttons = defaultFooterButtons;
+				components.footer.buttons = defaultFooterButtons;
 			}
 		}
 
@@ -257,14 +179,17 @@ export function generateReplacements(
 	 * Customisations
 	 */
 	function footerCustomisations() {
-		const footerConfig = config.footer;
+		const footerConfig = components.footer;
 		const customisationsConfig = footerConfig.customisations;
 
 		let showCustomisations =
-			config.showFooter && footerConfig.showCustomisations;
+			components.showFooter && footerConfig.showCustomisations;
 		if (showCustomisations) {
 			const enabledItems = Object.keys(customisationsConfig).filter(
-				(key) => customisationsConfig[key].show
+				(key) =>
+					customisationsConfig[
+						key as keyof typeof customisationsConfig
+					].show
 			);
 			if (!enabledItems.length) {
 				showCustomisations = false;
@@ -286,7 +211,8 @@ export function generateReplacements(
 
 		// Parse all properties
 		Object.keys(customisationsConfig).forEach((key) => {
-			const item = customisationsConfig[key];
+			const item =
+				customisationsConfig[key as keyof typeof customisationsConfig];
 			const varName = key.slice(0, 1).toUpperCase() + key.slice(1);
 			if (!item.show) {
 				// Disable
@@ -317,7 +243,7 @@ export function generateReplacements(
 					return;
 				}
 
-				const value = item[attr];
+				const value = item[attr as keyof typeof item];
 				const customValue = JSON.stringify(value);
 
 				// List of possible old values
@@ -352,15 +278,76 @@ export function generateReplacements(
 				});
 			});
 		});
+	}
 
-		return;
+	/**
+	 * Footer
+	 */
+	function footerReplacements() {
+		// Check if buttons are visible
+		const showButtons = footerButtons();
+
+		// Generate options list
+		const footerOptions: FooterOptions = {
+			showButtons: showButtons,
+		};
+		if (showButtons) {
+			footerOptions.buttons = components.footer.buttons;
+		}
+
+		// Get footer file and make sure it exists
+		const footerComponent = capitalise(
+			components.showFooter
+				? components.footer.components.footer
+				: showButtons
+				? 'empty'
+				: 'none'
+		);
+
+		if (!sourceFileExists(`/ui/footer/${footerComponent}.svelte`)) {
+			throw new Error(`Invalid footer component: ${footerComponent}`);
+		}
+		replacements[
+			'/footer/Simple.svelte'
+		] = `/footer/${footerComponent}.svelte`;
+
+		// Options
+		if (components.showFooter) {
+			// Name component
+			const footerNameComponent = capitalise(
+				components.footer.components.name
+			);
+
+			if (
+				!sourceFileExists(
+					`/ui/footer/parts/name/${footerNameComponent}.svelte`
+				)
+			) {
+				throw new Error(
+					`Invalid footer name component: ${footerNameComponent}`
+				);
+			}
+			replacements['/parts/name/Simple.svelte'] =
+				'/parts/name/' + footerNameComponent + '.svelte';
+
+			// Copy options
+			footerOptions.fullSample = components.footer.fullSample;
+		}
+
+		// Customisations
+		footerCustomisations();
+
+		// Footer options replacement
+		// console.log(footerOptions);
+		replacements['footerOptions = {}'] =
+			'footerOptions = ' + JSON.stringify(footerOptions);
 	}
 
 	/**
 	 * Add provider replacements
 	 */
 	function providerReplacements() {
-		const providerConfig = config.providers;
+		const providerConfig = fullConfig.common.providers;
 
 		// Show providers
 		if (!providerConfig.show) {
@@ -402,6 +389,19 @@ export function generateReplacements(
 		// Can add providers
 		if (providerConfig.canAdd) {
 			replacements['canAddProviders = false'] = 'canAddProviders = true';
+		}
+	}
+
+	/**
+	 * Other stuff
+	 */
+	function miscStuff() {
+		// Language
+		if (
+			typeof components.language === 'string' &&
+			components.language !== 'en'
+		) {
+			replacements['/phrases/en'] = '/phrases/' + components.language;
 		}
 	}
 
