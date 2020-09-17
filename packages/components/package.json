@@ -22,12 +22,12 @@
 		"@cyberalien/conditional-replacements": "0.0.2",
 		"@iconify/search-configurator": "0.0.0-dev",
 		"@iconify/search-core": "^0.0.0-dev",
-		"svelte": "^3.24.1",
+		"svelte": "^3.25.1",
 		"typescript": "^4.0.2"
 	},
 	"dependencies": {
 		"@iconify/iconify": "^2.0.0-rc.1",
-		"@iconify/types": "^1.0.3",
+		"@iconify/types": "^1.0.4",
 		"cyberalien-color": "^1.0.0"
 	},
 	"configurator": {
