@@ -72,7 +72,7 @@ export function retrieveProvider(
 	host: string,
 	callback: RetrieveProviderCallback
 ): void {
-	console.log('retrieveProvider:', host);
+	// console.log('retrieveProvider:', host);
 	const api = registry.api;
 	api.sendQuery(host, '/provider', (status, data) => {
 		const providerData = data as APIProviderRawData;
@@ -94,7 +94,7 @@ export function retrieveProvider(
 				// Convert data
 				convertedData = convertProviderData(host, providerData);
 				if (!convertedData) {
-					console.log('Failed to convert data');
+					// console.log('Failed to convert data');
 					break;
 				}
 				const provider = providerData.provider;

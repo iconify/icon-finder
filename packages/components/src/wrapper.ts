@@ -78,7 +78,7 @@ export class Wrapper {
 					  }
 					: params.iconSets;
 
-			console.log('Params.iconSets:', coreParams.iconSets);
+			// console.log('Params.iconSets:', coreParams.iconSets);
 		}
 
 		// Init core
