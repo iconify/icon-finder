@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { LoadedConfigs } from './configs';
-import { merge } from '../config/merge';
+import { merge as mergeObjects } from '../config/merge';
 import { findPackage } from '../find-package';
 import {
 	ComponentsPackageInfo,
@@ -121,8 +121,8 @@ export function loadComponentsConfig(
 	let config = defaultConfig();
 
 	// Merge all custom configurations
-	configs.common.forEach((item) => {
-		config = merge(config, item, mergeConfig);
+	configs.components.forEach((item) => {
+		config = mergeObjects(config, item, mergeConfig);
 	});
 
 	return config;

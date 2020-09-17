@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
 import {
 	dataToCollection,
 	CollectionData,
 } from '../../lib/converters/collection';
-import { stringToIcon, Icon } from '../../lib/icon';
+import { stringToIcon } from '../../lib/icon';
 import { getFixture } from '../get_fixture';
 
 describe('Testing converting collection information', () => {
 	it('Simple data', () => {
-		let result, expected: CollectionData;
+		let result: CollectionData | null;
+		let expected: CollectionData;
 
 		// Empty block
 		result = dataToCollection('', {});
@@ -48,35 +50,37 @@ describe('Testing converting collection information', () => {
 			total: 2,
 			icons: [
 				// Order should change because of sorting
-				stringToIcon('foo:arrow-left') as Icon,
-				stringToIcon('foo:home') as Icon,
+				stringToIcon('foo:arrow-left')!,
+				stringToIcon('foo:home')!,
 			],
 		};
 		expect(result).to.be.eql(expected);
+	});
 
-		// Add one category
-		result = dataToCollection('', {
+	it('Category', () => {
+		const result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
 				Basic: ['home', 'arrow-left'],
 			},
 		});
-		expected = {
+		const expected: CollectionData = {
 			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 2,
 			icons: [
 				// Order should change because of sorting
-				stringToIcon('foo:arrow-left') as Icon,
-				stringToIcon('foo:home') as Icon,
+				stringToIcon('foo:arrow-left')!,
+				stringToIcon('foo:home')!,
 			],
 		};
 		expect(result).to.be.eql(expected);
+	});
 
-		// Add two categories
-		result = dataToCollection('', {
+	it('Two categories', () => {
+		const result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -84,7 +88,7 @@ describe('Testing converting collection information', () => {
 				Extra: ['arrows'],
 			},
 		});
-		expected = {
+		const expected: CollectionData = {
 			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
@@ -92,21 +96,22 @@ describe('Testing converting collection information', () => {
 			tags: ['Basic', 'Extra'],
 			icons: [
 				// Order should change because of sorting
-				Object.assign(stringToIcon('foo:alert') as Icon, {
+				Object.assign(stringToIcon('foo:alert')!, {
 					tags: ['Basic'],
 				}),
-				Object.assign(stringToIcon('foo:arrows') as Icon, {
+				Object.assign(stringToIcon('foo:arrows')!, {
 					tags: ['Extra'],
 				}),
-				Object.assign(stringToIcon('foo:home') as Icon, {
+				Object.assign(stringToIcon('foo:home')!, {
 					tags: ['Basic'],
 				}),
 			],
 		};
 		expect(result).to.be.eql(expected);
+	});
 
-		// One category + uncategorised
-		result = dataToCollection('', {
+	it('One category + uncategorised', () => {
+		const result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -114,7 +119,7 @@ describe('Testing converting collection information', () => {
 			},
 			uncategorised: ['arrows'],
 		});
-		expected = {
+		const expected: CollectionData = {
 			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
@@ -122,21 +127,82 @@ describe('Testing converting collection information', () => {
 			tags: ['Basic', ''],
 			icons: [
 				// Order should change because of sorting
-				Object.assign(stringToIcon('foo:alert') as Icon, {
+				Object.assign(stringToIcon('foo:alert')!, {
 					tags: ['Basic'],
 				}),
-				Object.assign(stringToIcon('foo:arrows') as Icon, {
+				Object.assign(stringToIcon('foo:arrows')!, {
 					tags: [''],
 				}),
-				Object.assign(stringToIcon('foo:home') as Icon, {
+				Object.assign(stringToIcon('foo:home')!, {
 					tags: ['Basic'],
 				}),
 			],
 		};
 		expect(result).to.be.eql(expected);
+	});
 
-		// Aliases, characters, multiple categories
-		result = dataToCollection('', {
+	it('Empty category', () => {
+		const result = dataToCollection('', {
+			prefix: 'foo',
+			title: 'Foo',
+			categories: {
+				Location: [],
+				Whatever: [],
+			},
+			uncategorised: ['arrows'],
+		});
+		const expected: CollectionData = {
+			provider: '',
+			prefix: 'foo',
+			name: 'Foo',
+			total: 1,
+			icons: [stringToIcon('foo:arrows')!],
+		};
+		expect(result).to.be.eql(expected);
+	});
+
+	it('Categories with subcategories', () => {
+		const result = dataToCollection('', {
+			prefix: 'foo',
+			title: 'Foo',
+			categories: {
+				Arrows: {
+					// Sub-categories
+					'Big Arrows': ['big-arrow-left', 'big-arrow-right'],
+					'Small Arrows': ['small-arrow-left', 'small-arrow-right'],
+				},
+				Location: ['location'],
+			},
+		});
+		const expected: CollectionData = {
+			provider: '',
+			prefix: 'foo',
+			name: 'Foo',
+			total: 5,
+			icons: [
+				Object.assign(stringToIcon('foo:big-arrow-left')!, {
+					tags: ['Arrows'],
+				}),
+				Object.assign(stringToIcon('foo:big-arrow-right')!, {
+					tags: ['Arrows'],
+				}),
+				Object.assign(stringToIcon('foo:location')!, {
+					tags: ['Location'],
+				}),
+				Object.assign(stringToIcon('foo:small-arrow-left')!, {
+					tags: ['Arrows'],
+				}),
+				Object.assign(stringToIcon('foo:small-arrow-right')!, {
+					tags: ['Arrows'],
+				}),
+			],
+			tags: ['Arrows', 'Location'],
+		};
+		expect(result).to.be.eql(expected);
+	});
+
+	it('Aliases, characters, multiple categories', () => {
+		const result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			categories: {
@@ -153,7 +219,7 @@ describe('Testing converting collection information', () => {
 				f001: 'arrows',
 			},
 		});
-		expected = {
+		const expected: CollectionData = {
 			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
@@ -161,14 +227,14 @@ describe('Testing converting collection information', () => {
 			tags: ['Basic', 'Extra', ''],
 			icons: [
 				// Order should change because of sorting
-				Object.assign(stringToIcon('foo:alert') as Icon, {
+				Object.assign(stringToIcon('foo:alert')!, {
 					tags: ['Basic', 'Extra'],
 				}),
-				Object.assign(stringToIcon('foo:arrows') as Icon, {
+				Object.assign(stringToIcon('foo:arrows')!, {
 					tags: [''],
 					chars: ['f001'],
 				}),
-				Object.assign(stringToIcon('foo:home') as Icon, {
+				Object.assign(stringToIcon('foo:home')!, {
 					tags: ['Basic'],
 					aliases: ['home-outline', 'house'],
 					chars: ['f000'],
@@ -176,9 +242,11 @@ describe('Testing converting collection information', () => {
 			],
 		};
 		expect(result).to.be.eql(expected);
+	});
 
+	it('Themes', () => {
 		// Themes
-		result = dataToCollection('', {
+		const result = dataToCollection('', {
 			prefix: 'foo',
 			title: 'Foo',
 			uncategorised: [
@@ -203,33 +271,30 @@ describe('Testing converting collection information', () => {
 				},
 			},
 		});
-		expected = {
+		const expected: CollectionData = {
 			provider: '',
 			prefix: 'foo',
 			name: 'Foo',
 			total: 5,
 			icons: [
 				// Order should change because of sorting
-				Object.assign(stringToIcon('foo:outline-alert') as Icon, {
+				Object.assign(stringToIcon('foo:outline-alert')!, {
 					themePrefix: 'Outline',
 					themeSuffix: '',
 				}),
-				Object.assign(stringToIcon('foo:outline-home') as Icon, {
+				Object.assign(stringToIcon('foo:outline-home')!, {
 					themePrefix: 'Outline',
 					themeSuffix: '',
 				}),
-				Object.assign(
-					stringToIcon('foo:outline-home-twotone') as Icon,
-					{
-						themePrefix: 'Outline',
-						themeSuffix: 'TwoTone',
-					}
-				),
-				Object.assign(stringToIcon('foo:solid-alert') as Icon, {
+				Object.assign(stringToIcon('foo:outline-home-twotone')!, {
+					themePrefix: 'Outline',
+					themeSuffix: 'TwoTone',
+				}),
+				Object.assign(stringToIcon('foo:solid-alert')!, {
 					themePrefix: 'Solid',
 					themeSuffix: '',
 				}),
-				Object.assign(stringToIcon('foo:solid-home') as Icon, {
+				Object.assign(stringToIcon('foo:solid-home')!, {
 					themePrefix: 'Solid',
 					themeSuffix: '',
 				}),

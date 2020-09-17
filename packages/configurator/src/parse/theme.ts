@@ -125,6 +125,9 @@ export function loadThemeConfig(
 
 	// Rebuild theme
 	if (params.rebuild.theme) {
+		if (params.verbose) {
+			console.log('Rebuilding theme');
+		}
 		rebuildTheme(theme);
 		// Mark components for rebuild
 		params.rebuild.components = true;
@@ -135,6 +138,9 @@ export function loadThemeConfig(
 	try {
 		themeConfig = JSON.parse(readFileSync(themeConfigFile, 'utf8'));
 	} catch (err) {
+		if (params.debug) {
+			console.error(err);
+		}
 		throw new Error(`Error reading theme config file ${themeConfigFile}`);
 	}
 

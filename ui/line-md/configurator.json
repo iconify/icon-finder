@@ -1,0 +1,13 @@
+{
+	"common": {
+		"theme": {
+			"name": "iconify-new"
+		}
+	},
+	"components": {
+		"canShortenName": true,
+		"footer": {
+			"showButtons": false
+		}
+	}
+}

@@ -63,13 +63,25 @@ export class Wrapper {
 		this._params = params;
 		const customState = params.state;
 
-		// Initialise IconFinderCore
+		// Set core parameters
 		const coreParams: IconFinderCoreParams = {
 			callback: this._coreCallback.bind(this),
 		};
 		if (customState && customState.config) {
 			coreParams.config = customState.config;
 		}
+		if (params.iconSets) {
+			coreParams.iconSets =
+				params.iconSets instanceof Array
+					? {
+							iconSets: params.iconSets,
+					  }
+					: params.iconSets;
+
+			console.log('Params.iconSets:', coreParams.iconSets);
+		}
+
+		// Init core
 		const core = (this._core = new IconFinderCore(coreParams));
 		const registry = (this._registry = core.registry);
 

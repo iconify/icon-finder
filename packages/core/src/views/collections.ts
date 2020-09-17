@@ -22,9 +22,12 @@ import {
 	CollectionsList,
 	dataToCollections,
 	autoIndexCollections,
+	CollectionsListRawData,
 } from '../converters/collections';
 import { getRegistry } from '../registry/storage';
 import { View } from './types';
+import { setCollectionInfo } from '../data/collections';
+import { IconFinderCustomSetsMerge } from '../data/custom-sets';
 
 /**
  * Blocks
@@ -35,14 +38,23 @@ export interface CollectionsViewBlocks extends BaseViewBlocks {
 	collections: CollectionsListBlock;
 }
 
+// Source
+interface CollectionsSources {
+	api: boolean;
+	custom: boolean;
+	merge?: IconFinderCustomSetsMerge;
+}
+
 /**
  * Class
  */
 export class CollectionsView extends BaseView {
 	public readonly provider: string;
 	public readonly route: CollectionsRoute;
+
 	protected _data: CollectionsList | null = null;
 	protected _blocks: CollectionsViewBlocks | null = null;
+	protected readonly _sources: CollectionsSources;
 
 	/**
 	 * Create view
@@ -58,6 +70,22 @@ export class CollectionsView extends BaseView {
 		this.route = route;
 		this.provider = route.params.provider;
 		this.parent = parent;
+
+		// Check if custom icon set is used
+		const registry = getRegistry(this._instance);
+		const customSets = registry.customIconSets;
+		if (customSets.providers[this.provider] !== void 0) {
+			this._sources = {
+				custom: true,
+				api: customSets.merge !== 'only-custom',
+				merge: customSets.merge,
+			};
+		} else {
+			this._sources = {
+				custom: false,
+				api: true,
+			};
+		}
 	}
 
 	/**
@@ -65,6 +93,14 @@ export class CollectionsView extends BaseView {
 	 */
 	_startLoading(): void {
 		this._startedLoading = true;
+
+		if (!this._sources.api) {
+			setTimeout(() => {
+				this._parseAPIData(null);
+			});
+			return;
+		}
+
 		this._loadAPI(this.provider, '/collections', {});
 	}
 
@@ -87,7 +123,9 @@ export class CollectionsView extends BaseView {
 
 			// Global search
 			case 'search':
-				this._searchAction(this.provider, value);
+				if (this._sources.api) {
+					this._searchAction(this.provider, value);
+				}
 				return;
 
 			// Filter collections
@@ -249,7 +287,74 @@ export class CollectionsView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		this._data = dataToCollections(data);
+		interface ParsedList {
+			isCustom: boolean;
+			categories: CollectionsList | null;
+		}
+
+		// Get list of parsed data
+		const parsedData: ParsedList[] = [];
+		if (this._sources.api) {
+			parsedData.push({
+				isCustom: false,
+				categories: dataToCollections(data as CollectionsListRawData),
+			});
+		}
+		if (this._sources.custom) {
+			// Get data
+			const registry = getRegistry(this._instance);
+			const customSets = registry.customIconSets;
+			const customCollections =
+				customSets.providers[this.route.params.provider].collections;
+
+			// Unshift or push it, depending on merge order
+			parsedData[
+				this._sources.merge === 'custom-first' ? 'unshift' : 'push'
+			]({
+				isCustom: true,
+				categories: customCollections,
+			});
+		}
+
+		// Merge collections list
+		this._data = Object.create(null);
+		const usedPrefixes: Record<string, string> = Object.create(null);
+		parsedData.forEach((item) => {
+			// Do not merge if API failed
+			if (item.categories === null) {
+				this._data = null;
+				return;
+			}
+			if (this._data === null) {
+				return;
+			}
+			const data = this._data;
+
+			// Parse all categories
+			const collectionsList = item.categories;
+			Object.keys(collectionsList).forEach((category) => {
+				const categoryItems = collectionsList[category];
+				Object.keys(categoryItems).forEach((prefix) => {
+					if (usedPrefixes[prefix] !== void 0) {
+						// Prefix has already been parsed
+						if (item.isCustom) {
+							// Remove previous entry
+							delete data[usedPrefixes[prefix]][prefix];
+						} else {
+							// Do not overwrite: always show set from API in case of duplicate entries
+							return;
+						}
+					}
+
+					// Add item
+					usedPrefixes[prefix] = category;
+					if (data[category] === void 0) {
+						data[category] = Object.create(null);
+					}
+					data[category][prefix] = categoryItems[prefix];
+				});
+			});
+		});
 
 		// Mark as loaded and mark blocks for re-render
 		this.loading = false;
@@ -265,7 +370,7 @@ export class CollectionsView extends BaseView {
 		this._blocks.categories.filterType = 'categories';
 
 		// Parse data
-		if (this._data === null || data === null) {
+		if (this._data === null) {
 			this.error = data === null ? 'not_found' : 'invalid_data';
 		} else {
 			// Add indexes to collections
@@ -302,7 +407,12 @@ export class CollectionsView extends BaseView {
 				iterateCollectionsBlock(
 					this._blocks.collections,
 					(item, prefix) => {
-						collections.set(this.provider, prefix, item);
+						setCollectionInfo(
+							collections,
+							this.provider,
+							prefix,
+							item
+						);
 					}
 				);
 			}

@@ -28,4 +28,8 @@ export interface ConfiguratorParams {
 		theme: boolean;
 		components: boolean;
 	};
+
+	// Log stuff
+	verbose?: boolean; // Basic logging
+	debug?: boolean; // Full logging. If enabled, also enables verbose
 }

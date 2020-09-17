@@ -7,7 +7,7 @@ import { SearchView } from '../views/search';
 import { CustomView, IconsList } from '../views/custom';
 import { EmptyView } from '../views/empty';
 import { getProvider } from '../data/providers';
-import { CollectionsRouteParams } from './params';
+import { CollectionRouteParams, CollectionsRouteParams } from './params';
 
 /**
  * TypeScript guard
@@ -156,7 +156,58 @@ export class Router {
 
 		// Generate route
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const route = objectToRoute(JSON.parse(config.router!.home!));
+		const defaultRouteString = config.router!.home!;
+		let route: Route | null = null;
+		if (defaultRouteString !== '') {
+			// Use configured route
+			route = objectToRoute(JSON.parse(defaultRouteString));
+		} else {
+			// Detect route. Check custom icon sets first
+			const customIconSets = registry.customIconSets;
+			const currentProvider =
+				typeof provider === 'string' ? provider : this.defaultProvider;
+			if (customIconSets.providers[currentProvider] === void 0) {
+				// No custom icon sets, use collections
+				route = objectToRoute({
+					type: 'collections',
+				});
+			} else {
+				const customSetsData =
+					customIconSets.providers[currentProvider];
+
+				// Custom icon set exists
+				let showCollections = customSetsData.total > 1;
+				if (
+					!showCollections &&
+					customIconSets.merge !== 'only-custom'
+				) {
+					// Show collections if API provider is valid
+					showCollections = this._checkProvider(
+						currentProvider,
+						false
+					);
+				}
+				route = objectToRoute(
+					showCollections
+						? {
+								type: 'collections',
+								params: {
+									provider: currentProvider,
+								} as CollectionsRouteParams,
+						  }
+						: {
+								type: 'collection',
+								params: ({
+									provider: currentProvider,
+									prefix: Object.keys(
+										customSetsData.data
+									).shift(),
+								} as unknown) as CollectionRouteParams,
+						  }
+				);
+			}
+		}
+
 		if (route === null) {
 			throw new Error('Error resetting route');
 		}
@@ -460,7 +511,19 @@ export class Router {
 	/**
 	 * Check if provider exists
 	 */
-	_checkProvider(provider: string): boolean {
-		return getProvider(provider) !== null;
+	_checkProvider(provider: string, checkCustom = true): boolean {
+		// Get provider
+		const result = getProvider(provider);
+		if (result !== null) {
+			return true;
+		}
+
+		// Test custom icon sets. Allow invalid provider if it has custom data
+		if (!checkCustom) {
+			return false;
+		}
+		const registry = getRegistry(this._instance);
+		const customIconSets = registry.customIconSets;
+		return customIconSets.providers[provider] !== void 0;
 	}
 }

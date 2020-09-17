@@ -65,10 +65,8 @@ const defaultUIConfig: Required<IconFinderUIConfig> = {
  * Router config
  */
 const defaultRouterConfig: Required<IconFinderRouterConfig> = {
-	// Home route as string
-	home: JSON.stringify({
-		type: 'collections',
-	}),
+	// Home route as string, empty to automatically detect route
+	home: '',
 };
 
 /**

@@ -32,6 +32,7 @@ import { CollectionRouteFilterParams } from '../route/params';
 import { SearchView } from './search';
 import { CollectionsView } from './collections';
 import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
+import { getCollectionInfo, setCollectionInfo } from '../data/collections';
 
 /**
  * Filters for block
@@ -77,8 +78,10 @@ export interface CollectionViewBlocks
 export class CollectionView extends BaseView {
 	public readonly provider: string;
 	public readonly route: CollectionRoute;
+
 	protected _data: CollectionData | null = null;
 	protected _blocks: CollectionViewBlocks | null = null;
+	protected readonly _isCustom: boolean;
 
 	// Copy of route variable for faster access and to make sure it does not change
 	public readonly prefix: string;
@@ -99,6 +102,19 @@ export class CollectionView extends BaseView {
 		this.parent = parent;
 		this.prefix = route.params.prefix;
 
+		// Check if custom icon set is used
+		const registry = getRegistry(this._instance);
+		const customSets = registry.customIconSets;
+		if (
+			customSets.providers[this.provider] !== void 0 &&
+			customSets.providers[this.provider].data[this.prefix] !== void 0
+		) {
+			this._isCustom = true;
+			this._data = customSets.providers[this.provider].data[this.prefix];
+		} else {
+			this._isCustom = false;
+		}
+
 		// Wait for parent to load if parent view is search or collections list
 		this._mustWaitForParent =
 			parent !== null &&
@@ -110,11 +126,17 @@ export class CollectionView extends BaseView {
 	 */
 	_startLoading(): void {
 		this._startedLoading = true;
-		this._loadAPI(this.provider, '/collection', {
-			info: 'true',
-			chars: 'true',
-			prefix: this.prefix,
-		});
+		if (!this._isCustom) {
+			this._loadAPI(this.provider, '/collection', {
+				info: 'true',
+				chars: 'true',
+				prefix: this.prefix,
+			});
+		} else {
+			setTimeout(() => {
+				this._parseAPIData(null);
+			});
+		}
 	}
 
 	/**
@@ -308,7 +330,9 @@ export class CollectionView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		this._data = dataToCollection(this.provider, data);
+		if (!this._isCustom) {
+			this._data = dataToCollection(this.provider, data);
+		}
 
 		// Mark as loaded, mark blocks for re-render and reset error
 		this.loading = false;
@@ -363,11 +387,17 @@ export class CollectionView extends BaseView {
 		initialisedBlocks.info.prefix = this.prefix;
 		if (parsedData.info !== void 0) {
 			// Store info in collections storage
-			collections.set(this.provider, this.prefix, parsedData.info);
+			setCollectionInfo(
+				collections,
+				this.provider,
+				this.prefix,
+				parsedData.info
+			);
 		}
 
 		// Get info from collections storage because it might include index for color scheme
-		initialisedBlocks.info.info = collections.get(
+		initialisedBlocks.info.info = getCollectionInfo(
+			collections,
 			this.provider,
 			this.prefix
 		);

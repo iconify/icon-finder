@@ -32,6 +32,10 @@ export function loadConfigFromParams(
 	// Load all config files
 	const filesData: LoadedConfig[] = [];
 	params.configFiles.forEach((file) => {
+		if (params.verbose) {
+			console.log(`Loading custom configuration from file ${file}`);
+		}
+
 		// Attemt to load file
 		const filename = locatePackageFile(file);
 		if (typeof filename === 'string') {
@@ -39,10 +43,16 @@ export function loadConfigFromParams(
 				const data = JSON.parse(readFileSync(filename, 'utf8'));
 				if (typeof data === 'object') {
 					filesData.push(data);
+				} else if (params.verbose) {
+					console.log(
+						`Failed to load custom configuration: invalid data!`
+					);
 				}
 				return;
 			} catch (err) {
-				//
+				if (params.debug) {
+					console.error(err);
+				}
 			}
 		}
 
@@ -67,12 +77,20 @@ export function loadConfigFromParams(
 
 	// Add custom theme
 	if (typeof params.theme === 'string' && params.theme !== '') {
+		if (params.verbose) {
+			console.log(`Using custom theme: ${params.theme}`);
+		}
 		const themeData: RecursivePartial<IconFinderCommonConfig> = {
 			theme: {
 				name: params.theme,
 			},
 		};
 		result.common.push(themeData);
+	}
+
+	if (params.debug) {
+		console.log('Loaded custom configuration:');
+		console.log(JSON.stringify(result, null, 2));
 	}
 
 	return result;

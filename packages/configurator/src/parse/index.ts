@@ -27,6 +27,9 @@ export interface ParseResult extends IconFinderConfig, StoredIconFinderConfig {
 export function parse(params: ConfiguratorParams): ParseResult {
 	// Rebuild core if needed
 	if (params.rebuild.core) {
+		if (params.verbose) {
+			console.log('Rebuilding core');
+		}
 		rebuildCore();
 
 		// Mark components for rebuild
@@ -65,6 +68,12 @@ export function parse(params: ConfiguratorParams): ParseResult {
 	};
 
 	// Get replacements
+	if (params.debug) {
+		console.log(
+			`Loading replacements for components, using package ${commonConfig.components.package}. Config used as input:`
+		);
+		console.log(JSON.stringify(fullConfig, null, 2));
+	}
 	const replacements = loadReplacements(
 		commonConfig.components.package,
 		fullConfig,
@@ -89,9 +98,16 @@ export function parse(params: ConfiguratorParams): ParseResult {
 	// Rebuild components
 	if (params.rebuild.components) {
 		// Store config used for rebuilding
+		if (params.debug) {
+			console.log('Custom configuration for components:');
+			console.log(JSON.stringify(storedConfig, null, 2));
+		}
 		storeConfig(commonConfig.components.package, storedConfig, 'current');
 
 		// Rebuild components
+		if (params.verbose) {
+			console.log('Rebuilding components');
+		}
 		rebuildComponents(commonConfig.components.package);
 
 		// Store config for comparison

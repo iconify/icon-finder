@@ -1,9 +1,10 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import typescript from 'rollup-plugin-typescript2';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-// import { terser } from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -17,6 +18,7 @@ let theme;
 try {
 	// Get from UI_THEME variable
 	theme = process.env.UI_THEME;
+	console.log('Using theme:', theme);
 
 	// Copy theme file
 	const themeData = readFileSync(
@@ -53,13 +55,13 @@ export default [
 			}),
 			typescript(),
 			svelte(),
+			json(),
 			commonjs(),
 		],
 		watch: {
 			clearScreen: false,
 		},
 	},
-	/*
 	{
 		input: `dist/${theme}.js`,
 		output: {
@@ -74,5 +76,4 @@ export default [
 		external: ['@iconify/iconify'],
 		plugins: [terser()],
 	},
-	*/
 ];

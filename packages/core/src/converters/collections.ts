@@ -1,3 +1,4 @@
+import { IconifyInfo } from '@iconify/types';
 import { dataToCollectionInfo, CollectionInfo } from './collection';
 
 /**
@@ -17,9 +18,16 @@ export interface CollectionsListFilterCallback {
 }
 
 /**
+ * Interface for data provided by API
+ */
+export type CollectionsListRawData = Record<string, Partial<IconifyInfo>>;
+
+/**
  * Convert data from API to CollectionsList
  */
-export function dataToCollections(data: unknown): CollectionsList {
+export function dataToCollections(
+	data: CollectionsListRawData
+): CollectionsList {
 	const result = Object.create(null);
 	const uncategorised = Object.create(null);
 
@@ -29,10 +37,7 @@ export function dataToCollections(data: unknown): CollectionsList {
 
 	// Assume Record<prefix, item> structure
 	Object.keys(data).forEach((prefix) => {
-		const row = (data as Record<string, unknown>)[prefix] as Record<
-			string,
-			unknown
-		>;
+		const row = data[prefix];
 		if (
 			typeof row !== 'object' ||
 			row === null ||

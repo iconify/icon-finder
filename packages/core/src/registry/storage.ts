@@ -2,8 +2,9 @@ import { FullIconFinderConfig } from '../data/config';
 import { Events } from '../events';
 import { API } from '../api/fetch';
 import { Router } from '../route/router';
-import { CollectionsData } from '../data/collections';
+import { CollectionsInfoStorage } from '../data/collections';
 import { Registry } from './';
+import { ConvertedCustomSets } from '../data/custom-sets';
 
 /**
  * Shared data storage per namespace
@@ -27,10 +28,11 @@ export interface RegistryDataStorage {
 	config?: FullIconFinderConfig;
 	events?: Events;
 	api?: API;
-	collections?: CollectionsData;
+	collections?: CollectionsInfoStorage;
 
 	// Local
 	router?: Router;
+	customIconSets?: ConvertedCustomSets;
 
 	// Custom properties
 	custom?: {

@@ -25,10 +25,17 @@ export function argsToParams(
 			theme: false,
 			components: false,
 		},
+		verbose: false,
+		debug: false,
 	};
 
 	function isValidAction(action: string): boolean {
-		if (action === 'theme' || action === 'config-file') {
+		if (
+			action === 'theme' ||
+			action === 'config-file' ||
+			action === 'debug' ||
+			action === 'verbose'
+		) {
 			return true;
 		}
 
@@ -68,14 +75,23 @@ export function argsToParams(
 				throw new Error(`Invalid parameter --${action}`);
 			}
 
-			nextAction = action;
 			if (!parts.length) {
 				// Check for actions without value
-				const actionParts = nextAction.split('-');
+
+				// Simple actions
+				switch (action) {
+					case 'debug':
+						params.debug = true;
+					// no break. debug enables verbose
+					case 'verbose':
+						params.verbose = true;
+						return;
+				}
+
+				// Actions with multiple parts
+				const actionParts = action.split('-');
 				if (actionParts.length === 2 && actionParts[0] === 'rebuild') {
 					// --rebuild-*
-					nextAction = '';
-
 					if (actionParts[1] === 'all') {
 						// Rebuild all modules
 						Object.keys(params.rebuild).forEach((key) => {
@@ -94,9 +110,12 @@ export function argsToParams(
 					throw new Error(`Invalid parameter --${action}`);
 				}
 
+				nextAction = action;
 				return;
 			}
 
+			// Action with value
+			nextAction = action;
 			item = parts.join('=');
 		}
 
@@ -206,6 +225,13 @@ export function paramsToArgs(params: ConfiguratorParams): string[] {
 				.filter((key) => params.rebuild[key])
 				.map((key) => '--rebuild-' + key)
 		);
+	}
+
+	// Debug / Verbose
+	if (params.debug) {
+		result.push('--debug');
+	} else if (params.verbose) {
+		result.push('--verbose');
 	}
 
 	return result;

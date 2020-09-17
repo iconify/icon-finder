@@ -16,6 +16,7 @@ import {
 import { getRegistry } from '../registry/storage';
 import { View } from './types';
 import { cloneObject } from '../objects';
+import { setCollectionInfo } from '../data/collections';
 
 /**
  * Blocks
@@ -354,7 +355,8 @@ export class SearchView extends BaseView {
 			const registry = getRegistry(this._instance);
 			const collections = registry.collections;
 			prefixes.forEach((prefix) => {
-				collections.set(
+				setCollectionInfo(
+					collections,
 					this.provider,
 					prefix,
 					parsedData.collections[prefix]

@@ -1,0 +1,23 @@
+{
+	"common": {
+		"theme": {
+			"name": "iconify-new"
+		},
+		"providers": {
+			"show": true,
+			"canAdd": false,
+			"custom": {
+				"local": {
+					"api": "http://localhost:3100",
+					"title": "Local Test"
+				}
+			}
+		}
+	},
+	"components": {
+		"canShortenName": true,
+		"footer": {
+			"showButtons": false
+		}
+	}
+}

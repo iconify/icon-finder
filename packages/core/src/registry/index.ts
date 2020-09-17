@@ -7,7 +7,7 @@ import { Events } from '../events';
 import { API } from '../api/fetch';
 import { PartialRoute } from '../route/types';
 import { Router } from '../route/router';
-import { CollectionsData } from '../data/collections';
+import { CollectionsInfoStorage } from '../data/collections';
 import {
 	RegistryDataStorage,
 	uniqueId,
@@ -16,6 +16,7 @@ import {
 	saveRegistry,
 	destroyRegistry,
 } from './storage';
+import { ConvertedCustomSets, emptyConvertedSet } from '../data/custom-sets';
 
 /**
  * Registry parameters
@@ -113,16 +114,32 @@ export class Registry {
 	}
 
 	/**
+	 * Get/set custom icon sets
+	 */
+	get customIconSets(): ConvertedCustomSets {
+		if (this._data.customIconSets === void 0) {
+			this._data.customIconSets = emptyConvertedSet;
+		}
+		return this._data.customIconSets;
+	}
+
+	set customIconSets(value: ConvertedCustomSets) {
+		this._data.customIconSets = value;
+	}
+
+	/**
 	 * Get/set collections
 	 */
-	get collections(): CollectionsData {
+	get collections(): CollectionsInfoStorage {
 		if (this._sharedData.collections === void 0) {
-			this._sharedData.collections = new CollectionsData();
+			this._sharedData.collections = Object.create(
+				null
+			) as CollectionsInfoStorage;
 		}
 		return this._sharedData.collections;
 	}
 
-	set collections(value: CollectionsData) {
+	set collections(value: CollectionsInfoStorage) {
 		this._sharedData.collections = value;
 	}
 

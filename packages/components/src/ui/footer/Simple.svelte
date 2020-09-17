@@ -26,6 +26,8 @@
 				{customise}
 				{iconCustomisations} />
 		{/if}
-		<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />
+		{#if footerOptions.showButtons}
+			<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />
+		{/if}
 	</Block>
 {/if}

@@ -7,6 +7,8 @@ import { CollectionInfo } from './converters/collection';
 import { EventCallback } from './events';
 import { Icon } from './icon';
 import { CustomViewLoadCallback } from './views/custom';
+import { convertCustomSets, IconFinderCustomSets } from './data/custom-sets';
+import { getCollectionInfo } from './data/collections';
 
 /**
  * Export data for various blocks
@@ -86,6 +88,9 @@ export { IconsList, CustomViewBlocks } from './views/custom';
 export { Icon };
 export { iconToString, validateIcon, compareIcons, stringToIcon } from './icon';
 
+// Custom sets
+export { IconFinderCustomSets };
+
 // Objects
 export { compareObjects, cloneObject } from './objects';
 
@@ -101,6 +106,9 @@ export interface IconFinderCoreParams {
 
 	// Default route. Null if no route should be set
 	route?: PartialRoute | null;
+
+	// Custom icon sets
+	iconSets?: IconFinderCustomSets;
 
 	// Callback for view updates
 	callback: (data: RouterEvent, core: IconFinderCore) => void;
@@ -127,6 +135,12 @@ export class IconFinderCore {
 		const registry = (this.registry = new RegistryClass(params));
 		this.id = registry.id;
 		registry.setCustom('core', this, true);
+
+		// Set custom icon sets
+		if (params.iconSets) {
+			registry.customIconSets = convertCustomSets(params.iconSets);
+			console.log('Custom sets:', registry.customIconSets);
+		}
 
 		// Get other required classes from Registry
 		const router = (this.router = registry.router);
@@ -167,8 +181,7 @@ export class IconFinderCore {
 	 * Get collection information
 	 */
 	getCollection(provider: string, prefix: string): CollectionInfo | null {
-		const collections = this.registry.collections;
-		return collections.get(provider, prefix);
+		return getCollectionInfo(this.registry.collections, provider, prefix);
 	}
 
 	/**

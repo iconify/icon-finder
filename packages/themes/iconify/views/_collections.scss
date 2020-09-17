@@ -9,6 +9,10 @@
 
 	.iif-block--filter {
 		padding-left: $iif-spacing;
+		&:first-child {
+			// No categories
+			padding-left: 0;
+		}
 	}
 	.iif-block--filter {
 		margin: ($iif-spacing - 1px) 0 0; // 1px difference because filters are 2 px shorter, so this change aligns blocks

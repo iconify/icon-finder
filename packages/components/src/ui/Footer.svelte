@@ -23,20 +23,22 @@
 	export let route; /** @type {PartialRoute} */
 
 	// Translate buttons
-	const phrases = registry.phrases;
-	Object.keys(footerOptions.buttons).forEach(key => {
-		const item = footerOptions.buttons[key];
-		if (typeof item.text !== 'string') {
-			// Set text: from phrases if phrase exists, capitalised key if not
-			item.text =
-				phrases.footerButtons[key] === void 0
-					? key
-							.split('-')
-							.map(str => str.slice(0, 1).toUpperCase() + str.slice(1))
-							.join(' ')
-					: phrases.footerButtons[key];
-		}
-	});
+	if (footerOptions.buttons) {
+		const phrases = registry.phrases;
+		Object.keys(footerOptions.buttons).forEach(key => {
+			const item = footerOptions.buttons[key];
+			if (typeof item.text !== 'string') {
+				// Set text: from phrases if phrase exists, capitalised key if not
+				item.text =
+					phrases.footerButtons[key] === void 0
+						? key
+								.split('-')
+								.map(str => str.slice(0, 1).toUpperCase() + str.slice(1))
+								.join(' ')
+						: phrases.footerButtons[key];
+			}
+		});
+	}
 
 	// Customisations
 	let iconCustomisations;

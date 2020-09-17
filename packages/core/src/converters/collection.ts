@@ -1,4 +1,10 @@
-import { IconifyInfo, IconifyThemes } from '@iconify/types';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import {
+	IconifyJSON,
+	IconifyChars,
+	IconifyInfo,
+	IconifyThemes,
+} from '@iconify/types';
 import { Icon } from '../icon';
 
 const minDisplayHeight = 16;
@@ -42,6 +48,11 @@ export interface CollectionData {
 	themePrefixes?: string[];
 	themeSuffixes?: string[];
 }
+
+/**
+ * Interface for categories with possibility of sub-categories
+ */
+type Categories = Record<string, string[] | Record<string, string[]>>;
 
 /**
  * Convert data from API to CollectionInfo
@@ -250,6 +261,138 @@ export function dataToCollectionInfo(
 }
 
 /**
+ * Parse themes
+ */
+function parseThemes(
+	themes: IconifyThemes,
+	sortedIcons: Icon[],
+	result: CollectionData
+): void {
+	// Add themes
+	const themePrefixes: string[] = [],
+		themeSuffixes: string[] = [];
+
+	Object.keys(themes).forEach((key) => {
+		const theme = themes[key];
+
+		// Find and validate all prefixes
+		if (theme.prefix !== void 0) {
+			let themePrefix = theme.prefix;
+			if (themePrefix.slice(-1) !== '-') {
+				themePrefix += '-';
+			}
+			const length = themePrefix.length;
+
+			let found = false;
+			sortedIcons.forEach((icon) => {
+				if (icon.name.slice(0, length) === themePrefix) {
+					icon.themePrefix = theme.title;
+					found = true;
+				}
+			});
+
+			if (found) {
+				themePrefixes.push(theme.title);
+			}
+		}
+
+		// Find and validate all suffixes
+		if (theme.suffix !== void 0) {
+			let themeSuffix = theme.suffix;
+			if (themeSuffix.slice(0, 1) !== '-') {
+				themeSuffix = '-' + themeSuffix;
+			}
+			const length = 0 - themeSuffix.length;
+
+			let found = false;
+			sortedIcons.forEach((icon) => {
+				if (icon.name.slice(length) === themeSuffix) {
+					icon.themeSuffix = theme.title;
+					found = true;
+				}
+			});
+
+			if (found) {
+				themeSuffixes.push(theme.title);
+			}
+		}
+	});
+
+	// Check for icons without prefix and validate prefixes
+	if (themePrefixes.length) {
+		let missing = false;
+		sortedIcons.forEach((icon) => {
+			if (icon.themePrefix === void 0) {
+				icon.themePrefix = '';
+				missing = true;
+			}
+		});
+		if (missing) {
+			themePrefixes.push('');
+		}
+
+		// Add prefixes to result
+		if (themePrefixes.length > 1) {
+			result.themePrefixes = themePrefixes;
+		} else {
+			// All icons have same prefix - delete it
+			sortedIcons.forEach((icon) => delete icon.themePrefix);
+		}
+	}
+
+	// Same for suffixes
+	if (themeSuffixes.length) {
+		let missing = false;
+		sortedIcons.forEach((icon) => {
+			if (icon.themeSuffix === void 0) {
+				icon.themeSuffix = '';
+				missing = true;
+			}
+		});
+		if (missing) {
+			themeSuffixes.push('');
+		}
+
+		// Add suffixes to result
+		if (themeSuffixes.length > 1) {
+			result.themeSuffixes = themeSuffixes;
+		} else {
+			// All icons have same suffix - delete it
+			sortedIcons.forEach((icon) => delete icon.themeSuffix);
+		}
+	}
+}
+
+/**
+ * Parse characters map
+ */
+function parseChars(chars: IconifyChars, icons: Record<string, Icon>): void {
+	Object.keys(chars).forEach((char) => {
+		const name = chars[char];
+		if (icons[name] !== void 0) {
+			const icon = icons[name];
+			if (icon.chars === void 0) {
+				icon.chars = [];
+			}
+			icon.chars.push(char);
+		}
+	});
+}
+
+/**
+ * Convert icons to sorted array
+ */
+function sortIcons(icons: Record<string, Icon>): Icon[] {
+	const sortedIcons: Icon[] = [];
+	Object.keys(icons)
+		.sort((a, b) => a.localeCompare(b))
+		.forEach((name) => {
+			sortedIcons.push(icons[name]);
+		});
+	return sortedIcons;
+}
+
+/**
  * Convert collection data
  */
 export function dataToCollection(
@@ -299,11 +442,10 @@ export function dataToCollection(
 	}
 
 	// Check for categories
-	const tags: string[] =
+	let tags: string[] =
 		typeof source.categories === 'object' && source.categories !== null
 			? Object.keys(source.categories)
 			: [];
-	const hasTags = tags.length > 0;
 
 	let hasUncategorised = false,
 		uncategorisedKey = 'uncategorized';
@@ -321,19 +463,22 @@ export function dataToCollection(
 
 	// Find all icons
 	const icons: Record<string, Icon> = Object.create(null);
-	tags.forEach((tag) => {
-		const list = (source.categories as Record<string, string[]>)[tag];
-		list.forEach((name) => {
+
+	function addCategory(iconsList: string[], category: string): boolean {
+		let added = false;
+		iconsList.forEach((name) => {
 			if (typeof name !== 'string') {
 				return;
 			}
+
+			added = true;
 			if (icons[name] === void 0) {
 				// Add new icon
 				const icon: Icon = {
 					provider,
 					prefix: result.prefix,
-					name: name,
-					tags: [tag],
+					name,
+					tags: [category],
 				};
 				icons[name] = icon;
 				return;
@@ -343,10 +488,29 @@ export function dataToCollection(
 			if (icons[name].tags === void 0) {
 				icons[name].tags = [];
 			}
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			icons[name].tags!.push(tag);
+			if (icons[name].tags!.indexOf(category) === -1) {
+				icons[name].tags!.push(category);
+			}
 		});
+		return added;
+	}
+
+	tags = tags.filter((category) => {
+		let added = false;
+		const categoryItems = (source.categories as Categories)[category];
+		if (categoryItems instanceof Array) {
+			added = addCategory(categoryItems, category);
+		} else {
+			Object.keys(categoryItems).forEach((subcategory) => {
+				const subcategoryItems = categoryItems[subcategory];
+				if (subcategoryItems instanceof Array) {
+					added = addCategory(subcategoryItems, category) || added;
+				}
+			});
+		}
+		return added;
 	});
+	const hasTags = tags.length > 0;
 
 	// Add uncategorised icons
 	if (hasUncategorised) {
@@ -374,19 +538,9 @@ export function dataToCollection(
 		}
 	}
 
-	// Add characters and aliases
+	// Add characters
 	if (typeof source.chars === 'object') {
-		const chars = source.chars as Record<string, string>;
-		Object.keys(chars).forEach((char) => {
-			const name = chars[char];
-			if (icons[name] !== void 0) {
-				const icon = icons[name];
-				if (icon.chars === void 0) {
-					icon.chars = [];
-				}
-				icon.chars.push(char);
-			}
-		});
+		parseChars(source.chars as IconifyChars, icons);
 	}
 
 	// Add aliases
@@ -405,12 +559,7 @@ export function dataToCollection(
 	}
 
 	// Convert to sorted array
-	const sortedIcons: Icon[] = [];
-	Object.keys(icons)
-		.sort((a, b) => a.localeCompare(b))
-		.forEach((key) => {
-			sortedIcons.push(icons[key]);
-		});
+	const sortedIcons = sortIcons(icons);
 
 	// Check tags
 	if (tags.length > 1) {
@@ -423,105 +572,215 @@ export function dataToCollection(
 	}
 
 	// Add themes
-	const themePrefixes: string[] = [],
-		themeSuffixes: string[] = [];
-
 	if (typeof source.themes === 'object' && source.themes !== null) {
 		const themes = source.themes as IconifyThemes;
-		Object.keys(themes).forEach((key) => {
-			const theme = themes[key];
-
-			// Find and validate all prefixes
-			if (theme.prefix !== void 0) {
-				let themePrefix = theme.prefix;
-				if (themePrefix.slice(-1) !== '-') {
-					themePrefix += '-';
-				}
-				const length = themePrefix.length;
-
-				let found = false;
-				sortedIcons.forEach((icon) => {
-					if (icon.name.slice(0, length) === themePrefix) {
-						icon.themePrefix = theme.title;
-						found = true;
-					}
-				});
-
-				if (found) {
-					themePrefixes.push(theme.title);
-				}
-			}
-
-			// Find and validate all suffixes
-			if (theme.suffix !== void 0) {
-				let themeSuffix = theme.suffix;
-				if (themeSuffix.slice(0, 1) !== '-') {
-					themeSuffix = '-' + themeSuffix;
-				}
-				const length = 0 - themeSuffix.length;
-
-				let found = false;
-				sortedIcons.forEach((icon) => {
-					if (icon.name.slice(length) === themeSuffix) {
-						icon.themeSuffix = theme.title;
-						found = true;
-					}
-				});
-
-				if (found) {
-					themeSuffixes.push(theme.title);
-				}
-			}
-		});
-
-		// Check for icons without prefix and validate prefixes
-		if (themePrefixes.length) {
-			let missing = false;
-			sortedIcons.forEach((icon) => {
-				if (icon.themePrefix === void 0) {
-					icon.themePrefix = '';
-					missing = true;
-				}
-			});
-			if (missing) {
-				themePrefixes.push('');
-			}
-
-			// Add prefixes to result
-			if (themePrefixes.length > 1) {
-				result.themePrefixes = themePrefixes;
-			} else {
-				// All icons have same prefix - delete it
-				sortedIcons.forEach((icon) => delete icon.themePrefix);
-			}
-		}
-
-		// Same for suffixes
-		if (themeSuffixes.length) {
-			let missing = false;
-			sortedIcons.forEach((icon) => {
-				if (icon.themeSuffix === void 0) {
-					icon.themeSuffix = '';
-					missing = true;
-				}
-			});
-			if (missing) {
-				themeSuffixes.push('');
-			}
-
-			// Add suffixes to result
-			if (themeSuffixes.length > 1) {
-				result.themeSuffixes = themeSuffixes;
-			} else {
-				// All icons have same suffix - delete it
-				sortedIcons.forEach((icon) => delete icon.themeSuffix);
-			}
-		}
+		parseThemes(themes, sortedIcons, result);
 	}
 
 	// Add icons
 	result.icons = sortedIcons;
 	result.total = result.icons.length;
+	if (result.info) {
+		result.info.total = result.total;
+	}
+
+	return result;
+}
+
+/**
+ * Convert raw data from icon set
+ */
+export function rawDataToCollection(
+	source: IconifyJSON
+): CollectionData | null {
+	/**
+	 * Add icon
+	 */
+	function addIcon(name: string, depth = 0): string | null {
+		if (depth > 3) {
+			// Alias recursion is too high. Do not make aliases of aliases.
+			return null;
+		}
+
+		if (icons[name] !== void 0) {
+			// Already added
+			return name;
+		}
+
+		// Add icon
+		if (source.icons[name] !== void 0) {
+			if (!source.icons[name].hidden) {
+				icons[name] = {
+					provider: result.provider,
+					prefix: result.prefix,
+					name,
+					tags: [],
+				};
+				return name;
+			}
+			return null;
+		}
+
+		// Add alias
+		if (
+			source.aliases &&
+			source.aliases[name] !== void 0 &&
+			!source.aliases[name].hidden
+		) {
+			// Resolve alias
+			const item = source.aliases[name];
+			const parent = item.parent;
+
+			// Add parent icon
+			const added = addIcon(parent, depth + 1);
+			if (added !== null) {
+				// Icon was added, which means parent icon is a viable icon
+				// Check if new icon is an alias or full icon
+				if (!(item.rotate || item.hFlip || item.vFlip)) {
+					// Alias
+					const parentIcon = icons[added];
+					if (!parentIcon.aliases) {
+						parentIcon.aliases = [name];
+					} else if (parentIcon.aliases.indexOf(name) === -1) {
+						parentIcon.aliases.push(name);
+					}
+					return added;
+				} else {
+					// New icon
+					icons[name] = {
+						provider: result.provider,
+						prefix: result.prefix,
+						name,
+						tags: [],
+					};
+					return name;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Add tag to icons
+	 */
+	function addTag(iconsList: string[], tag: string): boolean {
+		let added = false;
+		iconsList.forEach((name) => {
+			if (
+				icons[name] !== void 0 &&
+				icons[name].tags!.indexOf(tag) === -1
+			) {
+				icons[name].tags!.push(tag);
+				added = true;
+			}
+		});
+		return added;
+	}
+
+	// Check required fields
+	if (typeof source.prefix !== 'string') {
+		return null;
+	}
+
+	const result: CollectionData = {
+		provider: typeof source.provider === 'string' ? source.provider : '',
+		prefix: source.prefix,
+		name: '',
+		total: 0,
+		icons: [],
+	};
+
+	// Get required info
+	if (typeof source.info !== 'object' || source.info === null) {
+		return null;
+	}
+
+	const info = dataToCollectionInfo(source.info, result.prefix);
+	if (info === null) {
+		// Invalid info block, so something is wrong
+		return null;
+	}
+	result.info = info;
+
+	// Get collection name
+	result.name = result.info.name;
+
+	// Find all icons
+	const icons: Record<string, Icon> = Object.create(null);
+	Object.keys(source.icons).forEach((name) => addIcon(name));
+	if (typeof source.aliases === 'object') {
+		Object.keys(source.aliases).forEach((name) => addIcon(name));
+	}
+	const iconNames = Object.keys(icons);
+
+	// Check for categories
+	const tags: string[] = [];
+	if (typeof source.categories === 'object' && source.categories !== null) {
+		let hasUncategorised = false;
+		const categories = source.categories as Categories;
+		Object.keys(categories).forEach((category) => {
+			const categoryItems = categories[category];
+
+			// Array
+			if (categoryItems instanceof Array) {
+				if (addTag(categoryItems, category)) {
+					tags.push(category);
+				}
+			} else if (typeof categoryItems === 'object') {
+				// Sub-categories. No longer used, but can be found in some older icon sets
+				Object.keys(categoryItems).forEach((subcategory) => {
+					const subcategoryItems = categoryItems[subcategory];
+					if (subcategoryItems instanceof Array) {
+						if (
+							addTag(subcategoryItems, category) &&
+							tags.indexOf(category) === -1
+						) {
+							tags.push(category);
+						}
+					}
+				});
+			}
+		});
+
+		// Check if icons without categories exist
+		iconNames.forEach((name) => {
+			if (!icons[name].tags!.length) {
+				icons[name].tags!.push('');
+				hasUncategorised = true;
+			}
+		});
+		if (hasUncategorised) {
+			tags.push('');
+		}
+	}
+
+	// Remove tags if there are less than 2 categories
+	if (tags.length < 2) {
+		Object.keys(icons).forEach((name) => {
+			delete icons[name].tags;
+		});
+	} else {
+		result.tags = tags;
+	}
+
+	// Add characters
+	if (typeof source.chars === 'object') {
+		parseChars(source.chars, icons);
+	}
+
+	// Sort icons
+	const sortedIcons = sortIcons(icons);
+
+	// Add themes
+	if (typeof source.themes === 'object' && source.themes !== null) {
+		const themes = source.themes as IconifyThemes;
+		parseThemes(themes, sortedIcons, result);
+	}
+
+	// Add icons
+	result.icons = sortedIcons;
+	result.total = result.info.total = result.icons.length;
 
 	return result;
 }

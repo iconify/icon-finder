@@ -32,10 +32,7 @@ describe('Testing collection view', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(
-		prefix: string,
-		routeParams: Partial<CollectionRouteParams> | null = null
-	): Registry {
+	function setupRegistry(prefix: string): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 
 		// Change pagination limit for tests to 48
@@ -66,7 +63,7 @@ describe('Testing collection view', () => {
 		prefix: string,
 		routeParams: Partial<CollectionRouteParams> | null = null
 	): CollectionView {
-		const registry = setupRegistry(prefix, routeParams);
+		const registry = setupRegistry(prefix);
 
 		// Sign up for event
 		const events = registry.events;

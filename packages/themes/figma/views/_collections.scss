@@ -10,6 +10,10 @@
 
 	.iif-block--filter {
 		padding-left: 8px;
+		&:first-child {
+			// No categories
+			padding-left: 0;
+		}
 	}
 	.iif-block--filter {
 		margin: 8px 0 0;
