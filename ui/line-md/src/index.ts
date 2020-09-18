@@ -22,12 +22,12 @@ const main = new Wrapper({
 		provider,
 		info: {
 			[prefix]: {
-				name: 'Line 24',
+				name: 'Animated Material Line Icons',
 				author: 'Iconify',
 				url: 'https://github.com/iconify',
 				license: 'Apache 2.0',
 				height: 24,
-				samples: ['home', 'arrow-left', 'edit-twotone'],
+				samples: ['home', 'image-twotone', 'edit-twotone'],
 				palette: false,
 				category: 'General',
 			},
