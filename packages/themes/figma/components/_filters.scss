@@ -1,3 +1,8 @@
+// Container
+.iff-filters {
+}
+
+// Block
 .iif-block--filters {
 	margin: 7px -1px;
 	padding: 1px;
@@ -5,6 +10,7 @@
 	overflow-y: auto;
 	transition: max-height 0.3s ease;
 
+	// Header text
 	.iif-filters-header {
 		@include plugin-font-ui-pos('medium', 'normal');
 		margin: 8px 1px 4px;
@@ -20,8 +26,16 @@
 		box-shadow: 0 0 1px $plugin-palette-background-rotation-blue;
 		outline: none;
 	}
+
+	// Disable header for categories if no other filters are available
+	&--tags:only-child {
+		.iif-filters-header {
+			display: none;
+		}
+	}
 }
 
+// Link
 .iif-filter,
 a.iif-filter {
 	box-sizing: border-box;

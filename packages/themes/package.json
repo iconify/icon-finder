@@ -7,7 +7,7 @@
 	"license": "(Apache-2.0 OR GPL-2.0)",
 	"main": "build.js",
 	"scripts": {
-		"build": "node build",
+		"build": "node build --all",
 		"dev": "node watch",
 		"watch": "node watch"
 	},

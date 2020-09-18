@@ -34,11 +34,13 @@ const main = new Wrapper({
 		},
 	},
 	state: {
+		/*
 		icon: {
 			provider,
 			prefix,
 			name: 'home',
 		},
+		*/
 		route: {
 			type: 'collection',
 			params: {

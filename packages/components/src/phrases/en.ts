@@ -50,7 +50,7 @@ export const phrases: UITranslation = {
 		'uncategorised': 'Uncategorised',
 		'collections': 'Filter search results by icon set:',
 		'collections-collections': '',
-		'tags': 'Filter by tag:',
+		'tags': 'Filter by category:',
 		'themePrefixes': 'Icon type:',
 		'themeSuffixes': 'Icon type:',
 	},

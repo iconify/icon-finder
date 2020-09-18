@@ -20,11 +20,19 @@ const addThemes = (value, err) => {
 	const parts = value.split(',');
 	parts.forEach((theme) => {
 		if (!theme.match(themeMatch)) {
+			if (err === false) {
+				// Ignore error
+				return;
+			}
 			console.error(err);
 			process.exit(1);
 		}
 
 		if (reservedDirs.indexOf(theme.toLowerCase()) !== -1) {
+			if (err === false) {
+				// Ignore error
+				return;
+			}
 			console.error(err);
 			process.exit(1);
 		}
@@ -43,6 +51,19 @@ if (process.argv.length > 2) {
 				case '--verbose':
 					verbose = true;
 					return;
+
+				case '--all':
+					fs.readdirSync(__dirname).forEach((file) => {
+						try {
+							fs.lstatSync(
+								__dirname + '/' + file + '/theme.json'
+							);
+							fs.lstatSync(
+								__dirname + '/' + file + '/theme.scss'
+							);
+							addThemes(file, false);
+						} catch (err) {}
+					});
 
 				case '--theme':
 					// next argument is theme

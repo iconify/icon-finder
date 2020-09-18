@@ -39,18 +39,25 @@
 			collectionsLink = '';
 		}
 	}
+
+	let hasFilters; /** @type {boolean} */
+	$: {
+		hasFilters = filterBlocks.filter(key => !!blocks[key]).length > 0;
+	}
 </script>
 
 <div
 	class="iif-view {baseClass}
 	{baseClass}--prefix--{prefix + (provider === '' ? '' : ' ' + baseClass + '--provider--' + provider)}">
 	{#if blocks.collections}
-		<FiltersBlock
-			{registry}
-			name="collections"
-			parent={route.parent ? route.parent.type : 'collections'}
-			link={collectionsLink}
-			block={blocks.collections} />
+		<div class="iff-filters">
+			<FiltersBlock
+				{registry}
+				name="collections"
+				parent={route.parent ? route.parent.type : 'collections'}
+				link={collectionsLink}
+				block={blocks.collections} />
+		</div>
 	{/if}
 
 	{#if showCollectionInfoBlock && info !== null}
@@ -59,11 +66,15 @@
 
 	<SearchBlock {registry} name="filter" block={blocks.filter} {info} />
 
-	{#each filterBlocks as key, i (key)}
-		{#if blocks[key]}
-			<FiltersBlock {registry} name={key} block={blocks[key]} />
-		{/if}
-	{/each}
+	{#if hasFilters}
+		<div class="iff-filters">
+			{#each filterBlocks as key, i (key)}
+				{#if blocks[key]}
+					<FiltersBlock {registry} name={key} block={blocks[key]} />
+				{/if}
+			{/each}
+		</div>
+	{/if}
 
 	<IconsWithPages {registry} {blocks} {selectedIcon} {route} />
 </div>
