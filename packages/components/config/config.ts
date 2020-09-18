@@ -57,6 +57,11 @@ export interface IconFinderComponentsConfig {
 		clickable: boolean;
 	};
 
+	// Options for collection view
+	collectionView: {
+		showInfo: boolean;
+	};
+
 	// Footer
 	showFooter: boolean;
 	footer: {
@@ -99,6 +104,9 @@ export interface IconFinderComponentsConfig {
 		};
 		showCustomisationsTitle: boolean; // Shows title in customisations block
 
+		// Code blocks
+		showCode: boolean;
+
 		// Buttons
 		showButtons: boolean;
 		buttons: Record<string, FooterButton>;
@@ -106,6 +114,9 @@ export interface IconFinderComponentsConfig {
 		// Full sample maximum dimensions
 		fullSample: IconFinderConfigFooterSample;
 	};
+
+	// Custom phrases
+	phrases: Record<string, unknown>;
 }
 
 /**
@@ -124,10 +135,15 @@ export function config(): IconFinderComponentsConfig {
 		// Shorten icon name when prefix is not needed
 		canShortenName: false,
 
-		// Collections list
+		// Collections list options
 		collectionsList: {
 			authorLink: false,
 			clickable: false,
+		},
+
+		// Collection view options
+		collectionView: {
+			showInfo: true,
 		},
 
 		// Footer
@@ -165,6 +181,9 @@ export function config(): IconFinderComponentsConfig {
 			},
 			showCustomisationsTitle: false,
 
+			// Code
+			showCode: false,
+
 			// Buttons
 			showButtons: true,
 			buttons: Object.create(null),
@@ -175,6 +194,9 @@ export function config(): IconFinderComponentsConfig {
 				height: 300,
 			},
 		},
+
+		// Custom phrases
+		phrases: {},
 	};
 }
 

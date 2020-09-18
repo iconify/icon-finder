@@ -11,7 +11,7 @@ import {
 	customisedConfig,
 	Registry,
 } from '@iconify/search-core';
-import { phrases } from './modules/phrases';
+import { mergePhrases, phrases } from './modules/phrases';
 import { init } from './misc/init';
 import {
 	UIEvent,
@@ -33,6 +33,9 @@ function assertNever(s: never) {}
 
 // Instance status
 export type WrapperStatus = '' | 'loading' | 'hidden' | 'destroyed';
+
+// @iconify-replacement: 'customPhrases = {}'
+const customPhrases = {};
 
 /**
  * Wrapper class
@@ -86,7 +89,14 @@ export class Wrapper {
 		const registry = (this._registry = core.registry);
 
 		// Set phrases
-		registry.setCustom('phrases', phrases);
+		registry.setCustom(
+			'phrases',
+			mergePhrases([
+				phrases,
+				customPhrases,
+				params.phrases ? params.phrases : {},
+			])
+		);
 
 		// Callback
 		registry.setCustom('callback', this._internalCallback.bind(this));

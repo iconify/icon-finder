@@ -6,8 +6,18 @@
 	},
 	"components": {
 		"canShortenName": true,
+		"collectionView": {
+			"showInfo": false
+		},
 		"footer": {
 			"showButtons": false
+		},
+		"phrases": {
+			"search": {
+				"placeholder": {
+					"collection": "Search icons..."
+				}
+			}
 		}
 	}
 }

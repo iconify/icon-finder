@@ -18,7 +18,7 @@ const main = new Wrapper({
 	},
 	iconSets: {
 		iconSets: [iconSet],
-		merge: 'custom-first', // 'only-custom',
+		merge: 'only-custom',
 		provider,
 		info: {
 			[prefix]: {
@@ -39,7 +39,6 @@ const main = new Wrapper({
 			prefix,
 			name: 'home',
 		},
-		/*
 		route: {
 			type: 'collection',
 			params: {
@@ -47,7 +46,6 @@ const main = new Wrapper({
 				prefix,
 			} as CollectionRouteParams,
 		},
-		*/
 		config: {
 			ui: {
 				list: true,

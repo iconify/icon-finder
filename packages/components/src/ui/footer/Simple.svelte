@@ -1,3 +1,11 @@
+<script context="module">
+	// @iconify-replacement: 'canShowIconProperties = true'
+	const canShowIconProperties = true;
+
+	// @iconify-replacement: 'canShowIconCode = true'
+	const canShowIconCode = true;
+</script>
+
 <script>
 	import Block from '../Block.svelte';
 	// @iconify-replacement: '/parts/name/Simple.svelte'
@@ -5,6 +13,8 @@
 	import ButtonsContainer from './parts/Buttons.svelte';
 	// @iconify-replacement: './parts/Properties.svelte'
 	import PropertiesContainer from './parts/Properties.svelte';
+	// @iconify-replacement: './parts/Code.svelte'
+	import CodeContainer from './parts/Code.svelte';
 
 	export let registry; /** @type {Registry} */
 	export let loaded; /** @type {boolean} */
@@ -19,12 +29,15 @@
 {#if loaded | footerOptions.showButtons}
 	<Block type="footer">
 		<IconName {registry} {iconName} {loaded} {selectedIcon} {route} />
-		{#if loaded}
+		{#if canShowIconProperties && loaded}
 			<PropertiesContainer
 				{registry}
 				{iconName}
 				{customise}
 				{iconCustomisations} />
+		{/if}
+		{#if canShowIconCode && loaded}
+			<CodeContainer {registry} {iconName} {iconCustomisations} />
 		{/if}
 		{#if footerOptions.showButtons}
 			<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />

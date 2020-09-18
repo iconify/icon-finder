@@ -155,6 +155,13 @@ export function getReplacements(
 			replacements['collectionClickable = false'] =
 				'collectionClickable = true';
 		}
+
+		// Collection view
+		if (!components.collectionView.showInfo) {
+			replacements['showCollectionInfoBlock = true'] =
+				'showCollectionInfoBlock = false';
+			replacements['../blocks/CollectionInfo.svelte'] = '../Empty.svelte';
+		}
 	}
 
 	/**
@@ -337,6 +344,12 @@ export function getReplacements(
 		// Customisations
 		footerCustomisations();
 
+		// Code
+		if (!components.footer.showCode) {
+			replacements['canShowIconCode = true'] = 'canShowIconCode = false';
+			replacements['./parts/Code.svelte'] = '../Empty.svelte';
+		}
+
 		// Footer options replacement
 		// console.log(footerOptions);
 		replacements['footerOptions = {}'] =
@@ -402,6 +415,10 @@ export function getReplacements(
 			components.language !== 'en'
 		) {
 			replacements['/phrases/en'] = '/phrases/' + components.language;
+		}
+		if (Object.keys(components.phrases).length > 0) {
+			replacements['customPhrases = {}'] =
+				'customPhrases = ' + JSON.stringify(components.phrases);
 		}
 	}
 

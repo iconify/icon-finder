@@ -1,11 +1,15 @@
 <script context="module">
 	const filterBlocks = ['tags', 'themePrefixes', 'themeSuffixes'];
 	const baseClass = 'iif-view--collection';
+
+	// @iconify-replacement: 'showCollectionInfoBlock = true'
+	const showCollectionInfoBlock = true;
 </script>
 
 <script>
 	import { getProvider } from '@iconify/search-core';
 	import FiltersBlock from '../blocks/Filters.svelte';
+	// @iconify-replacement: '../blocks/CollectionInfo.svelte'
 	import CollectionInfoBlock from '../blocks/CollectionInfo.svelte';
 	import IconsWithPages from '../blocks/IconsWithPages.svelte';
 	import SearchBlock from '../blocks/Search.svelte';
@@ -49,7 +53,7 @@
 			block={blocks.collections} />
 	{/if}
 
-	{#if info !== null}
+	{#if showCollectionInfoBlock && info !== null}
 		<CollectionInfoBlock {registry} name="info" block={blocks.info} />
 	{/if}
 
