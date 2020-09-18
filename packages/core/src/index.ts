@@ -75,7 +75,11 @@ export type Registry = RegistryClass;
 
 // From config
 export { IconFinderConfig };
-export { customisedConfig, mergeConfig } from './data/config';
+export {
+	customisedConfig,
+	mergeConfig,
+	setComponentsConfig,
+} from './data/config';
 
 // From views
 export { ViewBlocks } from './views/types';

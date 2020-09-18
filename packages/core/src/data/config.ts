@@ -13,11 +13,6 @@ export interface IconFinderUIConfig {
 
 	// Number of sibling collections to show when collection view is child view of collections list.
 	showSiblingCollections?: number;
-
-	// Icons list mode.
-	list?: boolean;
-	// True if icons list mode can be changed.
-	toggleList?: boolean;
 }
 
 /**
@@ -37,6 +32,9 @@ export interface IconFinderConfig {
 
 	// Router
 	router?: IconFinderRouterConfig;
+
+	// Components
+	components?: Record<string, unknown>;
 }
 
 export type FullIconFinderConfig = Required<IconFinderConfig>;
@@ -54,11 +52,6 @@ const defaultUIConfig: Required<IconFinderUIConfig> = {
 
 	// Number of sibling collections to show when collection view is child view of collections list.
 	showSiblingCollections: 2,
-
-	// Icons list mode.
-	list: false,
-	// True if icons list mode can be changed.
-	toggleList: true,
 };
 
 /**
@@ -81,7 +74,17 @@ const defaultConfig: FullIconFinderConfig = {
 
 	// Router
 	router: defaultRouterConfig,
+
+	// Components
+	components: {},
 };
+
+/**
+ * Set default components config
+ */
+export function setComponentsConfig(config: Record<string, unknown>): void {
+	defaultConfig.components = Object.assign(config);
+}
 
 /**
  * Merge data
@@ -132,8 +135,8 @@ export function customisedConfig(
 
 	for (const key in config) {
 		const attr = key as keyof IconFinderConfig;
-		const defaultSource = defaultConfig[attr];
-		const configSource = config[attr];
+		const defaultSource = defaultConfig[attr] as Record<string, unknown>;
+		const configSource = config[attr] as Record<string, unknown>;
 		const child: typeof configSource = {};
 		let found = false;
 

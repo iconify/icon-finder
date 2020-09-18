@@ -50,7 +50,10 @@ const main = new Wrapper({
 		},
 		config: {
 			ui: {
-				list: true,
+				itemsPerPage: 15 * 4,
+			},
+			components: {
+				list: false,
 			},
 		},
 	},

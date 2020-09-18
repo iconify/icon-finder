@@ -45,7 +45,7 @@ const main = new Wrapper({
 			} as CollectionsRoute,
 		},
 		config: {
-			ui: {
+			components: {
 				list: true,
 			},
 		},

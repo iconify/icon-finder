@@ -74,4 +74,7 @@ export interface UITranslation {
 		rotate: string;
 		rotateTitle: string;
 	};
+	code: {
+		titles: Record<string, string>;
+	};
 }

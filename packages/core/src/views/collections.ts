@@ -287,74 +287,77 @@ export class CollectionsView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		interface ParsedList {
-			isCustom: boolean;
-			categories: CollectionsList | null;
-		}
-
-		// Get list of parsed data
-		const parsedData: ParsedList[] = [];
-		if (this._sources.api) {
-			parsedData.push({
-				isCustom: false,
-				categories: dataToCollections(data as CollectionsListRawData),
-			});
-		}
-		if (this._sources.custom) {
-			// Get data
-			const registry = getRegistry(this._instance);
-			const customSets = registry.customIconSets;
-			const customCollections =
-				customSets.providers[this.route.params.provider].collections;
-
-			// Unshift or push it, depending on merge order
-			parsedData[
-				this._sources.merge === 'custom-first' ? 'unshift' : 'push'
-			]({
-				isCustom: true,
-				categories: customCollections,
-			});
-		}
-
-		// Merge collections list
-		this._data = Object.create(null);
-		const usedPrefixes: Record<string, string> = Object.create(null);
-		parsedData.forEach((item) => {
-			// Do not merge if API failed
-			if (item.categories === null) {
-				this._data = null;
-				return;
+		if (this._sources.api && !data) {
+			// Error
+			this._data = null;
+		} else {
+			interface ParsedList {
+				isCustom: boolean;
+				categories: CollectionsList;
 			}
-			if (this._data === null) {
-				return;
-			}
-			const data = this._data;
 
-			// Parse all categories
-			const collectionsList = item.categories;
-			Object.keys(collectionsList).forEach((category) => {
-				const categoryItems = collectionsList[category];
-				Object.keys(categoryItems).forEach((prefix) => {
-					if (usedPrefixes[prefix] !== void 0) {
-						// Prefix has already been parsed
-						if (item.isCustom) {
-							// Remove previous entry
-							delete data[usedPrefixes[prefix]][prefix];
-						} else {
-							// Do not overwrite: always show set from API in case of duplicate entries
-							return;
+			// Get list of parsed data
+			const parsedData: ParsedList[] = [];
+			if (this._sources.api) {
+				parsedData.push({
+					isCustom: false,
+					categories: dataToCollections(
+						data as CollectionsListRawData
+					),
+				});
+			}
+			if (this._sources.custom) {
+				// Get data
+				const registry = getRegistry(this._instance);
+				const customSets = registry.customIconSets;
+				const customCollections =
+					customSets.providers[this.route.params.provider]
+						.collections;
+
+				// Unshift or push it, depending on merge order
+				parsedData[
+					this._sources.merge === 'custom-first' ? 'unshift' : 'push'
+				]({
+					isCustom: true,
+					categories: customCollections,
+				});
+			}
+
+			// Setup result as empty object
+			this._data = Object.create(null) as CollectionsList;
+			const dataItem = this._data;
+
+			// Store prefixes map to avoid duplicates
+			const usedPrefixes: Record<string, string> = Object.create(null);
+
+			// Parse all data
+			parsedData.forEach((item) => {
+				// Parse all categories
+				const collectionsList = item.categories;
+				Object.keys(collectionsList).forEach((category) => {
+					const categoryItems = collectionsList[category];
+					Object.keys(categoryItems).forEach((prefix) => {
+						if (usedPrefixes[prefix] !== void 0) {
+							// Prefix has already been parsed
+							if (item.isCustom) {
+								// Remove previous entry
+								delete dataItem[usedPrefixes[prefix]][prefix];
+							} else {
+								// Do not overwrite: always show set from API in case of duplicate entries
+								return;
+							}
 						}
-					}
 
-					// Add item
-					usedPrefixes[prefix] = category;
-					if (data[category] === void 0) {
-						data[category] = Object.create(null);
-					}
-					data[category][prefix] = categoryItems[prefix];
+						// Add item
+						usedPrefixes[prefix] = category;
+						if (dataItem[category] === void 0) {
+							dataItem[category] = Object.create(null);
+						}
+						dataItem[category][prefix] = categoryItems[prefix];
+					});
 				});
 			});
-		});
+		}
 
 		// Mark as loaded and mark blocks for re-render
 		this.loading = false;

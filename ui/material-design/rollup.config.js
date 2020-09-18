@@ -22,7 +22,8 @@ try {
 
 	// Copy theme file
 	const themeData = readFileSync(
-		require.resolve(`@iconify/search-themes/dist/${theme}.css`, 'utf8')
+		require.resolve(`@iconify/search-themes/dist/${theme}.css`),
+		'utf8'
 	);
 	writeFileSync(`dist/${theme}.css`, themeData, 'utf8');
 	console.log(`Saved dist/${theme}.css (${themeData.length} bytes)`);

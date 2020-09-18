@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import typescript from 'rollup-plugin-typescript2';
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
@@ -17,15 +17,18 @@ let theme;
 try {
 	// Get from UI_THEME variable
 	theme = process.env.UI_THEME;
+	console.log('Copying theme:', theme);
 
 	// Copy theme file
 	const themeData = readFileSync(
-		require.resolve(`@iconify/search-themes/dist/${theme}.css`, 'utf8')
+		require.resolve(`@iconify/search-themes/dist/${theme}.css`),
+		'utf8'
 	);
 	writeFileSync(`dist/${theme}.css`, themeData, 'utf8');
 	console.log(`Saved dist/${theme}.css (${themeData.length} bytes)`);
 } catch (err) {
-	throw new Error('Could not detect current theme. Run `node build`');
+	console.error(err);
+	throw new Error('Failed to copy current theme. Run `node build`');
 }
 
 /**

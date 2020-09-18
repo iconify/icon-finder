@@ -120,6 +120,9 @@ export function loadThemeConfig(
 	const themeConfigFile = locateThemeFile(theme, 'config');
 	const themeStylesheetFile = locateThemeFile(theme, 'stylesheet');
 	if (!fileExists(themeConfigFile) || !fileExists(themeStylesheetFile)) {
+		if (params.verbose) {
+			console.log('Missing theme files. Going to rebuild theme');
+		}
 		params.rebuild.theme = true;
 	}
 

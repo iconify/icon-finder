@@ -2,9 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const child_process = require('child_process');
 
-const commands = [];
 // List of commands to run
-const params = process.argv.slice(2);
+const commands = [];
 
 // Check if required modules in same monorepo are available
 const fileExists = (file) => {

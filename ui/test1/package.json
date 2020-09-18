@@ -8,7 +8,7 @@
 	"scripts": {
 		"build": "node build",
 		"build:iconify": "node build --config-file configurator.iconify.json",
-		"build:iconify-new": "node build --theme iconify-new",
+		"build:iconify2": "node build --theme iconify2",
 		"build:dist": "rollup -c rollup.config.js"
 	},
 	"bugs": "https://github.com/iconify/icon-finder/issues",

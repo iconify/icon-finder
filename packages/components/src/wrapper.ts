@@ -10,6 +10,7 @@ import {
 	validateIcon,
 	customisedConfig,
 	Registry,
+	setComponentsConfig,
 } from '@iconify/search-core';
 import { mergePhrases, phrases } from './modules/phrases';
 import { init } from './misc/init';
@@ -27,6 +28,7 @@ import {
 } from './wrapper/svelte';
 import { IconFinderEvent } from './wrapper/events';
 import { PartialIconCustomisations } from './misc/customisations';
+import { defaultComponentsConfig } from './misc/config';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental, @typescript-eslint/no-empty-function
 function assertNever(s: never) {}
@@ -36,6 +38,9 @@ export type WrapperStatus = '' | 'loading' | 'hidden' | 'destroyed';
 
 // @iconify-replacement: 'customPhrases = {}'
 const customPhrases = {};
+
+// Add components configuration to config object
+setComponentsConfig(defaultComponentsConfig);
 
 /**
  * Wrapper class

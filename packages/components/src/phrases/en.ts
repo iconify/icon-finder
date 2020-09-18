@@ -120,4 +120,10 @@ export const phrases: UITranslation = {
 		rotate: '{num}' + String.fromCharCode(0x00b0),
 		rotateTitle: 'Rotate {num}' + String.fromCharCode(0x00b0),
 	},
+	code: {
+		titles: {
+			iconify: 'SVG Framework',
+			svg: 'SVG',
+		},
+	},
 };
