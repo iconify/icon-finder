@@ -12,20 +12,21 @@
 	const uiIconsClass = '';
 
 	// Add custom icons to Iconify
-	uiCustomIcons.forEach(data => {
+	uiCustomIcons.forEach((data) => {
 		Iconify.addCollection(data);
 	});
-
-	// Preload icons
-	Iconify.loadIcons(Object.values(uiIcons));
 </script>
 
 <script>
 	import { onDestroy } from 'svelte';
 
-	export let icon; /** @type {string} */
-	export let props; /** @type {object} */
-	export let onLoad; /** @type {function} */
+	export let icon;
+	/** @type {string} */
+	export let props;
+	/** @type {object} */
+	export let onLoad;
+
+	/** @type {function} */
 
 	// Local watched variables. Update them only if needed to avoid duplicate re-renders
 	let name = '';
@@ -33,6 +34,9 @@
 	let svg = '';
 	let updateCounter = 0;
 	let abortLoader = null;
+
+	// Preload icons
+	Iconify.loadIcons(Object.values(uiIcons));
 
 	// Resolve icon name
 	$: {
@@ -90,10 +94,10 @@
 				// console.log('Rendering:', name, iconProps);
 				let newSVG = Iconify.renderHTML(name, iconProps);
 				// console.log('Got:', newSVG);
-				if (uiIcons['class'] !== void 0) {
+				if (uiIconsClass !== '') {
 					newSVG = newSVG.replace(
 						' class="iconify ',
-						' class="iconify ' + uiIcons['class'] + ' '
+						' class="iconify ' + uiIconsClass + ' '
 					);
 				}
 

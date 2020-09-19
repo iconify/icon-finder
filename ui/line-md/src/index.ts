@@ -4,57 +4,57 @@ import { IconFinderEvent } from '@iconify/search-components/lib/wrapper/events';
 import { CollectionRouteParams } from '@iconify/search-core';
 
 // Load icon set
-import iconSet from './icons/line-md.json';
+fetch('./line-md.json')
+	.then((data) => {
+		return data.json();
+	})
+	.then((iconSet) => {
+		const container = document.getElementById('container')!;
+		const prefix = 'line-md';
+		container.innerHTML = '';
 
-const provider = '';
-const prefix = 'line-md';
-
-// Create instance
-const main = new Wrapper({
-	container: document.getElementById('container')!,
-	component: Container,
-	callback: (event: IconFinderEvent) => {
-		console.log('Event:', event);
-	},
-	iconSets: {
-		iconSets: [iconSet],
-		merge: 'only-custom',
-		provider,
-		info: {
-			[prefix]: {
-				name: 'Animated Material Line Icons',
-				author: 'Iconify',
-				url: 'https://github.com/iconify',
-				license: 'Apache 2.0',
-				height: 24,
-				samples: ['home', 'image-twotone', 'edit-twotone'],
-				palette: false,
-				category: 'General',
+		// Create instance
+		new Wrapper({
+			container,
+			component: Container,
+			callback: (event: IconFinderEvent) => {
+				console.log('Event:', event);
 			},
-		},
-	},
-	state: {
-		/*
-		icon: {
-			provider,
-			prefix,
-			name: 'home',
-		},
-		*/
-		route: {
-			type: 'collection',
-			params: {
-				provider,
-				prefix,
-			} as CollectionRouteParams,
-		},
-		config: {
-			ui: {
-				itemsPerPage: 15 * 4,
+			iconSets: {
+				iconSets: [iconSet],
+				merge: 'only-custom',
+				info: {
+					[prefix]: {
+						name: 'Animated Material Line Icons',
+						author: 'Iconify',
+						url: 'https://github.com/iconify',
+						license: 'Apache 2.0',
+						height: 24,
+						samples: ['home', 'image-twotone', 'edit-twotone'],
+						palette: false,
+						category: 'General',
+					},
+				},
 			},
-			components: {
-				list: false,
+			state: {
+				route: {
+					type: 'collection',
+					params: {
+						prefix,
+					} as CollectionRouteParams,
+				},
+				config: {
+					ui: {
+						itemsPerPage: 15 * 4,
+					},
+					components: {
+						list: false,
+					},
+				},
 			},
-		},
-	},
-});
+		});
+	})
+	.catch((err) => {
+		document.getElementById('container')!.innerHTML =
+			'Error fetching icon sets';
+	});
