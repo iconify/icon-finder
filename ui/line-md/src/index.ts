@@ -25,7 +25,7 @@ fetch('./line-md.json')
 				merge: 'only-custom',
 				info: {
 					[prefix]: {
-						name: 'Animated Material Line Icons',
+						name: 'Material Line Icons',
 						author: 'Iconify',
 						url: 'https://github.com/iconify',
 						license: 'Apache 2.0',

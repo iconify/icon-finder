@@ -7,29 +7,33 @@ import { terser } from 'rollup-plugin-terser';
 import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
+const targetDir = 'demo/dist';
 
-// Create 'dist'
+// Create target directory
 try {
-	mkdirSync('dist', 0o755);
+	mkdirSync(targetDir, 0o755);
 } catch (err) {}
 
-// Get current theme name
-let theme;
-try {
-	// Get from UI_THEME variable
-	theme = process.env.UI_THEME;
-	console.log('Using theme:', theme);
+// Get current theme name from UI_THEME variable
+const theme = process.env.UI_THEME;
+console.log('Using theme:', theme);
 
-	// Copy theme file
-	const themeData = readFileSync(
-		require.resolve(`@iconify/search-themes/dist/${theme}.css`),
-		'utf8'
-	);
-	writeFileSync(`dist/${theme}.css`, themeData, 'utf8');
-	console.log(`Saved dist/${theme}.css (${themeData.length} bytes)`);
-} catch (err) {
-	throw new Error('Could not detect current theme. Run `node build`');
-}
+// Copy stylesheets
+const copy = {
+	[`${theme}.css`]: require.resolve(
+		`@iconify/search-themes/dist/${theme}.css`
+	),
+	'line-md.css': require.resolve('@iconify/search-themes/line-md.css'),
+	'iconify.min.js': require.resolve(
+		'@iconify/search-components/node_modules/@iconify/iconify/dist/iconify.min.js'
+	),
+};
+
+Object.keys(copy).forEach((key) => {
+	const themeData = readFileSync(copy[key], 'utf8');
+	writeFileSync(`${targetDir}/${key}`, themeData, 'utf8');
+	console.log(`Saved ${targetDir}/${key} (${themeData.length} bytes)`);
+});
 
 /**
  * Export
@@ -41,7 +45,7 @@ export default [
 			sourcemap: true,
 			format: 'iife',
 			name: 'ui',
-			file: `dist/${theme}.js`,
+			file: `${targetDir}/${theme}.js`,
 			globals: {
 				'@iconify/iconify': 'Iconify',
 			},
@@ -64,12 +68,12 @@ export default [
 		},
 	},
 	{
-		input: `dist/${theme}.js`,
+		input: `${targetDir}/${theme}.js`,
 		output: {
 			sourcemap: false,
 			format: 'iife',
 			name: 'ui',
-			file: `dist/${theme}.min.js`,
+			file: `${targetDir}/${theme}.min.js`,
 			globals: {
 				'@iconify/iconify': 'Iconify',
 			},

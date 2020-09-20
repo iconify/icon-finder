@@ -2,16 +2,6 @@
 	"common": {
 		"theme": {
 			"name": "iconify2"
-		},
-		"providers": {
-			"show": true,
-			"canAdd": false,
-			"custom": {
-				"local": {
-					"api": "http://localhost:3100",
-					"title": "Local Test"
-				}
-			}
 		}
 	},
 	"components": {

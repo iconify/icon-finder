@@ -32,19 +32,10 @@
 	<body>
 		<script>
 			(function () {
-				var base = '../dist/figma.';
-				var suffix = '';
-				/*
-				try {
-					eval('let foo = () => 2');
-				} catch (err) {
-					suffix = 'ie11.';
-                }
-                */
 				var node = document.createElement('script');
 				node.type = 'text/javascript';
 				node.async = true;
-				node.src = base + suffix + 'js';
+				node.src = '../dist/figma.js';
 				document.head.appendChild(node);
 			})();
 		</script>

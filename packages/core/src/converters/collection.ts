@@ -563,7 +563,7 @@ export function dataToCollection(
 
 	// Check tags
 	if (tags.length > 1) {
-		result.tags = tags;
+		result.tags = tags.sort(sortTags);
 	} else if (hasTags) {
 		// Only one tag - delete tags
 		sortedIcons.forEach((icon) => {
@@ -761,7 +761,7 @@ export function rawDataToCollection(
 			delete icons[name].tags;
 		});
 	} else {
-		result.tags = tags;
+		result.tags = tags.sort(sortTags);
 	}
 
 	// Add characters
@@ -783,4 +783,17 @@ export function rawDataToCollection(
 	result.total = result.info.total = result.icons.length;
 
 	return result;
+}
+
+/**
+ * Sort categories
+ */
+function sortTags(a: string, b: string): number {
+	if (a === '') {
+		return 1;
+	}
+	if (b === '') {
+		return -1;
+	}
+	return a.localeCompare(b);
 }

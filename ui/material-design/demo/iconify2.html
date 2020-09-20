@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="stylesheet" href="../dist/iconify2.css" />
-		<link rel="stylesheet" href="../../../packages/themes/line-md.css" />
+		<link rel="stylesheet" href="./dist/iconify2.css" />
+		<link rel="stylesheet" href="./dist/line-md.css" />
 
 		<title>Custom Sets Demo</title>
 
@@ -25,27 +25,17 @@
 				color: #888;
 			}
 		</style>
-		<script src="../node_modules/@iconify/search-components/node_modules/@iconify/iconify/dist/iconify.js"></script>
-		<script src="https://code.iconify.design/samples.js"></script>
+		<script src="./dist/iconify.min.js"></script>
 	</head>
 
 	<body>
 		<div id="container"></div>
 		<script>
 			(function () {
-				var base = '../dist/iconify2.';
-				var suffix = '';
-				/*
-				try {
-					eval('let foo = () => 2');
-				} catch (err) {
-					suffix = 'ie11.';
-                }
-                */
 				var node = document.createElement('script');
 				node.type = 'text/javascript';
 				node.async = true;
-				node.src = base + suffix + 'js';
+				node.src = './dist/iconify2.js';
 				document.head.appendChild(node);
 			})();
 		</script>
