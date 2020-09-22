@@ -145,7 +145,7 @@
 		if (typeof options !== 'object') {
 			options = {};
 		}
-		Object.keys(defaultOptions).forEach(option => {
+		Object.keys(defaultOptions).forEach((option) => {
 			if (options[option] === void 0) {
 				options[option] = defaultOptions[option];
 			}
@@ -175,7 +175,7 @@
 			if (width > unit) {
 				svg += '<g transform="translate(' + width + ')">';
 			}
-			Object.keys(item.paths).forEach(function(key) {
+			Object.keys(item.paths).forEach(function (key) {
 				let path = item.paths[key];
 				svg += '<path d="' + path.d + '" />';
 			});
@@ -232,8 +232,10 @@
 </script>
 
 <script>
+	/** @type {string} */
 	export let text;
 
+	/** @type {string} */
 	let html;
 	$: {
 		html = iconHeight(text);

@@ -1,13 +1,17 @@
 <script>
 	import Icon from '../../misc/Icon.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let loaded; /** @type {boolean} */
-	export let iconName; /** @type {string} */
-	export let footerOptions; /** @type {object} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {boolean} */
+	export let loaded;
+	/** @type {string} */
+	export let iconName;
+	/** @type {object} */
+	export let footerOptions;
 
 	const buttons = footerOptions.buttons;
-	const items = Object.keys(buttons).map(key => {
+	const items = Object.keys(buttons).map((key) => {
 		let button = buttons[key];
 
 		return {
@@ -32,7 +36,9 @@
 <div class="iif-footer-buttons">
 	{#each items as item, i (item.key)}
 		{#if loaded || item.always}
-			<button class={item.className} on:click={onClick.bind(this, item.key)}>
+			<button
+				class={item.className}
+				on:click={onClick.bind(this, item.key)}>
 				{#if item.icon}
 					<Icon icon={item.icon} />
 				{/if}

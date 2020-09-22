@@ -9,14 +9,21 @@
 <script>
 	import Icon from '../../../misc/Icon.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let loaded; /** @type {boolean} */
-	export let iconName; /** @type {string} */
-	export let selectedIcon; /** @type {Icon} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {boolean} */
+	export let loaded;
+	/** @type {string} */
+	export let iconName;
+	/** @type {Icon} */
+	export let selectedIcon;
+	/** @type {PartialRoute} */
+	export let route;
 
+	/** @type {Record<string, string>} */
 	const phrases = registry.phrases.footer;
 
+	/** @type {string} */
 	let text;
 	$: {
 		// Do not show prefix if viewing collection

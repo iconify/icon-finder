@@ -2,13 +2,18 @@
 	import Block from '../Block.svelte';
 	import Icon from '../misc/Icon.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let error; /** @type {string} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let error;
+	/** @type {PartialRoute} */
+	export let route;
 
 	const phrases = registry.phrases.errors;
 
+	/** @type {string} */
 	let text;
+	/** @type {boolean} */
 	let canReturn;
 	$: {
 		canReturn =

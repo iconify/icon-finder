@@ -3,10 +3,14 @@
 	import CollectionsFilterBlock from '../blocks/CollectionsFilter.svelte';
 	import CollectionsListBlock from '../blocks/CollectionsList.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let blocks; /** @type {CollectionsViewBlocks | null} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {CollectionsViewBlocks | null} */
+	export let blocks;
+	/** @type {PartialRoute} */
+	export let route;
 
+	/** @type {string} */
 	let provider;
 	$: {
 		provider =
@@ -17,9 +21,15 @@
 <div class="iif-view iif-view--collections">
 	<div class="iif-collections-header">
 		{#if blocks.categories}
-			<FiltersBlock {registry} name="categories" block={blocks.categories} />
+			<FiltersBlock
+				{registry}
+				name="categories"
+				block={blocks.categories} />
 		{/if}
-		<CollectionsFilterBlock {registry} name="filter" block={blocks.filter} />
+		<CollectionsFilterBlock
+			{registry}
+			name="filter"
+			block={blocks.filter} />
 	</div>
 	<CollectionsListBlock
 		{registry}

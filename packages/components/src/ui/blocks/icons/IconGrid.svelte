@@ -6,14 +6,21 @@
 
 <script>
 	// ...item
-	export let name; /** @type {string} */
-	export let tooltip; /** @type {string} */
-	// export let text; /** @type {string} */
-	export let icon; /** @type {string} */
-	export let exists; /** @type {boolean} */
-	export let selected; /** @type {boolean} */
-	export let link; /** @type {string} */
-
+	/** @type {string} */
+	export let name;
+	/** @type {string} */
+	export let tooltip;
+	/** @type {string} */
+	// export let text;
+	/** @type {string} */
+	export let icon;
+	/** @type {boolean} */
+	export let exists;
+	/** @type {boolean} */
+	export let selected;
+	/** @type {string} */
+	export let link;
+	/** @type {function} */
 	export let onClick;
 
 	// Get class name
@@ -32,6 +39,7 @@
 	}
 
 	// Get SVG
+	/** @type {string | boolean} */
 	let svg = false;
 	$: {
 		const newSVG = exists

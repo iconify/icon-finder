@@ -26,23 +26,33 @@
 	import { getProvider } from '@iconify/search-core';
 	import { onDestroy } from 'svelte';
 
-	export let registry; /** @type {Registry} */
-	export let route; /** @type {PartialRoute} */
-	export let selectedIcon; /** @type {Icon | null} */
-	export let blocks; /** @type {ViewBlocks} */
-	export let isList; /** @type {boolean} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {PartialRoute} */
+	export let route;
+	/** @type {Icon | null} */
+	export let selectedIcon;
+	/** @type {ViewBlocks} */
+	export let blocks;
+	/** @type {boolean} */
+	export let isList;
 
+	/** @type {UITranslation} */
 	const phrases = registry.phrases;
+	/** @type {string} */
 	const uncategorised = phrases.filters.uncategorised;
+	/** @type {string} */
 	const tooltipText = phrases.icons.tooltip;
 
 	// Show prefix
+	/** @type {boolean} */
 	let showPrefix;
 	$: {
 		showPrefix = route.type !== 'collection';
 	}
 
 	// Event listener for loading icons
+	/** @type {function | null} */
 	let abortLoader = null;
 	let updateCounter = 0;
 	const loadingEvent = () => {
@@ -55,7 +65,7 @@
 		const icon = item.icon;
 
 		// Filters
-		filterKeys.forEach(key => {
+		filterKeys.forEach((key) => {
 			if (!blocks[key]) {
 				return;
 			}
@@ -69,7 +79,7 @@
 			const iconValue = icon[attr];
 
 			(typeof iconValue === 'string' ? [iconValue] : iconValue).forEach(
-				value => {
+				(value) => {
 					if (value === active) {
 						return;
 					}
@@ -110,16 +120,17 @@
 
 		// Parse icons
 		let pending = [];
-		let selectedName = selectedIcon === null ? '' : iconToString(selectedIcon);
+		let selectedName =
+			selectedIcon === null ? '' : iconToString(selectedIcon);
 
 		// Map old icons
 		const oldKeys = Object.create(null);
-		parsedIcons.forEach(icon => {
+		parsedIcons.forEach((icon) => {
 			oldKeys[icon.name] = icon;
 		});
 
 		let updated = false;
-		blocks.icons.icons.forEach(icon => {
+		blocks.icons.icons.forEach((icon) => {
 			const name = iconToString(icon);
 			const data = Iconify.getIcon(name);
 			const exists = data !== null;
@@ -131,16 +142,23 @@
 					'{size}',
 					data.width + ' x ' + data.height
 				);
-				tooltip += tooltipText.length.replace('{length}', data.body.length);
+				tooltip += tooltipText.length.replace(
+					'{length}',
+					data.body.length
+				);
 				if (icon.chars !== void 0) {
 					tooltip += tooltipText.char.replace(
 						'{char}',
-						typeof icon.chars === 'string' ? icon.chars : icon.chars.join(', ')
+						typeof icon.chars === 'string'
+							? icon.chars
+							: icon.chars.join(', ')
 					);
 				}
 				tooltip +=
 					tooltipText[
-						data.body.indexOf('currentColor') === -1 ? 'colorful' : 'colorless'
+						data.body.indexOf('currentColor') === -1
+							? 'colorful'
+							: 'colorless'
 					];
 			}
 

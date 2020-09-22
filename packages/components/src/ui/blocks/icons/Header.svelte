@@ -1,11 +1,16 @@
 <script>
 	import IconButton from '../../forms/IconButton.svelte';
 
-	export let headerText; /** @type {string} */
-	export let isList; /** @type {boolean} */
-	export let canChangeLayout; /** @type {boolean} */
-	export let phrases; /** @type {UITranslation} */
-	export let changeLayout; /** @type {function} */
+	/** @type {string} */
+	export let headerText;
+	/** @type {boolean} */
+	export let isList;
+	/** @type {boolean} */
+	export let canChangeLayout;
+	/** @type {UITranslation} */
+	export let phrases;
+	/** @type {function} */
+	export let changeLayout;
 </script>
 
 <div class="iif-icons-header">

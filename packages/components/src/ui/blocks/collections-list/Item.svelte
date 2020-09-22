@@ -31,14 +31,21 @@
 	import { getProvider } from '@iconify/search-core';
 	import Height from './Height.svelte';
 
-	// export let registry; /** @type {Registry} */
-	export let phrases; /** @type {UITranslation} */
-	export let provider; /** @type {string} */
-	export let prefix; /** @type {string} */
-	export let info; /** @type {CollectionInfo} */
-	export let onClick; /** @type {function} */
+	/** @type {string} */
+	// export let registry;
+	/** @type {UITranslation} */
+	export let phrases;
+	/** @type {string} */
+	export let provider;
+	/** @type {string} */
+	export let prefix;
+	/** @type {CollectionInfo} */
+	export let info;
+	/** @type {function} */
+	export let onClick;
 
 	// Get link
+	/** @type {string} */
 	let link;
 	$: {
 		const providerData = getProvider(provider);
@@ -53,7 +60,8 @@
 	}
 
 	// Get container class name
-	let className; /** @type {string} */
+	/** @type {string} */
+	let className;
 	$: {
 		className =
 			baseClass +
@@ -61,9 +69,13 @@
 			baseClass +
 			'--prefix--' +
 			prefix +
-			(provider === '' ? '' : ' ' + baseClass + '--provider--' + provider) +
+			(provider === ''
+				? ''
+				: ' ' + baseClass + '--provider--' + provider) +
 			(collectionClickable ? ' ' + baseClass + '--clickable' : '') +
-			(info.index ? ' ' + baseClass + '--' + (info.index % maxIndex) : '');
+			(info.index
+				? ' ' + baseClass + '--' + (info.index % maxIndex)
+				: '');
 	}
 
 	// Samples
@@ -73,7 +85,9 @@
 	// Height
 	const height =
 		'|' +
-		(typeof info.height !== 'object' ? info.height : info.height.join(', '));
+		(typeof info.height !== 'object'
+			? info.height
+			: info.height.join(', '));
 
 	// Block was clicked
 	function handleBlockClick(event) {
@@ -93,7 +107,9 @@
 			<small>
 				{phrases.collection.by}
 				{#if authorLink && info.author.url}
-					<a href={info.author.url} target="_blank">{info.author.name}</a>
+					<a
+						href={info.author.url}
+						target="_blank">{info.author.name}</a>
 				{:else}{info.author.name}{/if}
 			</small>
 		{/if}

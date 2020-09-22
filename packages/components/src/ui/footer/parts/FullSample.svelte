@@ -3,11 +3,16 @@
 	import { getDimensions } from '../../../misc/icon-size';
 	import Icon from '../../misc/Icon.svelte';
 
-	// export let registry; /** @type {Registry} */
-	export let loaded; /** @type {boolean} */
-	export let iconName; /** @type {string} */
-	export let iconCustomisations; /** @type {IconCustomisations} */
-	export let footerOptions; /** @type {object} */
+	/** @type {Registry} */
+	// export let registry;
+	/** @type {boolean} */
+	export let loaded;
+	/** @type {string} */
+	export let iconName;
+	/** @type {IconCustomisations} */
+	export let iconCustomisations;
+	/** @type {object} */
+	export let footerOptions;
 
 	const divisions = [2.5, 3, 3.5];
 
@@ -20,19 +25,23 @@
 	const defaultHeight = '';
 
 	// Get maximum width/height from options
+	/** @type {number} */
 	const maxWidth = footerOptions.fullSample.width;
+	/** @type {number} */
 	const maxHeight = footerOptions.fullSample.height;
 
 	const minWidth = Math.floor(maxWidth / 2);
 	const minHeight = Math.floor(maxHeight / 2);
 
 	// Get icon data
+	/** @type {IconifyIcon | null} */
 	let iconData;
 	$: {
 		iconData = loaded ? Iconify.getIcon(iconName) : null;
 	}
 
 	// Check if icon is rotated (for width/height calculations)
+	/** @type {boolean} */
 	let rotated;
 	$: {
 		rotated =
@@ -43,6 +52,7 @@
 	}
 
 	// Width / height ratio
+	/** @type {number} */
 	let ratio;
 	$: {
 		ratio = loaded ? iconData.width / iconData.height : 1;
@@ -89,6 +99,7 @@
 	}
 
 	// Calculate style
+	/** @type {string} */
 	let style;
 	$: {
 		style = '';
@@ -102,9 +113,19 @@
 			let size;
 
 			if (defaultWidth || defaultHeight) {
-				size = getDimensions(defaultWidth, defaultHeight, ratio, rotated);
+				size = getDimensions(
+					defaultWidth,
+					defaultHeight,
+					ratio,
+					rotated
+				);
 			} else {
-				size = getDimensions(iconData.width, iconData.height, ratio, rotated);
+				size = getDimensions(
+					iconData.width,
+					iconData.height,
+					ratio,
+					rotated
+				);
 			}
 
 			// Scale
@@ -117,7 +138,7 @@
 	$: {
 		if (loaded) {
 			props = {};
-			['hFlip', 'vFlip', 'rotate'].forEach(prop => {
+			['hFlip', 'vFlip', 'rotate'].forEach((prop) => {
 				if (iconCustomisations[prop]) {
 					props[prop] = iconCustomisations[prop];
 				}
@@ -131,7 +152,12 @@
 					rotated
 				);
 			} else if (defaultWidth || defaultHeight) {
-				size = getDimensions(defaultWidth, defaultHeight, ratio, rotated);
+				size = getDimensions(
+					defaultWidth,
+					defaultHeight,
+					ratio,
+					rotated
+				);
 			}
 			if (size !== void 0) {
 				scaleSample(size, false);

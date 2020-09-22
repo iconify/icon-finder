@@ -5,13 +5,20 @@
 </script>
 
 <script>
-	export let active; /** @type {boolean} */
-	export let hasActive; /** @type {boolean} */
-	export let filter; /** @type {FiltersFilter} */
-	export let title; /** @type {string} */
-	export let onClick; /** @type {function} */
-	export let link; /** @type {string} */
+	/** @type {boolean} */
+	export let active;
+	/** @type {boolean} */
+	export let hasActive;
+	/** @type {FiltersFilter} */
+	export let filter;
+	/** @type {string} */
+	export let title;
+	/** @type {function} */
+	export let onClick;
+	/** @type {string} */
+	export let link;
 
+	/** @type {string} */
 	let className;
 	$: {
 		className =
@@ -21,12 +28,17 @@
 				: hasActive
 				? ' ' + baseClass + '--unselected'
 				: '') +
-			(filter.index ? ' ' + baseClass + '--' + (filter.index % maxIndex) : '');
+			(filter.index
+				? ' ' + baseClass + '--' + (filter.index % maxIndex)
+				: '');
 	}
 </script>
 
 {#if link}
-	<a class={className} on:click|preventDefault={onClick} href={link}>{title}</a>
+	<a
+		class={className}
+		on:click|preventDefault={onClick}
+		href={link}>{title}</a>
 {:else}
 	<button
 		class={className}

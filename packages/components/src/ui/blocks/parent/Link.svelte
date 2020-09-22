@@ -1,9 +1,12 @@
 <script>
 	import Icon from '../../misc/Icon.svelte';
 
-	export let text; /** @param {string} */
-	// export let level; /** @param {number} */
-	export let onClick; /** @type {function} */
+	/** @type {string} */
+	export let text;
+	/** @type {number} */
+	// export let level;
+	/** @type {function} */
+	export let onClick;
 </script>
 
 <div class="iif-parent-link">

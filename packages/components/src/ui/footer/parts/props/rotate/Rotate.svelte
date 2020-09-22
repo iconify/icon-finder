@@ -2,12 +2,18 @@
 	import Block from '../Block.svelte';
 	import Button from '../../../../forms/OptionButton.svelte';
 
-	export let registry; /** @type {Registry} */
-	// export let iconData; /** @type {IconifyIcon} */
-	// export let footerOptions; /** @type {object} */
-	export let value; /** @type {string} */
-	export let customise; /** @type {function} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {IconifyIcon} */
+	// export let iconData;
+	/** @type {object} */
+	// export let footerOptions;
+	/** @type {string} */
+	export let value;
+	/** @type {function} */
+	export let customise;
 
+	/** @type {Record<string, string>} */
 	const phrases = registry.phrases.footerOptionButtons;
 
 	// Dynamically generate list of icons, using keys to force redrawing button, triggering css animation

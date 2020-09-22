@@ -4,10 +4,14 @@
 	import Block from '../Block.svelte';
 	import SizeInput from '../SizeInput.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let iconData; /** @type {IconifyIcon} */
-	export let iconCustomisations; /** @type {IconCustomisations} */
-	export let customise; /** @type {function} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {IconifyIcon} */
+	export let iconData;
+	/** @type {IconCustomisations} */
+	export let iconCustomisations;
+	/** @type {function} */
+	export let customise;
 
 	// @iconify-replacement: 'customiseWidth = true'
 	const customiseWidth = true;
@@ -31,6 +35,7 @@
 			: [customiseWidth ? 'width' : 'height'];
 
 	// Check if icon is rotated (for width/height calculations)
+	/** @type {boolean} */
 	let rotated;
 	$: {
 		rotated =
@@ -40,12 +45,14 @@
 	}
 
 	// Width / height ratio
+	/** @type {number} */
 	let ratio;
 	$: {
 		ratio = iconData.width / iconData.height;
 	}
 
 	// Get placeholders
+	/** @type {Record<string, string>} */
 	let placeholders;
 	$: {
 		if (type === 'size') {

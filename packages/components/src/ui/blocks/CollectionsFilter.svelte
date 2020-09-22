@@ -2,11 +2,16 @@
 	import Block from '../Block.svelte';
 	import Input from '../forms/Input.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let name; /** @type {string} */
-	export let block; /** @type {FiltersBlock | null} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let name;
+	/** @type {FiltersBlock | null} */
+	export let block;
 
-	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
+	/** @type {UITranslation.search} */
+	const phrases = registry.phrases.search;
+	/** @type {string} */
 	let value = block.keyword;
 
 	$: {

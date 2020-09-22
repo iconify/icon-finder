@@ -2,14 +2,24 @@
 	import Input from '../forms/Input.svelte';
 	import Icon from '../misc/Icon.svelte';
 
-	// export let registry; /** @type {Registry} */
+	/** @type {Registry} */
+	// export let registry;
+	/** @type {UITranslationAddForm} */
 	export let phrases;
-	export let buttonIcon; /** @type {string} */
-	export let inputIcon; /** @type {string} */
-	export let value; /** @type {string} */
-	export let onSubmit; /** @type {function} */
-	export let onValidate; /** @type {function} */
-	export let status; /** @type {string} */
+	/** @type {boolean} */
+	export let buttonIcon;
+	/** @type {string} */
+	export let inputIcon;
+	/** @type {string} */
+	export let value;
+	/** @type {string} */
+	export let onSubmit;
+	/** @type {function} */
+	export let onValidate;
+	/** @type {function} */
+	export let status;
+
+	/** @type {string} */
 
 	let valid;
 	$: {
@@ -45,7 +55,9 @@
 	{#if phrases.title}
 		<div class="iif-block--add-form-title">{phrases.title}</div>
 	{/if}
-	<form on:submit|preventDefault={submitForm} class="iif-block--add-form-form">
+	<form
+		on:submit|preventDefault={submitForm}
+		class="iif-block--add-form-form">
 		<Input
 			type="text"
 			bind:value

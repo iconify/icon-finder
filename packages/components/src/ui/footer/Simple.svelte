@@ -16,14 +16,22 @@
 	// @iconify-replacement: './parts/Code.svelte'
 	import CodeContainer from './parts/Code.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let loaded; /** @type {boolean} */
-	export let selectedIcon; /** @type {Icon} */
-	export let iconName; /** @type {string} */
-	export let customise; /** @type {function} */
-	export let iconCustomisations; /** @type {IconCustomisations} */
-	export let route; /** @type {PartialRoute} */
-	export let footerOptions; /** @type {object} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {boolean} */
+	export let loaded;
+	/** @type {Icon} */
+	export let selectedIcon;
+	/** @type {string} */
+	export let iconName;
+	/** @type {function} */
+	export let customise;
+	/** @type {IconCustomisations} */
+	export let iconCustomisations;
+	/** @type {PartialRoute} */
+	export let route;
+	/** @type {object} */
+	export let footerOptions;
 </script>
 
 {#if loaded | footerOptions.showButtons}

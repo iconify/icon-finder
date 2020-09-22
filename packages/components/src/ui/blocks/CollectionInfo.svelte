@@ -1,17 +1,20 @@
 <script>
 	import Block from '../Block.svelte';
 
-	export let registry; /** @type {Registry} */
-	// export let name; /** @type {string} */
-	export let block; /** @type {CollectionInfoBlock | null} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	// export let name;
+	/** @type {CollectionInfoBlock | null} */
+	export let block;
 
-	const phrases =
-		registry.phrases.collectionInfo; /** @type {Record<string, string>} */
+	/** @type {Record<string, string>} */
+	const phrases = registry.phrases.collectionInfo;
 
+	/** @type {CollectionInfo | null} */
 	let info;
 	$: {
-		info =
-			block !== null ? block.info : null; /** @type {CollectionInfo | null} */
+		info = block !== null ? block.info : null;
 	}
 </script>
 
@@ -23,7 +26,9 @@
 				<dt>{phrases.author}</dt>
 				<dd>
 					{#if info.author.url}
-						<a href={info.author.url} target="_blank">{info.author.name}</a>
+						<a
+							href={info.author.url}
+							target="_blank">{info.author.name}</a>
 					{:else}{info.author.name}{/if}
 				</dd>
 			</dl>
@@ -33,7 +38,9 @@
 				<dt>{phrases.license}</dt>
 				<dd>
 					{#if info.license.url}
-						<a href={info.license.url} target="_blank">{info.license.title}</a>
+						<a
+							href={info.license.url}
+							target="_blank">{info.license.title}</a>
 					{:else}{info.license.title}{/if}
 				</dd>
 			</dl>

@@ -1,13 +1,20 @@
 <script>
 	import Item from './Item.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let phrases; /** @type {UITranslation} */
-	export let showCategories; /** @type {boolean} */
-	export let category; /** @type {string} */
-	export let items; /** @type {Record<string, CollectionInfo>} */
-	export let provider; /** @type {string} */
-	export let onClick; /** @type {function} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {UITranslation} */
+	export let phrases;
+	/** @type {boolean} */
+	export let showCategories;
+	/** @type {string} */
+	export let category;
+	/** @type {Record<string, CollectionInfo>} */
+	export let items;
+	/** @type {string} */
+	export let provider;
+	/** @type {function} */
+	export let onClick;
 </script>
 
 <div class="iif-collections-list-category">

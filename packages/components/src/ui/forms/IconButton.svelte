@@ -1,8 +1,11 @@
 <script>
 	import Icon from '../misc/Icon.svelte';
 
+	/** @type {string} */
 	export let icon;
+	/** @type {string} */
 	export let title;
+	/** @type {function} */
 	export let onClick;
 </script>
 

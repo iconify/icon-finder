@@ -7,13 +7,16 @@
 	import Icon from '../misc/Icon.svelte';
 
 	export let placeholder = '';
+	/** @type {string} */
 	export let title;
 	export let value = '';
 	export let disabled = false;
 	export let icon = '';
 	export let type = '';
 	export let extra = '';
+	/** @type {function} */
 	export let onInput;
+	/** @type {function} */
 	export let onBlur;
 	export let autofocus = false;
 
@@ -23,6 +26,7 @@
 	}
 
 	// Get container class name
+	/** @type {string} */
 	let className;
 	$: {
 		className =
@@ -101,7 +105,10 @@
 			<div class="iif-input-placeholder">{placeholder}</div>
 		{/if}
 		{#if value !== ''}
-			<a class="iif-input-reset" href="# " on:click|preventDefault={resetValue}>
+			<a
+				class="iif-input-reset"
+				href="# "
+				on:click|preventDefault={resetValue}>
 				<Icon icon="reset" />
 			</a>
 		{/if}

@@ -5,10 +5,15 @@
 <script>
 	import Icon from '../misc/Icon.svelte';
 
+	/** @type {string} */
 	export let icon;
+	/** @type {function} */
 	export let onClick;
+	/** @type {string} */
 	export let title;
+	/** @type {string} */
 	export let text;
+	/** @type {string} */
 	export let status = '';
 
 	let hasIcon = false;
@@ -16,6 +21,7 @@
 		hasIcon = true;
 	}
 
+	/** @type {string} */
 	let className;
 	$: {
 		className =

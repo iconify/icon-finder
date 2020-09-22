@@ -17,15 +17,19 @@
 		filterCustomisations,
 	} from '../misc/customisations';
 
-	export let registry; /** @type {Registry} */
-	export let selectedIcon; /** @type {Icon | null} */
-	export let customisations; /** @type {PartialIconCustomisations} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {Icon | null} */
+	export let selectedIcon;
+	/** @type {PartialIconCustomisations} */
+	export let customisations;
+	/** @type {PartialRoute} */
+	export let route;
 
 	// Translate buttons
 	if (footerOptions.buttons) {
 		const phrases = registry.phrases;
-		Object.keys(footerOptions.buttons).forEach(key => {
+		Object.keys(footerOptions.buttons).forEach((key) => {
 			const item = footerOptions.buttons[key];
 			if (typeof item.text !== 'string') {
 				// Set text: from phrases if phrase exists, capitalised key if not
@@ -33,7 +37,11 @@
 					phrases.footerButtons[key] === void 0
 						? key
 								.split('-')
-								.map(str => str.slice(0, 1).toUpperCase() + str.slice(1))
+								.map(
+									(str) =>
+										str.slice(0, 1).toUpperCase() +
+										str.slice(1)
+								)
 								.join(' ')
 						: phrases.footerButtons[key];
 			}

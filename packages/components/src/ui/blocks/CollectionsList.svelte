@@ -3,12 +3,17 @@
 	import Category from './collections-list/Category.svelte';
 	import Error from './errors/ContentError.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let name; /** @type {string} */
-	export let block; /** @type {CollectionsListBlock} */
-	export let provider; /** @type {string} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let name;
+	/** @type {CollectionsListBlock} */
+	export let block;
+	/** @type {string} */
+	export let provider;
 
-	const phrases = registry.phrases; /** @type {UITranslation} */
+	/** @type {UITranslation} */
+	const phrases = registry.phrases;
 
 	function onClick(prefix) {
 		registry.router.action(name, prefix);

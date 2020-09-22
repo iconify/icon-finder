@@ -10,12 +10,17 @@
 	import { showPagination } from '@iconify/search-core';
 	import Icon from '../misc/Icon.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let name; /** @type {string} */
-	export let block; /** @type {PaginationBlock} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let name;
+	/** @type {PaginationBlock} */
+	export let block;
 
 	let pages = [];
+	/** @type {number} */
 	let prevPage;
+	/** @type {number} */
 	let nextPage;
 	$: {
 		pages = showPagination(block);
@@ -61,9 +66,7 @@
 			</a>
 		{/if}
 		{#each pages as page, i (page.text)}
-			{#if page.dot}
-				<span>...</span>
-			{/if}
+			{#if page.dot}<span>...</span>{/if}
 			<a
 				href={page.selected ? void 0 : '# '}
 				class={page.className}

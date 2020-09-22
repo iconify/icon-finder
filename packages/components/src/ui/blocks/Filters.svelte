@@ -2,19 +2,26 @@
 	import Block from '../Block.svelte';
 	import Filter from './filters/Filter.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let name; /** @type {string} */
-	export let parent; /** @type {string} */
-	export let block; /** @type {FiltersBlock | null} */
-	export let link; /** @type {string} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let name;
+	/** @type {string} */
+	export let parent;
+	/** @type {FiltersBlock | null} */
+	export let block;
+	/** @type {string} */
+	export let link;
 
-	const phrases = registry.phrases; /** @type {UITranslation} */
+	/** @type {UITranslation} */
+	const phrases = registry.phrases;
 
 	function handleClick(key) {
 		registry.router.action(name, key === block.active ? null : key);
 	}
 
-	let title; /** @type {string} */
+	/** @type {string} */
+	let title;
 	$: {
 		let key = name;
 		if (typeof parent === 'string' && parent !== '') {
@@ -25,16 +32,20 @@
 		title = phrases.filters[key] === void 0 ? '' : phrases.filters[key];
 	}
 
-	let filters; /** @type {string[]} */
-	let isVisible; /** @type {boolean} */
+	/** @type {string[]} */
+	let filters;
+	/** @type {boolean} */
+	let isVisible;
 	$: {
 		filters = block === null ? [] : Object.keys(block.filters);
 		isVisible = filters.length > 1;
 	}
 
-	let extra; /** @type {string} */
+	/** @type {string} */
+	let extra;
 	$: {
-		extra = block === null || block.active === null ? '' : 'filters--active';
+		extra =
+			block === null || block.active === null ? '' : 'filters--active';
 	}
 </script>
 

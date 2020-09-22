@@ -2,11 +2,15 @@
 	import Block from '../Block.svelte';
 	import Link from './parent/Link.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {PartialRoute} */
+	export let route;
 
-	const phrases = registry.phrases.parent; /** @type {Record<string, string>} */
-	const collections = registry.collections; /** @type {CollectionsData} */
+	/** @type {Record<string, string>} */
+	const phrases = registry.phrases.parent;
+	/** @type {CollectionsData} */
+	const collections = registry.collections;
 
 	function handleClick(level) {
 		registry.router.action('parent', level);
@@ -56,7 +60,10 @@
 			let key = item.route.type + '-' + index + '-';
 			switch (item.route.type) {
 				case 'collection':
-					key += item.route.params.provider + ':' + item.route.params.prefix;
+					key +=
+						item.route.params.provider +
+						':' +
+						item.route.params.prefix;
 					break;
 
 				case 'custom':

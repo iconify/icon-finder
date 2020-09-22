@@ -1,11 +1,15 @@
 <script>
 	import Iconify from '@iconify/iconify';
 
-	// export let registry; /** @type {Registry} */
-	export let iconName; /** @type {string} */
-	// export let iconCustomisations; /** @type {IconCustomisations} */
+	/** @type {Registry} */
+	// export let registry;
+	/** @type {string} */
+	export let iconName;
+	/** @type {IconCustomisations} */
+	// export let iconCustomisations;
 
 	// Get icon data
+	/** @type {IconifyIcon | null} */
 	let iconData;
 	$: {
 		iconData = Iconify.getIcon(iconName);

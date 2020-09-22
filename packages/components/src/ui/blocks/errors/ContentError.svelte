@@ -1,5 +1,6 @@
 <script>
-	export let error; /** @type {string} */
+	/** @type {string} */
+	export let error;
 </script>
 
 <div class="iif-content-error">{error}</div>

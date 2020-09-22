@@ -3,20 +3,27 @@
 	import Input from '../../../../forms/Input.svelte';
 	import Block from '../Block.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let iconData; /** @type {IconifyIcon} */
-	// export let footerOptions; /** @type {object} */
-	export let value; /** @type {string} */
-	export let customise; /** @type {function} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {IconifyIcon} */
+	export let iconData;
+	/** @type {object} */
+	// export let footerOptions;
+	/** @type {string} */
+	export let value;
+	/** @type {function} */
+	export let customise;
 
 	// @iconify-replacement: 'defaultColor = '''
 	const defaultColor = '';
 
+	/** @type {boolean} */
 	let hasColor;
 	$: {
 		hasColor = iconData.body.indexOf('currentColor') !== -1;
 	}
 
+	/** @type {string} */
 	const title = registry.phrases.footerBlocks.color;
 
 	let lastValue = value;

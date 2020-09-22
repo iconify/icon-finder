@@ -3,8 +3,6 @@
 	const maxIndex = 10;
 	// @iconify-replacement: 'canAddProviders = false'
 	const canAddProviders = false;
-
-	const baseProviderClass = 'iif-provider';
 </script>
 
 <script>
@@ -12,17 +10,24 @@
 	import Tabs from '../misc/Tabs.svelte';
 	import Block from '../Block.svelte';
 	import AddForm from '../forms/AddForm.svelte';
-	import Icon from '../misc/Icon.svelte';
-	import { validateProvider, retrieveProvider } from '../../misc/add-provider';
+	import {
+		validateProvider,
+		retrieveProvider,
+	} from '../../misc/add-provider';
 
 	/**
 	 * Global exports
 	 */
-	export let registry; /** @type {Registry} */
-	// export let route; /** @type {PartialRoute} */
-	export let activeProvider; /** @type {string} */
-	export let providers; /** @type {string[]} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {PartialRoute} */
+	// export let route;
+	/** @type {string} */
+	export let activeProvider;
+	/** @type {string[]} */
+	export let providers;
 
+	/** @type {Record<string, unknown>} */
 	const phrases = registry.phrases.providers;
 
 	let formVisible = false;

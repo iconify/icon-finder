@@ -14,14 +14,22 @@
 	import IconsWithPages from '../blocks/IconsWithPages.svelte';
 	import SearchBlock from '../blocks/Search.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let selectedIcon; /** @type {Icon | null} */
-	export let blocks; /** @type {CollectionViewBlocks | null} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {Icon | null} */
+	export let selectedIcon;
+	/** @type {CollectionViewBlocks | null} */
+	export let blocks;
+	/** @type {PartialRoute} */
+	export let route;
 
-	let provider; /** @type {string} */
-	let prefix; /** @type {string} */
-	let info; /** @type {CollectionInfo | null} */
+	/** @type {string} */
+	let provider;
+	/** @type {string} */
+	let prefix;
+	/** @type {CollectionInfo | null} */
+	let info;
+	/** @type {string} */
 	let collectionsLink;
 	$: {
 		provider = route.params.provider;
@@ -40,15 +48,16 @@
 		}
 	}
 
-	let hasFilters; /** @type {boolean} */
+	/** @type {boolean} */
+	let hasFilters;
 	$: {
-		hasFilters = filterBlocks.filter(key => !!blocks[key]).length > 0;
+		hasFilters = filterBlocks.filter((key) => !!blocks[key]).length > 0;
 	}
 </script>
 
 <div
 	class="iif-view {baseClass}
-	{baseClass}--prefix--{prefix + (provider === '' ? '' : ' ' + baseClass + '--provider--' + provider)}">
+		{baseClass}--prefix--{prefix + (provider === '' ? '' : ' ' + baseClass + '--provider--' + provider)}">
 	{#if blocks.collections}
 		<div class="iff-filters">
 			<FiltersBlock

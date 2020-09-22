@@ -2,25 +2,39 @@
 	import Input from '../forms/Input.svelte';
 	import Block from '../Block.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let name; /** @type {string} */
-	export let block; /** @type {CollectionsListBlock} */
-	export let info = null; /** @type {CollectionInfo | null} */
-	export let customType = ''; /** @type {string} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let name;
+	/** @type {CollectionsListBlock} */
+	export let block;
+	/** @type {CollectionInfo | null} */
+	export let info = null;
+	/** @type {string} */
+	export let customType = '';
 
 	// @iconify-replacement: 'canFocusSearch = true'
 	const canFocusSearch = true;
 
 	// Phrases
-	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
+	/** @type {UITranslation.search} */
+	const phrases = registry.phrases.search;
 
 	// Get placeholder
+	/** @type {string} */
 	let placeholder;
 	$: {
 		if (customType !== '' && phrases.placeholder[customType] !== void 0) {
 			placeholder = phrases.placeholder[customType];
-		} else if (info && info.name && phrases.placeholder.collection !== void 0) {
-			placeholder = phrases.placeholder.collection.replace('{name}', info.name);
+		} else if (
+			info &&
+			info.name &&
+			phrases.placeholder.collection !== void 0
+		) {
+			placeholder = phrases.placeholder.collection.replace(
+				'{name}',
+				info.name
+			);
 		} else {
 			placeholder = phrases.defaultPlaceholder;
 		}

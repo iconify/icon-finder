@@ -1,7 +1,10 @@
 <script>
-	export let registry; /** @type {Registry} */
-	export let type; /** @type {string} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let type;
 
+	/** @type {Record<string, string>} **/
 	const phrases = registry.phrases.footerBlocks;
 
 	let title;
@@ -10,7 +13,10 @@
 			phrases[type] === void 0
 				? type
 						.split(' ')
-						.map(str => str.slice(0, 1).toUpperCase() + str.slice(1))
+						.map(
+							(str) =>
+								str.slice(0, 1).toUpperCase() + str.slice(1)
+						)
 						.join(' ')
 				: phrases[type];
 	}

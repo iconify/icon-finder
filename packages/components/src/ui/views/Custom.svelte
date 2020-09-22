@@ -1,14 +1,18 @@
 <script>
-	import FiltersBlock from '../blocks/Filters.svelte';
 	import IconsWithPages from '../blocks/IconsWithPages.svelte';
 	import SearchBlock from '../blocks/Search.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let route; /** @type {PartialRoute} */
-	export let selectedIcon; /** @type {Icon | null} */
-	export let blocks; /** @type {CollectionViewBlocks | null} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {PartialRoute} */
+	export let route;
+	/** @type {Icon | null} */
+	export let selectedIcon;
+	/** @type {CollectionViewBlocks | null} */
+	export let blocks;
 
-	let customType; /** @type {string} */
+	/** @type {string} */
+	let customType;
 	$: {
 		customType = route.params.customType;
 	}

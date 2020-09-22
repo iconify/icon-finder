@@ -16,17 +16,27 @@
 	import Filter from '../filters/Filter.svelte';
 
 	// ...item
-	export let name; /** @type {string} */
-	export let tooltip; /** @type {string} */
-	export let text; /** @type {string} */
-	export let icon; /** @type {string} */
-	export let exists; /** @type {boolean} */
-	export let selected; /** @type {boolean} */
-	export let link; /** @type {string} */
-	export let filters; /** @type {Array} */
+	/** @type {string} */
+	export let name;
+	/** @type {string} */
+	export let tooltip;
+	/** @type {string} */
+	export let text;
+	/** @type {string} */
+	export let icon;
+	/** @type {boolean} */
+	export let exists;
+	/** @type {boolean} */
+	export let selected;
+	/** @type {string} */
+	export let link;
+	/** @type {Array} */
+	export let filters;
 
-	export let onClick; /** @type {function} */
-	export let uncategorised; /** @type {string} */
+	/** @type {function} */
+	export let onClick;
+	/** @type {string} */
+	export let uncategorised;
 
 	// Get class name
 	let className = '';
@@ -44,6 +54,7 @@
 	}
 
 	// Get SVG
+	/** @type {string | boolean} */
 	let svg = false;
 	$: {
 		const newSVG = exists
@@ -60,6 +71,7 @@
 	}
 
 	// Get size
+	/** @type {IconifyIcon | null} */
 	let size = null;
 	$: {
 		const newSize = exists ? Iconify.getIcon(name) : null;

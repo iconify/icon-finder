@@ -2,21 +2,26 @@
 	import Input from '../forms/Input.svelte';
 	import Block from '../Block.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let viewChanged; /** @type {boolean} */
-	export let route; /** @type {PartialRoute} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {boolean} */
+	export let viewChanged;
+	/** @type {PartialRoute} */
+	export let route;
 
 	// @iconify-replacement: 'canFocusSearch = true'
 	const canFocusSearch = true;
 
 	// Phrases
-	const phrases = registry.phrases.search; /** @type {UITranslation.search} */
+	/** @type {UITranslation.search} */
+	const phrases = registry.phrases.search;
 
 	// Current keyword
-	let keyword = null; /** @type {string|null} */
+	/** @type {string | null} */
+	let keyword = null;
 
 	// Variable to store last change to avoid changing keyword multiple times to same value
-	let lastChange = ''; /** @type {string} */
+	let lastChange = '';
 
 	// Check route for keyword
 	function checkRoute(route) {
@@ -63,7 +68,8 @@
 	$: {
 		if (canFocusSearch) {
 			focusInput =
-				route && (route.type === 'collections' || route.type === 'search');
+				route &&
+				(route.type === 'collections' || route.type === 'search');
 		}
 	}
 </script>

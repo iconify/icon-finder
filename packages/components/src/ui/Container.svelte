@@ -9,16 +9,24 @@
 	/**
 	 * Global exports
 	 */
-	export let registry; /** @type {Registry} */
-	export let selectedIcon; /** @type {Icon | null} */
-	export let customisations; /** @type {PartialIconCustomisations} */
-	export let hidden; /** @type {boolean} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {Icon | null} */
+	export let selectedIcon;
+	/** @type {PartialIconCustomisations} */
+	export let customisations;
+	/** @type {boolean} */
+	export let hidden;
 
 	// RouterEvent
-	// export let viewChanged; /** @type {boolean} */
-	// export let error; /** @type {string} */
-	export let route; /** @type {PartialRoute} */
-	// export let blocks; /** @type {ViewBlocks | null} */
+	/** @type {boolean} */
+	// export let viewChanged;
+	/** @type {string} */
+	// export let error;
+	/** @type {PartialRoute} */
+	export let route;
+	/** @type {ViewBlocks | null} */
+	// export let blocks;
 </script>
 
 {#if hidden !== true}

@@ -8,18 +8,22 @@
 <script>
 	import Icon from './Icon.svelte';
 
-	export let tabs; /** @type {Tab[]} */
-	export let selected; /** @type {string} */
-	export let onClick; /** @type {function} */
+	/** @type {Tab[]} */
+	export let tabs;
+	/** @type {string} */
+	export let selected;
+	/** @type {function} */
+	export let onClick;
 
 	let list = [];
 	$: {
 		const leftList = [];
 		const rightList = [];
-		tabs.forEach(tab => {
+		tabs.forEach((tab) => {
 			const key = tab.key;
 			const index =
-				(typeof tab.index === void 0 ? list.length : tab.index) % maxIndex;
+				(typeof tab.index === void 0 ? list.length : tab.index) %
+				maxIndex;
 
 			// Generate class name
 			const className =
@@ -40,7 +44,8 @@
 				href: tab.href === void 0 ? '# ' : tab.href,
 				icon: tab.icon,
 				hint: tab.hint,
-				onClick: tab.onClick === void 0 ? () => onClick(key) : tab.onClick,
+				onClick:
+					tab.onClick === void 0 ? () => onClick(key) : tab.onClick,
 			};
 
 			if (tab.right) {

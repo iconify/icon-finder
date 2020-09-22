@@ -4,13 +4,20 @@
 	import Icon from '../../../misc/Icon.svelte';
 	import Input from '../../../forms/Input.svelte';
 
-	export let registry; /** @type {Registry} */
-	// export let loaded; /** @type {boolean} */
-	// export let selectedIcon; /** @type {Icon} */
-	export let iconName; /** @type {string} */
-	// export let route; /** @type {PartialRoute} */
-	// export let footerOptions; /** @type {object} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {boolean} */
+	// export let loaded;
+	/** @type {Icon} */
+	// export let selectedIcon;
+	/** @type {string} */
+	export let iconName;
+	/** @type {PartialRoute} */
+	// export let route;
+	/** @type {object} */
+	// export let footerOptions;
 
+	/** @type {Record<string, string>} */
 	const phrases = registry.phrases.footer;
 
 	let value = iconName;
@@ -23,7 +30,10 @@
 		}
 
 		// Check for icon
-		if (value !== lastIconName && (value === '') | Iconify.iconExists(value)) {
+		if (
+			value !== lastIconName &&
+			(value === '') | Iconify.iconExists(value)
+		) {
 			// UISelectionEvent
 			registry.callback({
 				type: 'selection',
@@ -34,6 +44,7 @@
 
 	// Event listener
 	let loadingIconName = '';
+	/** @type {function | null} */
 	let abortLoader = null;
 	const loadingEvent = () => {
 		if (
@@ -87,7 +98,7 @@
 <form
 	on:submit|preventDefault={testNewValue}
 	class="iif-footer-icon-name iif-footer-icon-name--simple
-	iif-footer-icon-name--simple--editable">
+		iif-footer-icon-name--simple--editable">
 	<dl>
 		<dt>{phrases.iconName}</dt>
 		<dd>

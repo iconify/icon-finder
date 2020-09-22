@@ -6,6 +6,7 @@
 </script>
 
 <script>
+	import { getActiveProvider } from '../misc/get-provider';
 	import { listProviders } from '@iconify/search-core';
 	import SearchBlock from './blocks/GlobalSearch.svelte';
 	import ParentBlock from './blocks/Parent.svelte';
@@ -21,20 +22,27 @@
 	/**
 	 * Global exports
 	 */
-	export let registry; /** @type {Registry} */
-	export let selectedIcon; /** @type {Icon | null} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {Icon | null} */
+	export let selectedIcon;
 
 	// RouterEvent
-	export let viewChanged; /** @type {boolean} */
-	export let error; /** @type {string} */
-	export let route; /** @type {PartialRoute} */
-	export let blocks; /** @type {ViewBlocks | null} */
+	/** @type {boolean} */
+	export let viewChanged;
+	/** @type {string} */
+	export let error;
+
+	/** @type {PartialRoute} */
+	export let route;
+	/** @type {ViewBlocks | null} */
+	export let blocks;
 
 	// @iconify-replacement: 'supportCustomView = true'
 	const supportCustomView = true;
 
 	const baseClass = 'iif-content';
-	let className, searchValue;
+	let className;
 	$: {
 		// Check class name and search form value
 		className = baseClass;
@@ -46,7 +54,12 @@
 		} else {
 			// View shows something
 			className +=
-				' ' + baseClass + '--view ' + baseClass + '--view--' + route.type;
+				' ' +
+				baseClass +
+				'--view ' +
+				baseClass +
+				'--view--' +
+				route.type;
 
 			if (
 				route.params &&
@@ -75,7 +88,10 @@
 			} else if (supportCustomView && route.type === 'custom') {
 				// Add custom type: '{base} {base}--view {base}--view--custom {base}--view--custom--{customType}'
 				className +=
-					' ' + baseClass + '--view--custom--' + route.params.customType;
+					' ' +
+					baseClass +
+					'--view--custom--' +
+					route.params.customType;
 			}
 		}
 	}
@@ -92,23 +108,6 @@
 				item = item.parent ? item.parent : null;
 			}
 		}
-	}
-
-	/**
-	 * Get active provider from route
-	 */
-	function getActiveProvider(route) {
-		if (!route) {
-			return '';
-		}
-
-		if (route.params && typeof route.params.provider === 'string') {
-			return route.params.provider;
-		}
-		if (route.parent) {
-			return getActiveProvider(route.parent);
-		}
-		return '';
 	}
 
 	/**

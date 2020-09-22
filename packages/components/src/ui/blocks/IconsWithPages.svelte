@@ -5,12 +5,17 @@
 	import IconsHeader from './icons/Header.svelte';
 	import PaginationBlock from './Pagination.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let route; /** @type {PartialRoute} */
-	export let selectedIcon; /** @type {Icon | null} */
-	export let blocks; /** @type {ViewBlocks | null} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {PartialRoute} */
+	export let route;
+	/** @type {Icon | null} */
+	export let selectedIcon;
+	/** @type {ViewBlocks | null} */
+	export let blocks;
 
-	const phrases = registry.phrases; /** @type {UITranslation} */
+	/** @type {UITranslation} */
+	const phrases = registry.phrases;
 	const componentsConfig = registry.config.components;
 
 	// Generate header text
@@ -33,11 +38,15 @@
 	}
 
 	// Check if block is empty and get header text
-	let isEmpty; /** @type {boolean} */
-	let headerText; /** @type {string} */
+	/** @type {boolean} */
+	let isEmpty;
+	/** @type {string} */
+	let headerText;
 	$: {
 		isEmpty =
-			!blocks.pagination || !blocks.icons || blocks.icons.icons.length < 1;
+			!blocks.pagination ||
+			!blocks.icons ||
+			blocks.icons.icons.length < 1;
 		if (!isEmpty) {
 			// Generate header text
 			headerText = generateHeaderText().replace(
@@ -73,6 +82,9 @@
 			{phrases}
 			{changeLayout} />
 		<IconsContainer {registry} {selectedIcon} {blocks} {route} {isList} />
-		<PaginationBlock {registry} name="pagination" block={blocks.pagination} />
+		<PaginationBlock
+			{registry}
+			name="pagination"
+			block={blocks.pagination} />
 	</Block>
 {/if}

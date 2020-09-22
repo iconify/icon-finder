@@ -20,19 +20,19 @@
 <script>
 	import { onDestroy } from 'svelte';
 
-	export let icon;
 	/** @type {string} */
-	export let props;
+	export let icon;
 	/** @type {object} */
-	export let onLoad;
-
+	export let props;
 	/** @type {function} */
+	export let onLoad;
 
 	// Local watched variables. Update them only if needed to avoid duplicate re-renders
 	let name = '';
 	let loaded = false;
 	let svg = '';
 	let updateCounter = 0;
+	/** @type {function | null} */
 	let abortLoader = null;
 
 	// Preload icons

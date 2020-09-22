@@ -2,13 +2,20 @@
 	import Block from '../Block.svelte';
 	import ButtonsContainer from './parts/Buttons.svelte';
 
-	// export let registry; /** @type {Registry} */
-	// export let loaded; /** @type {boolean} */
-	// export let selectedIcon; /** @type {Icon} */
-	// export let iconName; /** @type {string} */
-	// export let iconCustomisations; /** @type {IconCustomisations} */
-	// export let route; /** @type {PartialRoute} */
-	export let footerOptions; /** @type {object} */
+	/** @type {Registry} */
+	// export let registry;
+	/** @type {boolean} */
+	// export let loaded;
+	/** @type {Icon} */
+	// export let selectedIcon;
+	/** @type {string} */
+	// export let iconName;
+	/** @type {IconCustomisations} */
+	// export let iconCustomisations;
+	/** @type {PartialRoute} */
+	// export let route;
+	/** @type {object} */
+	export let footerOptions;
 </script>
 
 {#if footerOptions.showButtons}

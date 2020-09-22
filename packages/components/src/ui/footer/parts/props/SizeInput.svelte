@@ -1,12 +1,18 @@
 <script>
 	import Input from '../../../forms/Input.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let type; /** @type {string} */
-	export let value; /** @type {string} */
-	export let placeholder; /** @type {string} */
-	export let customise; /** @type {function} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let type;
+	/** @type {string} */
+	export let value;
+	/** @type {string} */
+	export let placeholder;
+	/** @type {function} */
+	export let customise;
 
+	/** @type {string} */
 	const title = registry.phrases.footerBlocks[type];
 
 	let lastValue = value;

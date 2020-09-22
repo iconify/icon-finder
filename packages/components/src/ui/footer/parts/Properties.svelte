@@ -30,15 +30,21 @@
 	// @iconify-replacement: '/props/flip/Flip.svelte'
 	import FlipBlock from './props/flip/Flip.svelte';
 
-	export let registry; /** @type {Registry} */
-	export let iconName; /** @type {string} */
-	export let customise; /** @type {function} */
-	export let iconCustomisations; /** @type {IconCustomisations} */
+	/** @type {Registry} */
+	export let registry;
+	/** @type {string} */
+	export let iconName;
+	/** @type {function} */
+	export let customise;
+	/** @type {IconCustomisations} */
+	export let iconCustomisations;
 
 	// Title
+	/** @type {string} */
 	const title = showPropsTitle ? registry.phrases.footerBlocks.title : '';
 
 	// Get icon data
+	/** @type {IconifyIcon | null} */
 	let iconData;
 	$: {
 		iconData = Iconify.getIcon(iconName);
