@@ -19,16 +19,33 @@
 	// Dynamically generate list of icons, using keys to force redrawing button, triggering css animation
 	let list;
 	$: {
-		list = [];
+		const newList = [];
 		for (let i = 0; i < 4; i++) {
-			list.push(addItem(i, value === i));
+			if (list && list[i] && value !== i) {
+				// Not selected and exists: keep old item to avoid re-render
+				const oldItem = list[i];
+				oldItem.selected = false;
+				newList.push(oldItem);
+			} else {
+				// Update key to force re-render
+				newList.push(
+					addItem(
+						i,
+						value === i,
+						list && list[i] ? list[i].temp + 1 : 0
+					)
+				);
+			}
 		}
+		list = newList;
 	}
 
-	function addItem(count, selected) {
+	function addItem(count, selected, temp) {
 		return {
-			count: count,
-			key: count + (selected ? '!' : ''),
+			count,
+			key: count + '-' + temp,
+			selected,
+			temp,
 		};
 	}
 

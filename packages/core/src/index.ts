@@ -143,7 +143,7 @@ export class IconFinderCore {
 		// Set custom icon sets
 		if (params.iconSets) {
 			registry.customIconSets = convertCustomSets(params.iconSets);
-			console.log('Custom sets:', registry.customIconSets);
+			// console.log('Custom sets:', registry.customIconSets);
 		}
 
 		// Get other required classes from Registry

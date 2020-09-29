@@ -12,24 +12,41 @@
 	export let block;
 	/** @type {string} */
 	export let link;
+	/** @type {function} */
+	export let onClick;
+	/** @type {boolean} */
+	export let showTitle;
+	/** @type {string} */
+	export let title;
 
 	/** @type {UITranslation} */
 	const phrases = registry.phrases;
 
 	function handleClick(key) {
-		registry.router.action(name, key === block.active ? null : key);
+		if (typeof onClick === 'function') {
+			onClick(key);
+		} else {
+			registry.router.action(name, key === block.active ? null : key);
+		}
 	}
 
 	/** @type {string} */
-	let title;
+	let header;
 	$: {
-		let key = name;
-		if (typeof parent === 'string' && parent !== '') {
-			if (phrases.filters[name + '-' + parent] !== void 0) {
-				key = name + '-' + parent;
+		if (showTitle === false) {
+			header = '';
+		} else if (typeof title === 'string') {
+			header = title;
+		} else {
+			let key = name;
+			if (typeof parent === 'string' && parent !== '') {
+				if (phrases.filters[name + '-' + parent] !== void 0) {
+					key = name + '-' + parent;
+				}
 			}
+			header =
+				phrases.filters[key] === void 0 ? '' : phrases.filters[key];
 		}
-		title = phrases.filters[key] === void 0 ? '' : phrases.filters[key];
 	}
 
 	/** @type {string[]} */
@@ -51,8 +68,8 @@
 
 {#if isVisible}
 	<Block type="filters" {name} {extra}>
-		{#if title !== ''}
-			<div class="iif-filters-header">{title}</div>
+		{#if header !== ''}
+			<div class="iif-filters-header">{header}</div>
 		{/if}
 		<div class="iif-filters-list">
 			{#each Object.entries(block.filters) as [key, filter], i (key)}

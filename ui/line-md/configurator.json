@@ -10,7 +10,8 @@
 			"showInfo": false
 		},
 		"footer": {
-			"showButtons": false
+			"showButtons": false,
+			"showCode": true
 		},
 		"phrases": {
 			"search": {

@@ -1,0 +1,43 @@
+.iif-code {
+	&-heading {
+		font-size: $iif-large-font-size;
+		line-height: $iif-large-line-height;
+		color: $iif-text-dimmed-color;
+		margin-bottom: $iif-spacing;
+	}
+
+	&-docs {
+		line-height: $iif-icon-size;
+		position: relative;
+		padding: 0 ($iif-icon-size + 4px);
+		a {
+			text-decoration: none;
+			color: $iif-link-color;
+			.iconify {
+				display: none;
+			}
+			&:hover {
+				text-decoration: underline;
+				color: $iif-link-hover-color;
+			}
+		}
+		.iconify {
+			font-size: $iif-icon-size;
+			position: absolute;
+			left: 0;
+		}
+		> .iconify {
+			color: $iif-input-placeholder-icon-color;
+		}
+
+		// Swap icons on hover
+		&:hover {
+			a .iconify {
+				display: inline-block;
+			}
+			> .iconify {
+				display: none;
+			}
+		}
+	}
+}

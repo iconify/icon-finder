@@ -16,6 +16,16 @@
 					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 64h112\" class=\"animation-delay-0 animation-duration-6 animate-stroke stroke-length-153\"/><path d=\"M64 8v112\" class=\"animation-delay-6 animation-duration-6 animate-stroke stroke-length-153\"/></g>",
 					"width": 128,
 					"height": 128
+				},
+				"document": {
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M104 40L72 8H24v112h80V40z\" stroke-width=\"16\" class=\"animation-delay-0 animation-duration-11 animate-stroke stroke-length-500\"/><path stroke-width=\"8\" d=\"M68 12v32h32\" class=\"animation-delay-11 animation-duration-2 animate-stroke stroke-length-102\"/></g>",
+					"width": 128,
+					"height": 128
+				},
+				"clipboard": {
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M104 8H24v112h80V8z\" stroke-width=\"16\" class=\"animation-delay-0 animation-duration-11 animate-stroke stroke-length-500\"/><path stroke-width=\"8\" d=\"M44 12v24h40V12\" class=\"animation-delay-11 animation-duration-2 animate-stroke stroke-length-102\"/></g>",
+					"width": 128,
+					"height": 128
 				}
 			},
 			"width": 16,
@@ -42,7 +52,10 @@
 			"h-flip": "arty-animated:16-double-arrow-horizontal",
 			"v-flip": "arty-animated:16-double-arrow-vertical",
 			"plus": "@icon-finder:iconify:plus",
-			"link": "arty-animated:16-link-external"
+			"link": "arty-animated:16-link-external",
+			"clipboard": "@icon-finder:iconify:clipboard",
+			"confirm": "arty-animated:16-confirm",
+			"docs": "@icon-finder:iconify:document"
 		}
 	}
 }

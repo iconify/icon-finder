@@ -76,5 +76,13 @@ export interface UITranslation {
 	};
 	code: {
 		titles: Record<string, string>;
+		childTabTitle: string;
+		childTabTitles: Record<string, string>;
+		heading: string;
+		text: Record<string, string | Record<string, string>>;
+		copy: string;
+		copied: string;
+		docsDefault: string;
+		docs?: Record<string, string>;
 	};
 }

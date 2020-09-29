@@ -16,6 +16,7 @@
 
 	/** @type {UITranslation} */
 	const phrases = registry.phrases;
+	/** @type {ComponentsConfig} */
 	const componentsConfig = registry.config.components;
 
 	// Generate header text

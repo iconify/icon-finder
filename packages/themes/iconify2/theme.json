@@ -34,7 +34,10 @@
 			"h-flip": "line-md:double-arrow-horizontal",
 			"v-flip": "line-md:double-arrow-vertical",
 			"plus": "line-md:plus",
-			"link": "line-md:external-link"
+			"link": "line-md:external-link",
+			"clipboard": "line-md:clipboard-arrow-twotone",
+			"confirm": "line-md:confirm",
+			"docs": "line-md:document-list-twotone"
 		}
 	}
 }

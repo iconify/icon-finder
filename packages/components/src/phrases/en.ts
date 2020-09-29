@@ -122,8 +122,39 @@ export const phrases: UITranslation = {
 	},
 	code: {
 		titles: {
-			iconify: 'SVG Framework',
-			svg: 'SVG',
+			'iconify': 'SVG Framework',
+			'svg': 'SVG',
+			'react-npm': 'React',
+			'react-api': 'React with Iconify API',
+		},
+		childTabTitle: '{key} versions:',
+		childTabTitles: {
+			react: 'React component versions:',
+		},
+		heading: 'How to use "{name}" icon:',
+		text: {
+			iconify: {
+				intro1:
+					'Iconify SVG framework makes using icons as easy as icon fonts. To use "{name}" in HTML, add this code to the document:',
+				intro2:
+					'Iconify SVG framework will load icon data from Iconify API and replace that placeholder with SVG.',
+				head: 'Make sure you import Iconify SVG framework:',
+			},
+			component: {
+				install: 'Install component and icon set:',
+				install1: 'Install component:',
+				import: 'Import component and icon data:',
+				import1: 'Import component:',
+				vue: 'Add icon and component to your component:',
+				use: 'Use it in your code:',
+			},
+		},
+		copy: 'Copy to clipboard',
+		copied: 'Copied to clipboard.',
+		docsDefault: 'Click here for more information about {title} component.',
+		docs: {
+			iconify:
+				'Click here for more information about Iconify SVG framework.',
 		},
 	},
 };

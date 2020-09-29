@@ -49,6 +49,15 @@
 				},
 				"link": {
 					"body": "<path d=\"M10.293 1H6V0h6v6h-1V1.707L5.354 7.354l-.708-.708L10.293 1z\" fill=\"currentColor\"/><path d=\"M0 2h5v1H1v8h8V8h1v4H0V2z\" fill=\"currentColor\"/>"
+				},
+				"clipboard": {
+					"body": "<path d=\"M4 0h4v1h3v11H1V1h3V0zm0 2H2v9h8V2H8v1H4V2zm3-1H5v1h2V1z\" fill=\"currentColor\"/>"
+				},
+				"confirm": {
+					"body": "<path d=\"M3.176 4.824L5.06 6.706l3.764-3.765L10 4.118 5.059 9.059 2 6l1.176-1.176z\" fill=\"currentColor\"/>"
+				},
+				"docs": {
+					"body": "<path d=\"M2 1h5.207L10 3.793V12H2V1zm1 1v9h6V4.207L6.793 2H3z\" fill=\"currentColor\"/><path d=\"M8 9H4V8h4v1zM8 7H4V6h4v1z\" fill=\"currentColor\"/>"
 				}
 			},
 			"aliases": {
@@ -97,7 +106,10 @@
 			"rotate2": "@icon-finder:figma:rotate2",
 			"rotate3": "@icon-finder:figma:rotate3",
 			"plus": "@icon-finder:figma:plus",
-			"link": "@icon-finder:figma:link"
+			"link": "@icon-finder:figma:link",
+			"clipboard": "@icon-finder:figma:clipboard",
+			"confirm": "@icon-finder:figma:confirm",
+			"docs": "@icon-finder:figma:docs"
 		}
 	}
 }

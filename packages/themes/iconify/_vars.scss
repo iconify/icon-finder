@@ -502,3 +502,9 @@ $iif-footer-icon-name-sample-color: $iif-text-dimmed-color;
 $iif-footer-icon-name-sample-hover-color: $iif-link-color;
 $iif-footer-icon-name-sample-hover-background-color: $iif-background-color2;
 $iif-footer-icon-name-sample-hover-box-shadow: $iif-simple-border-color;
+
+/*
+	Success notice
+*/
+$iif-success-notice-background: palette('green', 600);
+$iif-success-notice-text: palette('green', 0);

@@ -45,7 +45,7 @@
 				{iconCustomisations} />
 		{/if}
 		{#if canShowIconCode && loaded}
-			<CodeContainer {registry} {iconName} {iconCustomisations} />
+			<CodeContainer {registry} {iconName} {iconCustomisations} {route} />
 		{/if}
 		{#if footerOptions.showButtons}
 			<ButtonsContainer {registry} {loaded} {iconName} {footerOptions} />
