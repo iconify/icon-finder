@@ -1,6 +1,6 @@
 # Iconify Icon Finder
 
-Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as a source, providing access to over 50,000 icons.
+Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as a source, providing access to over 70,000 icons.
 
 Icon finder repository has several packages:
 
@@ -10,25 +10,19 @@ Core is the main package. It does all searching and browsing, returns parsed and
 
 It is a separate package, making it easy to build custom UI around it.
 
-See [docs/core.md](docs/core.md) for details.
-
 ## Themes
 
 This package contains themes, which include stylesheets and icons used by UI. It is a separate package to make it easy to change the theme.
 
-## UI
+## Components
 
-UI is an application built with Svelte that displays search results. It uses all packages that are listed above.
+Components package contains Svelte components that are used to render UI. It also includes language pack.
 
-See [docs/ui.md](docs/ui.md) to understand how UI works and how to customise it.
+## Documentation
 
-See [docs/phrases.md](docs/phrases.md) if you want to translate UI.
+See [Icon Finder documentation](https://docs.iconify.design/icon-finder/packages/) for details.
 
-## Build
-
-This is a tool for building custom UI. It allows you to configure UI and make custom builds. You can set behaviour, configure custom sources for phrases, icons and stylesheet.
-
-See [docs/build.md](docs/build.md) to understand how build process works.
+Documentation is designed to help you build custom Icon Finder implementation. It is very technical and requires good knowledge of Node.js
 
 # License
 
@@ -36,4 +30,4 @@ Iconify Icon Finder is dual-licensed under Apache 2.0 and GPL 2.0 license. You m
 
 `SPDX-License-Identifier: Apache-2.0 OR GPL-2.0`
 
-© 2020 Vjacheslav Trushkin
+© 2020 Iconify OÜ
