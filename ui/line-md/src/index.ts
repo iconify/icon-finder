@@ -18,7 +18,7 @@ fetch('./line-md.json')
 			container,
 			component: Container,
 			callback: (event: IconFinderEvent) => {
-				console.log('Event:', event);
+				// console.log('Event:', event);
 			},
 			iconSets: {
 				iconSets: [iconSet],
