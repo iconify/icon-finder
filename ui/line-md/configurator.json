@@ -11,7 +11,12 @@
 		},
 		"footer": {
 			"showButtons": false,
-			"showCode": true
+			"showCode": true,
+			"customisations": {
+				"inline": {
+					"show": true
+				}
+			}
 		},
 		"phrases": {
 			"search": {

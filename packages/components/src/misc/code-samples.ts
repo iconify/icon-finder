@@ -64,16 +64,22 @@ function toString(value: unknown): string {
 /**
  * List of attributes
  */
-const customisationAttributes: (keyof IconCustomisations)[] = [
+const baseCustomisationAttributes: (keyof IconCustomisations)[] = [
 	'width',
 	'height',
 	'rotate',
 	'hFlip',
 	'vFlip',
 ];
+const colorCustomisationAttributes: (keyof IconCustomisations)[] = [
+	'color',
+].concat(baseCustomisationAttributes) as typeof baseCustomisationAttributes;
+const inlineCustomisationAttributes: (keyof IconCustomisations)[] = [
+	'inline',
+].concat(baseCustomisationAttributes) as typeof baseCustomisationAttributes;
 const allCustomisationAttributes: (keyof IconCustomisations)[] = [
 	'color',
-].concat(customisationAttributes) as typeof customisationAttributes;
+].concat(inlineCustomisationAttributes) as typeof baseCustomisationAttributes;
 
 /**
  * Documentation
@@ -110,19 +116,25 @@ type Parsers = Attributes | 'onlyHeight';
 // Attr
 type ParserAttr = Record<string, ParsedAttribute>;
 
+// Callback to get template
+type TemplateCallback = (
+	attr: string,
+	customisations: IconCustomisations
+) => string;
+
 // Parser
 interface Parser {
 	// Function to init parser
-	init?: () => ParserAttr;
+	init?: (customisations: IconCustomisations) => ParserAttr;
 
 	// Function to merge data
 	merge?: (list: ParserAttr) => string;
 
 	// Template for code sample that uses {attr} variable for list of attributes
-	template?: string;
+	template?: string | TemplateCallback;
 
 	// Vue template
-	vueTemplate?: string;
+	vueTemplate?: string | TemplateCallback;
 
 	// Parsers for attributes
 	parsers: Partial<Record<Parsers, AttributeParser>>;
@@ -135,11 +147,24 @@ interface Parser {
 		// Package to install
 		install: string;
 		// Import code
-		import: string;
+		import: string | TemplateCallback;
 	};
 
 	// Documentation
 	docs?: IconifyCodeDocs;
+}
+
+/**
+ * Convert template to string
+ */
+function resolveTemplate(
+	value: string | TemplateCallback,
+	attr: string,
+	customisations: IconCustomisations
+): string {
+	return typeof value === 'string'
+		? value.replace('{attr}', attr)
+		: value(attr, customisations);
 }
 
 /**
@@ -266,9 +291,12 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 	 */
 	// SVG framework
 	const iconifyParser: Parser = {
-		init: () => {
+		init: (customisations) => {
 			return {
-				class: 'class="iconify"',
+				class:
+					'class="' +
+					(customisations.inline ? 'iconify-inline' : 'iconify') +
+					'"',
 			};
 		},
 		iconParser: (list, valueStr, valueIcon) =>
@@ -306,14 +334,22 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 			addReactAttr(list, 'icon', varName(valueIcon.name)),
 		parsers: {},
 		merge: mergeAttributes,
-		template: '<Icon {attr} />',
+		template: (attr, customisations) =>
+			'<' +
+			(customisations.inline ? 'InlineIcon' : 'Icon') +
+			' ' +
+			attr +
+			' />',
 		docs: {
 			type: 'react',
 			href: docsBase + 'react/',
 		},
 		npm: {
 			install: '@iconify/react@beta',
-			import: "import { Icon } from '@iconify/react';",
+			import: (attr, customisations) =>
+				'import { ' +
+				(customisations.inline ? 'InlineIcon' : 'Icon') +
+				" } from '@iconify/react';",
 		},
 	};
 	const reactAPIParser: Parser = {
@@ -321,25 +357,28 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 			addAttr(list, 'icon', valueStr),
 		parsers: {},
 		merge: mergeAttributes,
-		template: '<Icon {attr} />',
+		template: reactNPMParser.template,
 		docs: {
 			type: 'react',
 			href: docsBase + 'react-with-api/',
 		},
 		npm: {
 			install: '@iconify/react-with-api',
-			import: "import { Icon } from '@iconify/react-with-api';",
+			import: (attr, customisations) =>
+				'import { ' +
+				(customisations.inline ? 'InlineIcon' : 'Icon') +
+				" } from '@iconify/react-with-api';",
 		},
 	};
 
 	addMultipleAttributeParsers(
 		reactNPMParser,
-		allCustomisationAttributes,
+		colorCustomisationAttributes,
 		addReactAttr
 	);
 	addMultipleAttributeParsers(
 		reactAPIParser,
-		allCustomisationAttributes,
+		colorCustomisationAttributes,
 		addReactAttr
 	);
 
@@ -355,17 +394,38 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 			vFlip: (list, value) => addVueAttr(list, 'verticalFlip', value),
 		},
 		merge: mergeAttributes,
-		template: vue2Usage.replace(/IconifyIcon/g, 'Icon'),
-		vueTemplate: vue2Template.replace(/IconifyIcon/g, 'Icon'),
+		template: (attr, customisations) =>
+			vue2Usage
+				.replace(
+					/IconifyIcon/g,
+					customisations.inline ? 'InlineIcon' : 'Icon'
+				)
+				.replace('{attr}', attr),
+		vueTemplate: (attr, customisations) =>
+			vue2Template
+				.replace(
+					/IconifyIcon/g,
+					customisations.inline ? 'InlineIcon' : 'Icon'
+				)
+				.replace('{attr}', attr),
 		docs: {
 			type: 'vue',
 			href: docsBase + 'vue/',
 		},
 		npm: {
 			install: '@iconify/vue@beta',
-			import: "import { Icon } from '@iconify/vue';",
+			import: (attr, customisations) =>
+				'import { ' +
+				(customisations.inline ? 'InlineIcon' : 'Icon') +
+				" } from '@iconify/vue';",
 		},
 	};
+	addMultipleAttributeParsers(
+		vueParser,
+		colorCustomisationAttributes,
+		addVueAttr
+	);
+
 	const vue2Parser: Parser = Object.assign({}, vueParser, {
 		docs: {
 			type: 'vue',
@@ -375,6 +435,12 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 			install: '@iconify/vue@^1',
 			import: "import IconifyIcon from '@iconify/vue'",
 		},
+		parsers: Object.assign(
+			{
+				inline: (list, value) => addVueAttr(list, 'inline', value),
+			} as Partial<Record<Parsers, AttributeParser>>,
+			vueParser.parsers
+		),
 		template: vue2Usage,
 		vueTemplate: vue2Template,
 	});
@@ -405,7 +471,11 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 	const svgParser: Parser = {
 		parsers: {},
 	};
-	addMultipleAttributeParsers(svgParser, customisationAttributes, addRawAttr);
+	addMultipleAttributeParsers(
+		svgParser,
+		inlineCustomisationAttributes,
+		addRawAttr
+	);
 
 	// Merge all parsers
 	const parsers = {
@@ -496,7 +566,7 @@ export function getIconCode(
 	const icon = stringToIcon(iconName)!;
 
 	// Init parser
-	const attr: ParserAttr = parser.init ? parser.init() : {};
+	const attr: ParserAttr = parser.init ? parser.init(iconCustomisations) : {};
 	const attrParsers = parser.parsers;
 
 	// Add icon name
@@ -533,12 +603,17 @@ export function getIconCode(
 		}
 	});
 
+	// Inline
+	if (iconCustomisations.inline && attrParsers.inline) {
+		attrParsers.inline(attr, true);
+	}
+
 	// Merge attributes
 	const merged = parser.merge ? parser.merge(attr) : '';
 
 	// Use template
 	const html = parser.template
-		? parser.template.replace('{attr}', merged)
+		? resolveTemplate(parser.template, merged, iconCustomisations)
 		: '';
 
 	// Generate output
@@ -588,7 +663,11 @@ export function getIconCode(
 					' ' +
 					npm.package,
 				import:
-					parser.npm.import +
+					resolveTemplate(
+						parser.npm.import,
+						merged,
+						iconCustomisations
+					) +
 					'\nImport ' +
 					npm.name +
 					' from ' +
@@ -611,7 +690,11 @@ export function getIconCode(
 			}
 			output.component = {
 				install1: 'npm install --save-dev ' + parser.npm.install,
-				import1: parser.npm?.import,
+				import1: resolveTemplate(
+					parser.npm.import,
+					merged,
+					iconCustomisations
+				),
 				use: html,
 			};
 			break;

@@ -14,6 +14,9 @@ export interface IconCustomisations {
 	width: string;
 	height: string;
 
+	// Display mode
+	inline: boolean;
+
 	// Note: when adding new property, do not forget to add key/value pair below
 }
 
@@ -32,6 +35,7 @@ type RotationCustomisation = Transform<'rotate'>;
 type ColorCustomisation = Transform<'color'>;
 type WidthCustomisation = Transform<'width'>;
 type HeightCustomisation = Transform<'height'>;
+type InlineCustomisation = Transform<'inline'>;
 
 export type IconCustomisationPairs =
 	| HorizontalFlipCustomisation
@@ -39,7 +43,8 @@ export type IconCustomisationPairs =
 	| RotationCustomisation
 	| ColorCustomisation
 	| WidthCustomisation
-	| HeightCustomisation;
+	| HeightCustomisation
+	| InlineCustomisation;
 
 /**
  * Default values
@@ -63,6 +68,7 @@ export const emptyCustomisations: IconCustomisations = {
 	color: '',
 	width: '',
 	height: '',
+	inline: false,
 };
 
 /**
@@ -75,6 +81,7 @@ export const defaultCustomisations: IconCustomisations = {
 	color: defaultColor,
 	width: defaultWidth,
 	height: defaultHeight,
+	inline: false,
 };
 
 /**

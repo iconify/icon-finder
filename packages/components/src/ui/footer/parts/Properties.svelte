@@ -13,6 +13,8 @@
 	const customiseRotate = true;
 	// @iconify-replacement: 'customiseFlip = true'
 	const customiseFlip = true;
+	// @iconify-replacement: 'customiseInline = false'
+	const customiseInline = true;
 </script>
 
 <script>
@@ -29,6 +31,8 @@
 	import RotateBlock from './props/rotate/Rotate.svelte';
 	// @iconify-replacement: '/props/flip/Flip.svelte'
 	import FlipBlock from './props/flip/Flip.svelte';
+	// @iconify-replacement: '/props/inline/Inline.svelte'
+	import InlineBlock from './props/inline/Inline.svelte';
 
 	/** @type {Registry} */
 	export let registry;
@@ -74,6 +78,13 @@
 				{registry}
 				{iconData}
 				value={iconCustomisations.rotate}
+				{customise} />
+		{/if}
+		{#if customiseInline}
+			<InlineBlock
+				{registry}
+				{iconData}
+				value={iconCustomisations.inline}
 				{customise} />
 		{/if}
 	</div>

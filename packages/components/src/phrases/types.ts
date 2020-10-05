@@ -65,6 +65,10 @@ export interface UITranslation {
 	footer: {
 		iconName: string;
 		iconNamePlaceholder: string;
+		inlineSample: {
+			before: string;
+			after: string;
+		};
 	};
 	footerButtons: Record<string, string>;
 	footerBlocks: Record<string, string>;
@@ -73,6 +77,10 @@ export interface UITranslation {
 		vFlip: string;
 		rotate: string;
 		rotateTitle: string;
+		inline: string;
+		block: string;
+		inlineHint: string;
+		blockHint: string;
 	};
 	code: {
 		titles: Record<string, string>;

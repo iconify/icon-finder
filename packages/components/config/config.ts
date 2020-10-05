@@ -101,6 +101,12 @@ export interface IconFinderComponentsConfig {
 				show: boolean;
 				component: string;
 			};
+
+			// Inline
+			inline: {
+				show: boolean;
+				component: string;
+			};
 		};
 		showCustomisationsTitle: boolean; // Shows title in customisations block
 
@@ -177,6 +183,10 @@ export function config(): IconFinderComponentsConfig {
 				rotate: {
 					show: true,
 					component: 'rotate',
+				},
+				inline: {
+					show: false,
+					component: 'inline',
 				},
 			},
 			showCustomisationsTitle: false,

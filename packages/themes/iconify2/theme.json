@@ -37,7 +37,9 @@
 			"link": "line-md:external-link",
 			"clipboard": "line-md:clipboard-arrow-twotone",
 			"confirm": "line-md:confirm",
-			"docs": "line-md:document-list-twotone"
+			"docs": "line-md:document-list-twotone",
+			"mode-block": "line-md:valign-baseline",
+			"mode-inline": "line-md:valign-middle"
 		}
 	}
 }

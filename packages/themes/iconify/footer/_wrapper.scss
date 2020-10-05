@@ -28,7 +28,8 @@
 		}
 	}
 
-	.iif-footer-sample--loaded {
+	// Sample in block mode
+	.iif-footer-sample--block {
 		svg {
 			display: block;
 			margin: $iif-border-width;
@@ -39,6 +40,25 @@
 				background-color: $iif-footer-icon-name-sample-hover-background-color;
 				box-shadow: 0 0 0 $iif-border-width
 					$iif-footer-icon-name-sample-hover-box-shadow;
+			}
+		}
+	}
+
+	// Sample in inline mode
+	.iif-footer-sample--inline {
+		p {
+			margin: 0;
+			padding: 0 ($iif-spacing / 2);
+			font-size: $iif-base-font-size;
+			line-height: $iif-base-line-height;
+			color: $iif-footer-icon-name-sample-color;
+			border: $iif-border-width dotted $iif-simple-border-color;
+			border-radius: $iif-border-radius-small;
+			min-width: 160px;
+			&:hover {
+				color: $iif-footer-icon-name-sample-hover-color;
+				background-color: $iif-footer-icon-name-sample-hover-background-color;
+				border-color: $iif-footer-icon-name-sample-hover-box-shadow;
 			}
 		}
 	}

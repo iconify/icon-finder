@@ -4,6 +4,9 @@
 
 	// @iconify-replacement: 'canShowIconCode = true'
 	const canShowIconCode = true;
+
+	// @iconify-replacement: 'customiseInline = true'
+	const customiseInline = true;
 </script>
 
 <script>
@@ -16,6 +19,7 @@
 	// @iconify-replacement: './parts/Code.svelte'
 	import CodeContainer from './parts/Code.svelte';
 	import Sample from './parts/FullSample.svelte';
+	import InlineSample from './parts/InlineSample.svelte';
 
 	/** @type {Registry} */
 	export let registry;
@@ -38,12 +42,21 @@
 {#if loaded | footerOptions.showButtons}
 	<Block type="footer">
 		<div class="iif-footer-full">
-			<Sample
-				{registry}
-				{loaded}
-				{iconName}
-				{iconCustomisations}
-				{footerOptions} />
+			{#if customiseInline && iconCustomisations.inline}
+				<InlineSample
+					{registry}
+					{loaded}
+					{iconName}
+					{iconCustomisations}
+					{footerOptions} />
+			{:else}
+				<Sample
+					{registry}
+					{loaded}
+					{iconName}
+					{iconCustomisations}
+					{footerOptions} />
+			{/if}
 			<div class="iif-footer-full-content">
 				<IconName
 					{registry}

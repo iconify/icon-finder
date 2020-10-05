@@ -27,7 +27,8 @@
 		}
 	}
 
-	.iif-footer-sample--loaded {
+	// Sample in block mode
+	.iif-footer-sample--block {
 		svg {
 			display: block;
 			margin: 1px;
@@ -37,6 +38,24 @@
 				color: $plugin-palette-color-link-hover;
 				background: $plugin-palette-background-darker-white;
 				box-shadow: 0 0 0 1px $plugin-palette-border-darker-grey;
+			}
+		}
+	}
+
+	// Sample in inline mode
+	.iif-footer-sample--inline {
+		p {
+			@include plugin-font-ui-pos('small', 'normal');
+			margin: 0;
+			padding: 0 4px;
+			color: $plugin-palette-color-black-dimmed;
+			border: 1px dotted $plugin-palette-border-grey;
+			border-radius: $plugin-border-radius-small;
+			min-width: 160px;
+			&:hover {
+				color: $plugin-palette-color-link-hover;
+				background: $plugin-palette-background-darker-white;
+				border-color: $plugin-palette-border-darker-grey;
 			}
 		}
 	}

@@ -35,7 +35,7 @@
 	> p {
 		position: absolute;
 		left: 10px;
-		top: -9px;
+		top: -11px;
 
 		@include iif-font('small', 'normal');
 		line-height: 1em;
@@ -46,7 +46,7 @@
 		background: $iif-background-color;
 		color: $iif-text-muted-color;
 		margin: 0;
-		padding: 0 $iif-spacing 0 ($iif-spacing / 2);
+		padding: 2px $iif-spacing 2px ($iif-spacing / 2);
 	}
 
 	// Content

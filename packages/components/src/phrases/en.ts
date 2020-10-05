@@ -94,6 +94,10 @@ export const phrases: UITranslation = {
 	footer: {
 		iconName: 'Selected icon:',
 		iconNamePlaceholder: 'Enter icon by name...',
+		inlineSample: {
+			before: 'Text with icon sample',
+			after: 'to show icon alignment in text.',
+		},
 	},
 	footerButtons: {
 		submit: 'Submit',
@@ -113,12 +117,18 @@ export const phrases: UITranslation = {
 		height: 'Height',
 		size: 'Size', // Width + height in one block
 		alignment: 'Alignment',
+		mode: 'Mode',
 	},
 	footerOptionButtons: {
 		hFlip: 'Horizontal',
 		vFlip: 'Vertical',
 		rotate: '{num}' + String.fromCharCode(0x00b0),
 		rotateTitle: 'Rotate {num}' + String.fromCharCode(0x00b0),
+		inline: 'Inline',
+		block: 'Block',
+		inlineHint:
+			'Icon is vertically aligned slightly below baseline, like icon font, fitting perfectly in text.',
+		blockHint: 'Icon is rendered as is, without custom vertical alignment.',
 	},
 	code: {
 		titles: {

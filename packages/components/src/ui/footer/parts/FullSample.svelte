@@ -169,7 +169,9 @@
 </script>
 
 {#if loaded}
-	<div class="iif-footer-sample iif-footer-sample--loaded" {style}>
+	<div
+		class="iif-footer-sample iif-footer-sample--block iif-footer-sample--loaded"
+		{style}>
 		<Icon icon={iconName} {props} />
 	</div>
 {:else}

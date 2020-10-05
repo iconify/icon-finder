@@ -7,29 +7,33 @@
 			"prefix": "iconify",
 			"icons": {
 				"error-loading": {
-					"body": "<g clip-path=\"url(#clip0)\"><path d=\"M9.9.2l-.2 1C12.7 2 15 4.7 15 8c0 3.9-3.1 7-7 7s-7-3.1-7-7c0-3.3 2.3-6 5.3-6.8l-.2-1C2.6 1.1 0 4.3 0 8c0 4.4 3.6 8 8 8s8-3.6 8-8c0-3.7-2.6-6.9-6.1-7.8z\" fill=\"currentColor\"/></g><defs><clipPath id=\"clip0\"><path fill=\"#fff\" d=\"M0 0h16v16H0z\"/></clipPath></defs>"
+					"body": "<g clip-path=\"url(#clip0)\"><path d=\"M9.9.2l-.2 1C12.7 2 15 4.7 15 8c0 3.9-3.1 7-7 7s-7-3.1-7-7c0-3.3 2.3-6 5.3-6.8l-.2-1C2.6 1.1 0 4.3 0 8c0 4.4 3.6 8 8 8s8-3.6 8-8c0-3.7-2.6-6.9-6.1-7.8z\" fill=\"currentColor\"/></g><defs><clipPath id=\"clip0\"><path fill=\"#fff\" d=\"M0 0h16v16H0z\"/></clipPath></defs>",
+					"width": 16,
+					"height": 16
 				},
 				"color-filled": {
-					"body": "<rect width=\"16\" height=\"16\" rx=\"2\" fill=\"currentColor\"/>"
+					"body": "<rect width=\"16\" height=\"16\" rx=\"2\" fill=\"currentColor\"/>",
+					"width": 16,
+					"height": 16
 				},
 				"plus": {
-					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 64h112\" class=\"animation-delay-0 animation-duration-6 animate-stroke stroke-length-153\"/><path d=\"M64 8v112\" class=\"animation-delay-6 animation-duration-6 animate-stroke stroke-length-153\"/></g>",
-					"width": 128,
-					"height": 128
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 64h112\" class=\"animation-delay-0 animation-duration-6 animate-stroke stroke-length-153\"/><path d=\"M64 8v112\" class=\"animation-delay-6 animation-duration-6 animate-stroke stroke-length-153\"/></g>"
 				},
 				"document": {
-					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M104 40L72 8H24v112h80V40z\" stroke-width=\"16\" class=\"animation-delay-0 animation-duration-11 animate-stroke stroke-length-500\"/><path stroke-width=\"8\" d=\"M68 12v32h32\" class=\"animation-delay-11 animation-duration-2 animate-stroke stroke-length-102\"/></g>",
-					"width": 128,
-					"height": 128
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M104 40L72 8H24v112h80V40z\" stroke-width=\"16\" class=\"animation-delay-0 animation-duration-11 animate-stroke stroke-length-500\"/><path stroke-width=\"8\" d=\"M68 12v32h32\" class=\"animation-delay-11 animation-duration-2 animate-stroke stroke-length-102\"/></g>"
 				},
 				"clipboard": {
-					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M104 8H24v112h80V8z\" stroke-width=\"16\" class=\"animation-delay-0 animation-duration-11 animate-stroke stroke-length-500\"/><path stroke-width=\"8\" d=\"M44 12v24h40V12\" class=\"animation-delay-11 animation-duration-2 animate-stroke stroke-length-102\"/></g>",
-					"width": 128,
-					"height": 128
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M104 8H24v112h80V8z\" stroke-width=\"16\" class=\"animation-delay-0 animation-duration-11 animate-stroke stroke-length-500\"/><path stroke-width=\"8\" d=\"M44 12v24h40V12\" class=\"animation-delay-11 animation-duration-2 animate-stroke stroke-length-102\"/></g>"
+				},
+				"baseline": {
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 48.2h112\" class=\"animation-delay-0 animation-duration-4 animate-stroke stroke-length-153\"/><path d=\"M8 104.2h112\" class=\"animation-delay-4 animation-duration-4 animate-stroke stroke-length-153\"/><path d=\"M24 24v80\" class=\"animation-delay-9 animation-duration-3 animate-stroke stroke-length-102\"/><path d=\"M104 24v80\" class=\"animation-delay-12 animation-duration-3 animate-stroke stroke-length-102\"/></g>"
+				},
+				"middle": {
+					"body": "<g stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"16\" fill=\"none\" fill-rule=\"evenodd\"><path d=\"M8 40.2h112\" class=\"animation-delay-0 animation-duration-4 animate-stroke stroke-length-153\"/><path d=\"M8 88.2h112\" class=\"animation-delay-4 animation-duration-4 animate-stroke stroke-length-153\"/><path d=\"M24 24v80\" class=\"animation-delay-9 animation-duration-3 animate-stroke stroke-length-102\"/><path d=\"M104 24v80\" class=\"animation-delay-12 animation-duration-3 animate-stroke stroke-length-102\"/></g>"
 				}
 			},
-			"width": 16,
-			"height": 16
+			"width": 128,
+			"height": 128
 		},
 		"names": {
 			"reset": "arty-animated:16-close",
@@ -55,7 +59,9 @@
 			"link": "arty-animated:16-link-external",
 			"clipboard": "@icon-finder:iconify:clipboard",
 			"confirm": "arty-animated:16-confirm",
-			"docs": "@icon-finder:iconify:document"
+			"docs": "@icon-finder:iconify:document",
+			"mode-block": "@icon-finder:iconify:baseline",
+			"mode-inline": "@icon-finder:iconify:middle"
 		}
 	}
 }

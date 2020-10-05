@@ -13,6 +13,8 @@
 	export let title;
 	/** @type {string} */
 	export let text;
+	/** @type {boolean} */
+	export let textOptional = false;
 	/** @type {string} */
 	export let status = '';
 
@@ -31,7 +33,9 @@
 			(hasIcon ? '--with-icon' : '--without-icon') +
 			' ' +
 			baseClass +
-			(text || !hasIcon ? '--with-text' : '--without-text') +
+			((text && !textOptional) || !hasIcon
+				? '--with-text'
+				: '--without-text') +
 			(status === '' ? '' : ' ' + baseClass + '--' + status);
 	}
 </script>

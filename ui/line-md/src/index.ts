@@ -14,7 +14,7 @@ fetch('./line-md.json')
 		container.innerHTML = '';
 
 		// Create instance
-		new Wrapper({
+		const wrapper = new Wrapper({
 			container,
 			component: Container,
 			callback: (event: IconFinderEvent) => {
@@ -53,6 +53,7 @@ fetch('./line-md.json')
 				},
 			},
 		});
+		((window as unknown) as Record<string, unknown>)['_test'] = wrapper;
 	})
 	.catch((err) => {
 		document.getElementById('container')!.innerHTML =
