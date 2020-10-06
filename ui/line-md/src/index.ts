@@ -53,7 +53,6 @@ fetch('./line-md.json')
 				},
 			},
 		});
-		((window as unknown) as Record<string, unknown>)['_test'] = wrapper;
 	})
 	.catch((err) => {
 		document.getElementById('container')!.innerHTML =
