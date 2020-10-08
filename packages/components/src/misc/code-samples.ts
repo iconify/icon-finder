@@ -1,4 +1,4 @@
-import Iconify from '@iconify/iconify';
+import Iconify, { IconifyIcon } from '@iconify/iconify';
 import { Icon, stringToIcon } from '@iconify/search-core';
 import { ProviderCodeData } from './code-config';
 import { AvailableLanguages } from './code-tree';
@@ -478,9 +478,11 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 	);
 
 	// Merge all parsers
-	const parsers = {
+	const parsers: Record<AvailableLanguages, Parser> = {
 		'iconify': iconifyParser,
-		'svg': svgParser,
+		'svg-raw': svgParser,
+		'svg-box': svgParser,
+		'svg-uri': svgParser,
 		'react-npm': reactNPMParser,
 		'react-api': reactAPIParser,
 		'vue2': vue2Parser,
@@ -623,7 +625,7 @@ export function getIconCode(
 
 	// Add language specific stuff
 	let str: string;
-	let isFull: boolean;
+	let data: IconifyIcon;
 	let npm: NPMImport;
 	switch (lang) {
 		case 'iconify':
@@ -640,10 +642,33 @@ export function getIconCode(
 			};
 			break;
 
-		case 'svg':
+		case 'svg-raw':
+		case 'svg-box':
+		case 'svg-uri':
 			str = Iconify.renderHTML(iconName, attr)!;
 			if (iconCustomisations.color !== '') {
 				str = str.replace(/currentColor/g, iconCustomisations.color);
+			}
+			if (lang === 'svg-box') {
+				// Add empty rectangle before shapes
+				data = Iconify.getIcon(iconName)!;
+				str = str.replace(
+					'>',
+					'><rect x="' +
+						data.left +
+						'" y="' +
+						data.top +
+						'" width="' +
+						data.width +
+						'" height="' +
+						data.height +
+						'" fill="none" stroke="none" />'
+				);
+			}
+			if (lang === 'svg-uri') {
+				// Encode
+				str =
+					"url('data:image/svg+xml," + encodeURIComponent(str) + "')";
 			}
 			output.raw = [str];
 			break;

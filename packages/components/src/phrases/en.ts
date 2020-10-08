@@ -134,12 +134,16 @@ export const phrases: UITranslation = {
 		titles: {
 			'iconify': 'SVG Framework',
 			'svg': 'SVG',
+			'svg-raw': 'SVG',
+			'svg-box': 'SVG with viewBox rectangle',
+			'svg-uri': 'SVG as data: URI',
 			'react-npm': 'React',
 			'react-api': 'React with Iconify API',
 		},
 		childTabTitle: '{key} versions:',
 		childTabTitles: {
 			react: 'React component versions:',
+			svg: 'SVG options:',
 		},
 		heading: 'How to use "{name}" icon:',
 		text: {
@@ -157,6 +161,12 @@ export const phrases: UITranslation = {
 				import1: 'Import component:',
 				vue: 'Add icon and component to your component:',
 				use: 'Use it in your code:',
+			},
+			intro: {
+				'svg-box':
+					'This SVG contains extra empty rectangle that matches viewBox. It is needed to keep icon dimensions when importing icon in software that ignores viewBox attribute.',
+				'svg-uri':
+					'You can use this as background image or as content for pseudo element in stylesheet.',
 			},
 		},
 		copy: 'Copy to clipboard',

@@ -56,6 +56,10 @@
 </script>
 
 {#if output}
+	{#if text.intro && text.intro[mode]}
+		<p>{text.intro[mode]}</p>
+	{/if}
+
 	{#if output.iconify}
 		<p>{text.iconify.intro1.replace('{name}', icon.name)}</p>
 		<SampleInput {registry} content={output.iconify.html} />

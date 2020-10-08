@@ -14,7 +14,9 @@ export type AvailableLanguages =
 	// SVG framework
 	| 'iconify'
 	// Raw SVG
-	| 'svg'
+	| 'svg-raw'
+	| 'svg-box'
+	| 'svg-uri'
 	// React
 	| 'react-npm'
 	| 'react-api'
@@ -25,7 +27,7 @@ export type AvailableLanguages =
 	| 'svelte';
 
 // Tabs that do not generate code
-type FakeLanguages = 'react' | 'vue';
+type FakeLanguages = 'react' | 'vue' | 'svg';
 
 type LanguageKeys = AvailableLanguages | FakeLanguages;
 
@@ -63,8 +65,19 @@ const rawCodeTabs: UnfilteredLanguagesMapRoot[] = [
 		mode: 'iconify',
 	},
 	{
-		lang: 'svg',
+		tab: 'svg',
 		mode: 'raw',
+		children: [
+			{
+				lang: 'svg-raw',
+			},
+			{
+				lang: 'svg-box',
+			},
+			{
+				lang: 'svg-uri',
+			},
+		],
 	},
 	{
 		tab: 'react',
