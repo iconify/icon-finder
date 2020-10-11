@@ -666,6 +666,20 @@ export function getIconCode(
 				);
 			}
 			if (lang === 'svg-uri') {
+				// Remove unused attributes
+				const parts = str.split('>');
+				let firstTag = parts.shift()!;
+				['aria-hidden', 'focusable', 'role', 'class', 'style'].forEach(
+					(attr) => {
+						firstTag = firstTag.replace(
+							new RegExp('\\s' + attr + '="[^"]*"'),
+							''
+						);
+					}
+				);
+				parts.unshift(firstTag);
+				str = parts.join('>');
+
 				// Encode
 				str =
 					"url('data:image/svg+xml," + encodeURIComponent(str) + "')";
