@@ -2,6 +2,9 @@
 	"common": {
 		"theme": {
 			"name": "iconify2"
+		},
+		"components": {
+			"customDir": "src/components"
 		}
 	},
 	"components": {

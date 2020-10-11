@@ -24,7 +24,10 @@ export interface ParseResult extends IconFinderConfig, StoredIconFinderConfig {
 /**
  * Parse stuff
  */
-export function parse(params: ConfiguratorParams): ParseResult {
+export function parse(
+	params: ConfiguratorParams,
+	currentDir?: string
+): ParseResult {
 	// Rebuild core if needed
 	if (params.rebuild.core) {
 		if (params.verbose) {
@@ -41,6 +44,16 @@ export function parse(params: ConfiguratorParams): ParseResult {
 
 	// Load common configration
 	const commonConfig = loadCommonConfig(configList);
+
+	// Add current directory
+	if (
+		typeof currentDir === 'string' &&
+		typeof commonConfig.components.customDir === 'string' &&
+		commonConfig.components.customDir.slice(0, 1) !== '/'
+	) {
+		commonConfig.components.customDir =
+			currentDir + '/' + commonConfig.components.customDir;
+	}
 
 	// Load components config
 	const componentsConfig = loadComponentsConfig(

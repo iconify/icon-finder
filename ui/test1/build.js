@@ -82,7 +82,7 @@ function configure() {
 	console.log(`Using config file: ${params.configFiles.join(', ')}`);
 
 	// Build
-	const result = build(params);
+	const result = build(params, __dirname);
 	console.log(
 		result.rebuilt
 			? 'Dependencies have been confgured and rebuilt.'

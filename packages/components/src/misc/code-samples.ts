@@ -510,7 +510,19 @@ export interface IconifyCodeOutput {
 	html: string;
 }
 
+export interface CustomCodeOutputWithText {
+	// Text
+	text?: string;
+
+	// Code
+	code?: string;
+}
+
 export interface CodeOutput {
+	// Custom header and footer
+	header?: CustomCodeOutputWithText;
+	footer?: CustomCodeOutputWithText;
+
 	// Iconify
 	iconify?: IconifyCodeOutput;
 

@@ -6,7 +6,7 @@ const {
 	unlink,
 	listFiles,
 	writeFile,
-	readFile,
+	locateFile,
 } = require('./config/fs');
 
 const rootDir = __dirname;
@@ -31,6 +31,7 @@ mkdir(compiledDir);
 // Get source directories
 let sourceDirs = [defaultSourceDir];
 if (config.customFiles) {
+	console.log(`Using custom files from ${config.customFiles.path}`);
 	sourceDirs.unshift(config.customFiles.path);
 }
 
@@ -67,10 +68,17 @@ listFiles(compiledDir).forEach((file) => {
 
 // Copy all source files
 let modified = 0,
-	copied = 0;
+	copied = 0,
+	custom = 0;
 
 sourceFiles.forEach((file) => {
-	const ext = file.split('.').pop();
+	const parts = file.split('.');
+	const ext = parts.pop();
+	if (parts.length > 1 && parts.pop() === 'default') {
+		// Ignore .default
+		return;
+	}
+
 	switch (ext) {
 		case 'js':
 		case 'ts':
@@ -87,25 +95,60 @@ sourceFiles.forEach((file) => {
 			process.exit(1);
 	}
 
-	const oldContent = readFile(sourceDirs, '/' + file);
-	const newContent = replacements.parse(oldContent);
+	// Locate file
+	const sourceDir = locateFile(sourceDirs, '/' + file);
+	const copy = [
+		{
+			sourceDir,
+			sourceFile: file,
+			targetFile: file,
+		},
+	];
 
-	// Write files to compile by TypeScript
-	if (ext !== 'svelte') {
-		writeFile(configuredDir + '/' + file, newContent);
+	// Save original file as '.default'
+	if (sourceDir !== defaultSourceDir) {
+		// Add '.default' to file
+		const parts = file.split('.');
+		parts.pop();
+		parts.push('default');
+		parts.push(ext);
+
+		copy.push({
+			sourceDir: defaultSourceDir,
+			sourceFile: file,
+			targetFile: parts.join('.'),
+		});
+
+		custom++;
 	}
 
-	// Write files that do not need TypeScript compilation
-	if (ext !== 'ts') {
-		writeFile(compiledDir + '/' + file, newContent);
-	}
+	// Copy file(s)
+	copy.forEach((item) => {
+		const oldContent = readFileSync(
+			item.sourceDir + '/' + item.sourceFile,
+			'utf8'
+		);
+		const newContent = replacements.parse(oldContent);
 
-	if (oldContent === newContent) {
-		modified++;
-	} else {
-		copied++;
-	}
+		// Write files to compile by TypeScript
+		if (ext !== 'svelte') {
+			writeFile(configuredDir + '/' + item.targetFile, newContent);
+		}
+
+		// Write files that do not need TypeScript compilation
+		if (ext !== 'ts') {
+			writeFile(compiledDir + '/' + item.targetFile, newContent);
+		}
+
+		if (oldContent === newContent) {
+			modified++;
+		} else {
+			copied++;
+		}
+	});
 });
 
 // Done
-console.log(`Saved ${copied + modified} files (${modified} modified)`);
+console.log(
+	`Saved ${copied + modified} files (${modified} modified, ${custom} custom)`
+);

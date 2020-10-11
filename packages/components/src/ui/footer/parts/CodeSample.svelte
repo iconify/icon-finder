@@ -56,6 +56,15 @@
 </script>
 
 {#if output}
+	{#if output.header}
+		{#if output.header.text}
+			<p>{output.header.text}</p>
+		{/if}
+		{#if output.header.code}
+			<SampleInput {registry} content={output.header.code} />
+		{/if}
+	{/if}
+
 	{#if text.intro && text.intro[mode]}
 		<p>{text.intro[mode]}</p>
 	{/if}
@@ -81,6 +90,15 @@
 				<SampleInput {registry} content={output.component[key]} />
 			{/if}
 		{/each}
+	{/if}
+
+	{#if output.footer}
+		{#if output.footer.text}
+			<p>{output.footer.text}</p>
+		{/if}
+		{#if output.footer.code}
+			<SampleInput {registry} content={output.footer.code} />
+		{/if}
 	{/if}
 
 	{#if output.docs}

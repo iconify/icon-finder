@@ -12,6 +12,9 @@ export function getParams(): ConfiguratorParams {
 /**
  * Build
  */
-export function build(params: ConfiguratorParams): ParseResult {
-	return parse(params);
+export function build(
+	params: ConfiguratorParams,
+	currentDir?: string
+): ParseResult {
+	return parse(params, currentDir);
 }

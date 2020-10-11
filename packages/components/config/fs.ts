@@ -110,13 +110,13 @@ export function writeFile(filename: string, data: string) {
 }
 
 /**
- * Read file from multiple possible locations
+ * Find file in one of multiple possible locations
  */
-export function readFile(dirs: string[], filename: string): string {
+export function locateFile(dirs: string[], filename: string): string {
 	for (let i = 0; i < dirs.length; i++) {
 		try {
-			const content = fs.readFileSync(dirs[i] + filename, 'utf8');
-			return content;
+			fs.lstatSync(dirs[i] + filename);
+			return dirs[i];
 		} catch (err) {}
 	}
 	throw new Error(`Cannot locate file ${filename}`);
