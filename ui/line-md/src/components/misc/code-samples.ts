@@ -55,7 +55,6 @@ export function getIconCode(
 						'Icon class="iconify--line-md" :icon'
 					);
 			}
-			console.log(result.component);
 		}
 	}
 
