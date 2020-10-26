@@ -26,7 +26,9 @@
 	// Check route for keyword
 	function checkRoute(route) {
 		if (
+			route &&
 			route.type === 'search' &&
+			route.params &&
 			(lastChange === '' || lastChange !== route.params.search)
 		) {
 			keyword = route.params.search;
@@ -38,10 +40,12 @@
 
 	// Submit form
 	function submitForm() {
-		const value = keyword.trim().toLowerCase();
-		if (value !== '') {
-			lastChange = value;
-			registry.router.action('search', value);
+		if (typeof keyword === 'string') {
+			const value = keyword.trim().toLowerCase();
+			if (value !== '') {
+				lastChange = value;
+				registry.router.action('search', value);
+			}
 		}
 	}
 
@@ -52,7 +56,7 @@
 			keyword = '';
 			if (route !== null) {
 				// Get keyword from current route or its parent
-				if (!checkRoute(route) && route.parent !== void 9) {
+				if (!checkRoute(route) && route.parent !== void 0) {
 					checkRoute(route.parent);
 				}
 			}

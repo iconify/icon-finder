@@ -39,7 +39,7 @@
 
 			// Adjust width and height
 			if (props.width || props.height) {
-				const rotated = !!(iconCustomisations.rotated % 2);
+				const rotated = !!(iconCustomisations.rotate % 2);
 
 				let key = rotated ? 'height' : 'width';
 				if (props[key] && props[key] > maxWidth) {

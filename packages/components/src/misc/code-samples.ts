@@ -433,7 +433,7 @@ function generateParsers(): Record<AvailableLanguages, Parser> {
 		},
 		npm: {
 			install: '@iconify/vue@^1',
-			import: "import IconifyIcon from '@iconify/vue'",
+			import: "import IconifyIcon from '@iconify/vue';",
 		},
 		parsers: Object.assign(
 			{
@@ -719,11 +719,12 @@ export function getIconCode(
 						merged,
 						iconCustomisations
 					) +
-					'\nImport ' +
+					'\nimport ' +
 					npm.name +
-					' from ' +
+					" from '" +
 					npm.package +
-					npm.file,
+					npm.file +
+					"';",
 				use: html
 					.replace(/{varName}/g, npm.name)
 					.replace('{iconPackage}', npm.package + npm.file),

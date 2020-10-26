@@ -62,7 +62,7 @@
 			type="text"
 			bind:value
 			placeholder={phrases.placeholder}
-			bind:icon={inputIcon} />
+			icon={inputIcon} />
 		<button class={buttonClass} type="submit">
 			{#if buttonIcon}
 				<Icon icon="plus" />

@@ -32,7 +32,7 @@
 		// Check for icon
 		if (
 			value !== lastIconName &&
-			(value === '') | Iconify.iconExists(value)
+			(value === '') || Iconify.iconExists(value)
 		) {
 			// UISelectionEvent
 			registry.callback({

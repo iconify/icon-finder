@@ -43,7 +43,7 @@
 			if (!document.execCommand || !document.execCommand('copy')) {
 				// Ancient way
 				if (window.clipboardData) {
-					window.clipboardData.setData('Text', rawCode);
+					window.clipboardData.setData('Text', content);
 					copied = true;
 				}
 			} else {

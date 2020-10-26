@@ -5,7 +5,7 @@
 	export let registry;
 	/** @type {string} */
 	// export let name;
-	/** @type {CollectionInfoBlock | null} */
+	/** @type {CollectionInfoBlock} */
 	export let block;
 
 	/** @type {Record<string, string>} */
@@ -14,7 +14,7 @@
 	/** @type {CollectionInfo | null} */
 	let info;
 	$: {
-		info = block !== null ? block.info : null;
+		info = block.info;
 	}
 </script>
 

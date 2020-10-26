@@ -132,7 +132,7 @@
 			</div>
 		{/if}
 		<div class="iif-collection-total">
-			<Height text={info.total} />
+			<Height text={info.total + ''} />
 		</div>
 	</div>
 </li>

@@ -89,6 +89,10 @@ sourceFiles.forEach((file) => {
 			return;
 
 		default:
+			if (parts.shift() === '') {
+				// Hidden file
+				return;
+			}
 			console.error(
 				`Unsupported file "${file}". Only JavaScript, TypeScript and Svelte files are allowed.`
 			);

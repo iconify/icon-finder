@@ -6,7 +6,7 @@
 	export let registry;
 	/** @type {string} */
 	export let name;
-	/** @type {FiltersBlock | null} */
+	/** @type {CollectionsFilterBlock} */
 	export let block;
 
 	/** @type {UITranslation.search} */

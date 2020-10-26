@@ -12,12 +12,6 @@
 	/** @type {CollectionViewBlocks | null} */
 	export let blocks;
 
-	/** @type {string} */
-	let keyword;
-	$: {
-		keyword = route.params.keyword;
-	}
-
 	// Get collection link
 	/** @type {string} */
 	let collectionsLink;

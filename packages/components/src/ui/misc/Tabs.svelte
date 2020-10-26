@@ -22,7 +22,7 @@
 		tabs.forEach((tab) => {
 			const key = tab.key;
 			const index =
-				(typeof tab.index === void 0 ? list.length : tab.index) %
+				(tab.index === void 0 ? list.length : tab.index) %
 				maxIndex;
 
 			// Generate class name

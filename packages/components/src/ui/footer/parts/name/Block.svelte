@@ -12,7 +12,7 @@
 	import { getIconGrid } from '../../../../misc/scale-icon';
 
 	/** @type {Registry} */
-	export let registry;
+	// export let registry;
 	/** @type {boolean} */
 	export let loaded;
 	/** @type {string} */
@@ -21,9 +21,6 @@
 	export let selectedIcon;
 	/** @type {PartialRoute} */
 	export let route;
-
-	/** @type {Record<string, string>} */
-	const phrases = registry.phrases.footer;
 
 	/** @type {string} */
 	let text;
@@ -43,12 +40,12 @@
 	/** @type {number} */
 	let grid;
 	$: {
-		onLoad(iconName);
+		onLoad();
 	}
 
 	function onLoad() {
 		iconData = Iconify.getIcon(iconName);
-		if (!iconData) {
+		if (!iconData || !iconData.height) {
 			grid = 0;
 			return;
 		}
