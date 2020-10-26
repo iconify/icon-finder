@@ -1,3 +1,7 @@
+This package has been replaced by updated restructured package! New package uses Svelte with TypeScript, removes unnecessary clutter and makes build process much simpler.
+
+See [master branch of Iconify Icon Finder repository](https://github.com/iconify/icon-finder) for details.
+
 # Iconify Icon Finder
 
 Iconify icon finder is a package for searching and browsing icons. It uses Iconify API as a source, providing access to over 70,000 icons.
