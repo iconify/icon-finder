@@ -477,6 +477,66 @@ describe('Testing collection view', () => {
 		);
 	});
 
+	it('Test mdi (filter alias)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Test search block
+				expect(blocks.filter.keyword).to.be.equal('about');
+
+				// Themes should not be set
+				expect(blocks.themePrefixes).to.be.equal(null);
+				expect(blocks.themeSuffixes).to.be.equal(null);
+
+				// Tags
+				expect(blocks.tags).to.not.be.equal(null);
+
+				// Pagination
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
+					length: 3,
+					fullLength: 5855,
+					more: false,
+					page: 0,
+					perPage: 48,
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
+
+				// Icons list
+				expect(blocks.icons.icons.length).to.be.equal(
+					blocks.pagination.length
+				);
+
+				// Check for first icon, should be 'mdi:information'
+				const expectedIcon: Icon = {
+					provider: '',
+					prefix: 'mdi',
+					name: 'information',
+					tags: [''],
+					aliases: [
+						'about',
+						'about-circle',
+						'info-circle',
+						'information-circle',
+					],
+				};
+				expect(blocks.icons.icons[0]).to.be.eql(expectedIcon);
+
+				done();
+			},
+			'mdi',
+			{
+				prefix: 'mdi',
+				// Icons with 'about' in name do not exist, but few aliases do exist
+				filter: 'about',
+			}
+		);
+	});
+
 	it('Test ant-design (filter by suffix)', (done) => {
 		const view = setupView(
 			() => {
