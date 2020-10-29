@@ -31,6 +31,7 @@ describe('Testing collection actions', () => {
 				prefix: prefix,
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			prefix
 		);
@@ -246,6 +247,7 @@ describe('Testing collection actions', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi'
 		);

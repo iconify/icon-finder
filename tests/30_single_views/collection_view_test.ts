@@ -45,6 +45,7 @@ describe('Testing collection view', () => {
 				prefix: prefix,
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			prefix
 		);
@@ -181,6 +182,7 @@ describe('Testing collection view', () => {
 				prefix,
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			null
 		);

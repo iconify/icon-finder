@@ -75,6 +75,7 @@ describe('Testing home route with custom icon sets', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi'
 		);

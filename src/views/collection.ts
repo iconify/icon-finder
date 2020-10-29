@@ -122,6 +122,7 @@ export class CollectionView extends BaseView {
 				prefix: this.prefix,
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			});
 		} else {
 			setTimeout(() => {

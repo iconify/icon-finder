@@ -95,6 +95,7 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi'
 		);
@@ -178,6 +179,7 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi'
 		);
@@ -288,6 +290,7 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi'
 		);
@@ -376,6 +379,7 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi',
 			{
@@ -497,6 +501,7 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi',
 			{
@@ -510,6 +515,7 @@ describe('Testing router', () => {
 				prefix: 'el',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'el',
 			{
@@ -664,6 +670,7 @@ describe('Testing router', () => {
 				prefix: 'mdi',
 				info: 'true',
 				chars: 'true',
+				aliases: 'true',
 			},
 			'mdi',
 			{
