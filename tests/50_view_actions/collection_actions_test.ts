@@ -83,7 +83,7 @@ describe('Testing collection actions', () => {
 						type: 'collection',
 						params: {
 							prefix: 'mdi',
-							page: 96, // page should be fixed
+							page: 121, // page should be fixed
 						},
 						parent: {
 							type: 'collections',
@@ -92,7 +92,7 @@ describe('Testing collection actions', () => {
 
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
-					expect(blocks.icons.icons.length).to.be.equal(13); // number of icons on last page
+					expect(blocks.icons.icons.length).to.be.equal(47); // number of icons on last page
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						false
 					);
@@ -144,7 +144,7 @@ describe('Testing collection actions', () => {
 
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
-					expect(blocks.icons.icons.length).to.be.equal(12); // only 12 icons match
+					expect(blocks.icons.icons.length).to.be.equal(28); // only 28 icons match
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						true
 					);
@@ -173,7 +173,7 @@ describe('Testing collection actions', () => {
 
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
-					expect(blocks.icons.icons.length).to.be.equal(28); // full page
+					expect(blocks.icons.icons.length).to.be.equal(42); // all results fit on one page page
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						true
 					);
@@ -348,7 +348,7 @@ describe('Testing collection actions', () => {
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						false
 					);
-					expect(blocks.pagination.length).to.be.equal(44);
+					expect(blocks.pagination.length).to.be.equal(54);
 
 					// Check collections block
 					expect(blocks.collections).to.not.be.equal(null);

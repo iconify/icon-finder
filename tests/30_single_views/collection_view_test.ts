@@ -447,7 +447,7 @@ describe('Testing collection view', () => {
 				expect(tags.active).to.be.equal('');
 				expect(tags.filterType).to.be.equal('tags');
 				tagsList = Object.keys(tags.filters);
-				expect(tagsList.length).to.be.equal(60);
+				expect(tagsList.length).to.be.equal(62);
 
 				// Last tag should be '' = uncategorised
 				expect(tagsList.pop()).to.be.equal('');
@@ -459,8 +459,8 @@ describe('Testing collection view', () => {
 				// Pagination
 				const expectedPagination: PaginationBlock = {
 					type: 'pagination',
-					length: 1497,
-					fullLength: 4621,
+					length: 1896,
+					fullLength: 5855,
 					more: false,
 					page: 0,
 					perPage: 48,
