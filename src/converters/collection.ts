@@ -285,13 +285,23 @@ function parseThemes(
 
 			let found = false;
 			sortedIcons.forEach((icon) => {
-				if (icon.name.slice(0, length) === themePrefix) {
-					if (icon.themePrefixes === void 0) {
-						icon.themePrefixes = [];
+				(icon.aliases
+					? [icon.name].concat(icon.aliases)
+					: [icon.name]
+				).forEach((name) => {
+					if (name.slice(0, length) === themePrefix) {
+						if (icon.themePrefixes === void 0) {
+							icon.themePrefixes = [];
+						} else if (
+							icon.themePrefixes.indexOf(theme.title) !== -1
+						) {
+							// Already exists
+							return;
+						}
+						icon.themePrefixes.push(theme.title);
+						found = true;
 					}
-					icon.themePrefixes.push(theme.title);
-					found = true;
-				}
+				});
 			});
 
 			if (found) {
@@ -309,13 +319,23 @@ function parseThemes(
 
 			let found = false;
 			sortedIcons.forEach((icon) => {
-				if (icon.name.slice(length) === themeSuffix) {
-					if (icon.themeSuffixes === void 0) {
-						icon.themeSuffixes = [];
+				(icon.aliases
+					? [icon.name].concat(icon.aliases)
+					: [icon.name]
+				).forEach((name) => {
+					if (name.slice(length) === themeSuffix) {
+						if (icon.themeSuffixes === void 0) {
+							icon.themeSuffixes = [];
+						} else if (
+							icon.themeSuffixes.indexOf(theme.title) !== -1
+						) {
+							// Already exists
+							return;
+						}
+						icon.themeSuffixes.push(theme.title);
+						found = true;
 					}
-					icon.themeSuffixes.push(theme.title);
-					found = true;
-				}
+				});
 			});
 
 			if (found) {
