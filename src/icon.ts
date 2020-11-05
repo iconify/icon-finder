@@ -12,23 +12,19 @@ interface BaseIcon {
  */
 interface IconArrays {
 	// For categories
-	tags?: Array<string>;
+	tags?: string[];
+	themePrefixes?: string[];
+	themeSuffixes?: string[];
 
 	// Extra icon information
-	aliases?: Array<string>;
-	chars?: Array<string>;
-}
-
-interface IconStrings {
-	// For categories
-	themePrefix?: string;
-	themeSuffix?: string;
+	aliases?: string[];
+	chars?: string[];
 }
 
 /**
  * Icon interface
  */
-export interface Icon extends BaseIcon, IconArrays, IconStrings {}
+export interface Icon extends BaseIcon, IconArrays {}
 
 /**
  * Expression to test part of icon name.

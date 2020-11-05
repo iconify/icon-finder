@@ -286,7 +286,10 @@ function parseThemes(
 			let found = false;
 			sortedIcons.forEach((icon) => {
 				if (icon.name.slice(0, length) === themePrefix) {
-					icon.themePrefix = theme.title;
+					if (icon.themePrefixes === void 0) {
+						icon.themePrefixes = [];
+					}
+					icon.themePrefixes.push(theme.title);
 					found = true;
 				}
 			});
@@ -307,7 +310,10 @@ function parseThemes(
 			let found = false;
 			sortedIcons.forEach((icon) => {
 				if (icon.name.slice(length) === themeSuffix) {
-					icon.themeSuffix = theme.title;
+					if (icon.themeSuffixes === void 0) {
+						icon.themeSuffixes = [];
+					}
+					icon.themeSuffixes.push(theme.title);
 					found = true;
 				}
 			});
@@ -322,8 +328,8 @@ function parseThemes(
 	if (themePrefixes.length) {
 		let missing = false;
 		sortedIcons.forEach((icon) => {
-			if (icon.themePrefix === void 0) {
-				icon.themePrefix = '';
+			if (icon.themePrefixes === void 0) {
+				icon.themePrefixes = [''];
 				missing = true;
 			}
 		});
@@ -336,7 +342,7 @@ function parseThemes(
 			result.themePrefixes = themePrefixes;
 		} else {
 			// All icons have same prefix - delete it
-			sortedIcons.forEach((icon) => delete icon.themePrefix);
+			sortedIcons.forEach((icon) => delete icon.themePrefixes);
 		}
 	}
 
@@ -344,8 +350,8 @@ function parseThemes(
 	if (themeSuffixes.length) {
 		let missing = false;
 		sortedIcons.forEach((icon) => {
-			if (icon.themeSuffix === void 0) {
-				icon.themeSuffix = '';
+			if (icon.themeSuffixes === void 0) {
+				icon.themeSuffixes = [''];
 				missing = true;
 			}
 		});
@@ -358,7 +364,7 @@ function parseThemes(
 			result.themeSuffixes = themeSuffixes;
 		} else {
 			// All icons have same suffix - delete it
-			sortedIcons.forEach((icon) => delete icon.themeSuffix);
+			sortedIcons.forEach((icon) => delete icon.themeSuffixes);
 		}
 	}
 }

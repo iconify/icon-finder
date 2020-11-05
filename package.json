@@ -11,6 +11,7 @@
 		"lint": "npx eslint {src,tests}/**/*.ts",
 		"prebuild": "npm run lint && npm run cleanup",
 		"build": "npx tsc -b",
+		"build:src": "npx tsc --project src/tsconfig.json",
 		"prewatch": "npm run lint",
 		"watch": "npx tsc -b -w",
 		"test": "npx mocha tests-compiled/*/*_test.js",

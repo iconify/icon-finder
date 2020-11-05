@@ -57,23 +57,11 @@ export function applyIconFilters(
 		? searchableIconAttributesWithPrefixes
 		: searchableIconAttributes;
 
-	// Get Icon attribute matching filter
+	// Get Icon attribute matching filter (legacy from when attributes didn't match, but kept in case things change again)
 	function iconAttr(
 		key: keyof CollectionViewBlocksIconFilters
 	): keyof Icon | null {
-		switch (key) {
-			case 'tags':
-				return 'tags';
-
-			case 'themePrefixes':
-				return 'themePrefix';
-
-			case 'themeSuffixes':
-				return 'themeSuffix';
-
-			default:
-				return null;
-		}
+		return key;
 	}
 
 	// Search

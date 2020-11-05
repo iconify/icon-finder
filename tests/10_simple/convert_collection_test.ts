@@ -277,24 +277,24 @@ describe('Testing converting collection information', () => {
 			icons: [
 				// Order should change because of sorting
 				Object.assign(stringToIcon('foo:outline-alert')!, {
-					themePrefix: 'Outline',
-					themeSuffix: '',
+					themePrefixes: ['Outline'],
+					themeSuffixes: [''],
 				}),
 				Object.assign(stringToIcon('foo:outline-home')!, {
-					themePrefix: 'Outline',
-					themeSuffix: '',
+					themePrefixes: ['Outline'],
+					themeSuffixes: [''],
 				}),
 				Object.assign(stringToIcon('foo:outline-home-twotone')!, {
-					themePrefix: 'Outline',
-					themeSuffix: 'TwoTone',
+					themePrefixes: ['Outline'],
+					themeSuffixes: ['TwoTone'],
 				}),
 				Object.assign(stringToIcon('foo:solid-alert')!, {
-					themePrefix: 'Solid',
-					themeSuffix: '',
+					themePrefixes: ['Solid'],
+					themeSuffixes: [''],
 				}),
 				Object.assign(stringToIcon('foo:solid-home')!, {
-					themePrefix: 'Solid',
-					themeSuffix: '',
+					themePrefixes: ['Solid'],
+					themeSuffixes: [''],
 				}),
 			],
 			themePrefixes: ['Solid', 'Outline'],
