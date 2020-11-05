@@ -268,125 +268,174 @@ function parseThemes(
 	sortedIcons: Icon[],
 	result: CollectionData
 ): void {
-	// Add themes
-	const themePrefixes: string[] = [],
-		themeSuffixes: string[] = [];
+	interface ThemeData {
+		hasEmpty: boolean;
+		hasUncategorized: boolean;
+		values: string[];
+		titles: Record<string, string>;
+		found: Record<string, number>;
+		test: (name: string, test: string) => boolean;
+	}
+	type ThemeType = 'prefix' | 'suffix';
+	const data: Record<ThemeType, ThemeData> = {
+		prefix: {
+			hasEmpty: false,
+			hasUncategorized: false,
+			values: [],
+			titles: Object.create(null),
+			found: Object.create(null),
+			test: (name, test) => name.slice(0, test.length) === test,
+		},
+		suffix: {
+			hasEmpty: false,
+			hasUncategorized: false,
+			values: [],
+			titles: Object.create(null),
+			found: Object.create(null),
+			test: (name, test) => name.slice(0 - test.length) === test,
+		},
+	};
 
+	// Check all themes
+	const keys: ThemeType[] = ['prefix', 'suffix'];
 	Object.keys(themes).forEach((key) => {
 		const theme = themes[key];
+		keys.forEach((attr) => {
+			const prop = attr as keyof typeof theme;
 
-		// Find and validate all prefixes
-		if (theme.prefix !== void 0) {
-			let themePrefix = theme.prefix;
-			if (themePrefix.slice(-1) !== '-') {
-				themePrefix += '-';
-			}
-			const length = themePrefix.length;
+			if (typeof theme[prop] === 'string') {
+				// Has prefix or suffix
+				let value = theme[prop]!;
+				const dataItem = data[attr];
 
-			let found = false;
-			sortedIcons.forEach((icon) => {
-				(icon.aliases
-					? [icon.name].concat(icon.aliases)
-					: [icon.name]
-				).forEach((name) => {
-					if (name.slice(0, length) === themePrefix) {
-						if (icon.themePrefixes === void 0) {
-							icon.themePrefixes = [];
-						} else if (
-							icon.themePrefixes.indexOf(theme.title) !== -1
-						) {
-							// Already exists
-							return;
-						}
-						icon.themePrefixes.push(theme.title);
-						found = true;
+				if (dataItem.titles[value] !== void 0) {
+					// Duplicate entry
+					return;
+				}
+
+				if (value === '') {
+					// Empty
+					dataItem.hasEmpty = true;
+				} else {
+					// Check for '-' at start or end
+					switch (attr) {
+						case 'prefix':
+							if (value.slice(-1) !== '-') {
+								value += '-';
+							}
+							break;
+
+						case 'suffix':
+							if (value.slice(0, 1) !== '-') {
+								value = '-' + value;
+							}
+							break;
 					}
-				});
-			});
+					dataItem.values.push(value);
+				}
 
-			if (found) {
-				themePrefixes.push(theme.title);
+				// Set data
+				dataItem.titles[value] = theme.title;
+				dataItem.found[value] = 0;
 			}
-		}
+		});
+	});
 
-		// Find and validate all suffixes
-		if (theme.suffix !== void 0) {
-			let themeSuffix = theme.suffix;
-			if (themeSuffix.slice(0, 1) !== '-') {
-				themeSuffix = '-' + themeSuffix;
-			}
-			const length = 0 - themeSuffix.length;
-
-			let found = false;
-			sortedIcons.forEach((icon) => {
-				(icon.aliases
-					? [icon.name].concat(icon.aliases)
-					: [icon.name]
-				).forEach((name) => {
-					if (name.slice(length) === themeSuffix) {
-						if (icon.themeSuffixes === void 0) {
-							icon.themeSuffixes = [];
-						} else if (
-							icon.themeSuffixes.indexOf(theme.title) !== -1
-						) {
-							// Already exists
-							return;
-						}
-						icon.themeSuffixes.push(theme.title);
-						found = true;
-					}
-				});
-			});
-
-			if (found) {
-				themeSuffixes.push(theme.title);
-			}
+	// Remove empty theme types
+	keys.forEach((attr) => {
+		if (!Object.keys(data[attr].titles).length) {
+			delete data[attr];
 		}
 	});
 
-	// Check for icons without prefix and validate prefixes
-	if (themePrefixes.length) {
-		let missing = false;
+	// Check stuff
+	Object.keys(data).forEach((attr) => {
+		const dataItem = data[attr as keyof typeof data];
+		const matches = dataItem.values;
+		const iconKey = attr === 'prefix' ? 'themePrefixes' : 'themeSuffixes';
+
+		// Sort matches by length, then alphabetically
+		matches.sort((a, b) =>
+			a.length === b.length ? a.localeCompare(b) : b.length - a.length
+		);
+
+		// Check all icons
 		sortedIcons.forEach((icon) => {
-			if (icon.themePrefixes === void 0) {
-				icon.themePrefixes = [''];
-				missing = true;
+			// Check icon
+			(icon.aliases
+				? [icon.name].concat(icon.aliases)
+				: [icon.name]
+			).forEach((name, index) => {
+				// Find match
+				let theme: string | null = null;
+				for (let i = 0; i < matches.length; i++) {
+					const match = matches[i];
+					if (dataItem.test(name, match)) {
+						// Found matching theme
+						dataItem.found[match]++;
+						theme = match;
+						break;
+					}
+				}
+				if (theme === null && dataItem.hasEmpty && !index) {
+					// Empty prefix/suffix, but do not test aliases
+					theme = '';
+					dataItem.found['']++;
+				}
+
+				// Get title
+				const title = theme === null ? '' : dataItem.titles[theme];
+
+				// Not found
+				if (theme === null) {
+					if (index > 0) {
+						return;
+					}
+					// Uncategorized
+					dataItem.hasUncategorized = true;
+					theme = '';
+				}
+
+				// Found
+				if (icon[iconKey] === void 0) {
+					icon[iconKey] = [title];
+					return;
+				}
+				const titles = icon[iconKey]!;
+				if (titles.indexOf(title) === -1) {
+					titles.push(title);
+				}
+			});
+		});
+
+		// Add result
+		const titles: string[] = [];
+		Object.keys(dataItem.titles).forEach((match) => {
+			if (dataItem.found[match]) {
+				titles.push(dataItem.titles[match]);
 			}
 		});
-		if (missing) {
-			themePrefixes.push('');
+		if (dataItem.hasUncategorized) {
+			titles.push('');
 		}
 
-		// Add prefixes to result
-		if (themePrefixes.length > 1) {
-			result.themePrefixes = themePrefixes;
-		} else {
-			// All icons have same prefix - delete it
-			sortedIcons.forEach((icon) => delete icon.themePrefixes);
-		}
-	}
+		switch (titles.length) {
+			case 0:
+				// Nothing to do
+				break;
 
-	// Same for suffixes
-	if (themeSuffixes.length) {
-		let missing = false;
-		sortedIcons.forEach((icon) => {
-			if (icon.themeSuffixes === void 0) {
-				icon.themeSuffixes = [''];
-				missing = true;
-			}
-		});
-		if (missing) {
-			themeSuffixes.push('');
-		}
+			case 1:
+				// 1 theme: remove all entries
+				sortedIcons.forEach((icon) => {
+					delete icon[iconKey];
+				});
+				break;
 
-		// Add suffixes to result
-		if (themeSuffixes.length > 1) {
-			result.themeSuffixes = themeSuffixes;
-		} else {
-			// All icons have same suffix - delete it
-			sortedIcons.forEach((icon) => delete icon.themeSuffixes);
+			default:
+				// Many entries
+				result[iconKey] = titles;
 		}
-	}
+	});
 }
 
 /**

@@ -281,4 +281,84 @@ describe('Testing converting custom collection information', () => {
 		expect(result!.icons).to.be.eql(expectedIcons);
 		expect(result!.total).to.be.equal(expectedIcons.length);
 	});
+
+	it('Suffixes with similar parts', () => {
+		const result = rawDataToCollection({
+			info: {
+				name: 'Test',
+				author: {
+					name: 'User',
+				},
+				license: {
+					title: 'MIT',
+					spdx: 'MIT',
+				},
+				palette: false,
+				samples: ['home-solid'],
+			},
+			prefix: 'foo',
+			icons: {
+				'home-solid': {
+					body: '<g />',
+				},
+				'home-solid-twotone': {
+					body: '<g />',
+				},
+				'home-twotone': {
+					body: '<g />',
+				},
+				'home-twotone-solid': {
+					body: '<g />',
+				},
+			},
+			themes: {
+				solid: {
+					suffix: '-solid',
+					title: 'Solid',
+				},
+				twotone: {
+					suffix: '-twotone',
+					title: 'TwoTone',
+				},
+				mixed1: {
+					suffix: '-solid-twotone',
+					title: 'Solid-TwoTone',
+				},
+				mixed2: {
+					suffix: '-twotone-solid',
+					title: 'TwoTone-Solid',
+				},
+			},
+		});
+		const expectedIcons: Icon[] = [
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'home-solid',
+				themeSuffixes: ['Solid'],
+			},
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'home-solid-twotone',
+				themeSuffixes: ['Solid-TwoTone'],
+			},
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'home-twotone',
+				themeSuffixes: ['TwoTone'],
+			},
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'home-twotone-solid',
+				themeSuffixes: ['TwoTone-Solid'],
+			},
+		];
+
+		expect(result).to.not.be.equal(null);
+		expect(result!.icons).to.be.eql(expectedIcons);
+		expect(result!.total).to.be.equal(expectedIcons.length);
+	});
 });
