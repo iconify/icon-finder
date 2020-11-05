@@ -211,7 +211,7 @@ describe('Testing converting custom collection information', () => {
 		expect(result!.total).to.be.equal(expectedIcons.length);
 	});
 
-	it('Aliases with suffixes', () => {
+	it('Aliases with suffixes (old format)', () => {
 		const result = rawDataToCollection({
 			info: {
 				name: 'Test',
@@ -282,6 +282,71 @@ describe('Testing converting custom collection information', () => {
 		expect(result!.total).to.be.equal(expectedIcons.length);
 	});
 
+	it('Aliases with suffixes', () => {
+		const result = rawDataToCollection({
+			info: {
+				name: 'Test',
+				author: {
+					name: 'User',
+				},
+				license: {
+					title: 'MIT',
+					spdx: 'MIT',
+				},
+				palette: false,
+				samples: ['home-solid', 'account-twotone'],
+			},
+			prefix: 'foo',
+			icons: {
+				'account-solid': {
+					body: '<path d="" fill="currentColor" />',
+				},
+				'account-twotone': {
+					body: '<path d="" fill-opacity="0.2" />',
+				},
+				'home-solid': {
+					body: '<g />',
+				},
+			},
+			aliases: {
+				'home-twotone': {
+					parent: 'home-solid',
+				},
+			},
+			suffixes: {
+				solid: 'Solid',
+				twotone: 'TwoTone',
+			},
+		});
+		const expectedIcons: Icon[] = [
+			// 2 account icons
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'account-solid',
+				themeSuffixes: ['Solid'],
+			},
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'account-twotone',
+				themeSuffixes: ['TwoTone'],
+			},
+			// 1 home icon with 2 themes
+			{
+				provider: '',
+				prefix: 'foo',
+				name: 'home-solid',
+				themeSuffixes: ['Solid', 'TwoTone'],
+				aliases: ['home-twotone'],
+			},
+		];
+
+		expect(result).to.not.be.equal(null);
+		expect(result!.icons).to.be.eql(expectedIcons);
+		expect(result!.total).to.be.equal(expectedIcons.length);
+	});
+
 	it('Suffixes with similar parts', () => {
 		const result = rawDataToCollection({
 			info: {
@@ -311,23 +376,11 @@ describe('Testing converting custom collection information', () => {
 					body: '<g />',
 				},
 			},
-			themes: {
-				solid: {
-					suffix: '-solid',
-					title: 'Solid',
-				},
-				twotone: {
-					suffix: '-twotone',
-					title: 'TwoTone',
-				},
-				mixed1: {
-					suffix: '-solid-twotone',
-					title: 'Solid-TwoTone',
-				},
-				mixed2: {
-					suffix: '-twotone-solid',
-					title: 'TwoTone-Solid',
-				},
+			suffixes: {
+				'solid': 'Solid',
+				'twotone': 'TwoTone',
+				'solid-twotone': 'Solid-TwoTone',
+				'twotone-solid': 'TwoTone-Solid',
 			},
 		});
 		const expectedIcons: Icon[] = [

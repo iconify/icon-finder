@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type {
-	IconifyJSON,
-	IconifyChars,
-	IconifyInfo,
-	IconifyThemes,
-} from '@iconify/types';
+import type { IconifyJSON, IconifyChars, IconifyInfo } from '@iconify/types';
 import type { Icon } from '../icon';
 
 const minDisplayHeight = 16;
@@ -264,7 +259,7 @@ export function dataToCollectionInfo(
  * Parse themes
  */
 function parseThemes(
-	themes: IconifyThemes,
+	iconSet: IconifyJSON,
 	sortedIcons: Icon[],
 	result: CollectionData
 ): void {
@@ -296,55 +291,90 @@ function parseThemes(
 		},
 	};
 
-	// Check all themes
 	const keys: ThemeType[] = ['prefix', 'suffix'];
-	Object.keys(themes).forEach((key) => {
-		const theme = themes[key];
-		keys.forEach((attr) => {
-			const prop = attr as keyof typeof theme;
 
-			if (typeof theme[prop] === 'string') {
-				// Has prefix or suffix
-				let value = theme[prop]!;
-				const dataItem = data[attr];
+	// Converted icon set data, using ThemeType as key, new theme format as value
+	const iconSetData: Record<ThemeType, Record<string, string> | null> = {
+		prefix: null,
+		suffix: null,
+	};
 
-				if (dataItem.titles[value] !== void 0) {
-					// Duplicate entry
-					return;
-				}
-
-				if (value === '') {
-					// Empty
-					dataItem.hasEmpty = true;
-				} else {
-					// Check for '-' at start or end
-					switch (attr) {
-						case 'prefix':
-							if (value.slice(-1) !== '-') {
-								value += '-';
-							}
-							break;
-
-						case 'suffix':
-							if (value.slice(0, 1) !== '-') {
-								value = '-' + value;
-							}
-							break;
+	// Convert legacy format
+	if (typeof iconSet.themes === 'object' && iconSet.themes) {
+		const themes = iconSet.themes;
+		Object.keys(themes).forEach((key) => {
+			const theme = themes[key];
+			keys.forEach((attr) => {
+				const prop = attr as keyof typeof theme;
+				if (typeof theme[prop] === 'string') {
+					// Has prefix or suffix
+					const value = theme[prop]!;
+					if (iconSetData[attr] === null) {
+						iconSetData[attr] = Object.create(null);
 					}
-					dataItem.values.push(value);
+					iconSetData[attr]![value] = theme.title;
 				}
-
-				// Set data
-				dataItem.titles[value] = theme.title;
-				dataItem.found[value] = 0;
-			}
+			});
 		});
-	});
+	}
 
-	// Remove empty theme types
-	keys.forEach((attr) => {
-		if (!Object.keys(data[attr].titles).length) {
-			delete data[attr];
+	// Check themes
+	keys.forEach((key) => {
+		const attr = (key + 'es') as keyof IconifyJSON;
+		if (typeof iconSet[attr] === 'object' && iconSet[attr] !== null) {
+			// Prefixes or suffixes exist: overwrite old entry
+			iconSetData[key] = iconSet[attr] as Record<string, string>;
+		}
+
+		if (!iconSetData[key]) {
+			// No prefix or suffix? Delete entry in data
+			delete data[key];
+			return;
+		}
+
+		// Validate themes
+		const dataItem = data[key];
+		const theme = iconSetData[key]!;
+		Object.keys(theme).forEach((value) => {
+			const title = theme[value];
+
+			if (value !== '') {
+				// Check for '-' at start or end
+				switch (key) {
+					case 'prefix':
+						if (value.slice(-1) !== '-') {
+							value += '-';
+						}
+						break;
+
+					case 'suffix':
+						if (value.slice(0, 1) !== '-') {
+							value = '-' + value;
+						}
+						break;
+				}
+			}
+
+			if (dataItem.titles[value] !== void 0) {
+				// Duplicate entry
+				return;
+			}
+
+			// Add value
+			if (value === '') {
+				dataItem.hasEmpty = true;
+			} else {
+				dataItem.values.push(value);
+			}
+
+			// Set data
+			dataItem.titles[value] = title;
+			dataItem.found[value] = 0;
+		});
+
+		// Check if theme is empty
+		if (!Object.keys(dataItem.titles).length) {
+			delete data[key];
 		}
 	});
 
@@ -647,10 +677,7 @@ export function dataToCollection(
 	}
 
 	// Add themes
-	if (typeof source.themes === 'object' && source.themes !== null) {
-		const themes = source.themes as IconifyThemes;
-		parseThemes(themes, sortedIcons, result);
-	}
+	parseThemes((source as unknown) as IconifyJSON, sortedIcons, result);
 
 	// Add icons
 	result.icons = sortedIcons;
@@ -848,10 +875,7 @@ export function rawDataToCollection(
 	const sortedIcons = sortIcons(icons);
 
 	// Add themes
-	if (typeof source.themes === 'object' && source.themes !== null) {
-		const themes = source.themes as IconifyThemes;
-		parseThemes(themes, sortedIcons, result);
-	}
+	parseThemes(source, sortedIcons, result);
 
 	// Add icons
 	result.icons = sortedIcons;
