@@ -1,5 +1,5 @@
-import type { APISendQueryCallback } from './base';
-import { BaseAPI } from './base';
+import type { APISendQueryCallback } from '@iconify/search-core/lib/api/base';
+import { BaseAPI } from '@iconify/search-core/lib/api/base';
 import type { RedundancyPendingItem } from '@cyberalien/redundancy';
 import axios from 'axios';
 
