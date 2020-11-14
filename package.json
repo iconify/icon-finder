@@ -36,8 +36,5 @@
 		"@cyberalien/redundancy": "^1.0.0",
 		"@iconify/iconify": "^2.0.0-rc.2",
 		"@iconify/types": "^1.0.6"
-	},
-	"optionalDependencies": {
-		"axios": "^0.19.2"
 	}
 }
