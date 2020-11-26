@@ -171,6 +171,14 @@ export const objectToRouteParams = (
 			continue;
 		}
 
+		// Exception: null where default value is not null
+		if (value === null) {
+			if (key === 'page' && type === 'collection') {
+				result[key] = value;
+				continue;
+			}
+		}
+
 		// Invalid value
 		result[key] = defaultValue;
 	}

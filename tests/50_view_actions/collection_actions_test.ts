@@ -93,6 +93,8 @@ describe('Testing collection actions', () => {
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
 					expect(blocks.icons.icons.length).to.be.equal(47); // number of icons on last page
+
+					// Check pagination block
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						false
 					);
@@ -119,6 +121,8 @@ describe('Testing collection actions', () => {
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
 					expect(blocks.icons.icons.length).to.be.equal(48); // full page
+
+					// Check pagination block
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						false
 					);
@@ -145,6 +149,8 @@ describe('Testing collection actions', () => {
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
 					expect(blocks.icons.icons.length).to.be.equal(28); // only 28 icons match
+
+					// Check pagination block
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						true
 					);
@@ -174,6 +180,8 @@ describe('Testing collection actions', () => {
 					// Check icons block
 					blocks = params.blocks as CollectionViewBlocks;
 					expect(blocks.icons.icons.length).to.be.equal(42); // all results fit on one page page
+
+					// Check pagination block
 					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
 						true
 					);
@@ -213,6 +221,230 @@ describe('Testing collection actions', () => {
 			params: {
 				prefix: 'mdi',
 				page: 1000, // unreasonably high page
+			},
+			parent: {
+				type: 'collections',
+			},
+		};
+	});
+
+	it('Actions with reference icon', (done) => {
+		const registry = setupRegistry('mdi');
+		const events = registry.events;
+
+		// Create router
+		const router = registry.router;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		let blocks: CollectionViewBlocks;
+		let found: boolean;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// Loading page
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: null,
+							icon: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					break;
+
+				case 2:
+					// Home page has loaded
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: null,
+							icon: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+
+					// Check icons block
+					blocks = params.blocks as CollectionViewBlocks;
+					expect(blocks.icons.icons.length).to.be.equal(48); // full page
+
+					// Find selected icon
+					found = false;
+					blocks.icons.icons.forEach((icon) => {
+						if (icon.name === 'home') {
+							found = true;
+						}
+					});
+					expect(found).to.be.equal(true);
+
+					// Check pagination
+					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
+						false
+					);
+					expect(blocks.pagination.page).to.be.equal(63); // Icon 'home' is found on page 63
+
+					// Change page as string
+					router.action('pagination', '62');
+					break;
+
+				case 3:
+					// Pagination action has been applied
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 62,
+							icon: 'home',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+
+					// Check icons block
+					blocks = params.blocks as CollectionViewBlocks;
+					expect(blocks.icons.icons.length).to.be.equal(48); // full page
+
+					// Find selected icon
+					found = false;
+					blocks.icons.icons.forEach((icon) => {
+						if (icon.name === 'home') {
+							found = true;
+						}
+					});
+					expect(found).to.be.equal(false);
+
+					// Check pagination block
+					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
+						false
+					);
+
+					// Reference new icon
+					router.action('icons-nav', 'keep');
+					break;
+
+				case 4:
+					// Icon action has been applied and should have changed pagination
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: null,
+							icon: 'keep',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+
+					// Check icons block
+					blocks = params.blocks as CollectionViewBlocks;
+					expect(blocks.icons.icons.length).to.be.equal(48); // full page
+
+					// Find selected icon (should not be found because 'keep' is alias of 'pin')
+					found = false;
+					blocks.icons.icons.forEach((icon) => {
+						if (icon.name === 'keep') {
+							found = true;
+						}
+					});
+					expect(found).to.be.equal(false);
+
+					// Find alias
+					found = false;
+					blocks.icons.icons.forEach((icon) => {
+						if (icon.name === 'pin') {
+							found = true;
+						}
+					});
+					expect(found).to.be.equal(true);
+
+					// Check pagination
+					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
+						false
+					);
+					expect(blocks.pagination.page).to.be.equal(87); // Icon 'pin' is found on page 63
+
+					// Change filter
+					router.action('filter', 'rect');
+					break;
+
+				case 5:
+					// Mulitple actions has been applied
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							filter: 'rect',
+							page: null,
+							icon: 'keep',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+
+					// Check icons block
+					blocks = params.blocks as CollectionViewBlocks;
+					expect(blocks.icons.icons.length).to.be.equal(25); // all results fit on one page page
+
+					// Find icon: should not exist because of filter
+					found = false;
+					blocks.icons.icons.forEach((icon) => {
+						if (icon.name === 'keep' || icon.name === 'pin') {
+							found = true;
+						}
+					});
+					expect(found).to.be.equal(false);
+
+					// Check pagination block
+					expect(isPaginationEmpty(blocks.pagination)).to.be.equal(
+						true
+					);
+
+					// Done
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to collection
+		router.partialRoute = {
+			type: 'collection',
+			params: {
+				prefix: 'mdi',
+				page: null,
+				icon: 'home',
 			},
 			parent: {
 				type: 'collections',

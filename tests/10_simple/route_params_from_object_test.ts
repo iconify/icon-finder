@@ -110,6 +110,24 @@ describe('Testing route parameters', () => {
 		};
 		expect(result).to.be.eql(expected);
 
+		// Page as null
+		result = objectToRouteParams(routeType, {
+			provider: 'test',
+			prefix: 'foo-bar',
+			page: null,
+		}) as ResultType;
+		expected = {
+			provider: 'test',
+			prefix: 'foo-bar',
+			filter: '',
+			icon: '',
+			page: null,
+			tag: null,
+			themePrefix: null,
+			themeSuffix: null,
+		};
+		expect(result).to.be.eql(expected);
+
 		// Invalid and extra parameters
 		result = objectToRouteParams(routeType, ({
 			prefix: 'required-prefix',
@@ -120,7 +138,7 @@ describe('Testing route parameters', () => {
 				prefix: 'foo',
 				name: 'bar',
 			},
-			page: '1', // must be number
+			page: '1', // must be number or null
 			tag: false, // must be string or null
 			themePrefix: /a-z/, // must be string or null
 			themeSuffix: 1, // must be string or null

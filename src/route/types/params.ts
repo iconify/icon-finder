@@ -31,7 +31,7 @@ export interface PartialCollectionRouteParams
 	prefix: string; // Required prefix
 	filter?: string; // Search inside collection
 	icon?: string; // Reference icon, used to show next/previous icon or change pagination
-	page?: number; // Pagination
+	page?: number | null; // Pagination, null to automatically set: page for icon if 'icon' property is set, 0 otherwise
 }
 
 export type FullCollectionRouteParams = Required<PartialCollectionRouteParams>;

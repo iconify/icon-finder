@@ -14,7 +14,12 @@ import { dataToCollection } from '../converters/collection';
 import type { IconsListBlock } from '../blocks/icons-list';
 import { defaultIconsListBlock, applyIconFilters } from '../blocks/icons-list';
 import type { PaginationBlock } from '../blocks/pagination';
-import { defaultPaginationBlock, maxPage } from '../blocks/pagination';
+import {
+	defaultPaginationBlock,
+	maxPage,
+	getPageForIndex,
+} from '../blocks/pagination';
+import type { IconsNavBlock } from '../blocks/icons-nav';
 import { getRegistry } from '../registry/storage';
 import type { SearchBlock } from '../blocks/search';
 import { defaultSearchBlock } from '../blocks/search';
@@ -24,6 +29,7 @@ import type { SearchView } from './search';
 import type { CollectionsView } from './collections';
 import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
 import { getCollectionInfo, setCollectionInfo } from '../data/collections';
+import type { Icon } from '../icon';
 
 /**
  * Filters for block
@@ -50,17 +56,18 @@ export interface CollectionViewBlocks
 	extends BaseViewBlocks,
 		CollectionViewBlocksIconFilters {
 	// Info
-	info: CollectionInfoBlock;
+	'info': CollectionInfoBlock;
 
 	// Search
-	filter: SearchBlock;
+	'filter': SearchBlock;
 
 	// Filter from search block
-	collections: FiltersBlock | null;
+	'collections': FiltersBlock | null;
 
 	// Icons and pagination
-	icons: IconsListBlock;
-	pagination: PaginationBlock;
+	'icons': IconsListBlock;
+	'pagination': PaginationBlock;
+	'icons-nav': IconsNavBlock | null;
 }
 
 /**
@@ -183,7 +190,26 @@ export class CollectionView extends BaseView {
 				}
 
 				// Change page
-				this.route.params.page = value as number;
+				this.route.params.page = value;
+				this.blocksRequireUpdate = true;
+				break;
+
+			// Change reference icon
+			case 'icons-nav':
+				if (value === '' || value === null) {
+					// Reset
+					this.route.params.icon = '';
+					break;
+				}
+
+				// Check type
+				if (typeof value !== 'string') {
+					return;
+				}
+
+				// Change reference icon and automatically set page
+				this.route.params.icon = value;
+				this.route.params.page = null;
 				this.blocksRequireUpdate = true;
 				break;
 
@@ -257,6 +283,29 @@ export class CollectionView extends BaseView {
 	}
 
 	/**
+	 * Find icon in icons list
+	 *
+	 * Returns false on failure
+	 */
+	_getIconIndex(icons: Icon[], name: string): number | false {
+		for (let i = 0; i < icons.length; i++) {
+			const icon = icons[i];
+			if (icon.name === name) {
+				return i;
+			}
+			if (icon.aliases) {
+				const aliases = icon.aliases;
+				for (let j = 0; j < aliases.length; j++) {
+					if (aliases[j] === name) {
+						return i;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Render blocks
 	 */
 	render(): CollectionViewBlocks | null {
@@ -288,6 +337,26 @@ export class CollectionView extends BaseView {
 			blocks.themeSuffixes.active = this.route.params.themeSuffix;
 		}
 
+		// Find reference icon
+		let iconsList = blocks.icons.icons;
+		const icon = this.route.params.icon;
+		let iconIndex =
+			icon === '' ? false : this._getIconIndex(iconsList, icon);
+		if (iconIndex !== false) {
+			// Get previous/next icons
+			const max = iconsList.length - 1;
+			blocks['icons-nav'] = {
+				type: 'icons-nav',
+				first: iconsList[0],
+				last: iconsList[max],
+				reference: iconsList[iconIndex],
+				prev: iconIndex > 0 ? iconsList[iconIndex - 1] : void 0,
+				next: iconIndex < max ? iconsList[iconIndex + 1] : void 0,
+			};
+		} else {
+			blocks['icons-nav'] = null;
+		}
+
 		// Apply search
 		blocks.icons = applyIconFilters(
 			blocks.icons,
@@ -296,22 +365,35 @@ export class CollectionView extends BaseView {
 				.filter((key) => blocks[key] !== null)
 				.map((key) => blocks[key]) as FiltersBlock[]
 		);
+		iconsList = blocks.icons.icons;
+
+		// Get current page
+		const perPage = blocks.pagination.perPage;
+		let page: number;
+		if (this.route.params.page !== null) {
+			page = this.route.params.page;
+		} else if (icon === '') {
+			page = 0;
+		} else {
+			if (iconsList.length !== this._data.icons.length) {
+				// Update iconIndex
+				iconIndex = this._getIconIndex(iconsList, icon);
+			}
+			page =
+				iconIndex === false ? 0 : getPageForIndex(perPage, iconIndex);
+		}
 
 		// Check pagination
 		blocks.pagination.length = blocks.icons.icons.length;
-		blocks.pagination.page = this.route.params.page;
+		blocks.pagination.page = page;
 		const maximumPage = maxPage(blocks.pagination);
 		if (maximumPage < blocks.pagination.page) {
 			this.route.params.page = blocks.pagination.page = maximumPage;
 		}
 
 		// Apply pagination
-		const perPage = blocks.pagination.perPage;
 		const startIndex = blocks.pagination.page * perPage;
-		blocks.icons.icons = blocks.icons.icons.slice(
-			startIndex,
-			startIndex + perPage
-		);
+		blocks.icons.icons = iconsList.slice(startIndex, startIndex + perPage);
 
 		return this._blocks;
 	}
@@ -334,24 +416,25 @@ export class CollectionView extends BaseView {
 		// Create empty blocks
 		this._blocks = {
 			// Info
-			info: defaultCollectionInfoBlock(),
+			'info': defaultCollectionInfoBlock(),
 
 			// Search
-			filter: Object.assign(defaultSearchBlock(), {
+			'filter': Object.assign(defaultSearchBlock(), {
 				keyword: this.route.params.filter,
 				searchType: 'collection',
 				title: this.prefix,
 			}),
 
 			// Filters
-			collections: null,
-			tags: null,
-			themePrefixes: null,
-			themeSuffixes: null,
+			'collections': null,
+			'tags': null,
+			'themePrefixes': null,
+			'themeSuffixes': null,
 
 			// Icons and pagination
-			icons: defaultIconsListBlock(),
-			pagination: defaultPaginationBlock(),
+			'icons': defaultIconsListBlock(),
+			'pagination': defaultPaginationBlock(),
+			'icons-nav': null,
 		};
 		const initialisedBlocks = this._blocks;
 
@@ -406,10 +489,9 @@ export class CollectionView extends BaseView {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			pagination.perPage = config.ui!.itemsPerPage!;
 			pagination.fullLength = pagination.length = parsedData.icons.length;
-			pagination.page = Math.min(
-				this.route.params.page,
-				maxPage(pagination)
-			);
+			const page = this.route.params.page;
+			pagination.page =
+				page === null ? 0 : Math.min(page, maxPage(pagination));
 
 			// Copy collections filter from parent view
 			if (this.parent && !this.parent.loading) {

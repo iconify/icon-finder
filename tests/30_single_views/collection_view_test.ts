@@ -321,6 +321,9 @@ describe('Testing collection view', () => {
 				// Icons
 				expect(blocks.icons.icons.length).to.be.equal(7); // 151 - 48 * 3
 
+				// Icons navigation
+				expect(blocks['icons-nav']).to.be.equal(null);
+
 				// Check for window-minimize
 				expect(
 					blocks.icons.icons.filter(
@@ -361,6 +364,9 @@ describe('Testing collection view', () => {
 				expect(blocks.icons.icons.length).to.be.equal(3);
 				iconNames = getIconNames(blocks.icons);
 				expect(iconNames).to.be.eql(['moon', 'snowflake', 'sun']);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.be.equal(null);
 
 				/**
 				 * Reset tag filter, apply keyword filter
@@ -468,6 +474,9 @@ describe('Testing collection view', () => {
 				};
 				expect(blocks.pagination).to.be.eql(expectedPagination);
 
+				// Icons navigation
+				expect(blocks['icons-nav']).to.be.equal(null);
+
 				done();
 			},
 			'mdi',
@@ -527,6 +536,9 @@ describe('Testing collection view', () => {
 				};
 				expect(blocks.icons.icons[0]).to.be.eql(expectedIcon);
 
+				// Icons navigation
+				expect(blocks['icons-nav']).to.be.equal(null);
+
 				done();
 			},
 			'mdi',
@@ -534,6 +546,241 @@ describe('Testing collection view', () => {
 				prefix: 'mdi',
 				// Icons with 'about' in name do not exist, but few aliases do exist
 				filter: 'about',
+			}
+		);
+	});
+
+	it('Test mdi (selecting icon)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Themes, tags and filters should not be set
+				expect(blocks.filter.keyword).to.be.equal('');
+				expect(blocks.themePrefixes).to.be.equal(null);
+				expect(blocks.themeSuffixes).to.be.equal(null);
+				expect(blocks.tags).to.not.be.equal(null);
+
+				// Pagination
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
+					length: 5855,
+					fullLength: 5855,
+					more: false,
+					page: 63,
+					perPage: 48,
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
+
+				// Check icons, should have 'mdi:home'
+				let found = false;
+				blocks.icons.icons.forEach((icon) => {
+					if (icon.name === 'home') {
+						found = true;
+					}
+				});
+				expect(found).to.be.eql(true);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.not.be.equal(null);
+				const navBlock = blocks['icons-nav']!;
+				expect(navBlock.first).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'ab-testing',
+					tags: ['Developer / Languages'],
+				});
+				expect(navBlock.last).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'zodiac-virgo',
+					tags: [''],
+					aliases: ['horoscope-virgo'],
+				});
+				expect(navBlock.reference).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'home',
+					tags: ['Home Automation', 'Places'],
+					aliases: ['house'],
+				});
+				expect(navBlock.prev).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'hololens',
+					tags: ['Gaming / RPG'],
+				});
+				expect(navBlock.next).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'home-account',
+					tags: ['Account / User', 'Home Automation'],
+					aliases: ['home-user'],
+				});
+
+				done();
+			},
+			'mdi',
+			{
+				prefix: 'mdi',
+				page: null,
+				icon: 'home',
+			}
+		);
+	});
+
+	it('Test mdi (selecting icon, page set)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Pagination
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
+					length: 5855,
+					fullLength: 5855,
+					more: false,
+					page: 0,
+					perPage: 48,
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
+
+				// Check icons, should not have 'mdi:home'
+				let found = false;
+				blocks.icons.icons.forEach((icon) => {
+					if (icon.name === 'home') {
+						found = true;
+					}
+				});
+				expect(found).to.be.eql(false);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.not.be.equal(null);
+				const navBlock = blocks['icons-nav']!;
+				expect(navBlock.first).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'ab-testing',
+					tags: ['Developer / Languages'],
+				});
+				expect(navBlock.last).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'zodiac-virgo',
+					tags: [''],
+					aliases: ['horoscope-virgo'],
+				});
+				expect(navBlock.reference).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'home',
+					tags: ['Home Automation', 'Places'],
+					aliases: ['house'],
+				});
+				expect(navBlock.prev).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'hololens',
+					tags: ['Gaming / RPG'],
+				});
+				expect(navBlock.next).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'home-account',
+					tags: ['Account / User', 'Home Automation'],
+					aliases: ['home-user'],
+				});
+
+				done();
+			},
+			'mdi',
+			{
+				prefix: 'mdi',
+				page: 0,
+				icon: 'home',
+			}
+		);
+	});
+
+	it('Test mdi (selecting icon by alias)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Pagination
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
+					length: 5855,
+					fullLength: 5855,
+					more: false,
+					page: 39,
+					perPage: 48,
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
+
+				// Check icons, should have 'mdi:dialpad'
+				let found = false;
+				blocks.icons.icons.forEach((icon) => {
+					if (icon.name === 'dialpad') {
+						found = true;
+					}
+				});
+				expect(found).to.be.eql(true);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.not.be.equal(null);
+				const navBlock = blocks['icons-nav']!;
+				expect(navBlock.first).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'ab-testing',
+					tags: ['Developer / Languages'],
+				});
+				expect(navBlock.last).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'zodiac-virgo',
+					tags: [''],
+					aliases: ['horoscope-virgo'],
+				});
+				expect(navBlock.reference).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'dialpad',
+					tags: [''],
+					aliases: ['keypad'],
+				});
+				expect(navBlock.prev).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'diabetes',
+					tags: ['Medical / Hospital'],
+					aliases: ['hand-blood'],
+				});
+				expect(navBlock.next).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'diameter',
+					tags: ['Math'],
+					aliases: ['circle-diameter', 'sphere-diameter'],
+				});
+
+				done();
+			},
+			'mdi',
+			{
+				prefix: 'mdi',
+				page: null,
+				icon: 'keypad',
 			}
 		);
 	});
@@ -587,6 +834,9 @@ describe('Testing collection view', () => {
 					'github-outline',
 					'gitlab-outline',
 				]);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.be.equal(null);
 
 				done();
 			},

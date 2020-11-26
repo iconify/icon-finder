@@ -33,6 +33,8 @@ export { IconsListBlock } from './blocks/icons-list';
 
 export { PaginationBlock, showPagination, maxPage } from './blocks/pagination';
 
+export { IconsNavBlock } from './blocks/icons-nav';
+
 export { SearchBlock } from './blocks/search';
 
 /**
