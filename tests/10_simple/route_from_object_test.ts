@@ -80,6 +80,7 @@ describe('Testing route', () => {
 				provider: '',
 				prefix: 'md',
 				filter: '',
+				icon: '',
 				page: 0,
 				tag: null,
 				themePrefix: null,
@@ -101,6 +102,7 @@ describe('Testing route', () => {
 			params: {
 				prefix: 'md',
 				filter: 'arrow',
+				icon: 'arrow-left',
 				page: 10,
 				tag: 'Arrows',
 				themePrefix: 'baseline',
@@ -116,6 +118,7 @@ describe('Testing route', () => {
 				provider: '',
 				prefix: 'md',
 				filter: 'arrow',
+				icon: 'arrow-left',
 				page: 10,
 				tag: 'Arrows',
 				themePrefix: 'baseline',

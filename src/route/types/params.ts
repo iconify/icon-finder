@@ -30,6 +30,7 @@ export interface PartialCollectionRouteParams
 		PartialProviderRouteParams {
 	prefix: string; // Required prefix
 	filter?: string; // Search inside collection
+	icon?: string; // Reference icon, used to show next/previous icon or change pagination
 	page?: number; // Pagination
 }
 

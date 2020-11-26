@@ -79,6 +79,7 @@ describe('Testing route parameters', () => {
 			provider: '',
 			prefix: 'md',
 			filter: '',
+			icon: '',
 			page: 0,
 			tag: null,
 			themePrefix: null,
@@ -91,6 +92,7 @@ describe('Testing route parameters', () => {
 			provider: 'test',
 			prefix: 'foo-bar',
 			filter: 'Arrow', // should be changed to lower case
+			icon: 'baz',
 			page: 2,
 			tag: '', // empty string
 			themePrefix: 'outline',
@@ -100,6 +102,7 @@ describe('Testing route parameters', () => {
 			provider: 'test',
 			prefix: 'foo-bar',
 			filter: 'arrow',
+			icon: 'baz',
 			page: 2,
 			tag: '',
 			themePrefix: 'outline',
@@ -111,6 +114,12 @@ describe('Testing route parameters', () => {
 		result = objectToRouteParams(routeType, ({
 			prefix: 'required-prefix',
 			filter: true, // must be string
+			icon: {
+				// expecting only icon name as string, not full icon object
+				provider: '',
+				prefix: 'foo',
+				name: 'bar',
+			},
 			page: '1', // must be number
 			tag: false, // must be string or null
 			themePrefix: /a-z/, // must be string or null
@@ -123,6 +132,7 @@ describe('Testing route parameters', () => {
 			provider: '',
 			prefix: 'required-prefix',
 			filter: '',
+			icon: '',
 			page: 0,
 			tag: null,
 			themePrefix: null,

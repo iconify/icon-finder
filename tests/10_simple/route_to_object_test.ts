@@ -68,6 +68,7 @@ describe('Testing route', () => {
 				provider: '',
 				prefix: '', // No prefix to test result without params (should be set because it is required, but is not validated)
 				filter: '',
+				icon: '',
 				page: 0,
 				tag: null,
 				themePrefix: null,
@@ -89,6 +90,7 @@ describe('Testing route', () => {
 				provider: '',
 				prefix: 'md',
 				filter: '',
+				icon: '',
 				page: 0,
 				tag: null,
 				themePrefix: null,
@@ -110,6 +112,7 @@ describe('Testing route', () => {
 				provider: '',
 				prefix: 'md',
 				filter: 'arrow',
+				icon: 'arrow-left',
 				page: 1,
 				tag: 'Arrows',
 				themePrefix: null,
@@ -130,6 +133,7 @@ describe('Testing route', () => {
 			params: {
 				prefix: 'md',
 				filter: 'arrow',
+				icon: 'arrow-left',
 				page: 1,
 				tag: 'Arrows',
 			},

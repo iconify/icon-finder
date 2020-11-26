@@ -24,6 +24,7 @@ export const collectionRouteDefaults: FullCollectionRouteParams = {
 	provider: '',
 	prefix: '',
 	filter: '',
+	icon: '',
 	page: 0,
 	tag: null,
 	themePrefix: null,

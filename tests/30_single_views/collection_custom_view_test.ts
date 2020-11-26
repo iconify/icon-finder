@@ -98,6 +98,7 @@ describe('Testing collection view with custom data', () => {
 						provider: '',
 						prefix,
 						filter: '',
+						icon: '',
 						page: 0,
 						tag: null,
 						themePrefix: null,

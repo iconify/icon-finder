@@ -151,6 +151,7 @@ describe('Testing collection view', () => {
 				provider: '',
 				prefix: 'fa-regular',
 				filter: '',
+				icon: '',
 				page: 0,
 				tag: null,
 				themePrefix: null,
