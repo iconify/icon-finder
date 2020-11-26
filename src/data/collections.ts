@@ -37,7 +37,7 @@ export function getCollectionInfo(
 	provider: string,
 	prefix: string
 ): CollectionInfo | null {
-	return storage[provider] !== void 0 && storage[provider][prefix] === void 0
+	return storage[provider] === void 0 || storage[provider][prefix] === void 0
 		? null
 		: storage[provider][prefix];
 }
