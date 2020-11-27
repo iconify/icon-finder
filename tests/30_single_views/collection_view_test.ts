@@ -49,6 +49,18 @@ describe('Testing collection view', () => {
 			},
 			prefix
 		);
+		api.loadFixture(
+			'',
+			'/collection',
+			{
+				prefix: prefix,
+				info: 'true',
+				chars: 'true',
+				aliases: 'true',
+				hidden: 'true',
+			},
+			prefix
+		);
 		return registry;
 	}
 
@@ -781,6 +793,93 @@ describe('Testing collection view', () => {
 				prefix: 'mdi',
 				page: null,
 				icon: 'keypad',
+			}
+		);
+	});
+
+	it('Test mdi (selecting icon that does not exist)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Pagination
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
+					length: 5855,
+					fullLength: 5855,
+					more: false,
+					page: 0,
+					perPage: 48,
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.be.equal(null);
+
+				done();
+			},
+			'mdi',
+			{
+				prefix: 'mdi',
+				page: null,
+				icon: 'no-such-icon',
+			}
+		);
+	});
+
+	it('Test mdi (selecting hidden icon)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Pagination
+				const expectedPagination: PaginationBlock = {
+					type: 'pagination',
+					length: 5855,
+					fullLength: 5855,
+					more: false,
+					page: 0,
+					perPage: 48,
+				};
+				expect(blocks.pagination).to.be.eql(expectedPagination);
+
+				// Icons navigation
+				expect(blocks['icons-nav']).to.not.be.equal(null);
+				const navBlock = blocks['icons-nav']!;
+				expect(navBlock.first).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'ab-testing',
+					tags: ['Developer / Languages'],
+				});
+				expect(navBlock.last).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'zodiac-virgo',
+					tags: [''],
+					aliases: ['horoscope-virgo'],
+				});
+				expect(navBlock.reference).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'hidden-icon',
+				});
+				expect(navBlock.prev).to.be.equal(void 0);
+				expect(navBlock.next).to.be.equal(void 0);
+
+				done();
+			},
+			'mdi',
+			{
+				prefix: 'mdi',
+				page: null,
+				icon: 'hidden-icon',
 			}
 		);
 	});

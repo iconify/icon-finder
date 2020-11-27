@@ -38,6 +38,9 @@ export interface CollectionData {
 	// List of icons
 	icons: Icon[];
 
+	// List of hidden icons, if exists
+	hidden?: string[];
+
 	// List of available tags, prefixes and suffixed
 	tags?: string[];
 	themePrefixes?: string[];
@@ -661,6 +664,11 @@ export function dataToCollection(
 				icon.aliases.push(alias);
 			}
 		});
+	}
+
+	// Add hidden icons
+	if (source.hidden instanceof Array) {
+		result.hidden = source.hidden;
 	}
 
 	// Convert to sorted array

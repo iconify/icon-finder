@@ -10790,5 +10790,9 @@
     "zoom-out-outline": "magnify-minus-outline",
     "zorro-mask": "domino-mask",
     "zwave": "z-wave"
-  }
+  },
+  "hidden": [
+    "hidden-icon",
+    "hidden-alias"
+  ]
 }

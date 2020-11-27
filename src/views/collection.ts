@@ -30,6 +30,7 @@ import type { CollectionsView } from './collections';
 import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
 import { getCollectionInfo, setCollectionInfo } from '../data/collections';
 import type { Icon } from '../icon';
+import type { APIParams } from '../api/base';
 
 /**
  * Filters for block
@@ -125,12 +126,18 @@ export class CollectionView extends BaseView {
 	_startLoading(): void {
 		this._startedLoading = true;
 		if (!this._isCustom) {
-			this._loadAPI(this.provider, '/collection', {
+			const params: APIParams = {
 				prefix: this.prefix,
 				info: 'true',
 				chars: 'true',
 				aliases: 'true',
-			});
+			};
+			if (this.route.params.icon !== '') {
+				// Ask for hidden icons (icons that were removed from icon set) if route has a
+				// reference icon, in case if reference icon is hidden.
+				params.hidden = 'true';
+			}
+			this._loadAPI(this.provider, '/collection', params);
 		} else {
 			setTimeout(() => {
 				this._parseAPIData(null);
@@ -352,6 +359,22 @@ export class CollectionView extends BaseView {
 				reference: iconsList[iconIndex],
 				prev: iconIndex > 0 ? iconsList[iconIndex - 1] : void 0,
 				next: iconIndex < max ? iconsList[iconIndex + 1] : void 0,
+			};
+		} else if (
+			icon !== '' &&
+			this._data.hidden &&
+			this._data.hidden.indexOf(icon) !== -1
+		) {
+			// Icon exists, but it is hidden. Show first and last icons, indicating that reference icon exists
+			blocks['icons-nav'] = {
+				type: 'icons-nav',
+				first: iconsList[0],
+				last: iconsList[iconsList.length - 1],
+				reference: {
+					provider: this.provider,
+					prefix: this.prefix,
+					name: icon,
+				},
 			};
 		} else {
 			blocks['icons-nav'] = null;

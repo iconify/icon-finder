@@ -35,6 +35,18 @@ describe('Testing collection actions', () => {
 			},
 			prefix
 		);
+		api.loadFixture(
+			'',
+			'/collection',
+			{
+				prefix: prefix,
+				info: 'true',
+				chars: 'true',
+				aliases: 'true',
+				hidden: 'true',
+			},
+			prefix
+		);
 		return registry;
 	}
 
