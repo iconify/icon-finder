@@ -51,12 +51,14 @@ export class API extends BaseAPI {
 	 * Send query, callback from Redundancy
 	 *
 	 * @param provider Provider string
+	 * @param cacheKey API cache key, null if data should not be cached
 	 * @param host Host string
 	 * @param params End point and parameters as string
 	 * @param status Query status
 	 */
 	_query(
 		provider: string,
+		cacheKey: string | null,
 		host: string,
 		params: string,
 		status: RedundancyPendingItem
@@ -66,7 +68,9 @@ export class API extends BaseAPI {
 			switch (response) {
 				case 'success':
 				case 'not_found':
-					this._storeCache(provider, params, data);
+					if (cacheKey !== null) {
+						this.storeCache(provider, cacheKey, data);
+					}
 					status.done(data);
 			}
 		});

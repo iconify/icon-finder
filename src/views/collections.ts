@@ -102,7 +102,7 @@ export class CollectionsView extends BaseView {
 			return;
 		}
 
-		this._loadAPI(this.provider, '/collections', {});
+		this._loadAPI(this.provider, '/collections', {}, 'collections');
 	}
 
 	/**

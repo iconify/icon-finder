@@ -137,7 +137,12 @@ export class CollectionView extends BaseView {
 				// reference icon, in case if reference icon is hidden.
 				params.hidden = 'true';
 			}
-			this._loadAPI(this.provider, '/collection', params);
+			this._loadAPI(
+				this.provider,
+				'/collection',
+				params,
+				'collection.' + this.prefix
+			);
 		} else {
 			setTimeout(() => {
 				this._parseAPIData(null);

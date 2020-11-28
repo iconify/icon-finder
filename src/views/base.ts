@@ -135,7 +135,12 @@ export class BaseView {
 	/**
 	 * Load data from API
 	 */
-	_loadAPI(provider: string, query: string, params: APIParams): void {
+	_loadAPI(
+		provider: string,
+		query: string,
+		params: APIParams,
+		cacheKey: string | boolean = true
+	): void {
 		const registry = getRegistry(this._instance);
 		const providerData = getProvider(provider);
 		const configAPIData = providerData ? providerData.config : null;
@@ -172,24 +177,30 @@ export class BaseView {
 		}
 
 		// Send query
-		api.query(provider, query, params, (data) => {
-			// Clear timeout
-			if (this._loadingTimer !== null) {
-				clearTimeout(this._loadingTimer as number);
-				this._loadingTimer = null;
-			}
+		api.query(
+			provider,
+			query,
+			params,
+			(data) => {
+				// Clear timeout
+				if (this._loadingTimer !== null) {
+					clearTimeout(this._loadingTimer as number);
+					this._loadingTimer = null;
+				}
 
-			if (data === null || !this._mustWaitForParent) {
-				// Parse immediately
-				this._parseAPIData(data);
-				return;
-			}
+				if (data === null || !this._mustWaitForParent) {
+					// Parse immediately
+					this._parseAPIData(data);
+					return;
+				}
 
-			// Parse data after parent view has finished loading
-			this._waitForParent(() => {
-				this._parseAPIData(data);
-			});
-		});
+				// Parse data after parent view has finished loading
+				this._waitForParent(() => {
+					this._parseAPIData(data);
+				});
+			},
+			cacheKey
+		);
 	}
 
 	/**

@@ -112,25 +112,27 @@ export class BaseAPI {
 	 * @param endpoint End point string
 	 * @param params Query parameters as object
 	 * @param callback Callback to call when data is available
+	 * @param cacheKey Key to store provider specific cache, true if key should be generated, false if cache should be ignored
 	 */
 	query(
 		provider: string,
 		endpoint: string,
 		params: APIParams,
 		callback: APICallback,
-		ignoreCache = false
+		cacheKey: string | boolean = true
 	): void {
 		const uri = mergeQuery(endpoint, params);
+		const cacheKeyStr = typeof cacheKey === 'string' ? cacheKey : uri;
 
 		// Check for cache
 		if (this._cache[provider] === void 0) {
 			this._cache[provider] = Object.create(null);
 		}
 		const providerCache = this._cache[provider];
-		if (!ignoreCache && providerCache[uri] !== void 0) {
+		if (cacheKey !== false && providerCache[cacheKeyStr] !== void 0) {
 			// Return cached data on next tick
 			setTimeout(() => {
-				const cached = providerCache[uri];
+				const cached = providerCache[cacheKeyStr];
 				callback(cached === null ? null : JSON.parse(cached), true);
 			});
 			return;
@@ -162,7 +164,11 @@ export class BaseAPI {
 		// Create new query. Query will start on next tick, so no need to set timeout
 		redundancy.query(
 			uri,
-			this._query.bind(this, provider) as RedundancyQueryCallback,
+			this._query.bind(
+				this,
+				provider,
+				cacheKey === false ? null : cacheKeyStr
+			) as RedundancyQueryCallback,
 			(data) => {
 				callback(data, false);
 			}
@@ -205,6 +211,7 @@ export class BaseAPI {
 	 */
 	_query(
 		provider: string,
+		cacheKey: string | null,
 		host: string,
 		params: string,
 		status: RedundancyPendingItem
@@ -216,11 +223,11 @@ export class BaseAPI {
 	/**
 	 * Store cached data
 	 */
-	_storeCache(provider: string, params: string, data: unknown): void {
+	storeCache(provider: string, cacheKey: string, data: unknown): void {
 		if (this._cache[provider] === void 0) {
 			this._cache[provider] = Object.create(null);
 		}
-		this._cache[provider][params] =
+		this._cache[provider][cacheKey] =
 			data === null ? null : JSON.stringify(data);
 	}
 

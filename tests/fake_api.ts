@@ -75,12 +75,14 @@ export class API extends BaseAPI {
 	 * Send query, callback from Redundancy
 	 *
 	 * @param provider Provider
+	 * @param cacheKey API cache key, null if data should not be cached
 	 * @param host Host string
 	 * @param params End point and parameters as string
 	 * @param status Query status
 	 */
 	_query(
 		provider: string,
+		cacheKey: string | null,
 		host: string,
 		params: string,
 		status: RedundancyPendingItem
@@ -110,8 +112,8 @@ export class API extends BaseAPI {
 			} catch (err) {
 				response = data.data;
 			}
-			if (data.cacheResult) {
-				this._storeCache(provider, params, response);
+			if (data.cacheResult && cacheKey !== null) {
+				this.storeCache(provider, cacheKey, response);
 			}
 			status.done(response);
 		}, data.responseDelay);
