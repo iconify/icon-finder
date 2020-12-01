@@ -1,4 +1,4 @@
-import type { Icon } from '../icon';
+import type { Icon } from '../misc/icon';
 import type { BaseBlock } from './types';
 
 export interface IconsNavBlock extends BaseBlock {

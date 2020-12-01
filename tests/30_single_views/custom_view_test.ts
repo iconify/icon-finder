@@ -17,8 +17,8 @@ import type {
 	PartialCustomRouteParams,
 } from '../../lib/route/types/params';
 import type { EventCallback } from '../../lib/events';
-import type { Icon } from '../../lib/icon';
-import { stringToIcon, iconToString } from '../../lib/icon';
+import type { Icon } from '../../lib/misc/icon';
+import { stringToIcon, iconToString } from '../../lib/misc/icon';
 import type { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isSearchBlockEmpty } from '../../lib/blocks/search';
 import type { PaginationBlock } from '../../lib/blocks/pagination';

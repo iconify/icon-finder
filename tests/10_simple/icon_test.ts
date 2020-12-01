@@ -1,12 +1,12 @@
 import 'mocha';
 import { expect } from 'chai';
-import type { Icon } from '../../lib/icon';
+import type { Icon } from '../../lib/misc/icon';
 import {
 	stringToIcon,
 	validateIcon,
 	iconToString,
 	compareIcons,
-} from '../../lib/icon';
+} from '../../lib/misc/icon';
 
 describe('Testing icon', () => {
 	it('Converting and validating', () => {

@@ -5,7 +5,7 @@ import type { PartialRoute } from './route/types/routes';
 import type { Router, RouterEvent } from './route/router';
 import type { CollectionInfo } from './converters/collection';
 import type { EventCallback } from './events';
-import type { Icon } from './icon';
+import type { Icon } from './misc/icon';
 import type { CustomViewLoadCallback } from './views/custom';
 import type { IconFinderCustomSets } from './data/custom-sets';
 import { convertCustomSets } from './data/custom-sets';
@@ -103,7 +103,12 @@ export type { IconsList, CustomViewBlocks } from './views/custom';
 
 // From icons
 export type { Icon };
-export { iconToString, validateIcon, compareIcons, stringToIcon } from './icon';
+export {
+	iconToString,
+	validateIcon,
+	compareIcons,
+	stringToIcon,
+} from './misc/icon';
 
 // Custom sets
 export type { IconFinderCustomSets };

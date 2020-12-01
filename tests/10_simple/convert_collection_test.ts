@@ -3,7 +3,7 @@ import 'mocha';
 import { expect } from 'chai';
 import type { CollectionData } from '../../lib/converters/collection';
 import { dataToCollection } from '../../lib/converters/collection';
-import { stringToIcon } from '../../lib/icon';
+import { stringToIcon } from '../../lib/misc/icon';
 import { getFixture } from '../get_fixture';
 
 describe('Testing converting collection information', () => {

@@ -6,7 +6,7 @@ import type {
 import type { IconifyAPIConfig } from '@iconify/iconify';
 import Iconify from '@iconify/iconify';
 import type { Redundancy } from '@cyberalien/redundancy';
-import { match } from '../icon';
+import { match } from '../misc/icon';
 
 // Export imported types
 export { APIProviderRawDataLinks, APIProviderRawDataNPM, APIProviderRawData };

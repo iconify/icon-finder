@@ -12,8 +12,8 @@ import type {
 } from '../../lib/views/custom';
 import type { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isIconsListBlockEmpty } from '../../lib/blocks/icons-list';
-import type { Icon } from '../../lib/icon';
-import { iconToString } from '../../lib/icon';
+import type { Icon } from '../../lib/misc/icon';
+import { iconToString } from '../../lib/misc/icon';
 
 describe('Testing custom actions', () => {
 	const namespace = __filename;

@@ -16,7 +16,7 @@ import { API as FakeAPI } from '../fake_api';
 import type { EventCallback } from '../../lib/events';
 import type { FiltersBlock } from '../../lib/blocks/filters';
 import { isFiltersBlockEmpty } from '../../lib/blocks/filters';
-import type { Icon } from '../../lib/icon';
+import type { Icon } from '../../lib/misc/icon';
 import type { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isIconsListBlockEmpty } from '../../lib/blocks/icons-list';
 import type { PaginationBlock } from '../../lib/blocks/pagination';

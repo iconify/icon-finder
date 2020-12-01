@@ -1,5 +1,5 @@
-import type { Icon } from '../icon';
-import { stringToIcon, validateIcon } from '../icon';
+import type { Icon } from '../misc/icon';
+import { stringToIcon, validateIcon } from '../misc/icon';
 import type { CollectionInfo } from './collection';
 import { dataToCollectionInfo } from './collection';
 

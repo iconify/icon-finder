@@ -29,7 +29,7 @@ import type { SearchView } from './search';
 import type { CollectionsView } from './collections';
 import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
 import { getCollectionInfo, setCollectionInfo } from '../data/collections';
-import type { Icon } from '../icon';
+import type { Icon } from '../misc/icon';
 import type { APIParams } from '../api/base';
 
 /**

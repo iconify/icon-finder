@@ -4,8 +4,8 @@ import type { SearchResults } from '../../lib/converters/search';
 import { dataToSearchResults } from '../../lib/converters/search';
 import type { CollectionInfo } from '../../lib/converters/collection';
 import { dataToCollectionInfo } from '../../lib/converters/collection';
-import type { Icon } from '../../lib/icon';
-import { stringToIcon } from '../../lib/icon';
+import type { Icon } from '../../lib/misc/icon';
+import { stringToIcon } from '../../lib/misc/icon';
 import { getFixture } from '../get_fixture';
 
 describe('Testing converting search results', () => {

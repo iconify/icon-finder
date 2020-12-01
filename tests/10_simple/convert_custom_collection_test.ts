@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import type { CollectionData } from '../../lib/converters/collection';
 import { rawDataToCollection } from '../../lib/converters/collection';
 import type { IconifyJSON } from '@iconify/types';
-import type { Icon } from '../../lib/icon';
+import type { Icon } from '../../lib/misc/icon';
 
 describe('Testing converting custom collection information', () => {
 	it('Invalid data', () => {

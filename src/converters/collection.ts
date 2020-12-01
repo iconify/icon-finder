@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON, IconifyChars, IconifyInfo } from '@iconify/types';
-import type { Icon } from '../icon';
+import type { Icon } from '../misc/icon';
 
 const minDisplayHeight = 16;
 const maxDisplayHeight = 24;

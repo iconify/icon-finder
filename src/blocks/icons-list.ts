@@ -1,5 +1,5 @@
 import type { BaseBlock } from './types';
-import type { Icon } from '../icon';
+import type { Icon } from '../misc/icon';
 import type { SearchBlock } from './search';
 import type { FiltersBlock } from './filters';
 import { enableFilters } from './filters';
