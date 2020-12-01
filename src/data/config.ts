@@ -1,4 +1,4 @@
-import { cloneObject } from '../objects';
+import { cloneObject } from '../misc/objects';
 
 /**
  * UI config

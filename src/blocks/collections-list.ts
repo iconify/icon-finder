@@ -11,7 +11,7 @@ import type { CollectionInfo } from '../converters/collection';
 import type { FiltersBlock } from './filters';
 import { enableFilters } from './filters';
 import type { CollectionsFilterBlock } from './collections-filter';
-import { match } from '../objects';
+import { match } from '../misc/objects';
 
 /**
  * Block

@@ -11,7 +11,7 @@ import { validateIcon, stringToIcon } from '../misc/icon';
 import type { SearchBlock } from '../blocks/search';
 import { defaultSearchBlock } from '../blocks/search';
 import type { View } from './types';
-import { cloneObject } from '../objects';
+import { cloneObject } from '../misc/objects';
 
 /**
  * Blocks

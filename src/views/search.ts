@@ -14,7 +14,7 @@ import type { PaginationBlock } from '../blocks/pagination';
 import { defaultPaginationBlock, maxPage } from '../blocks/pagination';
 import { getRegistry } from '../registry/storage';
 import type { View } from './types';
-import { cloneObject } from '../objects';
+import { cloneObject } from '../misc/objects';
 import { setCollectionInfo } from '../data/collections';
 
 /**

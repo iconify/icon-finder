@@ -114,7 +114,7 @@ export {
 export type { IconFinderCustomSets };
 
 // Objects
-export { compareObjects, cloneObject } from './objects';
+export { compareObjects, cloneObject } from './misc/objects';
 
 /**
  * Icon Finder core parameters
