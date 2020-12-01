@@ -171,3 +171,71 @@ export function convertCustomSets(
 
 	return result;
 }
+
+/**
+ * Merge icon sets from API and custom icon sets
+ */
+export function mergeCollections(
+	provider: string,
+	defaultSets: CollectionsList | null,
+	customSets: ConvertedCustomSets | null
+): CollectionsList {
+	interface ParsedList {
+		isCustom: boolean;
+		categories: CollectionsList;
+	}
+
+	// Get list of parsed data
+	const parsedData: ParsedList[] = [];
+	if (defaultSets) {
+		parsedData.push({
+			isCustom: false,
+			categories: defaultSets,
+		});
+	}
+	if (customSets) {
+		const customCollections = customSets.providers[provider].collections;
+
+		// Unshift or push it, depending on merge order
+		parsedData[customSets.merge === 'custom-first' ? 'unshift' : 'push']({
+			isCustom: true,
+			categories: customCollections,
+		});
+	}
+
+	// Setup result as empty object
+	const results: CollectionsList = Object.create(null);
+
+	// Store prefixes map to avoid duplicates
+	const usedPrefixes: Record<string, string> = Object.create(null);
+
+	// Parse all data
+	parsedData.forEach((item) => {
+		// Parse all categories
+		const collectionsList = item.categories;
+		Object.keys(collectionsList).forEach((category) => {
+			const categoryItems = collectionsList[category];
+			Object.keys(categoryItems).forEach((prefix) => {
+				if (usedPrefixes[prefix] !== void 0) {
+					// Prefix has already been parsed
+					if (item.isCustom) {
+						// Remove previous entry
+						delete results[usedPrefixes[prefix]][prefix];
+					} else {
+						// Do not overwrite: always show set from API in case of duplicate entries
+						return;
+					}
+				}
+
+				// Add item
+				usedPrefixes[prefix] = category;
+				if (results[category] === void 0) {
+					results[category] = Object.create(null);
+				}
+				results[category][prefix] = categoryItems[prefix];
+			});
+		});
+	});
+
+	return results;
+}

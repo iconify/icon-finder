@@ -29,6 +29,7 @@ import { getRegistry } from '../registry/storage';
 import type { View } from './types';
 import { setCollectionInfo } from '../data/collections';
 import type { IconFinderCustomSetsMerge } from '../data/custom-sets';
+import { mergeCollections } from '../data/custom-sets';
 
 /**
  * Blocks
@@ -292,72 +293,16 @@ export class CollectionsView extends BaseView {
 			// Error
 			this._data = null;
 		} else {
-			interface ParsedList {
-				isCustom: boolean;
-				categories: CollectionsList;
-			}
-
-			// Get list of parsed data
-			const parsedData: ParsedList[] = [];
-			if (this._sources.api) {
-				parsedData.push({
-					isCustom: false,
-					categories: dataToCollections(
-						data as CollectionsListRawData
-					),
-				});
-			}
-			if (this._sources.custom) {
-				// Get data
-				const registry = getRegistry(this._instance);
-				const customSets = registry.customIconSets;
-				const customCollections =
-					customSets.providers[this.route.params.provider]
-						.collections;
-
-				// Unshift or push it, depending on merge order
-				parsedData[
-					this._sources.merge === 'custom-first' ? 'unshift' : 'push'
-				]({
-					isCustom: true,
-					categories: customCollections,
-				});
-			}
-
-			// Setup result as empty object
-			this._data = Object.create(null) as CollectionsList;
-			const dataItem = this._data;
-
-			// Store prefixes map to avoid duplicates
-			const usedPrefixes: Record<string, string> = Object.create(null);
-
-			// Parse all data
-			parsedData.forEach((item) => {
-				// Parse all categories
-				const collectionsList = item.categories;
-				Object.keys(collectionsList).forEach((category) => {
-					const categoryItems = collectionsList[category];
-					Object.keys(categoryItems).forEach((prefix) => {
-						if (usedPrefixes[prefix] !== void 0) {
-							// Prefix has already been parsed
-							if (item.isCustom) {
-								// Remove previous entry
-								delete dataItem[usedPrefixes[prefix]][prefix];
-							} else {
-								// Do not overwrite: always show set from API in case of duplicate entries
-								return;
-							}
-						}
-
-						// Add item
-						usedPrefixes[prefix] = category;
-						if (dataItem[category] === void 0) {
-							dataItem[category] = Object.create(null);
-						}
-						dataItem[category][prefix] = categoryItems[prefix];
-					});
-				});
-			});
+			// Convert and merge data
+			this._data = mergeCollections(
+				this.route.params.provider,
+				this._sources.api
+					? dataToCollections(data as CollectionsListRawData)
+					: null,
+				this._sources.custom
+					? getRegistry(this._instance).customIconSets
+					: null
+			);
 		}
 
 		// Mark as loaded and mark blocks for re-render
