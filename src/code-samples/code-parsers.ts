@@ -292,23 +292,21 @@ function generateParser(mode: CodeSampleMode): Parser {
 			},
 			merge: mergeAttributes,
 			template: (attr, customisations) =>
-				vue3
-					? vue2Usage
-							.replace(
-								/IconifyIcon/g,
-								customisations.inline ? 'InlineIcon' : 'Icon'
-							)
-							.replace('{attr}', attr)
-					: vue2Usage,
+				(vue3
+					? vue2Usage.replace(
+							/IconifyIcon/g,
+							customisations.inline ? 'InlineIcon' : 'Icon'
+					  )
+					: vue2Usage
+				).replace('{attr}', attr),
 			vueTemplate: (attr, customisations) =>
-				vue3
-					? vue2Template
-							.replace(
-								/IconifyIcon/g,
-								customisations.inline ? 'InlineIcon' : 'Icon'
-							)
-							.replace('{attr}', attr)
-					: vue2Template,
+				(vue3
+					? vue2Template.replace(
+							/IconifyIcon/g,
+							customisations.inline ? 'InlineIcon' : 'Icon'
+					  )
+					: vue2Template
+				).replace('{attr}', attr),
 			docs: {
 				type: 'vue',
 				href: docsBase + (vue3 ? 'vue/' : 'vue2/'),
