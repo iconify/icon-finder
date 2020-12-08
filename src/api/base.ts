@@ -247,3 +247,18 @@ export class BaseAPI {
 		return providerData.redundancy;
 	}
 }
+
+/**
+ * Various cache keys
+ */
+export function collectionsCacheKey(): string {
+	return 'collections';
+}
+
+export function collectionCacheKey(prefix: string): string {
+	return 'collection.' + prefix;
+}
+
+export function searchCacheKey(query: string, limit: number): string {
+	return 'search.' + query + '.' + limit;
+}

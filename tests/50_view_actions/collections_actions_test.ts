@@ -10,6 +10,7 @@ import type { FiltersBlock } from '../../lib/blocks/filters';
 import type { CollectionViewBlocks } from '../../lib/views/collection';
 import { isBlockEmpty } from '../../lib/blocks/types';
 import { addProvider, convertProviderData } from '../../lib/data/providers';
+import { collectionsCacheKey, searchCacheKey } from '../../lib/api/base';
 
 describe('Testing collections actions', () => {
 	const namespace = __filename;
@@ -38,7 +39,7 @@ describe('Testing collections actions', () => {
 			{},
 			'collections',
 			{},
-			'collections',
+			collectionsCacheKey(),
 			cache
 		);
 		return registry;
@@ -745,7 +746,7 @@ describe('Testing collections actions', () => {
 			},
 			'search-home',
 			{},
-			'search.home.64',
+			searchCacheKey('home', 64),
 			true
 		);
 

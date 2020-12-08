@@ -16,6 +16,7 @@ import { getRegistry } from '../registry/storage';
 import type { View } from './types';
 import { cloneObject } from '../misc/objects';
 import { setCollectionInfo } from '../data/collections';
+import { searchCacheKey } from '../api/base';
 
 /**
  * Blocks
@@ -87,7 +88,7 @@ export class SearchView extends BaseView {
 				query,
 				limit,
 			},
-			'search.' + query + '.' + limit
+			searchCacheKey(query, limit)
 		);
 	}
 

@@ -30,7 +30,7 @@ import type { CollectionsView } from './collections';
 import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
 import { getCollectionInfo, setCollectionInfo } from '../data/collections';
 import type { Icon } from '../misc/icon';
-import type { APIParams } from '../api/base';
+import { APIParams, collectionCacheKey } from '../api/base';
 
 /**
  * Filters for block
@@ -140,7 +140,7 @@ export class CollectionView extends BaseView {
 				this.provider,
 				'/collection',
 				params,
-				'collection.' + this.prefix
+				collectionCacheKey(this.prefix)
 			);
 		} else {
 			this._parseAPIData(null);

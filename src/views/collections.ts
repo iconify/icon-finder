@@ -30,6 +30,7 @@ import type { View } from './types';
 import { setCollectionInfo } from '../data/collections';
 import type { IconFinderCustomSetsMerge } from '../data/custom-sets';
 import { mergeCollections } from '../data/custom-sets';
+import { collectionsCacheKey } from '../api/base';
 
 /**
  * Blocks
@@ -99,7 +100,7 @@ export class CollectionsView extends BaseView {
 			return;
 		}
 
-		this._loadAPI(this.provider, '/collections', {}, 'collections');
+		this._loadAPI(this.provider, '/collections', {}, collectionsCacheKey());
 	}
 
 	/**

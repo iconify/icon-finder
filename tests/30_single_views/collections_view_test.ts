@@ -11,6 +11,7 @@ import { objectToRoute } from '../../lib/route/convert';
 import type { FullCollectionsRouteParams } from '../../lib/route/types/params';
 import type { EventCallback } from '../../lib/events';
 import { API as FakeAPI } from '../fake_api';
+import { collectionsCacheKey } from '../../lib/api/base';
 
 describe('Testing collections list view', () => {
 	const namespace = __filename;
@@ -29,7 +30,7 @@ describe('Testing collections list view', () => {
 			{},
 			'collections',
 			{},
-			'collections',
+			collectionsCacheKey(),
 			cache
 		);
 		return registry;
@@ -353,7 +354,7 @@ describe('Testing collections list view', () => {
 			{},
 			'collections',
 			{},
-			'collections',
+			collectionsCacheKey(),
 			true
 		);
 
@@ -398,7 +399,7 @@ describe('Testing collections list view', () => {
 			{},
 			'collections',
 			{},
-			'collections',
+			collectionsCacheKey(),
 			true
 		);
 

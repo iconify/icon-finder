@@ -21,6 +21,7 @@ import type { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isIconsListBlockEmpty } from '../../lib/blocks/icons-list';
 import type { PaginationBlock } from '../../lib/blocks/pagination';
 import { isPaginationEmpty } from '../../lib/blocks/pagination';
+import { searchCacheKey } from '../../lib/api/base';
 
 describe('Testing search view', () => {
 	const namespace = __filename;
@@ -59,7 +60,7 @@ describe('Testing search view', () => {
 			},
 			'search-' + search + (short ? '' : '-full'),
 			{},
-			'search.' + search + '.' + limit,
+			searchCacheKey(search, limit),
 			cache
 		);
 		return registry;

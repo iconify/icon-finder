@@ -20,6 +20,7 @@ import type { Icon } from '../../lib/misc/icon';
 import type { IconsListBlock } from '../../lib/blocks/icons-list';
 import { isSearchBlockEmpty } from '../../lib/blocks/search';
 import type { PaginationBlock } from '../../lib/blocks/pagination';
+import { collectionCacheKey } from '../../lib/api/base';
 
 describe('Testing collection view', () => {
 	const namespace = __filename;
@@ -64,7 +65,8 @@ describe('Testing collection view', () => {
 			},
 			prefix,
 			{},
-			'collection.' + prefix,
+			collectionCacheKey(prefix),
+
 			cache
 		);
 		return registry;

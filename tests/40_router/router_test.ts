@@ -15,6 +15,7 @@ import type { FiltersBlock } from '../../lib/blocks/filters';
 import type { CollectionViewBlocks } from '../../lib/views/collection';
 import { isBlockEmpty } from '../../lib/blocks/types';
 import { addProvider, convertProviderData } from '../../lib/data/providers';
+import { collectionCacheKey, collectionsCacheKey } from '../../lib/api/base';
 
 describe('Testing router', () => {
 	const namespace = __filename;
@@ -42,7 +43,7 @@ describe('Testing router', () => {
 			{},
 			'collections',
 			{},
-			'collections',
+			collectionsCacheKey(),
 			cache
 		);
 		return registry;
@@ -356,7 +357,7 @@ describe('Testing router', () => {
 			},
 			'mdi',
 			{},
-			'collection.mdi',
+			collectionCacheKey('mdi'),
 			true
 		);
 
@@ -553,7 +554,7 @@ describe('Testing router', () => {
 			},
 			'mdi',
 			{},
-			'collection.mdi',
+			collectionCacheKey('mdi'),
 			true
 		);
 
