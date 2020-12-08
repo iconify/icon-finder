@@ -66,7 +66,6 @@ describe('Testing collection view', () => {
 			prefix,
 			{},
 			collectionCacheKey(prefix),
-
 			cache
 		);
 		return registry;
