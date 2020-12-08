@@ -18,11 +18,29 @@ describe('Testing collections actions', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(provider = ''): Registry {
+	function setupRegistry(
+		provider = '',
+		cache = false,
+		sync = false
+	): Registry {
 		const registry = new Registry(namespace + nsCounter++);
+		if (sync) {
+			// Synchronous test
+			const config = registry.config;
+			config.router.syncRender = true;
+		}
+
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture(provider, '/collections', {}, 'collections');
+		api.loadFixture(
+			provider,
+			'/collections',
+			{},
+			'collections',
+			{},
+			'collections',
+			cache
+		);
 		return registry;
 	}
 
@@ -706,6 +724,135 @@ describe('Testing collections actions', () => {
 
 		// Navigate to home
 		router.home();
+	});
+
+	it('"filter" and "categories" actions (synchronous)', (done) => {
+		const registry = setupRegistry('', true, true);
+		const config = registry.config;
+		config.ui!.viewUpdateDelay = 100;
+		config.ui!.itemsPerPage = 32;
+
+		const events = registry.events;
+		const router = registry.router;
+
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'',
+			'/search',
+			{
+				query: 'home',
+				limit: 64,
+			},
+			'search-home',
+			{},
+			'search.home.64',
+			true
+		);
+
+		// Create event listener
+		let eventCounter = 0;
+		let isSync = true;
+		let blocks: CollectionsViewBlocks;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			// Everything is cached, so all calls should be synchronous
+			expect(isSync).to.be.equal(true);
+
+			switch (eventCounter) {
+				case 1:
+					// Home page has loaded
+					expect(params.route).to.be.eql({
+						type: 'collections',
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
+
+					// Test collections blocks
+					blocks = params.blocks as CollectionsViewBlocks;
+					expect(blocks).to.not.be.equal(null);
+
+					expect(
+						getCollectionsBlockPrefixes(blocks.collections).length
+					).to.be.equal(62);
+
+					// Filter collections
+					router.action('filter', 'mdi');
+					break;
+
+				case 2:
+					// Page has been updated
+					expect(params.route).to.be.eql({
+						type: 'collections',
+						params: {
+							filter: 'mdi',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					// Test collections blocks
+					blocks = params.blocks as CollectionsViewBlocks;
+					expect(blocks).to.not.be.equal(null);
+
+					expect(
+						getCollectionsBlockPrefixes(blocks.collections)
+					).to.be.eql(['mdi', 'mdi-light', 'zmdi']);
+
+					// Apply 2 actions at the same time, 2 event calls
+					router.action('filter', '24');
+					router.action('categories', 'Thematic');
+
+					expect(eventCounter).to.be.equal(3);
+					break;
+
+				case 3:
+					// Only filter should have changed
+					expect(params.route).to.be.eql({
+						type: 'collections',
+						params: {
+							filter: '24',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					break;
+
+				case 4:
+					// Filter and category should have changed
+					expect(params.route).to.be.eql({
+						type: 'collections',
+						params: {
+							filter: '24',
+							category: 'Thematic',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					// Test collections blocks
+					blocks = params.blocks as CollectionsViewBlocks;
+					expect(blocks).to.not.be.equal(null);
+
+					expect(
+						getCollectionsBlockPrefixes(blocks.collections)
+					).to.be.eql(['simple-icons']);
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to home
+		router.home();
+
+		isSync = false;
 	});
 
 	it('"search" action', (done) => {

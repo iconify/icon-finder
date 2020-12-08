@@ -130,11 +130,9 @@ export class BaseAPI {
 		}
 		const providerCache = this._cache[provider];
 		if (cacheKey !== false && providerCache[cacheKeyStr] !== void 0) {
-			// Return cached data on next tick
-			setTimeout(() => {
-				const cached = providerCache[cacheKeyStr];
-				callback(cached === null ? null : JSON.parse(cached), true);
-			});
+			// Return cached data
+			const cached = providerCache[cacheKeyStr];
+			callback(cached === null ? null : JSON.parse(cached), true);
 			return;
 		}
 
@@ -142,9 +140,7 @@ export class BaseAPI {
 		const redundancy = this._getRedundancy(provider);
 		if (!redundancy) {
 			// Error
-			setTimeout(() => {
-				callback(null, false);
-			});
+			callback(null, false);
 			return;
 		}
 
@@ -161,7 +157,7 @@ export class BaseAPI {
 			return;
 		}
 
-		// Create new query. Query will start on next tick, so no need to set timeout
+		// Create new query
 		redundancy.query(
 			uri,
 			this._query.bind(

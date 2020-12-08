@@ -77,12 +77,18 @@ export class SearchView extends BaseView {
 	/**
 	 * Start loading
 	 */
-	_startLoading(): void {
-		this._startedLoading = true;
-		this._loadAPI(this.provider, '/search', {
-			query: this.keyword,
-			limit: this.itemsLimit,
-		});
+	_startLoadingData(): void {
+		const query = this.keyword;
+		const limit = this.itemsLimit;
+		this._loadAPI(
+			this.provider,
+			'/search',
+			{
+				query,
+				limit,
+			},
+			'search.' + query + '.' + limit
+		);
 	}
 
 	/**

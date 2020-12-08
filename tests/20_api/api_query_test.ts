@@ -219,27 +219,13 @@ describe('Testing API', function () {
 
 							expect(secondCallbackCalled).to.be.equal(false);
 							secondCallbackCalled = true;
-
-							// Check delay, should be same as in previous callback because cache response is instant
-							const diff = Date.now() - startTime;
-							if (
-								!testTimer(
-									diff,
-									90,
-									125,
-									`Second delay should be just above 100ms, got ${diff}ms`,
-									test
-								)
-							) {
-								return;
-							}
-
-							done();
 						}
 					);
 
-					// Callback should be async
-					expect(secondCallbackCalled).to.be.equal(false);
+					// Callback should be synchronous because data is already cached
+					expect(secondCallbackCalled).to.be.equal(true);
+
+					done();
 				}
 			);
 

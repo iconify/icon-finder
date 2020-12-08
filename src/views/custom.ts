@@ -67,20 +67,15 @@ export class CustomView extends BaseView {
 	/**
 	 * Start loading
 	 */
-	_startLoading(): void {
-		this._startedLoading = true;
+	_startLoadingData(): void {
+		if (this._data !== null) {
+			return;
+		}
+		const registry = getRegistry(this._instance);
+		const events = registry.events;
 
-		// Send event to load icons on next tick, unless they've been set synchronously after creating instance
-		setTimeout(() => {
-			if (this._data !== null) {
-				return;
-			}
-			const registry = getRegistry(this._instance);
-			const events = registry.events;
-
-			// Fire public event, exposed to external code
-			events.fire('load-' + this.customType, this.setIcons.bind(this));
-		});
+		// Fire public event, exposed to external code
+		events.fire('load-' + this.customType, this.setIcons.bind(this));
 	}
 
 	/**
@@ -199,7 +194,14 @@ export class CustomView extends BaseView {
 	 */
 	setIcons(data: IconsList): void {
 		this._waitForParent(() => {
-			this._setIcons(data);
+			if (!this._checkSync()) {
+				// Make sure its async unless synchronous loading is enabled
+				setTimeout(() => {
+					this._setIcons(data);
+				});
+			} else {
+				this._setIcons(data);
+			}
 		});
 	}
 

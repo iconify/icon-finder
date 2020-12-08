@@ -21,6 +21,9 @@ export interface IconFinderUIConfig {
 export interface IconFinderRouterConfig {
 	// Home route as string
 	home?: string;
+
+	// Allow synchronous rendering when API data is available?
+	syncRender?: boolean;
 }
 
 /**
@@ -60,6 +63,9 @@ const defaultUIConfig: Required<IconFinderUIConfig> = {
 const defaultRouterConfig: Required<IconFinderRouterConfig> = {
 	// Home route as string, empty to automatically detect route
 	home: '',
+
+	// Allow synchronous rendering when API data is available?
+	syncRender: false,
 };
 
 /**

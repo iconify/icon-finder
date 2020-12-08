@@ -19,11 +19,19 @@ describe('Testing collections list view', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(provider = ''): Registry {
+	function setupRegistry(provider = '', cache = false): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture(provider, '/collections', {}, 'collections');
+		api.loadFixture(
+			provider,
+			'/collections',
+			{},
+			'collections',
+			{},
+			'collections',
+			cache
+		);
 		return registry;
 	}
 
@@ -32,13 +40,27 @@ describe('Testing collections list view', () => {
 	 */
 	function setupView(
 		callback: EventCallback,
-		routeParams: FullCollectionsRouteParams = {
-			provider: '',
-			filter: '',
-			category: null,
-		}
+		routeParams: FullCollectionsRouteParams | null = null,
+		cache = false,
+		sync = false
 	): CollectionsView {
-		const registry = setupRegistry(routeParams.provider);
+		const params =
+			routeParams === null
+				? {
+						provider: '',
+						filter: '',
+						category: null,
+				  }
+				: routeParams;
+
+		const registry = setupRegistry(params.provider, cache);
+
+		// Change config
+		if (sync) {
+			// Synchronous test
+			const config = registry.config;
+			config.router.syncRender = true;
+		}
 
 		// Sign up for event
 		const events = registry.events;
@@ -49,7 +71,7 @@ describe('Testing collections list view', () => {
 			registry.id,
 			objectToRoute({
 				type: 'collections',
-				params: routeParams,
+				params,
 			}) as FullCollectionsRoute
 		);
 		view.startLoading();
@@ -108,7 +130,12 @@ describe('Testing collections list view', () => {
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
+		let isSync = true;
 		const view = setupView((data: unknown) => {
+			// Should be asynchronous
+			expect(isSync).to.be.equal(false);
+
+			// Test data
 			expect(data).to.be.equal(view);
 			expect(view.route).to.be.eql({
 				type: 'collections',
@@ -121,6 +148,69 @@ describe('Testing collections list view', () => {
 			});
 			done();
 		});
+
+		// Make sure call is (a)synchronous by changing variable after setting up view
+		isSync = false;
+	});
+
+	it('Synchronous test', (done) => {
+		let isSync = true;
+		const view = setupView(
+			(data: unknown) => {
+				// Should be synchronous
+				expect(isSync).to.be.equal(true);
+
+				// Test data on next tick (to allow 'view' to initialise)
+				setTimeout(() => {
+					expect(data).to.be.equal(view);
+					expect(view.route).to.be.eql({
+						type: 'collections',
+						params: {
+							provider: '',
+							filter: '',
+							category: null,
+						},
+						parent: null,
+					});
+					done();
+				});
+			},
+			null,
+			true,
+			true
+		);
+
+		// Make sure call is (a)synchronous by changing variable after setting up view
+		isSync = false;
+	});
+
+	it('Async API loading, synchronous loading allowed', (done) => {
+		let isSync = true;
+		const view = setupView(
+			(data: unknown) => {
+				// Should be asynchronous
+				expect(isSync).to.be.equal(false);
+
+				// Test data
+				expect(data).to.be.equal(view);
+				expect(view.route).to.be.eql({
+					type: 'collections',
+					params: {
+						provider: '',
+						filter: '',
+						category: null,
+					},
+					parent: null,
+				});
+				done();
+			},
+			null,
+			false,
+			true
+		);
+
+		// Make sure call is (a)synchronous by changing variable after setting up view
+		isSync = false;
 	});
 
 	it('Test custom provider', (done) => {
@@ -146,6 +236,76 @@ describe('Testing collections list view', () => {
 		);
 	});
 
+	it('Invalid provider', (done) => {
+		const registry = new Registry(namespace + nsCounter++);
+		const api = new FakeAPI(registry);
+		registry.api = api;
+
+		let isSync = true;
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', (data: unknown) => {
+			const view = data as CollectionsView;
+
+			expect(isSync).to.be.equal(false);
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionsView(
+			registry.id,
+			objectToRoute({
+				type: 'collections',
+				params: {
+					provider: 'invalid-provider',
+				},
+			}) as FullCollectionsRoute
+		);
+		view.startLoading();
+
+		isSync = false;
+	});
+
+	it('Invalid provider (synchronous)', (done) => {
+		// Load fixture only for 'test' provider
+		const registry = new Registry(namespace + nsCounter++);
+		registry.config.router.syncRender = true;
+		const api = new FakeAPI(registry);
+		registry.api = api;
+
+		let isSync = true;
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', (data: unknown) => {
+			const view = data as CollectionsView;
+
+			expect(isSync).to.be.equal(true);
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionsView(
+			registry.id,
+			objectToRoute({
+				type: 'collections',
+				params: {
+					provider: 'invalid-provider',
+				},
+			}) as FullCollectionsRoute
+		);
+		view.startLoading();
+
+		isSync = false;
+	});
+
 	it('Provider mismatch', (done) => {
 		// Load fixture only for 'test' provider
 		const registry = new Registry(namespace + nsCounter++);
@@ -154,11 +314,14 @@ describe('Testing collections list view', () => {
 		api.setFakeData('', '/collections', {}, null);
 		api.loadFixture('test', '/collections', {}, 'collections');
 
+		let isSync = true;
+
 		// Sign up for event
 		const events = registry.events;
 		events.subscribe('view-loaded', (data: unknown) => {
 			const view = data as CollectionsView;
 
+			expect(isSync).to.be.equal(false);
 			expect(view.error).to.be.equal('not_found');
 			expect(view.loading).to.be.equal(false);
 
@@ -173,6 +336,96 @@ describe('Testing collections list view', () => {
 			}) as FullCollectionsRoute
 		);
 		view.startLoading();
+
+		isSync = false;
+	});
+
+	it('Provider mismatch (synchronous without cache)', (done) => {
+		// Load fixture only for 'test' provider
+		const registry = new Registry(namespace + nsCounter++);
+		registry.config.router.syncRender = true;
+		const api = new FakeAPI(registry);
+		registry.api = api;
+		api.setFakeData('', '/collections', {}, null);
+		api.loadFixture(
+			'test',
+			'/collections',
+			{},
+			'collections',
+			{},
+			'collections',
+			true
+		);
+
+		let isSync = true;
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', (data: unknown) => {
+			const view = data as CollectionsView;
+
+			// Async because Redundancy instance uses setTimeout
+			expect(isSync).to.be.equal(false);
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionsView(
+			registry.id,
+			objectToRoute({
+				type: 'collections',
+			}) as FullCollectionsRoute
+		);
+		view.startLoading();
+
+		isSync = false;
+	});
+
+	it('Provider mismatch (synchronous with cache)', (done) => {
+		// Load fixture only for 'test' provider
+		const registry = new Registry(namespace + nsCounter++);
+		registry.config.router.syncRender = true;
+		const api = new FakeAPI(registry);
+		registry.api = api;
+		// api.setFakeData('', '/collections', {}, null);
+		api.storeCache('', 'collections', null);
+		api.loadFixture(
+			'test',
+			'/collections',
+			{},
+			'collections',
+			{},
+			'collections',
+			true
+		);
+
+		let isSync = true;
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', (data: unknown) => {
+			const view = data as CollectionsView;
+
+			expect(isSync).to.be.equal(true);
+			expect(view.error).to.be.equal('not_found');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new CollectionsView(
+			registry.id,
+			objectToRoute({
+				type: 'collections',
+			}) as FullCollectionsRoute
+		);
+		view.startLoading();
+
+		isSync = false;
 	});
 
 	it('Test not found error', (done) => {
@@ -203,7 +456,10 @@ describe('Testing collections list view', () => {
 	});
 
 	it('Test rendering blocks', (done) => {
+		let isSync = true;
 		const view = setupView(() => {
+			expect(isSync).to.be.equal(false);
+
 			const blocks = view.render() as NonNullable<CollectionsViewBlocks>;
 			expect(blocks).to.not.be.equal(null);
 
@@ -224,6 +480,41 @@ describe('Testing collections list view', () => {
 
 			done();
 		});
+		isSync = false;
+	});
+
+	it('Test rendering blocks (synchronous)', (done) => {
+		let isSync = true;
+		setupView(
+			(data) => {
+				expect(isSync).to.be.equal(true);
+
+				const view = data as CollectionsView;
+				const blocks = view.render() as NonNullable<
+					CollectionsViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Test categories block
+				const categories = Object.keys(blocks.categories.filters);
+				expect(categories).to.be.eql(['General', 'Emoji', 'Thematic']);
+				categories.forEach((category) => {
+					expect(
+						blocks.categories.filters[category].disabled
+					).to.be.equal(false);
+				});
+				expect(blocks.categories.active).to.be.equal(null);
+
+				// Test filter block
+				expect(blocks.filter.keyword).to.be.equal('');
+
+				done();
+			},
+			null,
+			true,
+			true
+		);
+		isSync = false;
 	});
 
 	it('Test filter', (done) => {

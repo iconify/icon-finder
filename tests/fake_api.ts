@@ -17,7 +17,7 @@ interface FakeAPIParams {
 }
 
 const defaultParams: FakeAPIParams = {
-	responseDelay: 10,
+	responseDelay: 0,
 	cacheResult: false,
 	attempt: 1,
 };
@@ -46,6 +46,11 @@ export class API extends BaseAPI {
 	 * Get Redundancy instance
 	 */
 	_getRedundancy(provider: string): Redundancy | null {
+		// Return null for 'invalid-provider', default Redundancy instance for other providers
+		if (provider === 'invalid-provider') {
+			return null;
+		}
+
 		if (this._redundancy[provider] === void 0) {
 			const config = getAPIConfig('');
 			if (!config) {
@@ -105,7 +110,7 @@ export class API extends BaseAPI {
 		}
 
 		// Send response
-		setTimeout(() => {
+		const respond = () => {
 			let response;
 			try {
 				response = data.data === null ? null : JSON.parse(data.data);
@@ -116,7 +121,14 @@ export class API extends BaseAPI {
 				this.storeCache(provider, cacheKey, response);
 			}
 			status.done(response);
-		}, data.responseDelay);
+		};
+
+		if (data.responseDelay) {
+			setTimeout(respond, data.responseDelay);
+		} else {
+			// Can be synchronous because it is wrapped in setTimeout in Redundancy instance (and tested in view tests)
+			respond();
+		}
 	}
 
 	/**
@@ -150,9 +162,16 @@ export class API extends BaseAPI {
 		query: string,
 		queryParams: APIParams,
 		filename: string,
-		params: FakeAPIParams = {}
+		params: FakeAPIParams = {},
+		cacheKey = '',
+		storeCache = false
 	): void {
 		const data = getFixture(filename + '.json');
-		this.setFakeData(provider, query, queryParams, data, params);
+		if (cacheKey !== '' && storeCache) {
+			// Store as cache
+			this.storeCache(provider, cacheKey, JSON.parse(data));
+		} else {
+			this.setFakeData(provider, query, queryParams, data, params);
+		}
 	}
 }

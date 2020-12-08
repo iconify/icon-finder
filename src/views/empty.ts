@@ -32,14 +32,9 @@ export class EmptyView extends BaseView {
 	/**
 	 * Start loading
 	 */
-	_startLoading(): void {
-		this._startedLoading = true;
-
-		// Complete on next tick
-		setTimeout(() => {
-			this.loading = false;
-			this._triggerLoaded();
-		});
+	_startLoadingData(): void {
+		this.loading = false;
+		this._triggerLoaded();
 	}
 
 	/**

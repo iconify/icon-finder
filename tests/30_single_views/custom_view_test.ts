@@ -53,9 +53,17 @@ describe('Testing custom view', () => {
 	function setupView(
 		callback: EventCallback,
 		routeParams: PartialCustomRouteParams | null = null,
-		icons: string[] | null = null
+		icons: string[] | null = null,
+		sync = false
 	): CustomView {
 		const registry = setupRegistry();
+
+		// Change config
+		if (sync) {
+			// Synchronous test
+			const config = registry.config;
+			config.router.syncRender = true;
+		}
 
 		// Sign up for event
 		const events = registry.events;
@@ -105,11 +113,13 @@ describe('Testing custom view', () => {
 
 		// Set variables
 		let loaded = false;
+		let isSync = true;
 
 		// Sign up for event
 		const events = registry.events;
 		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
+			expect(isSync).to.be.equal(false);
 			loaded = true;
 
 			const view = data as CustomView;
@@ -164,6 +174,8 @@ describe('Testing custom view', () => {
 			},
 			parent: null,
 		});
+
+		isSync = false;
 	});
 
 	it('Creating view, not using events, icons as strings', (done) => {
@@ -171,6 +183,7 @@ describe('Testing custom view', () => {
 
 		// Set variables
 		let loaded = false;
+		let isSync = true;
 
 		// Sign up for event
 		const events = registry.events;
@@ -178,10 +191,14 @@ describe('Testing custom view', () => {
 			expect(loaded).to.be.equal(false);
 			loaded = true;
 
+			expect(isSync).to.be.equal(false);
+
 			const view = data as CustomView;
 
 			expect(view.error).to.be.equal('');
 			expect(view.loading).to.be.equal(false);
+
+			done();
 		});
 
 		// Event to send data
@@ -199,15 +216,15 @@ describe('Testing custom view', () => {
 				},
 			}) as FullCustomRoute
 		);
-		view.startLoading();
+		// view.startLoading();
 
 		// Set icons as strings
 		view.setIcons(['foo-bar', 'foo-bar2', 'foo-bar3', 'foo-bar4']);
 
-		// This view is loaded synchronously!
-		expect(view.loading).to.be.equal(false);
+		// This view is loaded asynchronously
+		expect(view.loading).to.be.equal(true);
 		expect(view.error).to.be.equal('');
-		expect(loaded).to.be.equal(true);
+		expect(loaded).to.be.equal(false);
 
 		// Make sure all route params have been setup
 		expect(view.route).to.be.eql({
@@ -220,19 +237,40 @@ describe('Testing custom view', () => {
 			parent: null,
 		});
 
-		done();
+		isSync = false;
 	});
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
+		let isSync = true;
 		const view = setupView(
 			(data: unknown) => {
+				expect(isSync).to.be.equal(false);
 				expect(data).to.be.equal(view);
 				done();
 			},
 			null,
 			['foo-bar', 'foo-bar2', 'foo-bar3', 'foo-bar4']
 		);
+		isSync = false;
+	});
+
+	it('Test using setupView code (synchronous)', (done) => {
+		let isSync = true;
+		const view = setupView(
+			(data: unknown) => {
+				expect(isSync).to.be.equal(true);
+				// Test stuff on next tick to allow 'view' variable to initialise
+				setTimeout(() => {
+					expect(data).to.be.equal(view);
+					done();
+				});
+			},
+			null,
+			['foo-bar', 'foo-bar2', 'foo-bar3', 'foo-bar4'],
+			true
+		);
+		isSync = false;
 	});
 
 	it('Not found', (done) => {

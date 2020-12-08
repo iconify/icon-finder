@@ -40,6 +40,18 @@ export class BaseView {
 	// Loading control: waiting for parent view
 	public onLoad: (() => void) | null = null;
 	protected _mustWaitForParent = false;
+	protected _isSync: boolean | null = null;
+
+	/**
+	 * Set _isSync variable
+	 */
+	_checkSync(): boolean {
+		if (this._isSync === null) {
+			this._isSync = !!getRegistry(this._instance).config.router
+				.syncRender;
+		}
+		return this._isSync;
+	}
 
 	/**
 	 * Change parent view
@@ -92,7 +104,22 @@ export class BaseView {
 		this._startLoading();
 	}
 
+	/**
+	 * Start loading
+	 */
 	_startLoading(): void {
+		this._startedLoading = true;
+
+		if (this._checkSync()) {
+			this._startLoadingData();
+		} else {
+			setTimeout(() => {
+				this._startLoadingData();
+			});
+		}
+	}
+
+	_startLoadingData(): void {
 		throw new Error('startLoading should not be called on base view');
 	}
 
@@ -263,12 +290,17 @@ export class BaseView {
 	_triggerUpdated(): void {
 		if (!this.updating) {
 			this.updating = true;
-			setTimeout(() => {
+			const update = () => {
 				this.updating = false;
 				const registry = getRegistry(this._instance);
 				const events = registry.events;
 				events.fire('view-updated', this);
-			});
+			};
+			if (this._checkSync()) {
+				update();
+			} else {
+				setTimeout(update);
+			}
 		}
 	}
 }

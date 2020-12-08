@@ -23,11 +23,28 @@ describe('Testing router', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(provider = ''): Registry {
+	function setupRegistry(
+		provider = '',
+		cache = false,
+		sync = false
+	): Registry {
 		const registry = new Registry(namespace + nsCounter++);
+		if (sync) {
+			// Synchronous test
+			const config = registry.config;
+			config.router.syncRender = true;
+		}
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture(provider, '/collections', {}, 'collections');
+		api.loadFixture(
+			provider,
+			'/collections',
+			{},
+			'collections',
+			{},
+			'collections',
+			cache
+		);
 		return registry;
 	}
 
@@ -83,6 +100,52 @@ describe('Testing router', () => {
 
 		// Navigate to home
 		router.home();
+	});
+
+	it('Creating router, navigating to home (synchronous)', (done) => {
+		const registry = setupRegistry('', true, true);
+		const events = registry.events;
+		let isSync = true;
+
+		// Create router
+		const router = registry.router;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+			expect(isSync).to.be.equal(true);
+
+			switch (eventCounter) {
+				case 1:
+					// First load - page has loaded synchronously
+					expect(params.route).to.be.eql({
+						type: 'collections',
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to home
+		router.home();
+
+		isSync = false;
 	});
 
 	it('Custom home route', (done) => {
@@ -277,6 +340,396 @@ describe('Testing router', () => {
 				type: 'collections',
 			},
 		};
+	});
+
+	it('Loading route from object (synchronous)', (done) => {
+		const registry = setupRegistry('', true, true);
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'',
+			'/collection',
+			{
+				prefix: 'mdi',
+				info: 'true',
+				chars: 'true',
+				aliases: 'true',
+			},
+			'mdi',
+			{},
+			'collection.mdi',
+			true
+		);
+
+		const config = registry.config;
+		config.ui!.showSiblingCollections = 3;
+
+		// Create router and events
+		const router = registry.router;
+		const events = registry.events;
+
+		let isSync = true;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		let collectionsBlock: FiltersBlock | null;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+			expect(isSync).to.be.equal(true);
+
+			switch (eventCounter) {
+				case 1:
+					// First load - page has loaded
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
+
+					// Test collections block
+					collectionsBlock = (params.blocks as CollectionViewBlocks)
+						.collections;
+					expect(isBlockEmpty(collectionsBlock)).to.be.equal(false);
+
+					expect(
+						Object.keys((collectionsBlock as FiltersBlock).filters)
+					).to.be.eql([
+						// 3 prefixes before "mdi", but because "mdi" is first, it should be 3 last prefixes
+						'geo',
+						'map',
+						'medical-icon',
+						// mdi
+						'mdi',
+						// 3 prefixes after "mdi"
+						'mdi-light',
+						'ic',
+						'uil',
+					]);
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to MDI
+		router.partialRoute = {
+			type: 'collection',
+			params: {
+				prefix: 'mdi',
+				page: 2,
+			},
+			parent: {
+				type: 'collections',
+			},
+		};
+
+		isSync = false;
+	});
+
+	it('Loading route from object (synchronous, not cached)', (done) => {
+		const registry = setupRegistry('', false, true);
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'',
+			'/collection',
+			{
+				prefix: 'mdi',
+				info: 'true',
+				chars: 'true',
+				aliases: 'true',
+			},
+			'mdi'
+		);
+
+		const config = registry.config;
+		config.ui!.showSiblingCollections = 3;
+
+		// Create router and events
+		const router = registry.router;
+		const events = registry.events;
+
+		let isSync = true;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// First load - page is loading
+					expect(isSync).to.be.equal(true);
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 2:
+					// Second load (asynchronous) - page has loaded
+					expect(isSync).to.be.equal(false);
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to MDI
+		router.partialRoute = {
+			type: 'collection',
+			params: {
+				prefix: 'mdi',
+				page: 2,
+			},
+			parent: {
+				type: 'collections',
+			},
+		};
+
+		isSync = false;
+	});
+
+	it('Loading route from object (synchronous, parent view not cached)', (done) => {
+		const registry = setupRegistry('', false, true);
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'',
+			'/collection',
+			{
+				prefix: 'mdi',
+				info: 'true',
+				chars: 'true',
+				aliases: 'true',
+			},
+			'mdi',
+			{},
+			'collection.mdi',
+			true
+		);
+
+		const config = registry.config;
+		config.ui!.showSiblingCollections = 3;
+
+		// Create router and events
+		const router = registry.router;
+		const events = registry.events;
+
+		let isSync = true;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// First load - page is loading
+					expect(isSync).to.be.equal(true);
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 2:
+					// Second load (asynchronous) - page has loaded
+					expect(isSync).to.be.equal(false);
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to MDI
+		router.partialRoute = {
+			type: 'collection',
+			params: {
+				prefix: 'mdi',
+				page: 2,
+			},
+			parent: {
+				type: 'collections',
+			},
+		};
+
+		isSync = false;
+	});
+
+	it('Loading route from object (synchronous, child view not cached)', (done) => {
+		const registry = setupRegistry('', true, true);
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'',
+			'/collection',
+			{
+				prefix: 'mdi',
+				info: 'true',
+				chars: 'true',
+				aliases: 'true',
+			},
+			'mdi'
+		);
+
+		const config = registry.config;
+		config.ui!.showSiblingCollections = 3;
+
+		// Create router and events
+		const router = registry.router;
+		const events = registry.events;
+
+		let isSync = true;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// First load - page is loading
+					expect(isSync).to.be.equal(true);
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					break;
+
+				case 2:
+					// Second load (asynchronous) - page has loaded
+					expect(isSync).to.be.equal(false);
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mdi',
+							page: 2,
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to MDI
+		router.partialRoute = {
+			type: 'collection',
+			params: {
+				prefix: 'mdi',
+				page: 2,
+			},
+			parent: {
+				type: 'collections',
+			},
+		};
+
+		isSync = false;
 	});
 
 	it('Creating child view', (done) => {

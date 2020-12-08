@@ -123,8 +123,7 @@ export class CollectionView extends BaseView {
 	/**
 	 * Start loading
 	 */
-	_startLoading(): void {
-		this._startedLoading = true;
+	_startLoadingData(): void {
 		if (!this._isCustom) {
 			const params: APIParams = {
 				prefix: this.prefix,
@@ -144,9 +143,7 @@ export class CollectionView extends BaseView {
 				'collection.' + this.prefix
 			);
 		} else {
-			setTimeout(() => {
-				this._parseAPIData(null);
-			});
+			this._parseAPIData(null);
 		}
 	}
 

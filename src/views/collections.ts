@@ -93,13 +93,9 @@ export class CollectionsView extends BaseView {
 	/**
 	 * Start loading
 	 */
-	_startLoading(): void {
-		this._startedLoading = true;
-
+	_startLoadingData(): void {
 		if (!this._sources.api) {
-			setTimeout(() => {
-				this._parseAPIData(null);
-			});
+			this._parseAPIData(null);
 			return;
 		}
 

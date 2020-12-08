@@ -29,24 +29,38 @@ describe('Testing search view', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(search: string, short = true): Registry {
+	function setupRegistry(
+		search: string,
+		short = true,
+		cache = false,
+		sync = false
+	): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 
-		// Change pagination limit for tests to 32
+		// Change config
 		const config = registry.config;
+
+		// Synchronous test
+		config.router.syncRender = sync;
+
+		// Change pagination limit for tests to 32
 		config.ui!.itemsPerPage = 32;
 
 		// Change API to fake API and load fixture
 		const api = new FakeAPI(registry);
 		registry.api = api;
+		const limit = short ? 64 : 999;
 		api.loadFixture(
 			'',
 			'/search',
 			{
 				query: search,
-				limit: short ? 64 : 999,
+				limit,
 			},
-			'search-' + search + (short ? '' : '-full')
+			'search-' + search + (short ? '' : '-full'),
+			{},
+			'search.' + search + '.' + limit,
+			cache
 		);
 		return registry;
 	}
@@ -58,9 +72,11 @@ describe('Testing search view', () => {
 		callback: EventCallback,
 		search: string,
 		short = true,
-		routeParams: PartialSearchRouteParams | null = null
+		routeParams: PartialSearchRouteParams | null = null,
+		cache = false,
+		sync = false
 	): SearchView {
-		const registry = setupRegistry(search, short);
+		const registry = setupRegistry(search, short, cache, sync);
 
 		// Sign up for event
 		const events = registry.events;
@@ -86,24 +102,6 @@ describe('Testing search view', () => {
 		view.startLoading();
 
 		return view;
-	}
-
-	/**
-	 * Get icon names from block
-	 */
-	function getIconNames(block: IconsListBlock): string[] {
-		return (block.icons as Icon[]).map((icon) => {
-			return icon.name;
-		});
-	}
-
-	/**
-	 * Filter tags
-	 */
-	function filterTags(block: FiltersBlock, disabled: boolean): string[] {
-		return Object.keys(block.filters).filter(
-			(key) => block.filters[key].disabled === disabled
-		);
 	}
 
 	/**
@@ -171,10 +169,33 @@ describe('Testing search view', () => {
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
+		let isSync = true;
 		const view = setupView((data: unknown) => {
+			expect(isSync).to.be.equal(false);
 			expect(data).to.be.equal(view);
 			done();
 		}, 'home');
+		isSync = false;
+	});
+
+	it('Test using setupView code (synchronous)', (done) => {
+		let isSync = true;
+		const view = setupView(
+			(data: unknown) => {
+				expect(isSync).to.be.equal(true);
+				// Test on next tick to make sure variable 'view' is initialised
+				setTimeout(() => {
+					expect(data).to.be.equal(view);
+					done();
+				});
+			},
+			'home',
+			true,
+			null,
+			true,
+			true
+		);
+		isSync = false;
 	});
 
 	it('Not found', (done) => {
@@ -294,12 +315,14 @@ describe('Testing search view', () => {
 		}, 'home');
 	});
 
-	it('Test "home" search", full results', (done) => {
-		const view = setupView(
+	it('Test "home" search", full results (synchronous)', (done) => {
+		let isSync = true;
+		setupView(
 			(data: unknown) => {
 				let expectedPagination: PaginationBlock;
 
-				expect(data).to.be.equal(view);
+				expect(isSync).to.be.equal(true);
+				const view = data as SearchView;
 
 				// Check view
 				expect(view.keyword).to.be.equal('home');
@@ -416,7 +439,11 @@ describe('Testing search view', () => {
 				done();
 			},
 			'home',
-			false
+			false,
+			null,
+			true,
+			true
 		);
+		isSync = false;
 	});
 });

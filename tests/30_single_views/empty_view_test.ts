@@ -19,11 +19,13 @@ describe('Testing empty view', () => {
 
 		// Set variables
 		let loaded = false;
+		let isSync = true;
 
 		// Sign up for event
 		const events = registry.events;
 		events.subscribe('view-loaded', (data: unknown) => {
 			expect(loaded).to.be.equal(false);
+			expect(isSync).to.be.equal(false);
 			loaded = true;
 
 			const view = data as EmptyView;
@@ -55,5 +57,58 @@ describe('Testing empty view', () => {
 			params: {},
 			parent: null,
 		});
+
+		isSync = false;
+	});
+
+	it('Creating view (syncronous)', (done) => {
+		const registry = new Registry(namespace + nsCounter++);
+
+		// Synchronous test
+		const config = registry.config;
+		config.router.syncRender = true;
+
+		// Set variables
+		let loaded = false;
+		let isSync = true;
+
+		// Sign up for event
+		const events = registry.events;
+		events.subscribe('view-loaded', (data: unknown) => {
+			expect(loaded).to.be.equal(false);
+			expect(isSync).to.be.equal(true);
+			loaded = true;
+
+			const view = data as EmptyView;
+			expect(view.error).to.be.equal('');
+			expect(view.loading).to.be.equal(false);
+
+			done();
+		});
+
+		// Create view
+		const view = new EmptyView(
+			registry.id,
+			objectToRoute({
+				type: 'empty',
+			}) as FullEmptyRoute
+		);
+
+		// Start loading
+		view.startLoading();
+
+		// Make sure view is loaded asynchronously, even though data is available instantly
+		expect(view.loading).to.be.equal(true);
+		expect(view.error).to.be.equal('');
+		expect(loaded).to.be.equal(false);
+
+		// Make sure all route params have been setup
+		expect(view.route).to.be.eql({
+			type: 'empty',
+			params: {},
+			parent: null,
+		});
+
+		isSync = false;
 	});
 });

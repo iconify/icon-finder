@@ -28,7 +28,7 @@ describe('Testing collection view', () => {
 	/**
 	 * Setup registry for test
 	 */
-	function setupRegistry(prefix: string): Registry {
+	function setupRegistry(prefix: string, cache = false): Registry {
 		const registry = new Registry(namespace + nsCounter++);
 
 		// Change pagination limit for tests to 48
@@ -38,17 +38,20 @@ describe('Testing collection view', () => {
 		// Change API to fake API and load fixture
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: prefix,
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			prefix
-		);
+		if (!cache) {
+			api.loadFixture(
+				'',
+				'/collection',
+				{
+					prefix: prefix,
+					info: 'true',
+					chars: 'true',
+					aliases: 'true',
+				},
+				prefix,
+				{}
+			);
+		}
 		api.loadFixture(
 			'',
 			'/collection',
@@ -59,7 +62,10 @@ describe('Testing collection view', () => {
 				aliases: 'true',
 				hidden: 'true',
 			},
-			prefix
+			prefix,
+			{},
+			'collection.' + prefix,
+			cache
 		);
 		return registry;
 	}
@@ -70,9 +76,18 @@ describe('Testing collection view', () => {
 	function setupView(
 		callback: EventCallback,
 		prefix: string,
-		routeParams: PartialCollectionRouteParams | null = null
+		routeParams: PartialCollectionRouteParams | null = null,
+		cache = false,
+		sync = false
 	): CollectionView {
-		const registry = setupRegistry(prefix);
+		const registry = setupRegistry(prefix, cache);
+
+		// Change config
+		if (sync) {
+			// Synchronous test
+			const config = registry.config;
+			config.router.syncRender = true;
+		}
 
 		// Sign up for event
 		const events = registry.events;
@@ -175,10 +190,65 @@ describe('Testing collection view', () => {
 
 	// Same as previous test, but combined to one function for simpler tests
 	it('Test using setupView code', (done) => {
+		let isSync = true;
 		const view = setupView((data: unknown) => {
+			// Should be asynchronous
+			expect(isSync).to.be.equal(false);
+
+			// Test data
 			expect(data).to.be.equal(view);
+
 			done();
 		}, 'fa-regular');
+
+		// Make sure call is (a)synchronous by changing variable after setting up view
+		isSync = false;
+	});
+
+	it('Synchronous test', (done) => {
+		let isSync = true;
+		const view = setupView(
+			(data: unknown) => {
+				// Should be synchronous
+				expect(isSync).to.be.equal(true);
+
+				// Test data on next tick (to allow 'view' to initialise)
+				setTimeout(() => {
+					expect(data).to.be.equal(view);
+
+					done();
+				});
+			},
+			'fa-regular',
+			null,
+			true,
+			true
+		);
+
+		// Make sure call is (a)synchronous by changing variable after setting up view
+		isSync = false;
+	});
+
+	it('Async API loading, synchronous loading allowed', (done) => {
+		let isSync = true;
+		const view = setupView(
+			(data: unknown) => {
+				// Should be asynchronous because API response is not cached
+				expect(isSync).to.be.equal(false);
+
+				// Test data
+				expect(data).to.be.equal(view);
+
+				done();
+			},
+			'fa-regular',
+			null,
+			false,
+			true
+		);
+
+		// Make sure call is (a)synchronous by changing variable after setting up view
+		isSync = false;
 	});
 
 	it('Not found', (done) => {

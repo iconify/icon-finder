@@ -364,17 +364,15 @@ export class Router {
 		this._view = view;
 		view.startLoading();
 
-		if (
-			(immediate && this._visibleView !== view) ||
-			!view.loading ||
-			this._visibleView === null
-		) {
-			// Change visible view immediately and trigger event
-			this._visibleView = view;
-			this._triggerChange(true);
-		} else {
-			// Start timer that will change visible view and trigger event after delay
-			this._startTimer();
+		if (this._visibleView !== view) {
+			if (immediate || !view.loading || this._visibleView === null) {
+				// Change visible view immediately and trigger event
+				this._visibleView = view;
+				this._triggerChange(true);
+			} else {
+				// Start timer that will change visible view and trigger event after delay
+				this._startTimer();
+			}
 		}
 	}
 
