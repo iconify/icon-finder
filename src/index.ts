@@ -3,7 +3,7 @@ import { Registry as RegistryClass } from './registry';
 import { getRegistry } from './registry/storage';
 import type { PartialRoute } from './route/types/routes';
 import type { Router, RouterEvent } from './route/router';
-import type { CollectionInfo } from './converters/collection';
+import type { CollectionInfo } from './converters/info';
 import type { EventCallback } from './events';
 import type { Icon } from './misc/icon';
 import type { CustomViewLoadCallback } from './views/custom';

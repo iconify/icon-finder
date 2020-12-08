@@ -2,7 +2,7 @@ import 'mocha';
 import { expect } from 'chai';
 import { API } from '../fake_api';
 import { Registry } from '../../lib/registry';
-import type { CollectionInfo } from '../../lib/converters/collection';
+import type { CollectionInfo } from '../../lib/converters/info';
 
 describe('Testing API', function () {
 	const namespace = __filename;

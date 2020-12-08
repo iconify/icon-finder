@@ -1,6 +1,6 @@
 import type { IconifyInfo } from '@iconify/types';
-import type { CollectionInfo } from './collection';
-import { dataToCollectionInfo } from './collection';
+import type { CollectionInfo } from './info';
+import { dataToCollectionInfo } from './info';
 
 /**
  * List of collections, sorted by category and by prefix

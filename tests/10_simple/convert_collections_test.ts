@@ -6,7 +6,7 @@ import {
 	collectionsPrefixes,
 	filterCollections,
 } from '../../lib/converters/collections';
-import type { CollectionInfo } from '../../lib/converters/collection';
+import type { CollectionInfo } from '../../lib/converters/info';
 import { getFixture } from '../get_fixture';
 import { defaultCollectionInfo } from '../collection_info';
 

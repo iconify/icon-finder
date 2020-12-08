@@ -1,4 +1,4 @@
-import type { CollectionInfo } from '../lib/converters/collection';
+import type { CollectionInfo } from '../lib/converters/info';
 
 export const defaultCollectionInfo = (): CollectionInfo => {
 	return {

@@ -1,7 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
-import type { CollectionInfo } from '../../lib/converters/collection';
-import { dataToCollectionInfo } from '../../lib/converters/collection';
+import type { CollectionInfo } from '../../lib/converters/info';
+import { dataToCollectionInfo } from '../../lib/converters/info';
 import { getFixture } from '../get_fixture';
 
 describe('Testing converting collection information', () => {

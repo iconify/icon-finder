@@ -7,7 +7,7 @@ import {
 	collectionsPrefixes,
 	filterCollections,
 } from '../converters/collections';
-import type { CollectionInfo } from '../converters/collection';
+import type { CollectionInfo } from '../converters/info';
 import type { FiltersBlock } from './filters';
 import { enableFilters } from './filters';
 import type { CollectionsFilterBlock } from './collections-filter';

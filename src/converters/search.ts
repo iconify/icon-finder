@@ -1,7 +1,7 @@
 import type { Icon } from '../misc/icon';
 import { stringToIcon, validateIcon } from '../misc/icon';
-import type { CollectionInfo } from './collection';
-import { dataToCollectionInfo } from './collection';
+import type { CollectionInfo } from './info';
+import { dataToCollectionInfo } from './info';
 
 /**
  * Search results

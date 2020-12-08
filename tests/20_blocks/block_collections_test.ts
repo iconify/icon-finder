@@ -11,7 +11,7 @@ import {
 	filterCollectionsBlock,
 } from '../../lib/blocks/collections-list';
 import { autoIndexCollections } from '../../lib/converters/collections';
-import type { CollectionInfo } from '../../lib/converters/collection';
+import type { CollectionInfo } from '../../lib/converters/info';
 import { defaultCollectionInfo } from '../collection_info';
 
 describe('Testing collections list block', () => {

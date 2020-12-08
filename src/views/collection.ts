@@ -9,7 +9,8 @@ import {
 	autoIndexFilters,
 } from '../blocks/filters';
 import type { FullCollectionRoute } from '../route/types/routes';
-import type { CollectionData, CollectionInfo } from '../converters/collection';
+import type { CollectionData } from '../converters/collection';
+import type { CollectionInfo } from '../converters/info';
 import { dataToCollection } from '../converters/collection';
 import type { IconsListBlock } from '../blocks/icons-list';
 import { defaultIconsListBlock, applyIconFilters } from '../blocks/icons-list';
