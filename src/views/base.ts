@@ -169,50 +169,22 @@ export class BaseView {
 		cacheKey: string | boolean = true
 	): void {
 		const registry = getRegistry(this._instance);
-		const providerData = getProvider(provider);
-		const configAPIData = providerData ? providerData.config : null;
 		const api = registry.api;
-
-		// Calculate and create timer
-		let timeout = 0;
-		if (
-			configAPIData &&
-			typeof configAPIData.rotate === 'number' &&
-			typeof configAPIData.timeout === 'number' &&
-			typeof configAPIData.limit === 'number' &&
-			configAPIData.limit > 0
-		) {
-			// Calculate maximum possible timeout per one rotation
-			timeout =
-				configAPIData.timeout +
-				configAPIData.rotate *
-					((configAPIData.resources as string[]).length - 1);
-			timeout *= configAPIData.limit;
-		}
-		if (timeout > 0) {
-			this._loadingTimer = setTimeout(() => {
-				if (this._loadingTimer !== null) {
-					clearTimeout(this._loadingTimer as number);
-					this._loadingTimer = null;
-				}
-				if (this.loading && this.error === '') {
-					this.error = 'timeout';
-					this.loading = false;
-					this._triggerLoaded();
-				}
-			}, timeout);
-		}
 
 		// Send query
 		api.query(
 			provider,
 			query,
 			params,
-			(data) => {
-				// Clear timeout
-				if (this._loadingTimer !== null) {
-					clearTimeout(this._loadingTimer as number);
-					this._loadingTimer = null;
+			(data, error) => {
+				if (data === void 0) {
+					// Error
+					if (this.loading) {
+						this.error = error === 404 ? 'not_found' : 'timeout';
+						this.loading = false;
+						this._triggerLoaded();
+					}
+					return;
 				}
 
 				if (data === null || !this._mustWaitForParent) {

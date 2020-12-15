@@ -268,7 +268,9 @@ describe('Testing collection view', () => {
 				chars: 'true',
 				aliases: 'true',
 			},
-			null
+			void 0,
+			404,
+			{}
 		);
 
 		// Sign up for event

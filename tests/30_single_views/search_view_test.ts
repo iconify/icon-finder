@@ -217,7 +217,9 @@ describe('Testing search view', () => {
 				query: keyword,
 				limit: 64,
 			},
-			null
+			void 0,
+			404,
+			{}
 		);
 
 		// Sign up for event

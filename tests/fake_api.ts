@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
-import type { APIParams, APISendQueryCallback } from '../lib/api/base';
+import type { APIParams } from '../lib/api/base';
 import { mergeQuery, BaseAPI } from '../lib/api/base';
-import type { Redundancy, RedundancyPendingItem } from '@cyberalien/redundancy';
+import type {
+	Redundancy,
+	QueryDoneCallback,
+	PendingQueryItem,
+} from '@cyberalien/redundancy';
 import { initRedundancy } from '@cyberalien/redundancy';
 import { getAPIConfig } from './fake_api_config';
 import { getFixture } from './get_fixture';
@@ -19,11 +23,12 @@ interface FakeAPIParams {
 const defaultParams: FakeAPIParams = {
 	responseDelay: 0,
 	cacheResult: false,
-	attempt: 1,
+	attempt: -1,
 };
 
-interface FakeAPIData extends FakeAPIParams {
-	data: string | null;
+interface FakeAPIData extends Required<FakeAPIParams> {
+	result?: string;
+	error?: unknown;
 }
 
 interface FakeAPIStorage {
@@ -41,6 +46,7 @@ export class API extends BaseAPI {
 	protected _redundancy: Record<string, Redundancy | null> = Object.create(
 		null
 	);
+	protected _resources: Record<string, unknown[]> = Object.create(null);
 
 	/**
 	 * Get Redundancy instance
@@ -57,8 +63,20 @@ export class API extends BaseAPI {
 				throw new Error('Failed to get API config!');
 			}
 			this._redundancy[provider] = initRedundancy(config);
+			this._resources[provider] = config.resources;
 		}
 		return this._redundancy[provider];
+	}
+
+	/**
+	 * Get attempt number
+	 */
+	getAttempt(provider: string, resource: unknown): number {
+		const resources = this._resources[provider];
+		if (!resources) {
+			throw new Error(`Missing provider: ${provider}`);
+		}
+		return resources.indexOf(resource);
 	}
 
 	/**
@@ -68,11 +86,7 @@ export class API extends BaseAPI {
 	 * @param params
 	 * @param callback
 	 */
-	sendQuery(
-		host: string,
-		params: string,
-		callback: APISendQueryCallback
-	): void {
+	sendQuery(host: string, params: string, callback: QueryDoneCallback): void {
 		throw new Error('Not supported by fake API');
 	}
 
@@ -83,14 +97,14 @@ export class API extends BaseAPI {
 	 * @param cacheKey API cache key, null if data should not be cached
 	 * @param host Host string
 	 * @param params End point and parameters as string
-	 * @param status Query status
+	 * @param item Query item
 	 */
 	_query(
 		provider: string,
 		cacheKey: string | null,
 		host: string,
 		params: string,
-		status: RedundancyPendingItem
+		item: PendingQueryItem
 	): void {
 		const uri = host + params;
 		this.log.push(uri);
@@ -105,22 +119,30 @@ export class API extends BaseAPI {
 		const data = this.fakeData[provider][params];
 
 		// Check attempt
-		if (status.attempt !== data.attempt) {
+		if (
+			data.attempt >= 0 &&
+			this.getAttempt(provider, item.resource) !== data.attempt
+		) {
 			return;
 		}
 
 		// Send response
 		const respond = () => {
-			let response;
-			try {
-				response = data.data === null ? null : JSON.parse(data.data);
-			} catch (err) {
-				response = data.data;
+			if (typeof data.result === 'string') {
+				let response;
+				try {
+					response =
+						data.result === null ? null : JSON.parse(data.result);
+					if (data.cacheResult && cacheKey !== null) {
+						this.storeCache(provider, cacheKey, response);
+					}
+				} catch (err) {
+					response = data.result;
+				}
+				item.done(response);
+			} else {
+				item.done(void 0, data.error);
 			}
-			if (data.cacheResult && cacheKey !== null) {
-				this.storeCache(provider, cacheKey, response);
-			}
-			status.done(response);
 		};
 
 		if (data.responseDelay) {
@@ -138,8 +160,9 @@ export class API extends BaseAPI {
 		provider: string,
 		query: string,
 		queryParams: APIParams,
-		data: string | null,
-		params: FakeAPIParams = {}
+		result: string | undefined,
+		error: unknown,
+		params: FakeAPIParams
 	): void {
 		const uri = mergeQuery(query, queryParams);
 		if (this.fakeData[provider] === void 0) {
@@ -147,11 +170,12 @@ export class API extends BaseAPI {
 		}
 		this.fakeData[provider][uri] = Object.assign(
 			{
-				data: data,
+				result,
+				error,
 			},
 			defaultParams,
 			params
-		);
+		) as FakeAPIData;
 	}
 
 	/**
@@ -171,7 +195,14 @@ export class API extends BaseAPI {
 			// Store as cache
 			this.storeCache(provider, cacheKey, JSON.parse(data));
 		} else {
-			this.setFakeData(provider, query, queryParams, data, params);
+			this.setFakeData(
+				provider,
+				query,
+				queryParams,
+				data,
+				void 0,
+				params
+			);
 		}
 	}
 }

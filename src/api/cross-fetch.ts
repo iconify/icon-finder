@@ -1,6 +1,8 @@
-import type { APISendQueryCallback } from './base';
+import type {
+	PendingQueryItem,
+	QueryDoneCallback,
+} from '@cyberalien/redundancy';
 import { BaseAPI } from './base';
-import type { RedundancyPendingItem } from '@cyberalien/redundancy';
 import fetch from 'cross-fetch';
 
 /**
@@ -14,21 +16,11 @@ export class API extends BaseAPI {
 	 * @param params End point and parameters as string
 	 * @param callback Callback
 	 */
-	sendQuery(
-		host: string,
-		params: string,
-		callback: APISendQueryCallback
-	): void {
+	sendQuery(host: string, params: string, callback: QueryDoneCallback): void {
 		fetch(host + params)
 			.then((response) => {
-				if (response.status === 404) {
-					// Not found. Should be called in error handler
-					callback('not_found', null);
-					return;
-				}
-
 				if (response.status !== 200) {
-					callback('error', null);
+					callback(void 0, response.status);
 					return;
 				}
 
@@ -36,15 +28,15 @@ export class API extends BaseAPI {
 			})
 			.then((data) => {
 				if (typeof data !== 'object' || data === null) {
-					callback('error', null);
+					callback(void 0, null);
 					return;
 				}
 
 				// Store cache and complete
-				callback('success', data);
+				callback(data);
 			})
-			.catch(() => {
-				callback('error', null);
+			.catch((err) => {
+				callback(void 0, err?.errno);
 			});
 	}
 
@@ -55,25 +47,23 @@ export class API extends BaseAPI {
 	 * @param cacheKey API cache key, null if data should not be cached
 	 * @param host Host string
 	 * @param params End point and parameters as string
-	 * @param status Query status
+	 * @param item Query item
 	 */
 	_query(
 		provider: string,
 		cacheKey: string | null,
 		host: string,
 		params: string,
-		status: RedundancyPendingItem
+		item: PendingQueryItem
 	): void {
 		// console.log('API request: ' + host + params);
-		this.sendQuery(host, params, (response, data) => {
-			switch (response) {
-				case 'success':
-				case 'not_found':
-					if (cacheKey !== null) {
-						this.storeCache(provider, cacheKey, data);
-					}
-					status.done(data);
+		this.sendQuery(host, params, (data, error) => {
+			if (data !== void 0 && cacheKey !== null) {
+				// Store cache on success
+				this.storeCache(provider, cacheKey, data);
 			}
+
+			item.done(data, error);
 		});
 	}
 }

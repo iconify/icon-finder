@@ -312,7 +312,7 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, null);
+		api.setFakeData('', '/collections', {}, void 0, 404, {});
 		api.loadFixture('test', '/collections', {}, 'collections');
 
 		let isSync = true;
@@ -347,7 +347,7 @@ describe('Testing collections list view', () => {
 		registry.config.router.syncRender = true;
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, null);
+		api.setFakeData('', '/collections', {}, void 0, 404, {});
 		api.loadFixture(
 			'test',
 			'/collections',
@@ -433,7 +433,7 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, null);
+		api.setFakeData('', '/collections', {}, void 0, 404, {});
 
 		// Sign up for event
 		const events = registry.events;
@@ -635,7 +635,9 @@ describe('Testing collections list view', () => {
 			{},
 			JSON.stringify({
 				error: 'not_found',
-			})
+			}),
+			void 0,
+			{}
 		);
 
 		// Sign up for event
@@ -662,7 +664,7 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, 'whatever');
+		api.setFakeData('', '/collections', {}, 'whatever', void 0, {});
 
 		// Sign up for event
 		const events = registry.events;

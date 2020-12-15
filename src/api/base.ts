@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
 import type {
 	Redundancy,
-	RedundancyPendingItem,
-	RedundancyQueryCallback,
+	PendingQueryItem,
+	QueryModuleCallback,
 } from '@cyberalien/redundancy';
 import type { Registry } from '../registry';
 import { getProvider } from '../data/providers';
@@ -13,20 +13,13 @@ export interface APIParams {
 }
 
 export interface APICallback {
-	(data: unknown, cached?: boolean): void;
+	(data?: unknown, error?: unknown, cached?: boolean): void;
 }
 
 // Cache: [uri] = response
 export interface APICache {
 	[index: string]: string | null;
 }
-
-// Interface for sendQuery function exported by API modules
-export type APISendQueryStatus = 'success' | 'not_found' | 'error';
-export type APISendQueryCallback = (
-	status: APISendQueryStatus,
-	data: unknown
-) => void;
 
 /**
  * Add parameters to query
@@ -132,7 +125,7 @@ export class BaseAPI {
 		if (cacheKey !== false && providerCache[cacheKeyStr] !== void 0) {
 			// Return cached data
 			const cached = providerCache[cacheKeyStr];
-			callback(cached === null ? null : JSON.parse(cached), true);
+			callback(cached === null ? null : JSON.parse(cached), void 0, true);
 			return;
 		}
 
@@ -151,8 +144,8 @@ export class BaseAPI {
 		});
 		if (query !== null) {
 			// Attach callback to existing query
-			query().subscribe((data) => {
-				callback(data, false);
+			query().subscribe((data, error) => {
+				callback(data, error, false);
 			});
 			return;
 		}
@@ -164,9 +157,9 @@ export class BaseAPI {
 				this,
 				provider,
 				cacheKey === false ? null : cacheKeyStr
-			) as RedundancyQueryCallback,
-			(data) => {
-				callback(data, false);
+			) as QueryModuleCallback,
+			(data, error) => {
+				callback(data, error, false);
 			}
 		);
 	}
@@ -210,7 +203,7 @@ export class BaseAPI {
 		cacheKey: string | null,
 		host: string,
 		params: string,
-		status: RedundancyPendingItem
+		item: PendingQueryItem
 	): void {
 		// Should be implemented by child classes
 		throw new Error('_query() should not be called on base API class');

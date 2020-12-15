@@ -58,8 +58,9 @@ describe('Testing API', function () {
 				'',
 				'/collections',
 				{},
-				(data: unknown, cached?: boolean) => {
+				(data: unknown, error: unknown, cached?: boolean) => {
 					expect(cached).to.be.equal(false);
+					expect(error).to.be.equal(void 0);
 
 					// Check if response is object
 					expect(typeof data).to.be.equal('object');
@@ -173,8 +174,9 @@ describe('Testing API', function () {
 				'',
 				'/collections',
 				{},
-				(data: unknown, cached?: boolean) => {
+				(data: unknown, error: unknown, cached?: boolean) => {
 					expect(cached).to.be.equal(false);
+					expect(error).to.be.equal(void 0);
 
 					// Check if response is object
 					expect(typeof data).to.be.equal('object');
@@ -204,9 +206,10 @@ describe('Testing API', function () {
 						'',
 						'/collections',
 						{},
-						(data: unknown, cached?: boolean) => {
+						(data: unknown, error: unknown, cached?: boolean) => {
 							// Response should have been cached and returned almost immediately
 							expect(cached).to.be.equal(true);
+							expect(error).to.be.equal(void 0);
 							expect(typeof data).to.be.equal('object');
 
 							// Test isCached and isPending

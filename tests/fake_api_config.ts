@@ -45,14 +45,14 @@ function createConfig(
 		// Timeout to retry same host.
 		timeout: source.timeout ? source.timeout : 5000,
 
-		// Number of attempts for each host.
-		limit: source.limit ? source.limit : 2,
-
 		// Randomise default API end point.
 		random: source.random === true,
 
 		// Start index
 		index: source.index ? source.index : 0,
+
+		// Send data after time out
+		dataAfterTimeout: source.dataAfterTimeout !== false,
 	};
 
 	return result;
