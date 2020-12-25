@@ -26,7 +26,12 @@ export class API extends BaseAPI {
 				return response.json();
 			})
 			.then((data) => {
+				if (data === void 0) {
+					// Return from previous then() without Promise
+					return;
+				}
 				if (typeof data !== 'object' || data === null) {
+					// Error
 					callback(void 0, null);
 					return;
 				}
