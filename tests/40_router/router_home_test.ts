@@ -3,9 +3,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
+import SVGFramework from '@iconify/iconify';
+import { setIconify } from '../../lib/iconify';
 import { Registry } from '../../lib/registry';
 import { API as FakeAPI } from '../fake_api';
 import { convertCustomSets } from '../../lib/data/custom-sets';
+
+// Set SVG Framework
+setIconify(SVGFramework);
 
 describe('Testing home route with custom icon sets', () => {
 	const namespace = __filename;

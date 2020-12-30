@@ -9,11 +9,9 @@
 	"scripts": {
 		"cleanup": "rm -rf lib compiled-tests",
 		"lint": "npx eslint {src,tests}/**/*.ts",
-		"prebuild": "npm run lint && npm run cleanup",
-		"build": "npx tsc -b",
-		"build:src": "npx tsc --project src/tsconfig.json",
-		"prewatch": "npm run lint",
-		"watch": "npx tsc -b -w",
+		"lib": "npx tsc -b",
+		"lib:src": "npx tsc --project src/tsconfig.json",
+		"build": "node build",
 		"test": "npx mocha tests-compiled/*/*_test.js",
 		"pretest": "npm run build"
 	},
@@ -21,6 +19,7 @@
 	"homepage": "https://github.com/iconify/icon-finder",
 	"repository": "github:iconify/icon-finder#core",
 	"devDependencies": {
+		"@iconify/iconify": "^2.0.0-rc.5",
 		"@types/chai": "^4.2.14",
 		"@types/mocha": "^8.2.0",
 		"@types/node": "^14.14.14",
@@ -34,7 +33,6 @@
 	},
 	"dependencies": {
 		"@cyberalien/redundancy": "^1.1.0",
-		"@iconify/iconify": "^2.0.0-rc.4",
 		"@iconify/types": "^1.0.6",
 		"cross-fetch": "^3.0.6"
 	}

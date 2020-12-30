@@ -4,8 +4,8 @@ import type {
 	APIProviderRawData,
 } from '@iconify/types/provider';
 import type { IconifyAPIConfig } from '@iconify/iconify';
-import Iconify from '@iconify/iconify';
 import type { Redundancy } from '@cyberalien/redundancy';
+import { Iconify } from '../iconify';
 import { match } from '../misc/icon';
 
 // Export imported types
@@ -202,7 +202,7 @@ export function getProvider(provider: string): APIProviderConfigured | null {
 		const source = sourceCache[provider];
 
 		// Get Redundancy instance from Iconify
-		const data = Iconify._internal.getAPI(provider);
+		const data = Iconify.getAPI ? Iconify.getAPI(provider) : void 0;
 		if (data === void 0) {
 			// Failed again - something is wrong with config
 			configuredCache[provider] = null;
@@ -238,8 +238,8 @@ export function getProvider(provider: string): APIProviderConfigured | null {
  * Add provider
  */
 export function addProvider(provider: string, config: APIProviderSource): void {
-	if (sourceCache[provider] !== void 0) {
-		// Cannot overwrite provider
+	if (!Iconify.addAPIProvider || sourceCache[provider] !== void 0) {
+		// addAPIProvider is not set or cannot overwrite provider
 		return;
 	}
 	if (config.title === void 0) {

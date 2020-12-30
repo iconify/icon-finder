@@ -3,12 +3,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
+import SVGFramework from '@iconify/iconify';
+import { setIconify } from '../../lib/iconify';
 import { Registry } from '../../lib/registry';
-import type {
-	PartialRoute,
-	FullCollectionRoute,
-	PartialCollectionRoute,
-} from '../../lib/route/types/routes';
+import type { PartialRoute } from '../../lib/route/types/routes';
 import { API as FakeAPI } from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
 import type { FiltersBlock } from '../../lib/blocks/filters';
@@ -16,6 +14,9 @@ import type { CollectionViewBlocks } from '../../lib/views/collection';
 import { isBlockEmpty } from '../../lib/blocks/types';
 import { addProvider, convertProviderData } from '../../lib/data/providers';
 import { collectionCacheKey, collectionsCacheKey } from '../../lib/api/base';
+
+// Set SVG Framework
+setIconify(SVGFramework);
 
 describe('Testing router', () => {
 	const namespace = __filename;

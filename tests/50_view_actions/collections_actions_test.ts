@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import 'mocha';
 import { expect } from 'chai';
+import SVGFramework from '@iconify/iconify';
+import { setIconify } from '../../lib/iconify';
 import { Registry } from '../../lib/registry';
 import { API as FakeAPI } from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
@@ -11,6 +13,9 @@ import type { CollectionViewBlocks } from '../../lib/views/collection';
 import { isBlockEmpty } from '../../lib/blocks/types';
 import { addProvider, convertProviderData } from '../../lib/data/providers';
 import { collectionsCacheKey, searchCacheKey } from '../../lib/api/base';
+
+// Set SVG Framework
+setIconify(SVGFramework);
 
 describe('Testing collections actions', () => {
 	const namespace = __filename;

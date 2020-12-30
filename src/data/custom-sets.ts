@@ -1,5 +1,5 @@
 import type { IconifyJSON, IconifyInfo } from '@iconify/types';
-import Iconify from '@iconify/iconify';
+import { Iconify } from '../iconify';
 import type { CollectionData } from '../converters/collection';
 import { rawDataToCollection } from '../converters/collection';
 import type { CollectionsList } from '../converters/collections';
@@ -157,7 +157,7 @@ export function convertCustomSets(
 		rawInfo[provider][convertedData.prefix] = rawItemInfo;
 
 		// Add icons to Iconify
-		if (importIcons) {
+		if (importIcons && Iconify.addCollection) {
 			Iconify.addCollection(item);
 		}
 	});

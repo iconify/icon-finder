@@ -1,5 +1,5 @@
-import Iconify from '@iconify/iconify';
 import type { IconifyIcon } from '@iconify/iconify';
+import { Iconify } from '../iconify';
 import type { IconCustomisations } from '../misc/customisations';
 import type { Icon } from '../misc/icon';
 import { iconToString } from '../misc/icon';
@@ -10,6 +10,9 @@ import type {
 } from './code-parsers';
 import { varName, codeParser } from './code-parsers';
 import type { CodeSampleAPIConfig, CodeSampleMode } from './types';
+
+// Iconify version (replaced during build!)
+const iconifyVersion = '2.0.0';
 
 /**
  * Output
@@ -202,12 +205,12 @@ export function getIconCode(
 	};
 
 	// Add language specific stuff
-	let str: string;
-	let data: IconifyIcon;
+	let str: string | null;
+	let data: IconifyIcon | null;
 	let npm: NPMImport | null;
 	switch (lang) {
 		case 'iconify':
-			str = Iconify.getVersion();
+			str = Iconify.getVersion ? Iconify.getVersion() : iconifyVersion;
 			output.iconify = {
 				head:
 					'<script src="https://code.iconify.design/' +
@@ -223,27 +226,35 @@ export function getIconCode(
 		case 'svg-raw':
 		case 'svg-box':
 		case 'svg-uri':
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			str = Iconify.renderHTML(iconName, attr)!;
+			str = Iconify.renderHTML
+				? Iconify.renderHTML(iconName, attr)
+				: null;
+			if (str === null) {
+				return null;
+			}
 			if (customisations.color !== '') {
 				str = str.replace(/currentColor/g, customisations.color);
 			}
 			if (lang === 'svg-box') {
 				// Add empty rectangle before shapes
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				data = Iconify.getIcon(iconName)!;
-				str = str.replace(
-					'>',
-					'><rect x="' +
-						data.left +
-						'" y="' +
-						data.top +
-						'" width="' +
-						data.width +
-						'" height="' +
-						data.height +
-						'" fill="none" stroke="none" />'
-				);
+				data = Iconify.getIcon ? Iconify.getIcon(iconName) : null;
+				if (data) {
+					str = str.replace(
+						'>',
+						'><rect x="' +
+							data.left +
+							'" y="' +
+							data.top +
+							'" width="' +
+							data.width +
+							'" height="' +
+							data.height +
+							'" fill="none" stroke="none" />'
+					);
+				} else {
+					return null;
+				}
 			}
 			if (lang === 'svg-uri') {
 				// Remove unused attributes

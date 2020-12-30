@@ -7,6 +7,7 @@ import type {
 	CodeSampleType,
 	CodeSampleAPIConfig,
 } from './types';
+import { Iconify } from '../iconify';
 
 /**
  * Code tree
@@ -84,7 +85,18 @@ export function getCodeSamplesTree(
 	/**
 	 * Check if code sample can be shown
 	 */
-	function canUse(type: CodeSampleType): boolean {
+	function canUse(mode: CodeSampleMode, type: CodeSampleType): boolean {
+		// Check for required functions
+		switch (mode) {
+			case 'svg-box':
+			case 'svg-raw':
+			case 'svg-uri':
+				if (!Iconify.renderHTML) {
+					return false;
+				}
+		}
+
+		// Check type
 		switch (type) {
 			case 'raw':
 				return config[type];
@@ -116,7 +128,7 @@ export function getCodeSamplesTree(
 		// Item without children
 		if (typeof item === 'string') {
 			const mode = attr as CodeSampleMode;
-			if (canUse(item)) {
+			if (canUse(mode, item)) {
 				// Add item without children
 				const newItem: CodeSamplesTreeItem = {
 					mode,
@@ -134,7 +146,7 @@ export function getCodeSamplesTree(
 			const mode = key2 as CodeSampleMode;
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			const type = item[mode]!;
-			if (canUse(type)) {
+			if (canUse(mode, type)) {
 				const newItem: CodeSamplesTreeChildItem = {
 					mode,
 					type,
