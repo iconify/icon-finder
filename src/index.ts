@@ -38,12 +38,11 @@ export { IconsNavBlock } from './blocks/icons-nav';
 export { SearchBlock } from './blocks/search';
 
 /**
- * Export functions that are not specific to instance
- */
-
-/**
  * Export various types and functions that do not depend on core instance
  */
+// Iconify wrapper
+export { setIconify } from './iconify';
+
 // Provider
 export type { APIProviderSource } from './data/providers';
 export {
