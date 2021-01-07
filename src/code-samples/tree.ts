@@ -102,8 +102,10 @@ export function getCodeSamplesTree(
 				return config[type];
 
 			case 'api':
+				return config.api !== void 0;
+
 			case 'npm':
-				return config[type] !== void 0;
+				return config.npmES !== void 0 || config.npmCJS !== void 0;
 		}
 	}
 

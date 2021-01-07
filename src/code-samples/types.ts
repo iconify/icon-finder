@@ -46,24 +46,31 @@ export type CodeSampleAPIConfigFileCallback = (
 	icon: Icon
 ) => string | null;
 
+interface CodeSampleNPMConfig {
+	// Package name: '@iconify-icons/{prefix}'
+	// Variables:
+	//  {prefix} = icon set prefix
+	package: string | CodeSampleAPIConfigNPMCallback;
+
+	// File for icon data, relative to package: '/{name}'
+	// Variables:
+	//  {prefix} = icon set prefix
+	//  {name} = icon name
+	// If missing or callback returns null, data should be imported from package
+	file?: string | CodeSampleAPIConfigFileCallback;
+}
+
 export interface CodeSampleAPIConfig {
 	// Iconify SVG framework API provider
 	api?: string;
 
-	// NPM package for single files: '@iconify-icons/{prefix}'
-	npm?: {
-		// Package name: '@iconify-icons/{prefix}'
-		// Variables:
-		//  {prefix} = icon set prefix
-		package: string | CodeSampleAPIConfigNPMCallback;
+	// NPM package for single files that CommonJS exports.
+	// Example: '@iconify-icons/{prefix}'
+	npmCJS?: CodeSampleNPMConfig;
 
-		// File for icon data, relative to package: '/{name}'
-		// Variables:
-		//  {prefix} = icon set prefix
-		//  {name} = icon name
-		// If missing or callback returns null, data should be imported from package
-		file?: string | CodeSampleAPIConfigFileCallback;
-	};
+	// Same as above, but uses ES exports.
+	// Only one of properties can be set: 'npm` or 'npmES', parsers will try preferred property first, then use other property as fallback.
+	npmES?: CodeSampleNPMConfig;
 
 	// Allow displaying raw SVG
 	raw: boolean;

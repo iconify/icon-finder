@@ -106,10 +106,18 @@ export function getIconCode(
 		package: string;
 		file: string;
 	}
-	function npmIconImport(): NPMImport | null {
+	function npmIconImport(preferES: boolean): NPMImport | null {
 		const name = varName(icon.name);
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const npm = providerConfig.npm!;
+		const npm = preferES
+			? providerConfig.npmES
+				? providerConfig.npmES
+				: providerConfig.npmCJS
+			: providerConfig.npmCJS
+			? providerConfig.npmCJS
+			: providerConfig.npmES;
+		if (!npm) {
+			return null;
+		}
 
 		const packageName =
 			typeof npm.package === 'string'
@@ -283,10 +291,13 @@ export function getIconCode(
 		case 'svelte':
 		case 'vue2':
 		case 'vue3':
-			if (!parser.npm || !providerConfig.npm) {
+			if (
+				!parser.npm ||
+				(!providerConfig.npmCJS && !providerConfig.npmES)
+			) {
 				return null;
 			}
-			npm = npmIconImport();
+			npm = npmIconImport(lang === 'vue3');
 			if (!npm) {
 				return null;
 			}
