@@ -434,6 +434,7 @@ export function dataToCollection(
 	}
 
 	// Add aliases
+	const missingAliases: Record<string, string[]> = Object.create(null);
 	if (typeof source.aliases === 'object') {
 		const aliases = source.aliases as Record<string, string>;
 		Object.keys(aliases).forEach((alias) => {
@@ -444,13 +445,32 @@ export function dataToCollection(
 					icon.aliases = [];
 				}
 				icon.aliases.push(alias);
+				return;
 			}
+
+			// Alias is not found. Hidden icon?
+			if (missingAliases[name] === void 0) {
+				missingAliases[name] = [];
+			}
+			missingAliases[name].push(alias);
 		});
 	}
 
 	// Add hidden icons
 	if (source.hidden instanceof Array) {
-		result.hidden = source.hidden;
+		let hidden: string[] = [];
+
+		source.hidden.forEach((icon: string) => {
+			// Add icon
+			hidden.push(icon);
+
+			// Look for aliases of hidden icon
+			if (missingAliases[icon] !== void 0) {
+				hidden = hidden.concat(missingAliases[icon]);
+			}
+		});
+
+		result.hidden = hidden;
 	}
 
 	// Convert to sorted array

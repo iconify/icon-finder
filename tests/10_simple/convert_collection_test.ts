@@ -321,4 +321,21 @@ describe('Testing converting collection information', () => {
 		expect(result.themePrefixes).to.be.equal(void 0);
 		expect(result.themeSuffixes).to.be.eql(['Fill', 'Outline', 'TwoTone']);
 	});
+
+	it('Hidden icons with aliases', () => {
+		const raw = JSON.parse(getFixture('mdi.json'));
+		const result = dataToCollection('', raw) as NonNullable<CollectionData>;
+
+		expect(result).to.not.be.equal(null);
+
+		expect(result.hidden).to.be.eql([
+			// Hidden icon
+			'amazon-drive',
+			// Alias of a hidden icon
+			'amazon-clouddrive',
+			// More hidden icons
+			'hidden-icon',
+			'hidden-alias',
+		]);
+	});
 });

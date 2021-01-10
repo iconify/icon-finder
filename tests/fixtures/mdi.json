@@ -10792,6 +10792,7 @@
     "zwave": "z-wave"
   },
   "hidden": [
+  	"amazon-drive",
     "hidden-icon",
     "hidden-alias"
   ]
