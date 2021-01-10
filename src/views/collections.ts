@@ -31,6 +31,7 @@ import { setCollectionInfo } from '../data/collections';
 import type { IconFinderCustomSetsMerge } from '../data/custom-sets';
 import { mergeCollections } from '../data/custom-sets';
 import { collectionsCacheKey } from '../api/base';
+import type { IconFinderConvertedCache } from '../converters/cache';
 
 /**
  * Blocks
@@ -89,13 +90,25 @@ export class CollectionsView extends BaseView {
 				api: true,
 			};
 		}
+
+		// Check for cache
+		const cache = registry.getCustom('core-cache') as Record<
+			string,
+			IconFinderConvertedCache
+		>;
+		if (typeof cache === 'object') {
+			const providerCache = cache[this.provider];
+			if (providerCache && providerCache.collections) {
+				this._data = providerCache.collections;
+			}
+		}
 	}
 
 	/**
 	 * Start loading
 	 */
 	_startLoadingData(): void {
-		if (!this._sources.api) {
+		if (this._data || !this._sources.api) {
 			this._parseAPIData(null);
 			return;
 		}
@@ -286,10 +299,10 @@ export class CollectionsView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		if (this._sources.api && !data) {
+		if (this._sources.api && !data && !this._data) {
 			// Error
 			this._data = null;
-		} else {
+		} else if (!this._data) {
 			// Convert and merge data
 			this._data = mergeCollections(
 				this.route.params.provider,

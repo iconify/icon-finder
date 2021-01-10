@@ -32,6 +32,7 @@ import { collectionsPrefixesWithInfo } from '../blocks/collections-list';
 import { getCollectionInfo, setCollectionInfo } from '../data/collections';
 import type { Icon } from '../misc/icon';
 import { APIParams, collectionCacheKey } from '../api/base';
+import type { IconFinderConvertedCache } from '../converters/cache';
 
 /**
  * Filters for block
@@ -119,13 +120,27 @@ export class CollectionView extends BaseView {
 		this._mustWaitForParent =
 			parent !== null &&
 			(parent.type === 'search' || parent.type === 'collections');
+
+		// Check for cache
+		if (!this._data) {
+			const cache = registry.getCustom('core-cache') as Record<
+				string,
+				IconFinderConvertedCache
+			>;
+			if (typeof cache === 'object' && cache[this.provider]) {
+				const collectionCache = cache[this.provider].collection;
+				if (collectionCache && collectionCache[this.prefix]) {
+					this._data = collectionCache[this.prefix];
+				}
+			}
+		}
 	}
 
 	/**
 	 * Start loading
 	 */
 	_startLoadingData(): void {
-		if (!this._isCustom) {
+		if (!this._data) {
 			const params: APIParams = {
 				prefix: this.prefix,
 				info: 'true',
@@ -430,7 +445,7 @@ export class CollectionView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		if (!this._isCustom) {
+		if (!this._data && !this._isCustom) {
 			this._data = dataToCollection(this.provider, data);
 		}
 

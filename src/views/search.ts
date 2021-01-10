@@ -17,6 +17,7 @@ import type { View } from './types';
 import { cloneObject } from '../misc/objects';
 import { setCollectionInfo } from '../data/collections';
 import { searchCacheKey } from '../api/base';
+import type { IconFinderConvertedCache } from '../converters/cache';
 
 /**
  * Blocks
@@ -71,6 +72,20 @@ export class SearchView extends BaseView {
 			this.route.params.short = false;
 		}
 
+		// Check for cache
+		const cache = registry.getCustom('core-cache') as Record<
+			string,
+			IconFinderConvertedCache
+		>;
+		if (typeof cache === 'object' && cache[this.provider]) {
+			const searchCache = cache[this.provider].search;
+			if (searchCache && searchCache[this.keyword]) {
+				this._data = searchCache[this.keyword];
+				// Only full pages can be cached
+				this.route.params.short = false;
+			}
+		}
+
 		// Set items limit for query
 		this.itemsLimit = this.route.params.short ? this.itemsPerPage * 2 : 999;
 	}
@@ -79,17 +94,21 @@ export class SearchView extends BaseView {
 	 * Start loading
 	 */
 	_startLoadingData(): void {
-		const query = this.keyword;
-		const limit = this.itemsLimit;
-		this._loadAPI(
-			this.provider,
-			'/search',
-			{
-				query,
-				limit,
-			},
-			searchCacheKey(query, limit)
-		);
+		if (!this._data) {
+			const query = this.keyword;
+			const limit = this.itemsLimit;
+			this._loadAPI(
+				this.provider,
+				'/search',
+				{
+					query,
+					limit,
+				},
+				searchCacheKey(query, limit)
+			);
+		} else {
+			this._parseAPIData(null);
+		}
 	}
 
 	/**
@@ -300,7 +319,9 @@ export class SearchView extends BaseView {
 	 * Should be overwritten by child classes
 	 */
 	_parseAPIData(data: unknown): void {
-		this._data = dataToSearchResults(this.provider, data);
+		if (!this._data) {
+			this._data = dataToSearchResults(this.provider, data);
+		}
 
 		// Mark as loaded, mark blocks for re-render and reset error
 		this.loading = false;
