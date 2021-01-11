@@ -3,6 +3,7 @@ import type {
 	IconifyAPIFunctions,
 	IconifyAPIInternalFunctions,
 	IconifyIconCustomisations,
+	IconifyBuilderFunctions,
 } from '@iconify/iconify';
 
 /**
@@ -20,6 +21,7 @@ export type IconifyGetVersion = () => string;
  */
 interface IconifyFunctions
 	extends IconifyStorageFunctions,
+		IconifyBuilderFunctions,
 		IconifyAPIInternalFunctions,
 		IconifyAPIFunctions {
 	// Functions from SVG framework
