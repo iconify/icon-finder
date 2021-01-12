@@ -4,16 +4,28 @@ import type {
 	IconifyAPIInternalFunctions,
 	IconifyIconCustomisations,
 	IconifyBuilderFunctions,
+	IconifyIconBuildResult,
 } from '@iconify/iconify';
 
 /**
- * renderHTML function
+ * renderIcon() function from SVG framework
+ */
+export type IconifyRenderIcon = (
+	name: string,
+	customisations: IconifyIconCustomisations
+) => IconifyIconBuildResult | null;
+
+/**
+ * renderHTML function from SVG framework
  */
 export type IconifyRenderHTML = (
 	name: string,
 	customisations: IconifyIconCustomisations
 ) => string | null;
 
+/**
+ * getVersion() function from SVG framework
+ */
 export type IconifyGetVersion = () => string;
 
 /**
@@ -25,8 +37,12 @@ interface IconifyFunctions
 		IconifyAPIInternalFunctions,
 		IconifyAPIFunctions {
 	// Functions from SVG framework
+	renderIcon: IconifyRenderIcon;
 	renderHTML: IconifyRenderHTML;
 	getVersion: IconifyGetVersion;
+
+	// Custom function to generate placeholder, used for SSR when rendering SVG is not required
+	renderPlaceholder: IconifyRenderHTML;
 }
 
 /**
