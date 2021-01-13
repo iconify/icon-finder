@@ -111,5 +111,18 @@ describe('Testing Iconify replacements for SSR', () => {
 		).to.be.equal(
 			'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--foo" width="24" height="24" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="foo:bar"><g /></svg>'
 		);
+
+		// Rotate
+		expect(
+			renderHTML(
+				name,
+				{
+					rotate: 2,
+				},
+				Iconify.renderIcon
+			)
+		).to.be.equal(
+			'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--foo" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" data-icon="foo:bar"><g transform="rotate(180 12 12)"><g /></g></svg>'
+		);
 	});
 });
