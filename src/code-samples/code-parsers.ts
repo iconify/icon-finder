@@ -163,7 +163,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 	 * Add attributes to parsed attributes
 	 */
 	function addRawAttr(list: ParserAttr, key: string, value: unknown) {
-		list[key] = toString(value);
+		list[key] = value as ParsedAttribute;
 	}
 
 	function addAttr(list: ParserAttr, key: string, value: string) {
