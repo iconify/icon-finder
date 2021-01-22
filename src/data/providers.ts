@@ -63,7 +63,11 @@ export interface APIProviderConfigured extends APIProviderData {
 /**
  * Local cache
  */
-const sourceCache: Record<string, APIProviderSource> = Object.create(null);
+// Exported to allow quick manipulation of links. Not meant to be used in any other way
+export const internalSourceCache: Record<
+	string,
+	APIProviderSource
+> = Object.create(null);
 const configuredCache: Record<
 	string,
 	APIProviderConfigured | null
@@ -72,7 +76,7 @@ const configuredCache: Record<
 // Add default provider
 const iconifyRoot = 'https://iconify.design/icon-sets/';
 const iconifyPackage = '@iconify/icons-{prefix}';
-sourceCache[''] = {
+internalSourceCache[''] = {
 	config: {},
 	title: 'Iconify',
 	links: {
@@ -194,12 +198,12 @@ export function convertProviderData(
  */
 export function getProvider(provider: string): APIProviderConfigured | null {
 	if (configuredCache[provider] === void 0) {
-		if (sourceCache[provider] === void 0) {
+		if (internalSourceCache[provider] === void 0) {
 			// Missing provider
 			return null;
 		}
 
-		const source = sourceCache[provider];
+		const source = internalSourceCache[provider];
 
 		// Get Redundancy instance from Iconify
 		const data = Iconify.getAPI ? Iconify.getAPI(provider) : void 0;
@@ -238,7 +242,7 @@ export function getProvider(provider: string): APIProviderConfigured | null {
  * Add provider
  */
 export function addProvider(provider: string, config: APIProviderSource): void {
-	if (!Iconify.addAPIProvider || sourceCache[provider] !== void 0) {
+	if (!Iconify.addAPIProvider || internalSourceCache[provider] !== void 0) {
 		// addAPIProvider is not set or cannot overwrite provider
 		return;
 	}
@@ -246,7 +250,7 @@ export function addProvider(provider: string, config: APIProviderSource): void {
 		// Use provider as name
 		config.title = provider;
 	}
-	sourceCache[provider] = config;
+	internalSourceCache[provider] = config;
 	Iconify.addAPIProvider(provider, config.config);
 }
 
@@ -254,5 +258,5 @@ export function addProvider(provider: string, config: APIProviderSource): void {
  * Get all providers
  */
 export function listProviders(): string[] {
-	return Object.keys(sourceCache).sort();
+	return Object.keys(internalSourceCache).sort();
 }
