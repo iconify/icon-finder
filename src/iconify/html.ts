@@ -1,7 +1,17 @@
-import type { IconifyIconCustomisations } from '@iconify/iconify';
-import type { IconifyRenderIcon } from '.';
+import type {
+	IconifyIconCustomisations,
+	IconifyIconBuildResult,
+} from '@iconify/iconify';
 import type { Icon } from '..';
 import { iconToString, stringToIcon } from '../misc/icon';
+
+/**
+ * renderIcon() function from SVG framework, but with icon name instead of data
+ */
+export type IconifyRenderIcon = (
+	icon: string,
+	customisations: IconifyIconCustomisations
+) => IconifyIconBuildResult | null;
 
 /**
  * Generate HTML for SVG framework

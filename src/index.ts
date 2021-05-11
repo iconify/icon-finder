@@ -41,7 +41,7 @@ export { SearchBlock } from './blocks/search';
  * Export various types and functions that do not depend on core instance
  */
 // Iconify wrapper
-export { setIconify } from './iconify';
+export { setIconify, CoreIconifyFunctions } from './iconify';
 
 // Provider
 export type { APIProviderSource } from './data/providers';
