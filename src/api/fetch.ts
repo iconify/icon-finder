@@ -5,6 +5,23 @@ import type {
 import { BaseAPI } from './base';
 
 /**
+ * Fetch function
+ *
+ * Use this to set 'cross-fetch' in node.js environment if you are retrieving icons on server side.
+ * Not needed when using stuff like Next.js or SvelteKit because components use API only on client side.
+ */
+let fetchModule: typeof fetch | null = null;
+try {
+	fetchModule = fetch;
+} catch (err) {
+	//
+}
+
+export function setFetch(fetch: typeof fetchModule): void {
+	fetchModule = fetch;
+}
+
+/**
  * API class
  */
 export class API extends BaseAPI {
@@ -16,7 +33,13 @@ export class API extends BaseAPI {
 	 * @param callback Callback
 	 */
 	sendQuery(host: string, params: string, callback: QueryDoneCallback): void {
-		fetch(host + params)
+		if (!fetchModule) {
+			// Fail: return 424 Failed Dependency (its not meant to be used like that, but it is the best match)
+			callback(void 0, 424);
+			return;
+		}
+
+		fetchModule(host + params)
 			.then((response) => {
 				if (response.status !== 200) {
 					callback(void 0, response.status);

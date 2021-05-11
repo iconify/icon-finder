@@ -2,7 +2,7 @@ import type {
 	PendingQueryItem,
 	QueryDoneCallback,
 } from '@cyberalien/redundancy';
-import { BaseAPI } from './base';
+import { BaseAPI } from '@iconify/search-core/lib/api/base';
 import fetch from 'cross-fetch';
 
 /**
