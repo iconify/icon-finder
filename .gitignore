@@ -2,5 +2,7 @@
 .DS_Store
 *.map
 node_modules
+npm-debug.log
+yarn.lock
 lib
 tests-compiled
