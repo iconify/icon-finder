@@ -2,16 +2,7 @@ import type {
 	IconifyStorageFunctions,
 	IconifyAPIFunctions,
 	IconifyAPIInternalFunctions,
-	IconifyIconCustomisations,
 } from '@iconify/iconify';
-
-/**
- * renderHTML function from SVG framework
- */
-export type IconifyRenderHTML = (
-	name: string,
-	customisations: IconifyIconCustomisations
-) => string | null;
 
 /**
  * getVersion() function from SVG framework
@@ -27,7 +18,6 @@ export interface CoreIconifyFunctions
 		Pick<IconifyAPIInternalFunctions, 'getAPI'>,
 		Pick<IconifyAPIFunctions, 'addAPIProvider'> {
 	// Functions from SVG framework
-	renderHTML: IconifyRenderHTML;
 	getVersion: IconifyGetVersion;
 }
 

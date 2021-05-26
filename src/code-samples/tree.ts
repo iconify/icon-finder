@@ -91,7 +91,7 @@ export function getCodeSamplesTree(
 			case 'svg-box':
 			case 'svg-raw':
 			case 'svg-uri':
-				if (!Iconify.renderHTML) {
+				if (!Iconify.getIcon) {
 					return false;
 				}
 		}

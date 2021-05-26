@@ -1,4 +1,3 @@
-import type { IconifyIcon } from '@iconify/iconify';
 import { Iconify } from '../iconify';
 import {
 	emptyCustomisations,
@@ -12,6 +11,7 @@ import type {
 	TemplateCallback,
 } from './code-parsers';
 import { varName, codeParser } from './code-parsers';
+import { renderHTML } from './html';
 import type { CodeSampleAPIConfig, CodeSampleMode } from './types';
 
 // Iconify version (replaced during build!)
@@ -225,12 +225,14 @@ export function getIconCode(
 	};
 
 	// Add language specific stuff
-	let str: string | null;
-	let data: IconifyIcon | null;
-	let npm: NPMImport | null;
+	// let str: string | null;
+	// let data: IconifyIcon | null;
+	// let npm: NPMImport | null;
 	switch (lang) {
-		case 'iconify':
-			str = Iconify.getVersion ? Iconify.getVersion() : iconifyVersion;
+		case 'iconify': {
+			const str = Iconify.getVersion
+				? Iconify.getVersion()
+				: iconifyVersion;
 			output.iconify = {
 				head:
 					'<script src="https://code.iconify.design/' +
@@ -242,23 +244,20 @@ export function getIconCode(
 				html,
 			};
 			return output;
+		}
 
 		case 'svg-raw':
 		case 'svg-box':
-		case 'svg-uri':
-			str = Iconify.renderHTML
-				? Iconify.renderHTML(iconName, attr)
-				: null;
-			if (str === null) {
+		case 'svg-uri': {
+			const data = Iconify.getIcon?.(iconName);
+			if (!data) {
 				return null;
 			}
-			if (customisations.color !== '') {
-				str = str.replace(/currentColor/g, customisations.color);
-			}
+
+			let str = renderHTML(data, customisations);
 			if (lang === 'svg-box') {
 				// Add empty rectangle before shapes
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				data = Iconify.getIcon ? Iconify.getIcon(iconName) : null;
 				if (data) {
 					str = str.replace(
 						'>',
@@ -298,18 +297,19 @@ export function getIconCode(
 			}
 			output.raw = [str];
 			return output;
+		}
 
 		case 'react-npm':
 		case 'svelte':
 		case 'vue2':
-		case 'vue3':
+		case 'vue3': {
 			if (
 				!parser.npm ||
 				(!providerConfig.npmCJS && !providerConfig.npmES)
 			) {
 				return null;
 			}
-			npm = npmIconImport(lang === 'vue3');
+			const npm = npmIconImport(lang === 'vue3');
 			if (!npm) {
 				return null;
 			}
@@ -347,8 +347,9 @@ export function getIconCode(
 				}
 			}
 			return output;
+		}
 
-		case 'react-api':
+		case 'react-api': {
 			if (!parser.npm) {
 				return null;
 			}
@@ -362,5 +363,6 @@ export function getIconCode(
 				use: html,
 			};
 			return output;
+		}
 	}
 }

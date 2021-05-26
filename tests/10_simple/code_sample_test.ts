@@ -11,6 +11,8 @@ import {
 } from '../../lib/misc/customisations';
 import { codeParser } from '../../lib/code-samples/code-parsers';
 import { Iconify } from '../../lib/iconify';
+import { fullIcon, FullIconifyIcon } from '@iconify/utils/lib/icon';
+import type { IconifyIconName } from '@iconify/utils/lib/icon/name';
 
 const config: CodeSampleAPIConfig = {
 	// Show packages that use API
@@ -542,21 +544,34 @@ describe('Testing code samples', () => {
 
 	it('SVG', () => {
 		const mode: CodeSampleMode = 'svg-raw';
-		// const parser = codeParser(mode);
+		const parser = codeParser(mode);
 
-		// Simple icon, for now returns null because icon data is not available
-		// TODO: update code to support renderHTML()
-		expect(
-			getIconCode(
-				mode,
-				{
-					provider: '',
-					prefix: 'mdi',
-					name: 'home',
-				},
-				emptyCustomisations,
-				config
-			)
-		).to.be.eql(null);
+		// Create dummy icon
+		const icon: IconifyIconName = {
+			provider: '',
+			prefix: 'foo',
+			name: 'svg-render-test',
+		};
+		const iconName = 'foo:svg-render-test';
+		const iconData: FullIconifyIcon = fullIcon({
+			body: '<g />',
+		});
+
+		// Replce getIcon()
+		const getIcon = Iconify.getIcon;
+		Iconify.getIcon = (name) => {
+			if (name === iconName) {
+				return iconData;
+			}
+			return getIcon ? getIcon(name) : null;
+		};
+
+		// Render icon
+		expect(getIconCode(mode, icon, emptyCustomisations, config)).to.be.eql({
+			docs: parser.docs,
+			raw: [
+				'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g /></svg>',
+			],
+		});
 	});
 });
