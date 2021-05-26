@@ -1,5 +1,5 @@
 import type { Icon } from '../misc/icon';
-import { stringToIcon, validateIcon } from '../misc/icon';
+import { stringToIcon } from '../misc/icon';
 import type { CollectionInfo } from './info';
 import { dataToCollectionInfo } from './info';
 
@@ -71,8 +71,10 @@ export function dataToSearchResults(
 	const sourceCollections = source.collections as Record<string, unknown>;
 	try {
 		sourceIcons.forEach((item) => {
-			const icon = stringToIcon(item, provider) as NonNullable<Icon>;
-			if (!validateIcon(icon)) {
+			const icon = stringToIcon(item, true, provider) as NonNullable<
+				Icon
+			>;
+			if (icon === null) {
 				throw new Error('Invalid icon');
 			}
 			result.icons.push(icon);

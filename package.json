@@ -32,6 +32,7 @@
 	},
 	"dependencies": {
 		"@cyberalien/redundancy": "^1.1.0",
-		"@iconify/types": "^1.0.6"
+		"@iconify/types": "^1.0.6",
+		"@iconify/utils": "^1.0.3"
 	}
 }
