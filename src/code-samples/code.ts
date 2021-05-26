@@ -1,6 +1,9 @@
 import type { IconifyIcon } from '@iconify/iconify';
 import { Iconify } from '../iconify';
-import type { IconCustomisations } from '../misc/customisations';
+import {
+	emptyCustomisations,
+	IconCustomisations,
+} from '../misc/customisations';
 import type { Icon } from '../misc/icon';
 import { iconToString } from '../misc/icon';
 import type {
@@ -106,6 +109,7 @@ export function getIconCode(
 		package: string;
 		file: string;
 	}
+
 	function npmIconImport(preferES: boolean): NPMImport | null {
 		const name = varName(icon.name);
 		const npm = preferES
@@ -178,21 +182,29 @@ export function getIconCode(
 	} else {
 		['width', 'height'].forEach((prop) => {
 			const key = prop as keyof IconCustomisations;
-			if (customisations[key] !== '' && attrParsers[key]) {
+			const value = customisations[key];
+			if (value !== null && value !== '' && attrParsers[key]) {
 				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-				attrParsers[key]!(attr, customisations[key]);
+				attrParsers[key]!(attr, value);
 			}
 		});
 	}
 
-	// Transformations
-	['rotate', 'vFlip', 'hFlip'].forEach((prop) => {
-		const key = prop as keyof IconCustomisations;
-		if (customisations[key] && attrParsers[key]) {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			attrParsers[key]!(attr, customisations[key]);
+	// Transformations and alignment
+	['rotate', 'hFlip', 'vFlip', 'hAlign', 'vAlign', 'slice'].forEach(
+		(prop) => {
+			const key = prop as keyof IconCustomisations;
+			const value = customisations[key];
+			if (
+				value !== void 0 &&
+				value !== emptyCustomisations[key] &&
+				attrParsers[key]
+			) {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				attrParsers[key]!(attr, value);
+			}
 		}
-	});
+	);
 
 	// Inline
 	if (customisations.inline && attrParsers.inline) {
@@ -319,10 +331,20 @@ export function getIconCode(
 					.replace(/{varName}/g, npm.name)
 					.replace('{iconPackage}', npm.package + npm.file),
 			};
-			if (typeof parser.vueTemplate === 'string') {
-				output.component.vue = parser.vueTemplate
-					.replace(/{varName}/g, npm.name)
-					.replace('{iconPackage}', npm.package + npm.file);
+			if (parser.vueTemplate !== void 0) {
+				const html =
+					typeof parser.vueTemplate === 'function'
+						? resolveTemplate(
+								parser.vueTemplate,
+								merged,
+								customisations
+						  )
+						: parser.vueTemplate;
+				if (typeof html === 'string') {
+					output.component.vue = html
+						.replace(/{varName}/g, npm.name)
+						.replace('{iconPackage}', npm.package + npm.file);
+				}
 			}
 			return output;
 

@@ -1,16 +1,16 @@
-import type {
-	IconifyIconCustomisations,
-	IconifyIconBuildResult,
-} from '@iconify/iconify';
+import type { IconifyIconBuildResult } from '@iconify/iconify';
 import type { Icon } from '..';
+import type { PartialIconCustomisations } from '../misc/customisations';
 import { iconToString, stringToIcon } from '../misc/icon';
 
 /**
- * renderIcon() function from SVG framework, but with icon name instead of data
+ * renderIcon() function from SVG framework, but with few changes:
+ * - Icon name instead of data
+ * - Customisations include properties added in core such as "color"
  */
 export type IconifyRenderIcon = (
 	icon: string,
-	customisations: IconifyIconCustomisations
+	customisations: PartialIconCustomisations
 ) => IconifyIconBuildResult | null;
 
 /**
@@ -18,7 +18,7 @@ export type IconifyRenderIcon = (
  */
 export function renderHTML(
 	icon: string | Icon,
-	customisations: IconifyIconCustomisations,
+	customisations: PartialIconCustomisations,
 	callback: IconifyRenderIcon
 ): string {
 	const name = typeof icon === 'string' ? icon : iconToString(icon);

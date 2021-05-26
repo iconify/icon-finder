@@ -1,49 +1,43 @@
+import {
+	IconifyIconCustomisations,
+	defaults,
+	mergeCustomisations as merge,
+} from '@iconify/utils/lib/customisations';
+
 /**
  * Customisations
  */
-export interface IconCustomisations {
-	// Transformations
-	hFlip: boolean;
-	vFlip: boolean;
-	rotate: number;
-
+interface CoreIconCustomisations {
 	// Color for color picker
 	color: string;
-
-	// Dimensions
-	width: string;
-	height: string;
-
-	// Display mode
-	inline: boolean;
 }
 
+export interface IconCustomisations
+	extends Required<IconifyIconCustomisations>,
+		CoreIconCustomisations {}
+
 export type PartialIconCustomisations = Partial<IconCustomisations>;
+
+/**
+ * Custom values
+ */
+const emptyCustomValues: CoreIconCustomisations = {
+	color: '',
+};
 
 /**
  * Empty values
  */
 export const emptyCustomisations: IconCustomisations = {
-	hFlip: false,
-	vFlip: false,
-	rotate: 0,
-	color: '',
-	width: '',
-	height: '',
-	inline: false,
+	...defaults,
+	...emptyCustomValues,
 };
 
 /**
  * Default values
  */
 export const defaultCustomisations: IconCustomisations = {
-	hFlip: false,
-	vFlip: false,
-	rotate: 0,
-	color: '',
-	width: '',
-	height: '',
-	inline: false,
+	...emptyCustomisations,
 };
 
 /**
@@ -53,15 +47,20 @@ export function mergeCustomisations(
 	defaults: IconCustomisations,
 	values: PartialIconCustomisations
 ): IconCustomisations {
-	const result: Record<string, unknown> = {};
-	for (const key in defaults) {
-		const attr = key as keyof IconCustomisations;
-		if (values && typeof values[attr] === typeof defaults[attr]) {
-			result[attr] = values[attr];
-		} else {
-			result[attr] = defaults[attr];
-		}
+	// Merge default properties
+	const result = merge(defaults, values);
+
+	// Merge custom properties
+	for (const key in emptyCustomValues) {
+		const attr = key as keyof CoreIconCustomisations;
+
+		// Match type
+		(result as Record<string, unknown>)[attr] =
+			values && typeof values[attr] === typeof defaults[attr]
+				? values[attr]
+				: defaults[attr];
 	}
+
 	return (result as unknown) as IconCustomisations;
 }
 
@@ -71,15 +70,9 @@ export function mergeCustomisations(
 export function filterCustomisations(
 	values: IconCustomisations
 ): PartialIconCustomisations {
-	const result: PartialIconCustomisations = {};
-	for (const key in defaultCustomisations) {
-		const attr = key as keyof IconCustomisations;
-		if (
-			values[attr] !== defaultCustomisations[attr] &&
-			values[attr] !== emptyCustomisations[attr]
-		) {
-			(result as Record<string, unknown>)[attr] = values[attr];
-		}
-	}
-	return result;
+	// Function can handle any properties, just needs some type hinting
+	return merge(
+		defaultCustomisations as Required<IconifyIconCustomisations>,
+		values as IconifyIconCustomisations
+	) as PartialIconCustomisations;
 }

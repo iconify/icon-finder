@@ -66,6 +66,9 @@ const baseCustomisationAttributes: (keyof IconCustomisations)[] = [
 	'rotate',
 	'hFlip',
 	'vFlip',
+	'hAlign',
+	'vAlign',
+	'slice',
 ];
 
 export function getCustomisationAttributes(
@@ -278,9 +281,9 @@ function generateParser(mode: CodeSampleMode): Parser {
 	 * Get Vue parser
 	 */
 	function vueParser(vue3: boolean): Parser {
-		const vue2Usage = '<template>\n\t<IconifyIcon {attr} />\n</template>';
+		const vue2Usage = '<template>\n\t<Icon {attr} />\n</template>';
 		const vue2Template =
-			'export default {\n\tcomponents: {\n\t\tIconifyIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\t{varName},\n\t\t\t},\n\t\t};\n\t},\n});';
+			'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\t{varName},\n\t\t\t},\n\t\t};\n\t},\n});';
 
 		const parser: Parser = {
 			iconParser: (list, valueStr, valueIcon) =>
@@ -289,24 +292,17 @@ function generateParser(mode: CodeSampleMode): Parser {
 				hFlip: (list, value) =>
 					addVueAttr(list, 'horizontalFlip', value),
 				vFlip: (list, value) => addVueAttr(list, 'verticalFlip', value),
+				hAlign: (list, value) =>
+					addVueAttr(list, 'horizontalAlign', value),
+				vAlign: (list, value) =>
+					addVueAttr(list, 'verticalAlign', value),
+				inline: (list, value) => addVueAttr(list, 'inline', value),
 			},
 			merge: mergeAttributes,
 			template: (attr, customisations) =>
-				(vue3
-					? vue2Usage.replace(
-							/IconifyIcon/g,
-							customisations.inline ? 'InlineIcon' : 'Icon'
-					  )
-					: vue2Usage
-				).replace('{attr}', attr),
+				vue2Usage.replace('{attr}', attr),
 			vueTemplate: (attr, customisations) =>
-				(vue3
-					? vue2Template.replace(
-							/IconifyIcon/g,
-							customisations.inline ? 'InlineIcon' : 'Icon'
-					  )
-					: vue2Template
-				).replace('{attr}', attr),
+				vue2Template.replace('{attr}', attr),
 			docs: {
 				type: 'vue',
 				href: docsBase + (vue3 ? 'vue/' : 'vue2/'),
@@ -315,13 +311,11 @@ function generateParser(mode: CodeSampleMode): Parser {
 				? {
 						install: '@iconify/vue@beta',
 						import: (attr, customisations) =>
-							'import { ' +
-							(customisations.inline ? 'InlineIcon' : 'Icon') +
-							" } from '@iconify/vue';",
+							"import { Icon } from '@iconify/vue';",
 				  }
 				: {
 						install: '@iconify/vue@^1',
-						import: "import IconifyIcon from '@iconify/vue';",
+						import: "import Icon from '@iconify/vue';",
 				  },
 		};
 
@@ -330,13 +324,6 @@ function generateParser(mode: CodeSampleMode): Parser {
 			getCustomisationAttributes(true, false),
 			addVueAttr
 		);
-
-		if (!vue3) {
-			// Add inline attribute for vue2
-			// Vue3 uses different component imports
-			parser.parsers.inline = (list, value) =>
-				addVueAttr(list, 'inline', value);
-		}
 
 		return parser;
 	}
@@ -383,6 +370,12 @@ function generateParser(mode: CodeSampleMode): Parser {
 						mergeAttr(list, 'data-flip', 'horizontal', ','),
 					vFlip: (list) =>
 						mergeAttr(list, 'data-flip', 'vertical', ','),
+					hAlign: (list, value) =>
+						mergeAttr(list, 'data-align', value as string, ','),
+					vAlign: (list, value) =>
+						mergeAttr(list, 'data-align', value as string, ','),
+					slice: (list) =>
+						mergeAttr(list, 'data-align', 'slice', ','),
 				},
 				merge: mergeAttributes,
 				template: '<span {attr}></span>',
@@ -413,12 +406,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 					addReactAttr(list, 'icon', varName(valueIcon.name)),
 				parsers: {},
 				merge: mergeAttributes,
-				template: (attr, customisations) =>
-					'<' +
-					(customisations.inline ? 'InlineIcon' : 'Icon') +
-					' ' +
-					attr +
-					' />',
+				template: (attr, customisations) => '<Icon ' + attr + ' />',
 				docs: {
 					type: 'react',
 					href: docsBase + 'react/',
@@ -426,14 +414,12 @@ function generateParser(mode: CodeSampleMode): Parser {
 				npm: {
 					install: '@iconify/react@beta',
 					import: (attr, customisations) =>
-						'import { ' +
-						(customisations.inline ? 'InlineIcon' : 'Icon') +
-						" } from '@iconify/react';",
+						"import { Icon } from '@iconify/react';",
 				},
 			};
 			addMultipleAttributeParsers(
 				parser,
-				getCustomisationAttributes(true, false),
+				getCustomisationAttributes(true, true),
 				addReactAttr
 			);
 			return parser;
@@ -444,27 +430,20 @@ function generateParser(mode: CodeSampleMode): Parser {
 					addAttr(list, 'icon', valueStr),
 				parsers: {},
 				merge: mergeAttributes,
-				template: (attr, customisations) =>
-					'<' +
-					(customisations.inline ? 'InlineIcon' : 'Icon') +
-					' ' +
-					attr +
-					' />',
+				template: (attr, customisations) => '<Icon ' + attr + ' />',
 				docs: {
 					type: 'react',
-					href: docsBase + 'react-with-api/',
+					href: docsBase + 'react/',
 				},
 				npm: {
-					install: '@iconify/react-with-api',
+					install: '@iconify/react@alpha',
 					import: (attr, customisations) =>
-						'import { ' +
-						(customisations.inline ? 'InlineIcon' : 'Icon') +
-						" } from '@iconify/react-with-api';",
+						"import { Icon } from '@iconify/react';",
 				},
 			};
 			addMultipleAttributeParsers(
 				parser,
-				getCustomisationAttributes(true, false),
+				getCustomisationAttributes(true, true),
 				addReactAttr
 			);
 			return parser;
@@ -483,14 +462,14 @@ function generateParser(mode: CodeSampleMode): Parser {
 					addReactAttr(list, 'icon', varName(valueIcon.name)),
 				parsers: {},
 				merge: mergeAttributes,
-				template: '<IconifyIcon {attr} />',
+				template: '<Icon {attr} />',
 				docs: {
 					type: 'svelte',
 					href: docsBase + 'svelte/',
 				},
 				npm: {
 					install: '@iconify/svelte',
-					import: "import IconifyIcon from '@iconify/svelte';",
+					import: "import Icon from '@iconify/svelte';",
 				},
 			};
 			addMultipleAttributeParsers(

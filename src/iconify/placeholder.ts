@@ -1,4 +1,4 @@
-import type { IconifyIconCustomisations } from '@iconify/iconify';
+import type { PartialIconCustomisations } from '../misc/customisations';
 import type { IconifyRenderHTML } from './index';
 
 /**
@@ -6,7 +6,7 @@ import type { IconifyRenderHTML } from './index';
  */
 export const renderPlaceholder: IconifyRenderHTML = (
 	name: string,
-	customisations: IconifyIconCustomisations
+	customisations: PartialIconCustomisations
 ) => {
 	let html = '<span class="iconify" data-icon="' + name + '"';
 
@@ -14,7 +14,7 @@ export const renderPlaceholder: IconifyRenderHTML = (
 	const flip: string[] = [];
 	const alignment: string[] = [];
 
-	let key: keyof IconifyIconCustomisations;
+	let key: keyof PartialIconCustomisations;
 	for (key in customisations) {
 		const value = customisations[key];
 		if (value === void 0 || value === null || value === 0 || value === '') {
@@ -41,6 +41,10 @@ export const renderPlaceholder: IconifyRenderHTML = (
 
 			case 'slice':
 				alignment.push(value ? 'slice' : 'meet');
+				break;
+
+			case 'color':
+				html += ' style="color: ' + value + ';"';
 				break;
 
 			default:
