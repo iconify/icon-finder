@@ -71,8 +71,15 @@ export function filterCustomisations(
 	values: IconCustomisations
 ): PartialIconCustomisations {
 	// Function can handle any properties, just needs some type hinting
-	return merge(
-		defaultCustomisations as Required<IconifyIconCustomisations>,
-		values as IconifyIconCustomisations
-	) as PartialIconCustomisations;
+	const result: PartialIconCustomisations = {};
+	for (const key in defaultCustomisations) {
+		const attr = key as keyof IconCustomisations;
+		if (
+			values[attr] !== defaultCustomisations[attr] &&
+			values[attr] !== emptyCustomisations[attr]
+		) {
+			(result as Record<string, unknown>)[attr] = values[attr];
+		}
+	}
+	return result;
 }
