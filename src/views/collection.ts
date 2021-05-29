@@ -20,7 +20,6 @@ import {
 	maxPage,
 	getPageForIndex,
 } from '../blocks/pagination';
-import type { IconsNavBlock } from '../blocks/icons-nav';
 import { getRegistry } from '../registry/storage';
 import type { SearchBlock } from '../blocks/search';
 import { defaultSearchBlock } from '../blocks/search';
@@ -59,18 +58,17 @@ export interface CollectionViewBlocks
 	extends BaseViewBlocks,
 		CollectionViewBlocksIconFilters {
 	// Info
-	'info': CollectionInfoBlock;
+	info: CollectionInfoBlock;
 
 	// Search
-	'filter': SearchBlock;
+	filter: SearchBlock;
 
 	// Filter from search block
-	'collections': FiltersBlock | null;
+	collections: FiltersBlock | null;
 
 	// Icons and pagination
-	'icons': IconsListBlock;
-	'pagination': PaginationBlock;
-	'icons-nav': IconsNavBlock | null;
+	icons: IconsListBlock;
+	pagination: PaginationBlock;
 }
 
 /**
@@ -220,7 +218,7 @@ export class CollectionView extends BaseView {
 				break;
 
 			// Change reference icon
-			case 'icons-nav':
+			case 'icon':
 				if (value === '' || value === null) {
 					// Reset
 					this.route.params.icon = '';
@@ -362,42 +360,6 @@ export class CollectionView extends BaseView {
 			blocks.themeSuffixes.active = this.route.params.themeSuffix;
 		}
 
-		// Find reference icon
-		let iconsList = blocks.icons.icons;
-		const icon = this.route.params.icon;
-		let iconIndex =
-			icon === '' ? false : this._getIconIndex(iconsList, icon);
-		if (iconIndex !== false) {
-			// Get previous/next icons
-			const max = iconsList.length - 1;
-			blocks['icons-nav'] = {
-				type: 'icons-nav',
-				first: iconsList[0],
-				last: iconsList[max],
-				reference: iconsList[iconIndex],
-				prev: iconIndex > 0 ? iconsList[iconIndex - 1] : void 0,
-				next: iconIndex < max ? iconsList[iconIndex + 1] : void 0,
-			};
-		} else if (
-			icon !== '' &&
-			this._data.hidden &&
-			this._data.hidden.indexOf(icon) !== -1
-		) {
-			// Icon exists, but it is hidden. Show first and last icons, indicating that reference icon exists
-			blocks['icons-nav'] = {
-				type: 'icons-nav',
-				first: iconsList[0],
-				last: iconsList[iconsList.length - 1],
-				reference: {
-					provider: this.provider,
-					prefix: this.prefix,
-					name: icon,
-				},
-			};
-		} else {
-			blocks['icons-nav'] = null;
-		}
-
 		// Apply search
 		blocks.icons = applyIconFilters(
 			blocks.icons,
@@ -406,26 +368,27 @@ export class CollectionView extends BaseView {
 				.filter((key) => blocks[key] !== null)
 				.map((key) => blocks[key]) as FiltersBlock[]
 		);
-		iconsList = blocks.icons.icons;
+
+		const iconsBlock = blocks.icons;
+		const iconsList = iconsBlock.icons;
 
 		// Get current page
 		const perPage = blocks.pagination.perPage;
+		const referenceIcon = this.route.params.icon;
+
 		let page: number;
 		if (this.route.params.page !== null) {
 			page = this.route.params.page;
-		} else if (icon === '') {
+		} else if (referenceIcon === '') {
 			page = 0;
 		} else {
-			if (iconsList.length !== this._data.icons.length) {
-				// Update iconIndex
-				iconIndex = this._getIconIndex(iconsList, icon);
-			}
+			const iconIndex = this._getIconIndex(iconsList, referenceIcon);
 			page =
 				iconIndex === false ? 0 : getPageForIndex(perPage, iconIndex);
 		}
 
 		// Check pagination
-		blocks.pagination.length = blocks.icons.icons.length;
+		blocks.pagination.length = iconsBlock.icons.length;
 		blocks.pagination.page = page;
 		const maximumPage = maxPage(blocks.pagination);
 		if (maximumPage < blocks.pagination.page) {
@@ -434,7 +397,29 @@ export class CollectionView extends BaseView {
 
 		// Apply pagination
 		const startIndex = blocks.pagination.page * perPage;
-		blocks.icons.icons = iconsList.slice(startIndex, startIndex + perPage);
+		const nextIndex = Math.min(startIndex + perPage, iconsList.length + 1);
+		iconsBlock.icons = iconsList.slice(startIndex, nextIndex);
+
+		// Navigation
+		if (iconsList.length > 1) {
+			// Add first/last icon
+			iconsBlock.first = iconsList[0];
+			iconsBlock.last = iconsList[iconsList.length - 1];
+
+			// Add previous/next icon
+			iconsBlock.prev =
+				startIndex > 0 ? iconsList[startIndex - 1] : iconsBlock.last;
+			iconsBlock.next =
+				iconsList[nextIndex] === void 0
+					? iconsBlock.first
+					: iconsList[nextIndex];
+		} else {
+			// Nothing to navigate
+			delete iconsBlock.first;
+			delete iconsBlock.last;
+			delete iconsBlock.prev;
+			delete iconsBlock.next;
+		}
 
 		return this._blocks;
 	}
@@ -457,25 +442,24 @@ export class CollectionView extends BaseView {
 		// Create empty blocks
 		this._blocks = {
 			// Info
-			'info': defaultCollectionInfoBlock(),
+			info: defaultCollectionInfoBlock(),
 
 			// Search
-			'filter': Object.assign(defaultSearchBlock(), {
+			filter: Object.assign(defaultSearchBlock(), {
 				keyword: this.route.params.filter,
 				searchType: 'collection',
 				title: this.prefix,
 			}),
 
 			// Filters
-			'collections': null,
-			'tags': null,
-			'themePrefixes': null,
-			'themeSuffixes': null,
+			collections: null,
+			tags: null,
+			themePrefixes: null,
+			themeSuffixes: null,
 
 			// Icons and pagination
-			'icons': defaultIconsListBlock(),
-			'pagination': defaultPaginationBlock(),
-			'icons-nav': null,
+			icons: defaultIconsListBlock(),
+			pagination: defaultPaginationBlock(),
 		};
 		const initialisedBlocks = this._blocks;
 

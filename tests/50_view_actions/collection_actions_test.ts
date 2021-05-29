@@ -353,7 +353,7 @@ describe('Testing collection actions', () => {
 					);
 
 					// Reference new icon
-					router.action('icons-nav', 'keep');
+					router.action('icon', 'keep');
 					break;
 
 				case 4:

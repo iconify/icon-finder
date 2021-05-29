@@ -11,6 +11,14 @@ import type { CollectionViewBlocksIconFilters } from '../views/collection';
 export interface IconsListBlock extends BaseBlock {
 	readonly type: 'icons-list';
 	icons: Icon[];
+
+	// First and last icons
+	first?: Icon;
+	last?: Icon;
+
+	// Last icon on previous page and first icon on next page
+	prev?: Icon;
+	next?: Icon;
 }
 
 /**

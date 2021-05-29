@@ -406,9 +406,6 @@ describe('Testing collection view', () => {
 				// Icons
 				expect(blocks.icons.icons.length).to.be.equal(7); // 151 - 48 * 3
 
-				// Icons navigation
-				expect(blocks['icons-nav']).to.be.equal(null);
-
 				// Check for window-minimize
 				expect(
 					blocks.icons.icons.filter(
@@ -449,9 +446,6 @@ describe('Testing collection view', () => {
 				expect(blocks.icons.icons.length).to.be.equal(3);
 				iconNames = getIconNames(blocks.icons);
 				expect(iconNames).to.be.eql(['moon', 'snowflake', 'sun']);
-
-				// Icons navigation
-				expect(blocks['icons-nav']).to.be.equal(null);
 
 				/**
 				 * Reset tag filter, apply keyword filter
@@ -559,9 +553,6 @@ describe('Testing collection view', () => {
 				};
 				expect(blocks.pagination).to.be.eql(expectedPagination);
 
-				// Icons navigation
-				expect(blocks['icons-nav']).to.be.equal(null);
-
 				done();
 			},
 			'mdi',
@@ -621,9 +612,6 @@ describe('Testing collection view', () => {
 				};
 				expect(blocks.icons.icons[0]).to.be.eql(expectedIcon);
 
-				// Icons navigation
-				expect(blocks['icons-nav']).to.be.equal(null);
-
 				done();
 			},
 			'mdi',
@@ -670,40 +658,32 @@ describe('Testing collection view', () => {
 				expect(found).to.be.eql(true);
 
 				// Icons navigation
-				expect(blocks['icons-nav']).to.not.be.equal(null);
-				const navBlock = blocks['icons-nav']!;
-				expect(navBlock.first).to.be.eql({
+				const iconsBlock = blocks.icons;
+				expect(iconsBlock.first).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'ab-testing',
 					tags: ['Developer / Languages'],
 				});
-				expect(navBlock.last).to.be.eql({
+				expect(iconsBlock.last).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'zodiac-virgo',
 					tags: [''],
 					aliases: ['horoscope-virgo'],
 				});
-				expect(navBlock.reference).to.be.eql({
+				expect(iconsBlock.prev).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
-					name: 'home',
-					tags: ['Home Automation', 'Places'],
-					aliases: ['house'],
+					name: 'hockey-sticks',
+					tags: ['Sport'],
 				});
-				expect(navBlock.prev).to.be.eql({
+				expect(iconsBlock.next).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
-					name: 'hololens',
-					tags: ['Gaming / RPG'],
-				});
-				expect(navBlock.next).to.be.eql({
-					provider: '',
-					prefix: 'mdi',
-					name: 'home-account',
-					tags: ['Account / User', 'Home Automation'],
-					aliases: ['home-user'],
+					name: 'home-variant-outline',
+					tags: ['Home Automation'],
+					aliases: ['house-variant-outline'],
 				});
 
 				done();
@@ -746,40 +726,35 @@ describe('Testing collection view', () => {
 				expect(found).to.be.eql(false);
 
 				// Icons navigation
-				expect(blocks['icons-nav']).to.not.be.equal(null);
-				const navBlock = blocks['icons-nav']!;
-				expect(navBlock.first).to.be.eql({
+				const iconsBlock = blocks.icons;
+				expect(iconsBlock.first).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'ab-testing',
 					tags: ['Developer / Languages'],
 				});
-				expect(navBlock.last).to.be.eql({
+				expect(iconsBlock.last).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'zodiac-virgo',
 					tags: [''],
 					aliases: ['horoscope-virgo'],
 				});
-				expect(navBlock.reference).to.be.eql({
+
+				// Prev should match last
+				expect(iconsBlock.prev).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
-					name: 'home',
-					tags: ['Home Automation', 'Places'],
-					aliases: ['house'],
+					name: 'zodiac-virgo',
+					tags: [''],
+					aliases: ['horoscope-virgo'],
 				});
-				expect(navBlock.prev).to.be.eql({
+				expect(iconsBlock.next).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
-					name: 'hololens',
-					tags: ['Gaming / RPG'],
-				});
-				expect(navBlock.next).to.be.eql({
-					provider: '',
-					prefix: 'mdi',
-					name: 'home-account',
-					tags: ['Account / User', 'Home Automation'],
-					aliases: ['home-user'],
+					name: 'account-hard-hat',
+					tags: ['Account / User'],
+					aliases: ['construction', 'worker'],
 				});
 
 				done();
@@ -822,41 +797,31 @@ describe('Testing collection view', () => {
 				expect(found).to.be.eql(true);
 
 				// Icons navigation
-				expect(blocks['icons-nav']).to.not.be.equal(null);
-				const navBlock = blocks['icons-nav']!;
-				expect(navBlock.first).to.be.eql({
+				const iconsBlock = blocks.icons;
+				expect(iconsBlock.first).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'ab-testing',
 					tags: ['Developer / Languages'],
 				});
-				expect(navBlock.last).to.be.eql({
+				expect(iconsBlock.last).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'zodiac-virgo',
 					tags: [''],
 					aliases: ['horoscope-virgo'],
 				});
-				expect(navBlock.reference).to.be.eql({
+				expect(iconsBlock.prev).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
-					name: 'dialpad',
-					tags: [''],
-					aliases: ['keypad'],
-				});
-				expect(navBlock.prev).to.be.eql({
-					provider: '',
-					prefix: 'mdi',
-					name: 'diabetes',
-					tags: ['Medical / Hospital'],
-					aliases: ['hand-blood'],
-				});
-				expect(navBlock.next).to.be.eql({
-					provider: '',
-					prefix: 'mdi',
-					name: 'diameter',
+					name: 'decimal-decrease',
 					tags: ['Math'],
-					aliases: ['circle-diameter', 'sphere-diameter'],
+				});
+				expect(iconsBlock.next).to.be.eql({
+					provider: '',
+					prefix: 'mdi',
+					name: 'dice-4-outline',
+					tags: ['Gaming / RPG'],
 				});
 
 				done();
@@ -889,9 +854,6 @@ describe('Testing collection view', () => {
 				};
 				expect(blocks.pagination).to.be.eql(expectedPagination);
 
-				// Icons navigation
-				expect(blocks['icons-nav']).to.be.equal(null);
-
 				done();
 			},
 			'mdi',
@@ -923,28 +885,38 @@ describe('Testing collection view', () => {
 				expect(blocks.pagination).to.be.eql(expectedPagination);
 
 				// Icons navigation
-				expect(blocks['icons-nav']).to.not.be.equal(null);
-				const navBlock = blocks['icons-nav']!;
-				expect(navBlock.first).to.be.eql({
+				const iconsBlock = blocks.icons;
+				expect(iconsBlock.first).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'ab-testing',
 					tags: ['Developer / Languages'],
 				});
-				expect(navBlock.last).to.be.eql({
+				expect(iconsBlock.last).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
 					name: 'zodiac-virgo',
 					tags: [''],
 					aliases: ['horoscope-virgo'],
 				});
-				expect(navBlock.reference).to.be.eql({
+
+				// Previous icon should match last
+				expect(iconsBlock.prev).to.be.eql({
 					provider: '',
 					prefix: 'mdi',
-					name: 'hidden-icon',
+					name: 'zodiac-virgo',
+					tags: [''],
+					aliases: ['horoscope-virgo'],
 				});
-				expect(navBlock.prev).to.be.equal(void 0);
-				expect(navBlock.next).to.be.equal(void 0);
+
+				// Next icon
+				expect(iconsBlock.next).to.be.eql({
+					aliases: ['construction', 'worker'],
+					name: 'account-hard-hat',
+					prefix: 'mdi',
+					provider: '',
+					tags: ['Account / User'],
+				});
 
 				done();
 			},
@@ -1006,9 +978,6 @@ describe('Testing collection view', () => {
 					'github-outline',
 					'gitlab-outline',
 				]);
-
-				// Icons navigation
-				expect(blocks['icons-nav']).to.be.equal(null);
 
 				done();
 			},

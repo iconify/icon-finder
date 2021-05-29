@@ -10,7 +10,6 @@ import type { IconsListBlock } from './icons-list';
 import { isIconsListBlockEmpty } from './icons-list';
 import type { PaginationBlock } from './pagination';
 import { isPaginationEmpty } from './pagination';
-import type { IconsNavBlock } from './icons-nav';
 import type { SearchBlock } from './search';
 import { isSearchBlockEmpty } from './search';
 
@@ -24,7 +23,6 @@ export type BlockType =
 	| 'filters'
 	| 'icons-list'
 	| 'pagination'
-	| 'icons-nav'
 	| 'search';
 
 /**
@@ -44,7 +42,6 @@ export type Block =
 	| FiltersBlock
 	| IconsListBlock
 	| PaginationBlock
-	| IconsNavBlock
 	| SearchBlock;
 
 /**
@@ -84,10 +81,6 @@ export function isBlockEmpty(block?: Block | null): boolean {
 
 		case 'search':
 			return isSearchBlockEmpty(block as SearchBlock);
-
-		case 'icons-nav':
-			// Cannot be empty if it exists
-			return false;
 
 		default:
 			assertNever(type);
