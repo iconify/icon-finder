@@ -541,11 +541,15 @@ export class CollectionView extends BaseView {
 				const dataKey = key as keyof CollectionData;
 				if (parsedData[dataKey] !== void 0) {
 					const item = parsedData[dataKey];
-					const list = (item instanceof Array
+					const isArray = item instanceof Array;
+					const list = (isArray
 						? item
 						: Object.values(
 								item as Record<string, string>
 						  )) as string[];
+					const listKeys = isArray
+						? []
+						: Object.keys(item as Record<string, string>);
 
 					if (list instanceof Array && list.length > 1) {
 						// Create empty filters block
@@ -554,8 +558,12 @@ export class CollectionView extends BaseView {
 						initialisedBlocks[key] = filter;
 
 						// Copy all filters
-						list.forEach((tag) => {
-							filter.filters[tag] = defaultFilter(tag);
+						list.forEach((tag, index) => {
+							const item = defaultFilter(tag);
+							if (!isArray) {
+								item.match = listKeys[index];
+							}
+							filter.filters[tag] = item;
 						});
 
 						// Apply index

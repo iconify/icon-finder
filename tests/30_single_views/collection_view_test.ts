@@ -388,6 +388,13 @@ describe('Testing collection view', () => {
 					'Writing',
 				]);
 
+				// Make sure tags don't have match field
+				expect(tags.filters['Accessibility']).to.be.eql({
+					title: 'Accessibility',
+					index: 0,
+					disabled: false,
+				});
+
 				// Check for disabled tags
 				tagsList = filterTags(tags, true);
 				expect(tagsList).to.be.eql([]);
@@ -954,6 +961,14 @@ describe('Testing collection view', () => {
 				expect(suffixes.filterType).to.be.equal('themeSuffixes');
 				suffixesList = Object.keys(suffixes.filters);
 				expect(suffixesList).to.be.eql(['Fill', 'Outline', 'TwoTone']);
+
+				// Make sure suffixes have filters
+				expect(suffixes.filters['Fill']).to.be.eql({
+					title: 'Fill',
+					index: 0,
+					disabled: false,
+					match: '-fill',
+				});
 
 				// Check for disabled suffixes
 				suffixesList = filterTags(suffixes, true);

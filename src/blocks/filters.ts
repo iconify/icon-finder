@@ -11,6 +11,9 @@ export interface FiltersFilter {
 
 	// True if disabled
 	disabled?: boolean;
+
+	// Match for prefix or suffix
+	match?: string;
 }
 
 /**
