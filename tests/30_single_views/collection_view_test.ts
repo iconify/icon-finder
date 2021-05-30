@@ -1004,4 +1004,69 @@ describe('Testing collection view', () => {
 			}
 		);
 	});
+
+	it('Test Google Material Design (filter by prefix)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Test search block
+				expect(blocks.filter.keyword).to.be.equal('');
+
+				// Suffixes should not be set
+				expect(blocks.themeSuffixes).to.be.equal(null);
+
+				// Prefixes
+				console.log(JSON.stringify(blocks.themePrefixes, null, 4));
+				expect(blocks.themePrefixes).to.be.eql({
+					type: 'filters',
+					filterType: 'themePrefixes',
+					active: 'Baseline',
+					filters: {
+						'Baseline': {
+							title: 'Baseline',
+							index: 20,
+							disabled: false,
+							match: 'baseline-',
+						},
+						'Outline': {
+							title: 'Outline',
+							index: 21,
+							disabled: false,
+							match: 'outline-',
+						},
+						'Round': {
+							title: 'Round',
+							index: 22,
+							disabled: false,
+							match: 'round-',
+						},
+						'Sharp': {
+							title: 'Sharp',
+							index: 23,
+							disabled: false,
+							match: 'sharp-',
+						},
+						'Two-Tone': {
+							title: 'Two-Tone',
+							index: 24,
+							disabled: false,
+							match: 'twotone-',
+						},
+					},
+				});
+
+				done();
+			},
+			'ic',
+			{
+				prefix: 'ic',
+				themePrefix: 'Baseline',
+				page: 3,
+			}
+		);
+	});
 });
