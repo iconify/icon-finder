@@ -540,7 +540,13 @@ export class CollectionView extends BaseView {
 			filterKeys.forEach((key) => {
 				const dataKey = key as keyof CollectionData;
 				if (parsedData[dataKey] !== void 0) {
-					const list = parsedData[dataKey] as string[];
+					const item = parsedData[dataKey];
+					const list = (item instanceof Array
+						? item
+						: Object.values(
+								item as Record<string, string>
+						  )) as string[];
+
 					if (list instanceof Array && list.length > 1) {
 						// Create empty filters block
 						const filter = defaultFiltersBlock();

@@ -29,10 +29,12 @@ export interface CollectionData {
 	// List of hidden icons, if exists
 	hidden?: string[];
 
-	// List of available tags, prefixes and suffixed
+	// List of available tags
 	tags?: string[];
-	themePrefixes?: string[];
-	themeSuffixes?: string[];
+
+	// List of prefixes and suffixes. Key is prefix or suffix, including '-', value is title
+	themePrefixes?: Record<string, string>;
+	themeSuffixes?: Record<string, string>;
 }
 
 /**
@@ -224,17 +226,17 @@ function parseThemes(
 		});
 
 		// Add result
-		const titles: string[] = [];
+		const titles: Record<string, string> = Object.create(null);
 		Object.keys(dataItem.titles).forEach((match) => {
 			if (dataItem.found[match]) {
-				titles.push(dataItem.titles[match]);
+				titles[match] = dataItem.titles[match];
 			}
 		});
 		if (dataItem.hasUncategorized) {
-			titles.push('');
+			titles[''] = '';
 		}
 
-		switch (titles.length) {
+		switch (Object.keys(titles).length) {
 			case 0:
 				// Nothing to do
 				break;

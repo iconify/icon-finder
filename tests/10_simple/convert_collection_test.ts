@@ -297,8 +297,14 @@ describe('Testing converting collection information', () => {
 					themeSuffixes: [''],
 				}),
 			],
-			themePrefixes: ['Solid', 'Outline'],
-			themeSuffixes: ['TwoTone', ''],
+			themePrefixes: {
+				'solid-': 'Solid',
+				'outline-': 'Outline',
+			},
+			themeSuffixes: {
+				'-twotone': 'TwoTone',
+				'': '',
+			},
 		};
 		expect(result).to.be.eql(expected);
 	});
@@ -319,7 +325,11 @@ describe('Testing converting collection information', () => {
 
 		expect(result.tags).to.be.equal(void 0);
 		expect(result.themePrefixes).to.be.equal(void 0);
-		expect(result.themeSuffixes).to.be.eql(['Fill', 'Outline', 'TwoTone']);
+		expect(result.themeSuffixes).to.be.eql({
+			'-fill': 'Fill',
+			'-outline': 'Outline',
+			'-twotone': 'TwoTone',
+		});
 	});
 
 	it('Hidden icons with aliases', () => {

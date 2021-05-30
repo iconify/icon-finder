@@ -280,6 +280,10 @@ describe('Testing converting custom collection information', () => {
 		expect(result).to.not.be.equal(null);
 		expect(result!.icons).to.be.eql(expectedIcons);
 		expect(result!.total).to.be.equal(expectedIcons.length);
+		expect(result!.themeSuffixes).to.be.eql({
+			'-solid': 'Solid',
+			'-twotone': 'TwoTone',
+		});
 	});
 
 	it('Aliases with suffixes', () => {
@@ -345,6 +349,10 @@ describe('Testing converting custom collection information', () => {
 		expect(result).to.not.be.equal(null);
 		expect(result!.icons).to.be.eql(expectedIcons);
 		expect(result!.total).to.be.equal(expectedIcons.length);
+		expect(result!.themeSuffixes).to.be.eql({
+			'-solid': 'Solid',
+			'-twotone': 'TwoTone',
+		});
 	});
 
 	it('Suffixes with similar parts', () => {
@@ -413,5 +421,11 @@ describe('Testing converting custom collection information', () => {
 		expect(result).to.not.be.equal(null);
 		expect(result!.icons).to.be.eql(expectedIcons);
 		expect(result!.total).to.be.equal(expectedIcons.length);
+		expect(result!.themeSuffixes).to.be.eql({
+			'-solid': 'Solid',
+			'-twotone': 'TwoTone',
+			'-solid-twotone': 'Solid-TwoTone',
+			'-twotone-solid': 'TwoTone-Solid',
+		});
 	});
 });
