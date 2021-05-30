@@ -19,6 +19,10 @@ export interface IconsListBlock extends BaseBlock {
 	// Last icon on previous page and first icon on next page
 	prev?: Icon;
 	next?: Icon;
+
+	// All icons, without applying filters
+	// This object should not be modified, it is used only to allow UI access full list of icons!
+	allIcons?: Icon[];
 }
 
 /**
@@ -58,7 +62,7 @@ export function applyIconFilters(
 	search: SearchBlock,
 	filters: FiltersBlock[] = [],
 	searchPrefixes = false
-): IconsListBlock {
+): void {
 	let icons = block.icons.slice(0);
 
 	const searchableAttributes = searchPrefixes
@@ -190,5 +194,4 @@ export function applyIconFilters(
 	});
 
 	block.icons = icons;
-	return block;
 }

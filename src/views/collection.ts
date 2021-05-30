@@ -361,7 +361,7 @@ export class CollectionView extends BaseView {
 		}
 
 		// Apply search
-		blocks.icons = applyIconFilters(
+		applyIconFilters(
 			blocks.icons,
 			blocks.filter,
 			filterKeys
@@ -517,6 +517,9 @@ export class CollectionView extends BaseView {
 			const page = this.route.params.page;
 			pagination.page =
 				page === null ? 0 : Math.min(page, maxPage(pagination));
+
+			// Copy full icons list for possible use in UI
+			this._blocks.icons.allIcons = parsedData.icons;
 
 			// Copy collections filter from parent view
 			if (this.parent && !this.parent.loading) {

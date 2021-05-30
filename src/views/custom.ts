@@ -163,7 +163,7 @@ export class CustomView extends BaseView {
 
 		// Search icons
 		blocks.filter.keyword = this.route.params.filter;
-		blocks.icons = applyIconFilters(blocks.icons, blocks.filter, [], true);
+		applyIconFilters(blocks.icons, blocks.filter, [], true);
 
 		// Get items per page
 		const registry = getRegistry(this._instance);
@@ -284,6 +284,9 @@ export class CustomView extends BaseView {
 				this.route.params.page,
 				maxPage(pagination)
 			);
+
+			// Copy full icons list for possible use in UI
+			this._blocks.icons.allIcons = parsedData;
 		}
 
 		// Send event

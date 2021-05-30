@@ -165,6 +165,13 @@ describe('Testing collection view with custom data', () => {
 							name: 'home',
 						},
 					],
+					allIcons: [
+						{
+							provider: '',
+							prefix,
+							name: 'home',
+						},
+					],
 				};
 				expect(blocks.icons).to.be.eql(expectedIcons);
 
@@ -277,6 +284,13 @@ describe('Testing collection view with custom data', () => {
 				const expectedIcons: IconsListBlock = {
 					type: 'icons-list',
 					icons: [
+						{
+							provider: '',
+							prefix,
+							name: 'home',
+						},
+					],
+					allIcons: [
 						{
 							provider: '',
 							prefix,
