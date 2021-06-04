@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { getIconCode } from '../../lib/code-samples/code';
+import { CodeOutput, getIconCode } from '../../lib/code-samples/code';
 import type {
 	CodeSampleAPIConfig,
 	CodeSampleMode,
@@ -34,8 +34,20 @@ describe('Testing code samples', () => {
 	it('React without API', () => {
 		const mode: CodeSampleMode = 'react-npm';
 		const parser = codeParser(mode);
+		let expected: CodeOutput;
 
 		// Simple icon
+		expected = {
+			docs: parser.docs,
+			component: {
+				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				import:
+					"import { Icon } from '@iconify/react';\n" +
+					"import homeIcon from '@iconify/icons-mdi/home';",
+				use: '<Icon icon={homeIcon} />',
+			},
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -47,18 +59,20 @@ describe('Testing code samples', () => {
 				emptyCustomisations,
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// String height, empty width
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
 				import:
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} />',
+				use: '<Icon icon={homeIcon} height="auto" />',
 			},
-		});
-
-		// String height, empty width
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -73,18 +87,20 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Transformations
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
 				import:
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} height="auto" />',
+				use: '<Icon icon={homeIcon} rotate={1} hFlip={true} />',
 			},
-		});
-
-		// Transformations
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -99,18 +115,20 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Inline icon with color
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
 				import:
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} rotate={1} hFlip={true} />',
+				use: '<Icon icon={homeIcon} color="red" inline={true} />',
 			},
-		});
-
-		// Inline icon with color
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -125,23 +143,24 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
-			docs: parser.docs,
-			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
-					"import { Icon } from '@iconify/react';\n" +
-					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} color="red" inline={true} />',
-			},
-		});
+		).to.be.eql(expected);
 	});
 
 	it('React with API', () => {
 		const mode: CodeSampleMode = 'react-api';
 		const parser = codeParser(mode);
+		let expected: CodeOutput;
 
 		// Simple icon
+		expected = {
+			docs: parser.docs,
+			component: {
+				install1: `npm install --save-dev ${parser.npm?.install}`,
+				import1: "import { Icon } from '@iconify/react';",
+				use: '<Icon icon="mdi:home" />',
+			},
+			isAPI: true,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -153,16 +172,18 @@ describe('Testing code samples', () => {
 				emptyCustomisations,
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Inline icon with width as number
+		expected = {
 			docs: parser.docs,
 			component: {
 				install1: `npm install --save-dev ${parser.npm?.install}`,
 				import1: "import { Icon } from '@iconify/react';",
-				use: '<Icon icon="mdi:home" />',
+				use: '<Icon icon="mdi:home" width={24} inline={true} />',
 			},
-		});
-
-		// Inline icon with width as number
+			isAPI: true,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -177,21 +198,26 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
-			docs: parser.docs,
-			component: {
-				install1: `npm install --save-dev ${parser.npm?.install}`,
-				import1: "import { Icon } from '@iconify/react';",
-				use: '<Icon icon="mdi:home" width={24} inline={true} />',
-			},
-		});
+		).to.be.eql(expected);
 	});
 
 	it('Svelte without API', () => {
 		const mode: CodeSampleMode = 'svelte';
 		const parser = codeParser(mode);
+		let expected: CodeOutput;
 
 		// Simple icon
+		expected = {
+			docs: parser.docs,
+			component: {
+				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				import:
+					"import Icon from '@iconify/svelte';\n" +
+					"import homeIcon from '@iconify/icons-mdi/home';",
+				use: '<Icon icon={homeIcon} />',
+			},
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -203,18 +229,21 @@ describe('Testing code samples', () => {
 				emptyCustomisations,
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Inline icon with height and rotation
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
 				import:
 					"import Icon from '@iconify/svelte';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} />',
+				use:
+					'<Icon icon={homeIcon} height={24} rotate={2} inline={true} />',
 			},
-		});
-
-		// Inline icon with height and rotation
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -230,7 +259,10 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Inline icon with alignment, dimensions and color
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
@@ -238,11 +270,10 @@ describe('Testing code samples', () => {
 					"import Icon from '@iconify/svelte';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
 				use:
-					'<Icon icon={homeIcon} height={24} rotate={2} inline={true} />',
+					'<Icon icon={homeIcon} color="purple" width="32" height="24" hAlign="right" inline={true} />',
 			},
-		});
-
-		// Inline icon with alignment, dimensions and color
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -261,36 +292,16 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
-			docs: parser.docs,
-			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
-					"import Icon from '@iconify/svelte';\n" +
-					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
-					'<Icon icon={homeIcon} color="purple" width="32" height="24" hAlign="right" inline={true} />',
-			},
-		});
+		).to.be.eql(expected);
 	});
 
 	it('Vue 2 without API', () => {
 		const mode: CodeSampleMode = 'vue2';
 		const parser = codeParser(mode);
+		let expected: CodeOutput;
 
 		// Simple icon
-		expect(
-			getIconCode(
-				mode,
-				{
-					provider: '',
-					prefix: 'mdi',
-					name: 'home',
-				},
-				emptyCustomisations,
-				config
-			)
-		).to.be.eql({
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
@@ -302,9 +313,36 @@ describe('Testing code samples', () => {
 				vue:
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
-		});
+			isAPI: false,
+		};
+		expect(
+			getIconCode(
+				mode,
+				{
+					provider: '',
+					prefix: 'mdi',
+					name: 'home',
+				},
+				emptyCustomisations,
+				config
+			)
+		).to.be.eql(expected);
 
 		// Inline icon with size and alignment
+		expected = {
+			docs: parser.docs,
+			component: {
+				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				import:
+					"import Icon from '@iconify/vue';\n" +
+					"import homeIcon from '@iconify/icons-mdi/home';",
+				use:
+					'<template>\n\t<Icon :icon="icons.homeIcon" width="24" height="32" verticalAlign="top" :inline="true" />\n</template>',
+				vue:
+					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
+			},
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -322,7 +360,10 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Transformation and color
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
@@ -330,13 +371,12 @@ describe('Testing code samples', () => {
 					"import Icon from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
 				use:
-					'<template>\n\t<Icon :icon="icons.homeIcon" width="24" height="32" verticalAlign="top" :inline="true" />\n</template>',
+					'<template>\n\t<Icon :icon="icons.homeIcon" color="green" :horizontalFlip="true" />\n</template>',
 				vue:
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
-		});
-
-		// Transformation and color
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -351,38 +391,16 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
-			docs: parser.docs,
-			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
-					"import Icon from '@iconify/vue';\n" +
-					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
-					'<template>\n\t<Icon :icon="icons.homeIcon" color="green" :horizontalFlip="true" />\n</template>',
-				vue:
-					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
-			},
-		});
+		).to.be.eql(expected);
 	});
 
 	it('Vue 3 without API', () => {
 		const mode: CodeSampleMode = 'vue3';
 		const parser = codeParser(mode);
+		let expected: CodeOutput;
 
 		// Simple icon
-		expect(
-			getIconCode(
-				mode,
-				{
-					provider: '',
-					prefix: 'mdi',
-					name: 'home',
-				},
-				emptyCustomisations,
-				config
-			)
-		).to.be.eql({
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
@@ -394,9 +412,36 @@ describe('Testing code samples', () => {
 				vue:
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
-		});
+			isAPI: false,
+		};
+		expect(
+			getIconCode(
+				mode,
+				{
+					provider: '',
+					prefix: 'mdi',
+					name: 'home',
+				},
+				emptyCustomisations,
+				config
+			)
+		).to.be.eql(expected);
 
 		// Inline icon with size and alignment
+		expected = {
+			docs: parser.docs,
+			component: {
+				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				import:
+					"import { Icon } from '@iconify/vue';\n" +
+					"import homeIcon from '@iconify-icons/mdi/home';",
+				use:
+					'<template>\n\t<Icon :icon="icons.homeIcon" width="32" height="24" horizontalAlign="right" :inline="true" />\n</template>',
+				vue:
+					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
+			},
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -414,7 +459,10 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Color and transformation
+		expected = {
 			docs: parser.docs,
 			component: {
 				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
@@ -422,13 +470,12 @@ describe('Testing code samples', () => {
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
 				use:
-					'<template>\n\t<Icon :icon="icons.homeIcon" width="32" height="24" horizontalAlign="right" :inline="true" />\n</template>',
+					'<template>\n\t<Icon :icon="icons.homeIcon" color="#f80" :verticalFlip="true" />\n</template>',
 				vue:
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
-		});
-
-		// Color and transformation
+			isAPI: false,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -443,19 +490,7 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
-			docs: parser.docs,
-			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
-				import:
-					"import { Icon } from '@iconify/vue';\n" +
-					"import homeIcon from '@iconify-icons/mdi/home';",
-				use:
-					'<template>\n\t<Icon :icon="icons.homeIcon" color="#f80" :verticalFlip="true" />\n</template>',
-				vue:
-					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
-			},
-		});
+		).to.be.eql(expected);
 	});
 
 	it('SVG framework', () => {
@@ -467,7 +502,17 @@ describe('Testing code samples', () => {
 		const version = Iconify.getVersion();
 		const head = `<script src="https://code.iconify.design/2/${version}/iconify.min.js"></script>`;
 
+		let expected: CodeOutput;
+
 		// Simple icon
+		expected = {
+			docs: parser.docs,
+			iconify: {
+				head,
+				html: '<span class="iconify" data-icon="mdi:home"></span>',
+			},
+			isAPI: true,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -479,15 +524,18 @@ describe('Testing code samples', () => {
 				emptyCustomisations,
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Inline icon with transformations
+		expected = {
 			docs: parser.docs,
 			iconify: {
 				head,
-				html: '<span class="iconify" data-icon="mdi:home"></span>',
+				html:
+					'<span class="iconify-inline" data-icon="mdi:home" data-rotate="90deg" data-flip="horizontal"></span>',
 			},
-		});
-
-		// Inline icon with transformations
+			isAPI: true,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -503,16 +551,18 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
+		).to.be.eql(expected);
+
+		// Alignment, dimensions and color
+		expected = {
 			docs: parser.docs,
 			iconify: {
 				head,
 				html:
-					'<span class="iconify-inline" data-icon="mdi:home" data-rotate="90deg" data-flip="horizontal"></span>',
+					'<span class="iconify" data-icon="mdi:home" style="color: #8f0;" data-width="32" data-height="24" data-align="left,slice"></span>',
 			},
-		});
-
-		// Alignment, dimensions and color
+			isAPI: true,
+		};
 		expect(
 			getIconCode(
 				mode,
@@ -532,14 +582,7 @@ describe('Testing code samples', () => {
 				}),
 				config
 			)
-		).to.be.eql({
-			docs: parser.docs,
-			iconify: {
-				head,
-				html:
-					'<span class="iconify" data-icon="mdi:home" style="color: #8f0;" data-width="32" data-height="24" data-align="left,slice"></span>',
-			},
-		});
+		).to.be.eql(expected);
 	});
 
 	it('SVG', () => {
@@ -567,11 +610,15 @@ describe('Testing code samples', () => {
 		};
 
 		// Render icon
-		expect(getIconCode(mode, icon, emptyCustomisations, config)).to.be.eql({
+		const expected: CodeOutput = {
 			docs: parser.docs,
 			raw: [
 				'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><g /></svg>',
 			],
-		});
+			isAPI: false,
+		};
+		expect(getIconCode(mode, icon, emptyCustomisations, config)).to.be.eql(
+			expected
+		);
 	});
 });

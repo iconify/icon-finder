@@ -79,6 +79,9 @@ export interface CodeOutput {
 
 	// Documentation
 	docs?: IconifyCodeDocs;
+
+	// True if code relies on API, false if offline
+	isAPI?: boolean;
 }
 
 /**
@@ -243,6 +246,7 @@ export function getIconCode(
 					'/script>',
 				html,
 			};
+			output.isAPI = true;
 			return output;
 		}
 
@@ -296,6 +300,7 @@ export function getIconCode(
 					"url('data:image/svg+xml," + encodeURIComponent(str) + "')";
 			}
 			output.raw = [str];
+			output.isAPI = false;
 			return output;
 		}
 
@@ -346,6 +351,7 @@ export function getIconCode(
 						.replace('{iconPackage}', npm.package + npm.file);
 				}
 			}
+			output.isAPI = false;
 			return output;
 		}
 
@@ -362,6 +368,7 @@ export function getIconCode(
 				),
 				use: html,
 			};
+			output.isAPI = true;
 			return output;
 		}
 	}
