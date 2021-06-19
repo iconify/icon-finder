@@ -66,14 +66,14 @@ const replace = () => {
 	const version = data.version;
 
 	// Find file
-	const filename = __dirname + '/lib/code-samples/code.js';
+	const filename = __dirname + '/lib/code-samples/versions.js';
 	if (!filename || !fileExists(filename)) {
 		throw new Error('Cannot find code.js');
 	}
 
 	// Replace content
 	const lines = fs.readFileSync(filename, 'utf8').split('\n');
-	const search = "const iconifyVersion = '";
+	const search = "exports.iconifyVersion = '";
 	const search2 = "'";
 	let found = 0;
 	lines.forEach((line, index) => {

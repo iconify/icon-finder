@@ -32,7 +32,7 @@ const config: CodeSampleAPIConfig = {
 
 describe('Testing code samples', () => {
 	it('React without API', () => {
-		const mode: CodeSampleMode = 'react-npm';
+		const mode: CodeSampleMode = 'react-offline';
 		const parser = codeParser(mode);
 		let expected: CodeOutput;
 
@@ -40,11 +40,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} />',
+				'use': '<Icon icon={homeIcon} />',
 			},
 			isAPI: false,
 		};
@@ -65,11 +65,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} height="auto" />',
+				'use': '<Icon icon={homeIcon} height="auto" />',
 			},
 			isAPI: false,
 		};
@@ -93,11 +93,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} rotate={1} hFlip={true} />',
+				'use': '<Icon icon={homeIcon} rotate={1} hFlip={true} />',
 			},
 			isAPI: false,
 		};
@@ -121,11 +121,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} color="red" inline={true} />',
+				'use': '<Icon icon={homeIcon} color="red" inline={true} />',
 			},
 			isAPI: false,
 		};
@@ -155,9 +155,9 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install1: `npm install --save-dev ${parser.npm?.install}`,
-				import1: "import { Icon } from '@iconify/react';",
-				use: '<Icon icon="mdi:home" />',
+				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
+				'import-simple': "import { Icon } from '@iconify/react';",
+				'use': '<Icon icon="mdi:home" />',
 			},
 			isAPI: true,
 		};
@@ -178,9 +178,9 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install1: `npm install --save-dev ${parser.npm?.install}`,
-				import1: "import { Icon } from '@iconify/react';",
-				use: '<Icon icon="mdi:home" width={24} inline={true} />',
+				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
+				'import-simple': "import { Icon } from '@iconify/react';",
+				'use': '<Icon icon="mdi:home" width={24} inline={true} />',
 			},
 			isAPI: true,
 		};
@@ -202,7 +202,7 @@ describe('Testing code samples', () => {
 	});
 
 	it('Svelte without API', () => {
-		const mode: CodeSampleMode = 'svelte';
+		const mode: CodeSampleMode = 'svelte-offline';
 		const parser = codeParser(mode);
 		let expected: CodeOutput;
 
@@ -210,11 +210,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				'import-offline':
 					"import Icon from '@iconify/svelte';\n" +
-					"import homeIcon from '@iconify/icons-mdi/home';",
-				use: '<Icon icon={homeIcon} />',
+					"import homeIcon from '@iconify-icons/mdi/home';",
+				'use': '<Icon icon={homeIcon} />',
 			},
 			isAPI: false,
 		};
@@ -235,11 +235,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				'import-offline':
 					"import Icon from '@iconify/svelte';\n" +
-					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
+					"import homeIcon from '@iconify-icons/mdi/home';",
+				'use':
 					'<Icon icon={homeIcon} height={24} rotate={2} inline={true} />',
 			},
 			isAPI: false,
@@ -265,11 +265,11 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				'import-offline':
 					"import Icon from '@iconify/svelte';\n" +
-					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
+					"import homeIcon from '@iconify-icons/mdi/home';",
+				'use':
 					'<Icon icon={homeIcon} color="purple" width="32" height="24" hAlign="right" inline={true} />',
 			},
 			isAPI: false,
@@ -295,8 +295,36 @@ describe('Testing code samples', () => {
 		).to.be.eql(expected);
 	});
 
+	it('Svelte with API', () => {
+		const mode: CodeSampleMode = 'svelte-api';
+		const parser = codeParser(mode);
+
+		// Simple icon
+		const expected: CodeOutput = {
+			docs: parser.docs,
+			component: {
+				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
+				'import-simple': "import Icon from '@iconify/svelte';",
+				'use': '<Icon icon="mdi:home" />',
+			},
+			isAPI: true,
+		};
+		expect(
+			getIconCode(
+				mode,
+				{
+					provider: '',
+					prefix: 'mdi',
+					name: 'home',
+				},
+				emptyCustomisations,
+				config
+			)
+		).to.be.eql(expected);
+	});
+
 	it('Vue 2 without API', () => {
-		const mode: CodeSampleMode = 'vue2';
+		const mode: CodeSampleMode = 'vue2-offline';
 		const parser = codeParser(mode);
 		let expected: CodeOutput;
 
@@ -304,13 +332,13 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
-					"import Icon from '@iconify/vue';\n" +
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
+					"import { Icon } from '@iconify/vue2';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
+				'use':
 					'<template>\n\t<Icon :icon="icons.homeIcon" />\n</template>',
-				vue:
+				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
 			isAPI: false,
@@ -332,13 +360,13 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
-					"import Icon from '@iconify/vue';\n" +
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
+					"import { Icon } from '@iconify/vue2';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
+				'use':
 					'<template>\n\t<Icon :icon="icons.homeIcon" width="24" height="32" verticalAlign="top" :inline="true" />\n</template>',
-				vue:
+				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
 			isAPI: false,
@@ -366,13 +394,13 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
-				import:
-					"import Icon from '@iconify/vue';\n" +
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify/icons-mdi`,
+				'import-offline':
+					"import { Icon } from '@iconify/vue2';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				use:
+				'use':
 					'<template>\n\t<Icon :icon="icons.homeIcon" color="green" :horizontalFlip="true" />\n</template>',
-				vue:
+				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
 			isAPI: false,
@@ -394,8 +422,38 @@ describe('Testing code samples', () => {
 		).to.be.eql(expected);
 	});
 
+	it('Vue 2 with API', () => {
+		const mode: CodeSampleMode = 'vue2-api';
+		const parser = codeParser(mode);
+
+		// Simple icon
+		const expected: CodeOutput = {
+			docs: parser.docs,
+			component: {
+				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
+				'import-simple': "import { Icon } from '@iconify/vue2';",
+				'use': '<template>\n\t<Icon icon="mdi:home" />\n</template>',
+				'vue-simple':
+					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n});',
+			},
+			isAPI: true,
+		};
+		expect(
+			getIconCode(
+				mode,
+				{
+					provider: '',
+					prefix: 'mdi',
+					name: 'home',
+				},
+				emptyCustomisations,
+				config
+			)
+		).to.be.eql(expected);
+	});
+
 	it('Vue 3 without API', () => {
-		const mode: CodeSampleMode = 'vue3';
+		const mode: CodeSampleMode = 'vue3-offline';
 		const parser = codeParser(mode);
 		let expected: CodeOutput;
 
@@ -403,13 +461,13 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				use:
+				'use':
 					'<template>\n\t<Icon :icon="icons.homeIcon" />\n</template>',
-				vue:
+				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
 			isAPI: false,
@@ -431,13 +489,13 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				use:
+				'use':
 					'<template>\n\t<Icon :icon="icons.homeIcon" width="32" height="24" horizontalAlign="right" :inline="true" />\n</template>',
-				vue:
+				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
 			isAPI: false,
@@ -465,13 +523,13 @@ describe('Testing code samples', () => {
 		expected = {
 			docs: parser.docs,
 			component: {
-				install: `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
-				import:
+				'install-offline': `npm install --save-dev ${parser.npm?.install} @iconify-icons/mdi`,
+				'import-offline':
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				use:
+				'use':
 					'<template>\n\t<Icon :icon="icons.homeIcon" color="#f80" :verticalFlip="true" />\n</template>',
-				vue:
+				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
 			isAPI: false,

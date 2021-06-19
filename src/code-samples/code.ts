@@ -13,9 +13,7 @@ import type {
 import { varName, codeParser } from './code-parsers';
 import { renderHTML } from './html';
 import type { CodeSampleAPIConfig, CodeSampleMode } from './types';
-
-// Iconify version (replaced during build!)
-const iconifyVersion = '2.0.0';
+import { iconifyVersion } from './versions';
 
 /**
  * Output
@@ -42,24 +40,28 @@ export interface CustomCodeOutputWithText {
 }
 
 export interface ComponentCodeOutput {
-	install?: string;
-	import?: string;
-	use: string;
+	'use': string;
 
 	// Install / import without icon
-	install1?: string;
-	import1?: string;
+	'install-simple'?: string;
+	'import-simple'?: string;
+
+	// Install / import with icon
+	'install-offline'?: string;
+	'import-offline'?: string;
 
 	// Vue specific usage
-	vue?: string;
+	'vue-simple'?: string;
+	'vue-offline'?: string;
 }
 
 export const codeOutputComponentKeys: (keyof ComponentCodeOutput)[] = [
-	'install',
-	'install1',
-	'import',
-	'import1',
-	'vue',
+	'install-simple',
+	'install-offline',
+	'import-simple',
+	'import-offline',
+	'vue-simple',
+	'vue-offline',
 	'use',
 ];
 
@@ -228,9 +230,6 @@ export function getIconCode(
 	};
 
 	// Add language specific stuff
-	// let str: string | null;
-	// let data: IconifyIcon | null;
-	// let npm: NPMImport | null;
 	switch (lang) {
 		case 'iconify': {
 			const str = Iconify.getVersion
@@ -304,27 +303,30 @@ export function getIconCode(
 			return output;
 		}
 
-		case 'react-npm':
-		case 'svelte':
-		case 'vue2':
-		case 'vue3': {
+		case 'react-offline':
+		case 'svelte-offline':
+		case 'vue2-offline':
+		case 'vue3-offline': {
 			if (
 				!parser.npm ||
 				(!providerConfig.npmCJS && !providerConfig.npmES)
 			) {
 				return null;
 			}
-			const npm = npmIconImport(lang === 'vue3');
+			const npm = npmIconImport(
+				// Use ES modules for Vue 3 and Svelte, CommonJS for everything else
+				lang === 'vue3-offline' || lang === 'svelte-offline'
+			);
 			if (!npm) {
 				return null;
 			}
 			output.component = {
-				install:
+				'install-offline':
 					'npm install --save-dev ' +
 					parser.npm.install +
 					' ' +
 					npm.package,
-				import:
+				'import-offline':
 					resolveTemplate(parser.npm.import, merged, customisations) +
 					'\nimport ' +
 					npm.name +
@@ -332,7 +334,7 @@ export function getIconCode(
 					npm.package +
 					npm.file +
 					"';",
-				use: html
+				'use': html
 					.replace(/{varName}/g, npm.name)
 					.replace('{iconPackage}', npm.package + npm.file),
 			};
@@ -346,7 +348,7 @@ export function getIconCode(
 						  )
 						: parser.vueTemplate;
 				if (typeof html === 'string') {
-					output.component.vue = html
+					output.component['vue-offline'] = html
 						.replace(/{varName}/g, npm.name)
 						.replace('{iconPackage}', npm.package + npm.file);
 				}
@@ -355,19 +357,36 @@ export function getIconCode(
 			return output;
 		}
 
-		case 'react-api': {
+		case 'react-api':
+		case 'svelte-api':
+		case 'vue2-api':
+		case 'vue3-api': {
 			if (!parser.npm) {
 				return null;
 			}
 			output.component = {
-				install1: 'npm install --save-dev ' + parser.npm.install,
-				import1: resolveTemplate(
+				'install-simple':
+					'npm install --save-dev ' + parser.npm.install,
+				'import-simple': resolveTemplate(
 					parser.npm.import,
 					merged,
 					customisations
 				),
-				use: html,
+				'use': html,
 			};
+			if (parser.vueTemplate !== void 0) {
+				const html =
+					typeof parser.vueTemplate === 'function'
+						? resolveTemplate(
+								parser.vueTemplate,
+								merged,
+								customisations
+						  )
+						: parser.vueTemplate;
+				if (typeof html === 'string') {
+					output.component['vue-simple'] = html;
+				}
+			}
 			output.isAPI = true;
 			return output;
 		}

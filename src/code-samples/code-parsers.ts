@@ -3,6 +3,7 @@
 import type { IconCustomisations } from '../misc/customisations';
 import type { Icon } from '../misc/icon';
 import type { CodeSampleKey, CodeSampleMode } from './types';
+import { componentPackages, getComponentImport } from './versions';
 
 /**
  * Convert icon name to variable
@@ -88,7 +89,7 @@ export function getCustomisationAttributes(
 /**
  * Documentation
  */
-const docsBase = 'https://docs.iconify.design/implementations/';
+const docsBase = 'https://docs.iconify.design/icon-components/';
 
 export interface IconifyCodeDocs {
 	href: string;
@@ -278,16 +279,24 @@ function generateParser(mode: CodeSampleMode): Parser {
 	}
 
 	/**
-	 * Get Vue parser
+	 * Get Vue offline parser
 	 */
-	function vueParser(vue3: boolean): Parser {
-		const vue2Usage = '<template>\n\t<Icon {attr} />\n</template>';
-		const vue2Template =
+	function vueParser(offline: boolean, vue3: boolean): Parser {
+		const templateCode = '<template>\n\t<Icon {attr} />\n</template>';
+		const scriptOfflineCode =
 			'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\t{varName},\n\t\t\t},\n\t\t};\n\t},\n});';
+		const scriptOnlineCode =
+			'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n});';
+
+		const scriptCode = offline ? scriptOfflineCode : scriptOnlineCode;
 
 		const parser: Parser = {
 			iconParser: (list, valueStr, valueIcon) =>
-				addVueAttr(list, 'icon', 'icons.' + varName(valueIcon.name)),
+				(offline ? addVueAttr : addAttr)(
+					list,
+					'icon',
+					offline ? 'icons.' + varName(valueIcon.name) : valueStr
+				),
 			parsers: {
 				hFlip: (list, value) =>
 					addVueAttr(list, 'horizontalFlip', value),
@@ -300,23 +309,20 @@ function generateParser(mode: CodeSampleMode): Parser {
 			},
 			merge: mergeAttributes,
 			template: (attr, customisations) =>
-				vue2Usage.replace('{attr}', attr),
+				templateCode.replace('{attr}', attr),
 			vueTemplate: (attr, customisations) =>
-				vue2Template.replace('{attr}', attr),
+				scriptCode.replace('{attr}', attr),
 			docs: {
 				type: 'vue',
 				href: docsBase + (vue3 ? 'vue/' : 'vue2/'),
 			},
-			npm: vue3
-				? {
-						install: '@iconify/vue@beta',
-						import: (attr, customisations) =>
-							"import { Icon } from '@iconify/vue';",
-				  }
-				: {
-						install: '@iconify/vue@^1',
-						import: "import Icon from '@iconify/vue';",
-				  },
+			npm: {
+				install: getComponentImport(vue3 ? 'vue3' : 'vue2'),
+				import: (attr, customisations) =>
+					"import { Icon } from '" +
+					componentPackages[vue3 ? 'vue3' : 'vue2'].name +
+					"';",
+			},
 		};
 
 		addMultipleAttributeParsers(
@@ -325,6 +331,67 @@ function generateParser(mode: CodeSampleMode): Parser {
 			addVueAttr
 		);
 
+		return parser;
+	}
+
+	function svelteParser(offline: boolean): Parser {
+		const parser: Parser = {
+			iconParser: (list, valueStr, valueIcon) =>
+				(offline ? addReactAttr : addAttr)(
+					list,
+					'icon',
+					offline ? varName(valueIcon.name) : valueStr
+				),
+			parsers: {},
+			merge: mergeAttributes,
+			template: '<Icon {attr} />',
+			docs: {
+				type: 'svelte',
+				href: docsBase + 'svelte/',
+			},
+			npm: {
+				install: getComponentImport('svelte'),
+				import:
+					"import Icon from '" + componentPackages.svelte.name + "';",
+			},
+		};
+		addMultipleAttributeParsers(
+			parser,
+			getCustomisationAttributes(true, true),
+			addReactAttr
+		);
+
+		return parser;
+	}
+
+	function reactParser(offline: boolean): Parser {
+		const parser: Parser = {
+			iconParser: (list, valueStr, valueIcon) =>
+				(offline ? addReactAttr : addAttr)(
+					list,
+					'icon',
+					offline ? varName(valueIcon.name) : valueStr
+				),
+			parsers: {},
+			merge: mergeAttributes,
+			template: (attr, customisations) => '<Icon ' + attr + ' />',
+			docs: {
+				type: 'react',
+				href: docsBase + 'react/',
+			},
+			npm: {
+				install: getComponentImport('react'),
+				import: (attr, customisations) =>
+					"import { Icon } from '" +
+					componentPackages.react.name +
+					"';",
+			},
+		};
+		addMultipleAttributeParsers(
+			parser,
+			getCustomisationAttributes(true, true),
+			addReactAttr
+		);
 		return parser;
 	}
 
@@ -400,85 +467,31 @@ function generateParser(mode: CodeSampleMode): Parser {
 			return parser;
 
 		// React components
-		case 'react-npm':
-			parser = {
-				iconParser: (list, valueStr, valueIcon) =>
-					addReactAttr(list, 'icon', varName(valueIcon.name)),
-				parsers: {},
-				merge: mergeAttributes,
-				template: (attr, customisations) => '<Icon ' + attr + ' />',
-				docs: {
-					type: 'react',
-					href: docsBase + 'react/',
-				},
-				npm: {
-					install: '@iconify/react@beta',
-					import: (attr, customisations) =>
-						"import { Icon } from '@iconify/react';",
-				},
-			};
-			addMultipleAttributeParsers(
-				parser,
-				getCustomisationAttributes(true, true),
-				addReactAttr
-			);
-			return parser;
+		case 'react-offline':
+			return reactParser(true);
 
 		case 'react-api':
-			parser = {
-				iconParser: (list, valueStr, valueIcon) =>
-					addAttr(list, 'icon', valueStr),
-				parsers: {},
-				merge: mergeAttributes,
-				template: (attr, customisations) => '<Icon ' + attr + ' />',
-				docs: {
-					type: 'react',
-					href: docsBase + 'react/',
-				},
-				npm: {
-					install: '@iconify/react@alpha',
-					import: (attr, customisations) =>
-						"import { Icon } from '@iconify/react';",
-				},
-			};
-			addMultipleAttributeParsers(
-				parser,
-				getCustomisationAttributes(true, true),
-				addReactAttr
-			);
-			return parser;
+			return reactParser(false);
 
 		// Vue
-		case 'vue2':
-			return vueParser(false);
+		case 'vue2-offline':
+			return vueParser(true, false);
 
-		case 'vue3':
-			return vueParser(true);
+		case 'vue2-api':
+			return vueParser(false, false);
+
+		case 'vue3-offline':
+			return vueParser(true, true);
+
+		case 'vue3-api':
+			return vueParser(false, true);
 
 		// Svelte
-		case 'svelte':
-			parser = {
-				iconParser: (list, valueStr, valueIcon) =>
-					addReactAttr(list, 'icon', varName(valueIcon.name)),
-				parsers: {},
-				merge: mergeAttributes,
-				template: '<Icon {attr} />',
-				docs: {
-					type: 'svelte',
-					href: docsBase + 'svelte/',
-				},
-				npm: {
-					install: '@iconify/svelte',
-					import: "import Icon from '@iconify/svelte';",
-				},
-			};
-			addMultipleAttributeParsers(
-				parser,
-				getCustomisationAttributes(true, true),
-				addReactAttr
-			);
+		case 'svelte-offline':
+			return svelteParser(true);
 
-			return parser;
+		case 'svelte-api':
+			return svelteParser(false);
 	}
 }
 

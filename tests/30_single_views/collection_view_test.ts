@@ -1020,7 +1020,6 @@ describe('Testing collection view', () => {
 				expect(blocks.themeSuffixes).to.be.equal(null);
 
 				// Prefixes
-				console.log(JSON.stringify(blocks.themePrefixes, null, 4));
 				expect(blocks.themePrefixes).to.be.eql({
 					type: 'filters',
 					filterType: 'themePrefixes',

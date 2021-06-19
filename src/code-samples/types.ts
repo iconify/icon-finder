@@ -11,16 +11,19 @@ export type CodeSampleMode =
 	| 'svg-box'
 	| 'svg-uri'
 	// React
-	| 'react-npm'
 	| 'react-api'
+	| 'react-offline'
 	// Vue
-	| 'vue2'
-	| 'vue3'
+	| 'vue2-api'
+	| 'vue2-offline'
+	| 'vue3-api'
+	| 'vue3-offline'
 	// Svelte
-	| 'svelte';
+	| 'svelte-api'
+	| 'svelte-offline';
 
 // Tabs that combine multiple modes and do not generate code
-export type CodeSampleTab = 'react' | 'vue' | 'svg';
+export type CodeSampleTab = 'react' | 'vue' | 'svelte' | 'svg';
 
 // Combination of all modes + tabs
 export type CodeSampleKey = CodeSampleMode | CodeSampleTab;
@@ -29,10 +32,10 @@ export type CodeSampleKey = CodeSampleMode | CodeSampleTab;
  * Code sample type
  *
  * API mode for code that uses API
- * NPM mode for code that uses single icon NPM packages
+ * Offline mode for code that uses single icon NPM packages
  * Raw mode for tabs that generate result from icon data, such as raw SVG
  */
-export type CodeSampleType = 'api' | 'npm' | 'raw';
+export type CodeSampleType = 'api' | 'offline' | 'raw';
 
 /**
  * API specific config for code samples
@@ -79,4 +82,5 @@ export interface CodeSampleAPIConfig {
 /**
  * Titles for code sample tabs and modes
  */
-export type CodeSampleTitles = Partial<Record<CodeSampleKey, string>>;
+type CodeSampleKeyOffline = CodeSampleKey | 'offline';
+export type CodeSampleTitles = Partial<Record<CodeSampleKeyOffline, string>>;

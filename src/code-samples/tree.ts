@@ -1,5 +1,4 @@
-import { capitalize } from '../misc/capitalize';
-import { codeSampleTitles } from './phrases';
+import { capitalizeCodeSampleTitle, codeSampleTitles } from './phrases';
 import type {
 	CodeSampleMode,
 	CodeSampleTab,
@@ -59,14 +58,19 @@ type RawCodeSamplesTree =
 const rawCodeTabs: RawCodeSamplesTree = {
 	iconify: 'api',
 	react: {
-		'react-npm': 'npm',
 		'react-api': 'api',
+		'react-offline': 'offline',
 	},
 	vue: {
-		vue3: 'npm',
-		vue2: 'npm',
+		'vue3-api': 'api',
+		'vue2-api': 'api',
+		'vue3-offline': 'offline',
+		'vue2-offline': 'offline',
 	},
-	svelte: 'npm',
+	svelte: {
+		'svelte-api': 'api',
+		'svelte-offline': 'offline',
+	},
 	svg: {
 		'svg-raw': 'raw',
 		'svg-box': 'raw',
@@ -104,7 +108,7 @@ export function getCodeSamplesTree(
 			case 'api':
 				return config.api !== void 0;
 
-			case 'npm':
+			case 'offline':
 				return config.npmES !== void 0 || config.npmCJS !== void 0;
 		}
 	}
@@ -117,7 +121,7 @@ export function getCodeSamplesTree(
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			return codeSampleTitles[mode]!;
 		}
-		return capitalize(mode);
+		return capitalizeCodeSampleTitle(mode);
 	}
 
 	for (const key in rawCodeTabs) {
