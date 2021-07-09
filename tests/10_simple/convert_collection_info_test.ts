@@ -230,4 +230,29 @@ describe('Testing converting collection information', () => {
 		};
 		expect(result).to.be.eql(expected);
 	});
+
+	it('Already converted item', () => {
+		const item: CollectionInfo = {
+			prefix: 'fa',
+			name: 'Font Awesome 4',
+			total: 678,
+			author: {
+				name: 'Dave Gandy',
+				url: 'http://fontawesome.io/',
+			},
+			license: {
+				title: 'Open Font License',
+				spdx: '',
+				url:
+					'http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL',
+			},
+			samples: ['wrench', 'bell-o', 'user-o'],
+			version: '4.7.0',
+			palette: false,
+			category: 'General',
+		};
+		const result = dataToCollectionInfo(item);
+
+		expect(result).to.be.eql(item);
+	});
 });
