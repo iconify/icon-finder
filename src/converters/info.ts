@@ -5,6 +5,40 @@ const minDisplayHeight = 16;
 const maxDisplayHeight = 24;
 
 /**
+ * Item provided by API or loaded from collections.json, slightly different from IconifyInfo
+ */
+export interface LegacyIconifyInfo {
+	// Icon set name.
+	name: string;
+
+	// Total number of icons.
+	total?: number;
+
+	// Version string.
+	version?: string;
+
+	// Author
+	author?: string;
+	url?: string;
+
+	// License
+	license?: string;
+	licenseURL?: string;
+	licenseSPDX?: string;
+
+	// Samples
+	samples?: string[];
+
+	// Icon grid
+	height?: number | number[];
+	displayHeight?: number;
+
+	// Category
+	category?: string;
+	palette?: 'Colorless' | 'Colorful';
+}
+
+/**
  * Collection information
  */
 export interface CollectionInfo extends IconifyInfo {

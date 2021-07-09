@@ -1,5 +1,5 @@
 import type { IconifyInfo } from '@iconify/types';
-import type { CollectionInfo } from './info';
+import type { CollectionInfo, LegacyIconifyInfo } from './info';
 import { dataToCollectionInfo } from './info';
 
 /**
@@ -21,7 +21,10 @@ export interface CollectionsListFilterCallback {
 /**
  * Interface for data provided by API
  */
-export type CollectionsListRawData = Record<string, Partial<IconifyInfo>>;
+export type CollectionsListRawData = Record<
+	string,
+	Partial<IconifyInfo> | LegacyIconifyInfo
+>;
 
 /**
  * Convert data from API to CollectionsList
