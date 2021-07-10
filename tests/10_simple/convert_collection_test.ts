@@ -19,7 +19,13 @@ describe('Testing converting collection information', () => {
 		result = dataToCollection('', {
 			prefix: 'foo',
 		});
-		expect(result).to.be.equal(null);
+		expect(result).to.be.eql({
+			provider: '',
+			prefix: 'foo',
+			name: 'foo',
+			icons: [],
+			total: 0,
+		});
 
 		// Add name
 		result = dataToCollection('', {
