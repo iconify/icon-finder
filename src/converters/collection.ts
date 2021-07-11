@@ -330,8 +330,7 @@ export function dataToCollection(
 	} else if (result.info !== void 0) {
 		result.name = result.info.name;
 	} else {
-		// No name: use prefix
-		result.name = source.prefix;
+		result.name = result.prefix;
 	}
 
 	// Check for categories
