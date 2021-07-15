@@ -74,7 +74,7 @@ const configuredCache: Record<
 > = Object.create(null);
 
 // Add default provider
-const iconifyRoot = 'https://iconify.design/icon-sets/';
+const iconifyRoot = 'http://icon-sets.iconify.design/';
 const iconifyPackage = '@iconify/icons-{prefix}';
 internalSourceCache[''] = {
 	config: {},
@@ -82,7 +82,7 @@ internalSourceCache[''] = {
 	links: {
 		home: iconifyRoot,
 		collection: iconifyRoot + '{prefix}/',
-		icon: iconifyRoot + '{prefix}/{name}.html',
+		icon: iconifyRoot + '{prefix}/{name}/',
 	},
 	npm: {
 		package: iconifyPackage,
