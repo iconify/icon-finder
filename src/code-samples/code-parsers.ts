@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars-experimental */
 import type { IconCustomisations } from '../misc/customisations';
 import type { Icon } from '../misc/icon';
-import type { CodeSampleKey, CodeSampleMode } from './types';
+import type { CodeSampleKey, CodeSampleMode, CodeSampleUsage } from './types';
 import { componentPackages, getComponentImport } from './versions';
 
 /**
@@ -151,9 +151,14 @@ interface Parser {
 	npm?: {
 		// Package to install
 		install: string;
+		// True if package is addon, not component
+		isAddon?: boolean;
 		// Import code
-		import: string | TemplateCallback;
+		import?: string | TemplateCallback;
 	};
+
+	// Use type (different text)
+	useType: CodeSampleUsage;
 
 	// Documentation
 	docs?: IconifyCodeDocs;
@@ -220,6 +225,14 @@ function generateParser(mode: CodeSampleMode): Parser {
 		}
 	}
 
+	function addEmberAttr(list: ParserAttr, key: string, value: unknown) {
+		if (typeof value === 'string' && key !== 'icon') {
+			addAttr(list, '@' + key, value);
+		} else {
+			addDynamicAttr(list, key, value, '@{var}={{value}}');
+		}
+	}
+
 	/**
 	 * Merge attribute values
 	 */
@@ -282,7 +295,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 	 * Get Vue offline parser
 	 */
 	function vueParser(offline: boolean, vue3: boolean): Parser {
-		const templateCode = '<template>\n\t<Icon {attr} />\n</template>';
+		const templateCode = '<Icon {attr} />';
 		const scriptOfflineCode =
 			'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\t{varName},\n\t\t\t},\n\t\t};\n\t},\n});';
 		const scriptOnlineCode =
@@ -323,6 +336,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 					componentPackages[vue3 ? 'vue3' : 'vue2'].name +
 					"';",
 			},
+			useType: 'use-in-template',
 		};
 
 		addMultipleAttributeParsers(
@@ -354,6 +368,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 				import:
 					"import Icon from '" + componentPackages.svelte.name + "';",
 			},
+			useType: 'use-in-template',
 		};
 		addMultipleAttributeParsers(
 			parser,
@@ -386,12 +401,39 @@ function generateParser(mode: CodeSampleMode): Parser {
 					componentPackages.react.name +
 					"';",
 			},
+			useType: 'use-in-template',
 		};
 		addMultipleAttributeParsers(
 			parser,
 			getCustomisationAttributes(true, true),
 			addReactAttr
 		);
+		return parser;
+	}
+
+	function emberParser(): Parser {
+		const parser: Parser = {
+			iconParser: (list, valueStr, valueIcon) =>
+				addAttr(list, 'icon', valueStr),
+			parsers: {},
+			merge: mergeAttributes,
+			template: '<IconifyIcon {attr} />',
+			docs: {
+				type: 'ember',
+				href: docsBase + 'ember/',
+			},
+			npm: {
+				install: getComponentImport('ember'),
+				isAddon: true,
+			},
+			useType: 'use-in-template',
+		};
+		addMultipleAttributeParsers(
+			parser,
+			getCustomisationAttributes(true, true),
+			addEmberAttr
+		);
+
 		return parser;
 	}
 
@@ -450,6 +492,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 					type: 'iconify',
 					href: docsBase + 'svg-framework/',
 				},
+				useType: 'use-in-html',
 			};
 
 		// SVG
@@ -458,6 +501,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 		case 'svg-box':
 			parser = {
 				parsers: {},
+				useType: 'use-generic',
 			};
 			addMultipleAttributeParsers(
 				parser,
@@ -492,6 +536,10 @@ function generateParser(mode: CodeSampleMode): Parser {
 
 		case 'svelte-api':
 			return svelteParser(false);
+
+		// Ember
+		case 'ember':
+			return emberParser();
 	}
 }
 

@@ -44,7 +44,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use': '<Icon icon={homeIcon} />',
+				'use-in-template': '<Icon icon={homeIcon} />',
 			},
 			isAPI: false,
 		};
@@ -69,7 +69,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use': '<Icon icon={homeIcon} height="auto" />',
+				'use-in-template': '<Icon icon={homeIcon} height="auto" />',
 			},
 			isAPI: false,
 		};
@@ -97,7 +97,8 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use': '<Icon icon={homeIcon} rotate={1} hFlip={true} />',
+				'use-in-template':
+					'<Icon icon={homeIcon} rotate={1} hFlip={true} />',
 			},
 			isAPI: false,
 		};
@@ -125,7 +126,8 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/react';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use': '<Icon icon={homeIcon} color="red" inline={true} />',
+				'use-in-template':
+					'<Icon icon={homeIcon} color="red" inline={true} />',
 			},
 			isAPI: false,
 		};
@@ -157,7 +159,7 @@ describe('Testing code samples', () => {
 			component: {
 				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
 				'import-simple': "import { Icon } from '@iconify/react';",
-				'use': '<Icon icon="mdi:home" />',
+				'use-in-template': '<Icon icon="mdi:home" />',
 			},
 			isAPI: true,
 		};
@@ -180,7 +182,8 @@ describe('Testing code samples', () => {
 			component: {
 				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
 				'import-simple': "import { Icon } from '@iconify/react';",
-				'use': '<Icon icon="mdi:home" width={24} inline={true} />',
+				'use-in-template':
+					'<Icon icon="mdi:home" width={24} inline={true} />',
 			},
 			isAPI: true,
 		};
@@ -214,7 +217,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import Icon from '@iconify/svelte';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				'use': '<Icon icon={homeIcon} />',
+				'use-in-template': '<Icon icon={homeIcon} />',
 			},
 			isAPI: false,
 		};
@@ -239,7 +242,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import Icon from '@iconify/svelte';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				'use':
+				'use-in-template':
 					'<Icon icon={homeIcon} height={24} rotate={2} inline={true} />',
 			},
 			isAPI: false,
@@ -269,7 +272,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import Icon from '@iconify/svelte';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				'use':
+				'use-in-template':
 					'<Icon icon={homeIcon} color="purple" width="32" height="24" hAlign="right" inline={true} />',
 			},
 			isAPI: false,
@@ -305,7 +308,7 @@ describe('Testing code samples', () => {
 			component: {
 				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
 				'import-simple': "import Icon from '@iconify/svelte';",
-				'use': '<Icon icon="mdi:home" />',
+				'use-in-template': '<Icon icon="mdi:home" />',
 			},
 			isAPI: true,
 		};
@@ -336,8 +339,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/vue2';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use':
-					'<template>\n\t<Icon :icon="icons.homeIcon" />\n</template>',
+				'use-in-template': '<Icon :icon="icons.homeIcon" />',
 				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
@@ -364,8 +366,8 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/vue2';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use':
-					'<template>\n\t<Icon :icon="icons.homeIcon" width="24" height="32" verticalAlign="top" :inline="true" />\n</template>',
+				'use-in-template':
+					'<Icon :icon="icons.homeIcon" width="24" height="32" verticalAlign="top" :inline="true" />',
 				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
@@ -398,8 +400,8 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/vue2';\n" +
 					"import homeIcon from '@iconify/icons-mdi/home';",
-				'use':
-					'<template>\n\t<Icon :icon="icons.homeIcon" color="green" :horizontalFlip="true" />\n</template>',
+				'use-in-template':
+					'<Icon :icon="icons.homeIcon" color="green" :horizontalFlip="true" />',
 				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
@@ -432,7 +434,7 @@ describe('Testing code samples', () => {
 			component: {
 				'install-simple': `npm install --save-dev ${parser.npm?.install}`,
 				'import-simple': "import { Icon } from '@iconify/vue2';",
-				'use': '<template>\n\t<Icon icon="mdi:home" />\n</template>',
+				'use-in-template': '<Icon icon="mdi:home" />',
 				'vue-simple':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n});',
 			},
@@ -465,8 +467,7 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				'use':
-					'<template>\n\t<Icon :icon="icons.homeIcon" />\n</template>',
+				'use-in-template': '<Icon :icon="icons.homeIcon" />',
 				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
@@ -493,8 +494,8 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				'use':
-					'<template>\n\t<Icon :icon="icons.homeIcon" width="32" height="24" horizontalAlign="right" :inline="true" />\n</template>',
+				'use-in-template':
+					'<Icon :icon="icons.homeIcon" width="32" height="24" horizontalAlign="right" :inline="true" />',
 				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},
@@ -527,8 +528,8 @@ describe('Testing code samples', () => {
 				'import-offline':
 					"import { Icon } from '@iconify/vue';\n" +
 					"import homeIcon from '@iconify-icons/mdi/home';",
-				'use':
-					'<template>\n\t<Icon :icon="icons.homeIcon" color="#f80" :verticalFlip="true" />\n</template>',
+				'use-in-template':
+					'<Icon :icon="icons.homeIcon" color="#f80" :verticalFlip="true" />',
 				'vue-offline':
 					'export default {\n\tcomponents: {\n\t\tIcon,\n\t},\n\tdata() {\n\t\treturn {\n\t\t\ticons: {\n\t\t\t\thomeIcon,\n\t\t\t},\n\t\t};\n\t},\n});',
 			},

@@ -20,7 +20,9 @@ export type CodeSampleMode =
 	| 'vue3-offline'
 	// Svelte
 	| 'svelte-api'
-	| 'svelte-offline';
+	| 'svelte-offline'
+	// Ember
+	| 'ember';
 
 // Tabs that combine multiple modes and do not generate code
 export type CodeSampleTab = 'react' | 'vue' | 'svelte' | 'svg';
@@ -84,3 +86,12 @@ export interface CodeSampleAPIConfig {
  */
 type CodeSampleKeyOffline = CodeSampleKey | 'offline';
 export type CodeSampleTitles = Partial<Record<CodeSampleKeyOffline, string>>;
+
+/**
+ * Usage
+ */
+export type CodeSampleUsage =
+	| 'use-in-code'
+	| 'use-in-template'
+	| 'use-in-html'
+	| 'use-generic';

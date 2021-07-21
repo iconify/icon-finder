@@ -71,6 +71,7 @@ const rawCodeTabs: RawCodeSamplesTree = {
 		'svelte-api': 'api',
 		'svelte-offline': 'offline',
 	},
+	ember: 'api',
 	svg: {
 		'svg-raw': 'raw',
 		'svg-box': 'raw',

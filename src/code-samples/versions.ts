@@ -8,7 +8,7 @@ interface PackageInfo {
 	name: string;
 	version?: string;
 }
-type PackageInfoKeys = 'react' | 'vue2' | 'vue3' | 'svelte';
+type PackageInfoKeys = 'react' | 'vue2' | 'vue3' | 'svelte' | 'ember';
 export const componentPackages: Record<PackageInfoKeys, PackageInfo> = {
 	react: {
 		name: '@iconify/react',
@@ -24,6 +24,9 @@ export const componentPackages: Record<PackageInfoKeys, PackageInfo> = {
 	svelte: {
 		name: '@iconify/svelte',
 		version: '@alpha',
+	},
+	ember: {
+		name: '@iconify/ember',
 	},
 };
 

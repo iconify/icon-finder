@@ -12,7 +12,11 @@ import type {
 } from './code-parsers';
 import { varName, codeParser } from './code-parsers';
 import { renderHTML } from './html';
-import type { CodeSampleAPIConfig, CodeSampleMode } from './types';
+import type {
+	CodeSampleAPIConfig,
+	CodeSampleMode,
+	CodeSampleUsage,
+} from './types';
 import { iconifyVersion } from './versions';
 
 /**
@@ -39,11 +43,12 @@ export interface CustomCodeOutputWithText {
 	code?: string;
 }
 
-export interface ComponentCodeOutput {
-	'use': string;
+type ComponentCodeUse = Record<CodeSampleUsage, string>;
 
+export interface ComponentCodeOutput extends Partial<ComponentCodeUse> {
 	// Install / import without icon
 	'install-simple'?: string;
+	'install-addon'?: string;
 	'import-simple'?: string;
 
 	// Install / import with icon
@@ -57,12 +62,17 @@ export interface ComponentCodeOutput {
 
 export const codeOutputComponentKeys: (keyof ComponentCodeOutput)[] = [
 	'install-simple',
+	'install-addon',
 	'install-offline',
 	'import-simple',
 	'import-offline',
 	'vue-simple',
 	'vue-offline',
-	'use',
+	// Usage
+	'use-in-code',
+	'use-in-template',
+	'use-in-html',
+	'use-generic',
 ];
 
 export interface CodeOutput {
@@ -229,6 +239,8 @@ export function getIconCode(
 		docs: parser.docs,
 	};
 
+	const useKey: keyof ComponentCodeOutput = parser.useType;
+
 	// Add language specific stuff
 	switch (lang) {
 		case 'iconify': {
@@ -326,15 +338,20 @@ export function getIconCode(
 					parser.npm.install +
 					' ' +
 					npm.package,
-				'import-offline':
-					resolveTemplate(parser.npm.import, merged, customisations) +
-					'\nimport ' +
-					npm.name +
-					" from '" +
-					npm.package +
-					npm.file +
-					"';",
-				'use': html
+				'import-offline': parser.npm.import
+					? resolveTemplate(
+							parser.npm.import,
+							merged,
+							customisations
+					  ) +
+					  '\nimport ' +
+					  npm.name +
+					  " from '" +
+					  npm.package +
+					  npm.file +
+					  "';"
+					: void 0,
+				[useKey]: html
 					.replace(/{varName}/g, npm.name)
 					.replace('{iconPackage}', npm.package + npm.file),
 			};
@@ -360,20 +377,24 @@ export function getIconCode(
 		case 'react-api':
 		case 'svelte-api':
 		case 'vue2-api':
-		case 'vue3-api': {
+		case 'vue3-api':
+		case 'ember': {
 			if (!parser.npm) {
 				return null;
 			}
+			const parserNPM = parser.npm;
+
+			const installKey = parserNPM.isAddon
+				? 'install-addon'
+				: 'install-simple';
 			output.component = {
-				'install-simple':
-					'npm install --save-dev ' + parser.npm.install,
-				'import-simple': resolveTemplate(
-					parser.npm.import,
-					merged,
-					customisations
-				),
-				'use': html,
+				[installKey]: 'npm install --save-dev ' + parserNPM.install,
+				'import-simple': parserNPM.import
+					? resolveTemplate(parserNPM.import, merged, customisations)
+					: void 0,
+				[useKey]: html,
 			};
+
 			if (parser.vueTemplate !== void 0) {
 				const html =
 					typeof parser.vueTemplate === 'function'
