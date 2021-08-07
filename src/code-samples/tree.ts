@@ -105,7 +105,6 @@ export function getCodeSamplesTree(
 		}
 
 		// Check type
-		console.log(type, config);
 		switch (type) {
 			case 'raw':
 				return config[type];
