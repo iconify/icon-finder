@@ -28,6 +28,8 @@ const config: CodeSampleAPIConfig = {
 	},
 	// Allow generating SVG
 	raw: true,
+	// Remote SVG
+	svg: 'https://api.iconify.design/{prefix}/{name}.svg',
 };
 
 describe('Testing code samples', () => {
@@ -679,5 +681,38 @@ describe('Testing code samples', () => {
 		expect(getIconCode(mode, icon, emptyCustomisations, config)).to.be.eql(
 			expected
 		);
+	});
+
+	it('CSS', () => {
+		const mode: CodeSampleMode = 'css';
+		const parser = codeParser(mode);
+
+		// Render icon
+		const expected: CodeOutput = {
+			docs: parser.docs,
+			raw: [
+				"background: url('https://api.iconify.design/mdi-light/home.svg?color=%23f80&height=24&rotate=180deg&flip=horizontal%2Cvertical') no-repeat center center / contain;",
+				"content: url('https://api.iconify.design/mdi-light/home.svg?color=%23f80&height=24&rotate=180deg&flip=horizontal%2Cvertical');",
+			],
+			isAPI: true,
+		};
+		expect(
+			getIconCode(
+				mode,
+				{
+					provider: '',
+					prefix: 'mdi-light',
+					name: 'home',
+				},
+				mergeCustomisations(emptyCustomisations, {
+					height: '24',
+					hFlip: true,
+					vFlip: true,
+					rotate: 2,
+					color: '#f80',
+				}),
+				config
+			)
+		).to.be.eql(expected);
 	});
 });

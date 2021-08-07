@@ -37,6 +37,7 @@ const defaultAPIData: Required<APIProviderRawData> = {
 	// Optional
 	links: defaultAPIDataLinks,
 	npm: defaultAPIDataNPM,
+	svg: '',
 };
 
 /**
@@ -45,8 +46,15 @@ const defaultAPIData: Required<APIProviderRawData> = {
 // Common fields
 interface APIProviderData {
 	title: string;
+
+	// Links for HTML pages
 	links: Required<APIProviderRawDataLinks>;
+
+	// NPM packages configuration
 	npm: Required<APIProviderRawDataNPM>;
+
+	// URL for SVG generator
+	svg: string;
 }
 
 // Interface with API configuration
@@ -74,7 +82,7 @@ const configuredCache: Record<
 > = Object.create(null);
 
 // Add default provider
-const iconifyRoot = 'http://icon-sets.iconify.design/';
+const iconifyRoot = 'https://icon-sets.iconify.design/';
 const iconifyPackage = '@iconify/icons-{prefix}';
 internalSourceCache[''] = {
 	config: {},
@@ -88,6 +96,7 @@ internalSourceCache[''] = {
 		package: iconifyPackage,
 		icon: iconifyPackage + '/{name}',
 	},
+	svg: 'https://api.iconify.design/{prefix}/{name}.svg',
 };
 
 /**
@@ -97,6 +106,7 @@ const defaults: APIProviderData = {
 	title: '',
 	links: defaultAPIDataLinks,
 	npm: defaultAPIDataNPM,
+	svg: '',
 };
 
 /**
@@ -119,10 +129,6 @@ export function convertProviderData(
 	const data: Partial<APIProviderRawData> = {};
 	for (const key in defaultAPIData) {
 		const attr = key as keyof APIProviderRawData;
-
-		// Vars for npm/links
-		let defaultValue: APIProviderRawDataLinks;
-		let resultValue: APIProviderRawDataLinks;
 
 		switch (attr) {
 			case 'title':
@@ -148,8 +154,11 @@ export function convertProviderData(
 				break;
 
 			case 'npm':
-			case 'links':
-				defaultValue = defaultAPIData[attr] as APIProviderRawDataLinks;
+			case 'links': {
+				const defaultValue = defaultAPIData[
+					attr
+				] as APIProviderRawDataLinks;
+				let resultValue: APIProviderRawDataLinks;
 
 				if (typeof raw[attr] !== 'object' || !raw[attr]) {
 					// Copy default value
@@ -170,6 +179,14 @@ export function convertProviderData(
 				}
 				data[attr] = resultValue;
 				break;
+			}
+
+			case 'svg':
+				data[attr] =
+					typeof raw[attr] === 'string'
+						? raw[attr]
+						: defaultAPIData[attr];
+				break;
 
 			default:
 				assertNever(attr);
@@ -188,6 +205,7 @@ export function convertProviderData(
 		title: fullData.title,
 		links: fullData.links as Required<APIProviderRawDataLinks>,
 		npm: fullData.npm as Required<APIProviderRawDataNPM>,
+		svg: '',
 	};
 
 	return result;

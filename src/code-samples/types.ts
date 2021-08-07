@@ -6,6 +6,8 @@ import type { Icon } from '../misc/icon';
 export type CodeSampleMode =
 	// SVG framework
 	| 'iconify'
+	// Stylesheet
+	| 'css'
 	// Raw SVG
 	| 'svg-raw'
 	| 'svg-box'
@@ -25,7 +27,7 @@ export type CodeSampleMode =
 	| 'ember';
 
 // Tabs that combine multiple modes and do not generate code
-export type CodeSampleTab = 'react' | 'vue' | 'svelte' | 'svg';
+export type CodeSampleTab = 'html' | 'react' | 'vue' | 'svelte' | 'svg';
 
 // Combination of all modes + tabs
 export type CodeSampleKey = CodeSampleMode | CodeSampleTab;
@@ -34,10 +36,11 @@ export type CodeSampleKey = CodeSampleMode | CodeSampleTab;
  * Code sample type
  *
  * API mode for code that uses API
+ * SVG mode is for remote SVG links
  * Offline mode for code that uses single icon NPM packages
  * Raw mode for tabs that generate result from icon data, such as raw SVG
  */
-export type CodeSampleType = 'api' | 'offline' | 'raw';
+export type CodeSampleType = 'api' | 'svg' | 'offline' | 'raw';
 
 /**
  * API specific config for code samples
@@ -79,6 +82,10 @@ export interface CodeSampleAPIConfig {
 
 	// Allow displaying raw SVG
 	raw: boolean;
+
+	// URL to remote SVG generator.
+	// Example: 'https://api.iconify.design/{prefix}/{name}.svg'
+	svg?: string;
 }
 
 /**

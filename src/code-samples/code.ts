@@ -261,6 +261,31 @@ export function getIconCode(
 			return output;
 		}
 
+		case 'css': {
+			const baseURL = providerConfig.svg;
+			if (!baseURL) {
+				return null;
+			}
+
+			// Generate URL
+			let url = baseURL
+				.replace('{prefix}', icon.prefix)
+				.replace('{name}', icon.name);
+			if (merged !== '') {
+				url += '?' + merged;
+			}
+
+			// Return output
+			output.raw = [
+				"background: url('" +
+					url +
+					"') no-repeat center center / contain;",
+				"content: url('" + url + "');",
+			];
+			output.isAPI = true;
+			return output;
+		}
+
 		case 'svg-raw':
 		case 'svg-box':
 		case 'svg-uri': {

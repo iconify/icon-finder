@@ -56,7 +56,10 @@ type RawCodeSamplesTree =
 	| RawCodeSamplesTreeWithoutChildren;
 
 const rawCodeTabs: RawCodeSamplesTree = {
-	iconify: 'api',
+	html: {
+		iconify: 'api',
+		css: 'svg',
+	},
 	react: {
 		'react-api': 'api',
 		'react-offline': 'offline',
@@ -102,12 +105,16 @@ export function getCodeSamplesTree(
 		}
 
 		// Check type
+		console.log(type, config);
 		switch (type) {
 			case 'raw':
 				return config[type];
 
 			case 'api':
 				return config.api !== void 0;
+
+			case 'svg':
+				return config.svg !== void 0;
 
 			case 'offline':
 				return config.npmES !== void 0 || config.npmCJS !== void 0;
@@ -143,6 +150,8 @@ export function getCodeSamplesTree(
 					title: getTitle(attr),
 				};
 				results.push(newItem);
+			} else {
+				console.error('Cannot use mode:', mode, item);
 			}
 			continue;
 		}

@@ -495,6 +495,48 @@ function generateParser(mode: CodeSampleMode): Parser {
 				useType: 'use-in-html',
 			};
 
+		// CSS
+		case 'css':
+			return {
+				parsers: {
+					color: (list, value) =>
+						addAttr(list, 'color', toString(value)),
+					width: (list, value) =>
+						addAttr(list, 'width', toString(value)),
+					height: (list, value) =>
+						addAttr(list, 'height', toString(value)),
+					rotate: (list, value) =>
+						addAttr(list, 'rotate', degrees(value as number)),
+					hFlip: (list) => mergeAttr(list, 'flip', 'horizontal', ','),
+					vFlip: (list) => mergeAttr(list, 'flip', 'vertical', ','),
+					hAlign: (list, value) =>
+						mergeAttr(list, 'align', value as string, ','),
+					vAlign: (list, value) =>
+						mergeAttr(list, 'align', value as string, ','),
+					slice: (list) => mergeAttr(list, 'align', 'slice', ','),
+				},
+				merge: (list: ParserAttr) => {
+					return Object.keys(list)
+						.map((key) => {
+							const item = list[key];
+							if (typeof item === 'object') {
+								return (
+									item.key +
+									'=' +
+									encodeURIComponent(item.value)
+								);
+							}
+							return key + '=' + encodeURIComponent(item);
+						})
+						.join('&');
+				},
+				docs: {
+					type: 'css',
+					href: docsBase + 'css.html',
+				},
+				useType: 'use-in-html',
+			};
+
 		// SVG
 		case 'svg-raw':
 		case 'svg-uri':
