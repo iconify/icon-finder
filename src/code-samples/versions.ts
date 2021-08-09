@@ -12,18 +12,15 @@ type PackageInfoKeys = 'react' | 'vue2' | 'vue3' | 'svelte' | 'ember';
 export const componentPackages: Record<PackageInfoKeys, PackageInfo> = {
 	react: {
 		name: '@iconify/react',
-		version: '@alpha',
 	},
 	vue2: {
 		name: '@iconify/vue2',
 	},
 	vue3: {
 		name: '@iconify/vue',
-		version: '@alpha',
 	},
 	svelte: {
 		name: '@iconify/svelte',
-		version: '@alpha',
 	},
 	ember: {
 		name: '@iconify/ember',
