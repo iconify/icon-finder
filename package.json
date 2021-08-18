@@ -1,7 +1,7 @@
 {
 	"name": "@iconify/search-core",
 	"description": "Iconify Search, core functions",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"author": "Vjacheslav Trushkin",
 	"license": "(Apache-2.0 OR GPL-2.0)",
 	"main": "./lib/index.js",

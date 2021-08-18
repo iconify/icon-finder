@@ -226,10 +226,10 @@ function generateParser(mode: CodeSampleMode): Parser {
 	}
 
 	function addEmberAttr(list: ParserAttr, key: string, value: unknown) {
-		if (typeof value === 'string' && key !== 'icon') {
+		if (typeof value === 'string') {
 			addAttr(list, '@' + key, value);
 		} else {
-			addDynamicAttr(list, key, value, '@{var}={{value}}');
+			addDynamicAttr(list, key, value, '@{var}={{{value}}}');
 		}
 	}
 
@@ -414,7 +414,7 @@ function generateParser(mode: CodeSampleMode): Parser {
 	function emberParser(): Parser {
 		const parser: Parser = {
 			iconParser: (list, valueStr, valueIcon) =>
-				addAttr(list, 'icon', valueStr),
+				addEmberAttr(list, 'icon', valueStr),
 			parsers: {},
 			merge: mergeAttributes,
 			template: '<IconifyIcon {attr} />',
