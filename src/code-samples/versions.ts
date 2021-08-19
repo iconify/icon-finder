@@ -1,4 +1,4 @@
-// Iconify version (replaced during build!)
+// Iconify version (do not edit it, replaced during build!)
 export const iconifyVersion = '2.0.0';
 
 /**
@@ -28,13 +28,21 @@ export const componentPackages: Record<PackageInfoKeys, PackageInfo> = {
 };
 
 /**
- * Get import value for package
+ * Get package name to install
  */
-export function getComponentImport(key: PackageInfoKeys): string {
+export function getComponentInstall(
+	key: PackageInfoKeys,
+	dev?: boolean
+): string {
 	const item = componentPackages[key];
 	let result = item.name;
 	if (item.version !== void 0) {
 		result += item.version;
 	}
+
+	if (typeof dev === 'boolean') {
+		return 'npm install --save' + (dev ? '-dev ' : ' ') + result;
+	}
+
 	return result;
 }

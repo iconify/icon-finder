@@ -35,8 +35,8 @@ export type CodeSampleKey = CodeSampleMode | CodeSampleTab;
 /**
  * Code sample type
  *
- * API mode for code that uses API
- * SVG mode is for remote SVG links
+ * API mode for code that uses API (references icon by name)
+ * SVG mode is for remote SVG links (link to API)
  * Offline mode for code that uses single icon NPM packages
  * Raw mode for tabs that generate result from icon data, such as raw SVG
  */
@@ -69,8 +69,8 @@ interface CodeSampleNPMConfig {
 }
 
 export interface CodeSampleAPIConfig {
-	// Iconify SVG framework API provider
-	api?: string;
+	// Allow loading icon data from API
+	api: boolean;
 
 	// NPM package for single files that CommonJS exports.
 	// Example: '@iconify-icons/{prefix}'
@@ -95,7 +95,7 @@ type CodeSampleKeyOffline = CodeSampleKey | 'offline';
 export type CodeSampleTitles = Partial<Record<CodeSampleKeyOffline, string>>;
 
 /**
- * Usage
+ * Usage (for different phrases)
  */
 export type CodeSampleUsage =
 	| 'use-in-code'

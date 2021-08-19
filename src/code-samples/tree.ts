@@ -110,7 +110,7 @@ export function getCodeSamplesTree(
 				return config[type];
 
 			case 'api':
-				return config.api !== void 0;
+				return config.api;
 
 			case 'svg':
 				return config.svg !== void 0;
