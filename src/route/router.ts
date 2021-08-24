@@ -291,7 +291,7 @@ export class Router {
 		// Check visible view
 		if (
 			this._visibleView.type === 'custom' &&
-			(this._visibleView as CustomView).type === customType
+			(this._visibleView as CustomView).customType === customType
 		) {
 			return this._visibleView as CustomView;
 		}
@@ -299,7 +299,7 @@ export class Router {
 		// Check pending view
 		if (
 			this._view.type === 'custom' &&
-			(this._view as CustomView).type === customType
+			(this._view as CustomView).customType === customType
 		) {
 			return this._view as CustomView;
 		}
