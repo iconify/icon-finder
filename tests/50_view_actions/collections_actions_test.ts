@@ -4,7 +4,12 @@ import { expect } from 'chai';
 import SVGFramework from '@iconify/iconify';
 import { setIconify } from '../../lib/iconify';
 import { Registry } from '../../lib/registry';
-import { API as FakeAPI } from '../fake_api';
+import {
+	API as FakeAPI,
+	collectionQueryParams,
+	collectionsQueryParams,
+	searchQueryParams,
+} from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
 import type { CollectionsViewBlocks } from '../../lib/views/collections';
 import { getCollectionsBlockPrefixes } from '../../lib/blocks/collections-list';
@@ -41,7 +46,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			provider,
 			'/collections',
-			{},
+			collectionsQueryParams(),
 			'collections',
 			{},
 			collectionsCacheKey(),
@@ -54,17 +59,7 @@ describe('Testing collections actions', () => {
 		const registry = setupRegistry();
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		// Create router
 		const router = registry.router;
@@ -136,7 +131,12 @@ describe('Testing collections actions', () => {
 		const registry = setupRegistry();
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture(provider, '/collections', {}, 'collections');
+		api.loadFixture(
+			provider,
+			'/collections',
+			collectionsQueryParams(),
+			'collections'
+		);
 
 		// Add provider
 		const providerData = convertProviderData('https://localhost', {
@@ -230,12 +230,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{
 				responseDelay: 200,
@@ -336,18 +331,19 @@ describe('Testing collections actions', () => {
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture('', '/collections', {}, 'collections', {
-			responseDelay: 300,
-		});
+		api.loadFixture(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			'collections',
+			{
+				responseDelay: 300,
+			}
+		);
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{
 				responseDelay: 0,
@@ -356,12 +352,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'ant-design',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('ant-design'),
 			'ant-design',
 			{
 				responseDelay: 0,
@@ -551,10 +542,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 
@@ -627,10 +615,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 
@@ -745,10 +730,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home',
 			{},
 			searchCacheKey('home', 64),
@@ -874,10 +856,7 @@ describe('Testing collections actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'nav',
-				limit: 64,
-			},
+			searchQueryParams('nav', 64),
 			'search-nav'
 		);
 

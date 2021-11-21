@@ -9,7 +9,7 @@ const compile = {
 	lint: true,
 	cleanup: true,
 	lib: true,
-	replace: true,
+	replace: false, //true,
 };
 process.argv.slice(2).forEach((cmd) => {
 	if (cmd.slice(0, 2) !== '--') {

@@ -5,7 +5,11 @@ import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
 import type { PartialRoute } from '../../lib/route/types/routes';
-import { API as FakeAPI } from '../fake_api';
+import {
+	API as FakeAPI,
+	collectionsQueryParams,
+	searchQueryParams,
+} from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
 import type { SearchViewBlocks } from '../../lib/views/search';
 import type { PaginationBlock } from '../../lib/blocks/pagination';
@@ -21,7 +25,12 @@ describe('Testing search actions', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('', '/collections', {}, 'collections');
+		api.loadFixture(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			'collections'
+		);
 		return registry;
 	}
 
@@ -36,19 +45,13 @@ describe('Testing search actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 999,
-			},
+			searchQueryParams('home', 999),
 			'search-home-full'
 		);
 
@@ -154,19 +157,13 @@ describe('Testing search actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 999,
-			},
+			searchQueryParams('home', 999),
 			'search-home-full'
 		);
 
@@ -264,19 +261,13 @@ describe('Testing search actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 999,
-			},
+			searchQueryParams('home', 999),
 			'search-home-full'
 		);
 
@@ -374,19 +365,13 @@ describe('Testing search actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'nav',
-				limit: 64,
-			},
+			searchQueryParams('nav', 64),
 			'search-nav'
 		);
 
@@ -480,10 +465,7 @@ describe('Testing search actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 999,
-			},
+			searchQueryParams('home', 999),
 			'search-home-full'
 		);
 

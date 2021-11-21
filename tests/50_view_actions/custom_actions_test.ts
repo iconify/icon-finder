@@ -4,7 +4,7 @@
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
-import { API as FakeAPI } from '../fake_api';
+import { API as FakeAPI, collectionsQueryParams } from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
 import type {
 	CustomViewLoadCallback,
@@ -379,9 +379,15 @@ describe('Testing custom actions', () => {
 		// Load collections
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('', '/collections', {}, 'collections', {
-			responseDelay: 300,
-		});
+		api.loadFixture(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			'collections',
+			{
+				responseDelay: 300,
+			}
+		);
 
 		// Create router
 		const router = registry.router;

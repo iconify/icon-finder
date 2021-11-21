@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import type { CollectionsList } from '../../lib/converters/collections';
+import type { ExtendedCollectionsList } from '../../lib/converters/collections';
 import {
 	dataToCollections,
 	collectionsPrefixes,
@@ -12,11 +12,14 @@ import { defaultCollectionInfo } from '../collection_info';
 
 describe('Testing converting collections list', () => {
 	it('Simple info', () => {
-		let result, expected: CollectionsList;
+		let result, expected: ExtendedCollectionsList;
 
 		// Empty block
 		result = dataToCollections({});
-		expect(result).to.be.eql({});
+		expect(result).to.be.eql({
+			visible: {},
+			hidden: {},
+		});
 
 		// Block with one item without category
 		result = dataToCollections({
@@ -24,7 +27,10 @@ describe('Testing converting collections list', () => {
 				name: 'Foo',
 			},
 		});
-		expect(result).to.be.eql({});
+		expect(result).to.be.eql({
+			visible: {},
+			hidden: {},
+		});
 		expect(collectionsPrefixes(result)).to.be.eql([]);
 
 		// Block with one item with category
@@ -35,13 +41,16 @@ describe('Testing converting collections list', () => {
 			},
 		});
 		expected = {
-			General: {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					name: 'Foo',
-					category: 'General',
-				}),
+			visible: {
+				General: {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						name: 'Foo',
+						category: 'General',
+					}),
+				},
 			},
+			hidden: {},
 		};
 		expect(result).to.be.eql(expected);
 		expect(collectionsPrefixes(result)).to.be.eql(['foo']);
@@ -58,18 +67,21 @@ describe('Testing converting collections list', () => {
 			},
 		});
 		expected = {
-			General: {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					name: 'Foo',
-					category: 'General',
-				}),
-				bar: Object.assign(defaultCollectionInfo(), {
-					prefix: 'bar',
-					name: 'Bar',
-					category: 'General',
-				}),
+			visible: {
+				General: {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						name: 'Foo',
+						category: 'General',
+					}),
+					bar: Object.assign(defaultCollectionInfo(), {
+						prefix: 'bar',
+						name: 'Bar',
+						category: 'General',
+					}),
+				},
 			},
+			hidden: {},
 		};
 		expect(result).to.be.eql(expected);
 		expect(collectionsPrefixes(result)).to.be.eql(['foo', 'bar']);
@@ -86,20 +98,23 @@ describe('Testing converting collections list', () => {
 			},
 		});
 		expected = {
-			General: {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					name: 'Foo',
-					category: 'General',
-				}),
+			visible: {
+				General: {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						name: 'Foo',
+						category: 'General',
+					}),
+				},
+				Bar: {
+					bar: Object.assign(defaultCollectionInfo(), {
+						prefix: 'bar',
+						name: 'Bar',
+						category: 'Bar',
+					}),
+				},
 			},
-			Bar: {
-				bar: Object.assign(defaultCollectionInfo(), {
-					prefix: 'bar',
-					name: 'Bar',
-					category: 'Bar',
-				}),
-			},
+			hidden: {},
 		};
 		expect(result).to.be.eql(expected);
 		expect(collectionsPrefixes(result)).to.be.eql(['foo', 'bar']);
@@ -116,20 +131,23 @@ describe('Testing converting collections list', () => {
 			},
 		});
 		expected = {
-			'General': {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					name: 'Foo',
-					category: 'General',
-				}),
+			visible: {
+				'General': {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						name: 'Foo',
+						category: 'General',
+					}),
+				},
+				'': {
+					bar: Object.assign(defaultCollectionInfo(), {
+						prefix: 'bar',
+						name: 'Bar',
+						category: '',
+					}),
+				},
 			},
-			'': {
-				bar: Object.assign(defaultCollectionInfo(), {
-					prefix: 'bar',
-					name: 'Bar',
-					category: '',
-				}),
-			},
+			hidden: {},
 		};
 		expect(result).to.be.eql(expected);
 		expect(collectionsPrefixes(result)).to.be.eql(['foo', 'bar']);
@@ -150,25 +168,28 @@ describe('Testing converting collections list', () => {
 			},
 		});
 		expected = {
-			General: {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					name: 'Foo',
-					category: 'General',
-				}),
-				baz: Object.assign(defaultCollectionInfo(), {
-					prefix: 'baz',
-					name: 'Baz',
-					category: 'General',
-				}),
+			visible: {
+				General: {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						name: 'Foo',
+						category: 'General',
+					}),
+					baz: Object.assign(defaultCollectionInfo(), {
+						prefix: 'baz',
+						name: 'Baz',
+						category: 'General',
+					}),
+				},
+				Bar: {
+					bar: Object.assign(defaultCollectionInfo(), {
+						prefix: 'bar',
+						name: 'Bar',
+						category: 'Bar',
+					}),
+				},
 			},
-			Bar: {
-				bar: Object.assign(defaultCollectionInfo(), {
-					prefix: 'bar',
-					name: 'Bar',
-					category: 'Bar',
-				}),
-			},
+			hidden: {},
 		};
 		expect(result).to.be.eql(expected);
 		expect(collectionsPrefixes(result)).to.be.eql(['foo', 'baz', 'bar']);
@@ -179,7 +200,11 @@ describe('Testing converting collections list', () => {
 		const result = dataToCollections(raw);
 
 		// Test categories
-		expect(Object.keys(result)).to.be.eql(['General', 'Emoji', 'Thematic']);
+		expect(Object.keys(result.visible)).to.be.eql([
+			'General',
+			'Emoji',
+			'Thematic',
+		]);
 
 		// Test prefixes
 		const prefixes = collectionsPrefixes(result);
@@ -220,13 +245,13 @@ describe('Testing converting collections list', () => {
 			palette: false,
 			category: 'General',
 		};
-		expect(result.General['ant-design']).to.be.eql(expected);
+		expect(result.visible.General['ant-design']).to.be.eql(expected);
 	});
 
 	it('Filter collections', () => {
 		const raw = JSON.parse(getFixture('collections.json'));
 		const collections = dataToCollections(raw);
-		let result: CollectionsList;
+		let result: ExtendedCollectionsList;
 		let prefixes: string[];
 
 		// Filter by prefix
@@ -241,7 +266,7 @@ describe('Testing converting collections list', () => {
 			}
 		);
 
-		expect(Object.keys(result)).to.be.eql(['General']);
+		expect(Object.keys(result.visible)).to.be.eql(['General']);
 		prefixes = collectionsPrefixes(result);
 		expect(prefixes).to.be.eql(['mdi', 'mdi-light']);
 
@@ -257,7 +282,7 @@ describe('Testing converting collections list', () => {
 			}
 		);
 
-		expect(Object.keys(result)).to.be.eql(['General', 'Thematic']);
+		expect(Object.keys(result.visible)).to.be.eql(['General', 'Thematic']);
 		prefixes = collectionsPrefixes(result);
 		expect(prefixes).to.be.eql([
 			'fa-solid',
@@ -281,7 +306,7 @@ describe('Testing converting collections list', () => {
 			}
 		);
 
-		expect(Object.keys(result)).to.be.eql(['Emoji']);
+		expect(Object.keys(result.visible)).to.be.eql(['Emoji']);
 		prefixes = collectionsPrefixes(result);
 		expect(prefixes).to.be.eql([
 			'noto',

@@ -12,7 +12,7 @@ import type {
 	FullCollectionRouteParams,
 	PartialCollectionRouteParams,
 } from '../../lib/route/types/params';
-import { API as FakeAPI } from '../fake_api';
+import { API as FakeAPI, collectionQueryParams } from '../fake_api';
 import type { EventCallback } from '../../lib/events';
 import type { FiltersBlock } from '../../lib/blocks/filters';
 import { isFiltersBlockEmpty } from '../../lib/blocks/filters';
@@ -43,12 +43,7 @@ describe('Testing collection view', () => {
 			api.loadFixture(
 				'',
 				'/collection',
-				{
-					prefix: prefix,
-					info: 'true',
-					chars: 'true',
-					aliases: 'true',
-				},
+				collectionQueryParams(prefix),
 				prefix,
 				{}
 			);
@@ -56,13 +51,7 @@ describe('Testing collection view', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: prefix,
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-				hidden: 'true',
-			},
+			collectionQueryParams(prefix, true),
 			prefix,
 			{},
 			collectionCacheKey(prefix),
@@ -262,12 +251,7 @@ describe('Testing collection view', () => {
 		api.setFakeData(
 			'',
 			'/collection',
-			{
-				prefix,
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams(prefix),
 			void 0,
 			404,
 			{}

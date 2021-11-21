@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import { API } from '../fake_api';
+import { API, collectionsQueryParams } from '../fake_api';
 import { Registry } from '../../lib/registry';
 import type { CollectionInfo } from '../../lib/converters/info';
 
@@ -49,15 +49,24 @@ describe('Testing API', function () {
 			let loaded = false;
 			const startTime = Date.now();
 
-			api.loadFixture('', '/collections', {}, 'collections');
+			api.loadFixture(
+				'',
+				'/collections',
+				collectionsQueryParams(),
+				'collections'
+			);
 
-			expect(api.isCached('', '/collections', {})).to.be.equal(false);
-			expect(api.isPending('', '/collections', {})).to.be.equal(false);
+			expect(
+				api.isCached('', '/collections', collectionsQueryParams())
+			).to.be.equal(false);
+			expect(
+				api.isPending('', '/collections', collectionsQueryParams())
+			).to.be.equal(false);
 
 			api.query(
 				'',
 				'/collections',
-				{},
+				collectionsQueryParams(),
 				(data: unknown, error: unknown, cached?: boolean) => {
 					expect(cached).to.be.equal(false);
 					expect(error).to.be.equal(void 0);
@@ -105,12 +114,20 @@ describe('Testing API', function () {
 					});
 
 					// Check if response is cached or pending
-					expect(api.isCached('', '/collections', {})).to.be.equal(
-						false
-					);
-					expect(api.isPending('', '/collections', {})).to.be.equal(
-						false
-					);
+					expect(
+						api.isCached(
+							'',
+							'/collections',
+							collectionsQueryParams()
+						)
+					).to.be.equal(false);
+					expect(
+						api.isPending(
+							'',
+							'/collections',
+							collectionsQueryParams()
+						)
+					).to.be.equal(false);
 
 					done();
 				}
@@ -118,7 +135,9 @@ describe('Testing API', function () {
 
 			// Make sure response is asynchronous
 			expect(loaded).to.be.equal(false);
-			expect(api.isPending('', '/collections', {})).to.be.equal(true);
+			expect(
+				api.isPending('', '/collections', collectionsQueryParams())
+			).to.be.equal(true);
 		};
 
 		test();
@@ -165,15 +184,21 @@ describe('Testing API', function () {
 			const startTime = Date.now();
 			let loaded = false;
 
-			api.loadFixture('', '/collections', {}, 'collections', {
-				responseDelay: 100,
-				cacheResult: true,
-			});
+			api.loadFixture(
+				'',
+				'/collections',
+				collectionsQueryParams(),
+				'collections',
+				{
+					responseDelay: 100,
+					cacheResult: true,
+				}
+			);
 
 			api.query(
 				'',
 				'/collections',
-				{},
+				collectionsQueryParams(),
 				(data: unknown, error: unknown, cached?: boolean) => {
 					expect(cached).to.be.equal(false);
 					expect(error).to.be.equal(void 0);
@@ -205,7 +230,7 @@ describe('Testing API', function () {
 					api.query(
 						'',
 						'/collections',
-						{},
+						collectionsQueryParams(),
 						(data: unknown, error: unknown, cached?: boolean) => {
 							// Response should have been cached and returned almost immediately
 							expect(cached).to.be.equal(true);
@@ -214,10 +239,18 @@ describe('Testing API', function () {
 
 							// Test isCached and isPending
 							expect(
-								api.isCached('', '/collections', {})
+								api.isCached(
+									'',
+									'/collections',
+									collectionsQueryParams()
+								)
 							).to.be.equal(true);
 							expect(
-								api.isPending('', '/collections', {})
+								api.isPending(
+									'',
+									'/collections',
+									collectionsQueryParams()
+								)
 							).to.be.equal(false);
 
 							expect(secondCallbackCalled).to.be.equal(false);

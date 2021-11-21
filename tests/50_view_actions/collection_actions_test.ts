@@ -2,7 +2,12 @@
 import 'mocha';
 import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
-import { API as FakeAPI } from '../fake_api';
+import {
+	API as FakeAPI,
+	collectionQueryParams,
+	collectionsQueryParams,
+	searchQueryParams,
+} from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
 import type { CollectionViewBlocks } from '../../lib/views/collection';
 import { isPaginationEmpty } from '../../lib/blocks/pagination';
@@ -23,28 +28,22 @@ describe('Testing collection actions', () => {
 
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture('', '/collections', {}, 'collections');
+		api.loadFixture(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			'collections'
+		);
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: prefix,
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams(prefix),
 			prefix
 		);
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: prefix,
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-				hidden: 'true',
-			},
+			collectionQueryParams(prefix, true),
 			prefix
 		);
 		return registry;
@@ -475,26 +474,13 @@ describe('Testing collection actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home',
 			{
 				responseDelay: 300,
 			}
 		);
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		// Create router
 		const router = registry.router;
@@ -637,10 +623,7 @@ describe('Testing collection actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'nav',
-				limit: 64,
-			},
+			searchQueryParams('nav', 64),
 			'search-nav'
 		);
 
@@ -740,19 +723,13 @@ describe('Testing collection actions', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'nav',
-				limit: 64,
-			},
+			searchQueryParams('nav', 64),
 			'search-nav'
 		);
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 

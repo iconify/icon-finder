@@ -18,7 +18,7 @@ import {
 } from '../blocks/filters';
 import type { FullCollectionsRoute } from '../route/types/routes';
 import type {
-	CollectionsList,
+	ExtendedCollectionsList,
 	CollectionsListRawData,
 } from '../converters/collections';
 import {
@@ -56,7 +56,7 @@ export class CollectionsView extends BaseView {
 	public readonly provider: string;
 	public readonly route: FullCollectionsRoute;
 
-	protected _data: CollectionsList | null = null;
+	protected _data: ExtendedCollectionsList | null = null;
 	protected _blocks: CollectionsViewBlocks | null = null;
 	protected readonly _sources: CollectionsSources;
 
@@ -113,7 +113,14 @@ export class CollectionsView extends BaseView {
 			return;
 		}
 
-		this._loadAPI(this.provider, '/collections', {}, collectionsCacheKey());
+		this._loadAPI(
+			this.provider,
+			'/collections',
+			{
+				hidden: true,
+			},
+			collectionsCacheKey()
+		);
 	}
 
 	/**
@@ -198,13 +205,16 @@ export class CollectionsView extends BaseView {
 		// Try to find prefix in collections list
 		if (!this.loading && this._data !== null && this.error === '') {
 			// Find matching prefix
-			const categories = Object.keys(this._data);
-			let found = false;
+			let found = !!this._data.hidden[prefix];
 
-			for (let i = 0; i < categories.length; i++) {
-				if (this._data[categories[i]][prefix] !== void 0) {
-					found = true;
-					break;
+			if (!found) {
+				const visibleItems = this._data.visible;
+				const categories = Object.keys(visibleItems);
+				for (let i = 0; i < categories.length; i++) {
+					if (visibleItems[categories[i]][prefix] !== void 0) {
+						found = true;
+						break;
+					}
 				}
 			}
 
@@ -332,15 +342,17 @@ export class CollectionsView extends BaseView {
 		if (this._data === null) {
 			this.error = data === null ? 'not_found' : 'invalid_data';
 		} else {
+			const collectionsBlock = this._blocks.collections;
+
 			// Add indexes to collections
 			autoIndexCollections(this._data);
 
 			// Set collections
-			this._blocks.collections.collections = this._data;
+			collectionsBlock.collections = this._data;
 
 			// Get categories
 			const categories = getCollectionsBlockCategories(
-				this._blocks.collections,
+				collectionsBlock,
 				true
 			);
 
@@ -349,7 +361,7 @@ export class CollectionsView extends BaseView {
 			} else {
 				if (categories.length > 1) {
 					// Set category filters
-					this._blocks.collections.showCategories = true;
+					collectionsBlock.showCategories = true;
 					const filters = this._blocks.categories.filters;
 					categories.forEach((category) => {
 						filters[category] = defaultFilter(category);
@@ -357,23 +369,25 @@ export class CollectionsView extends BaseView {
 					autoIndexFilters(this._blocks.categories);
 				} else {
 					// Disable category filters
-					this._blocks.collections.showCategories = false;
+					collectionsBlock.showCategories = false;
 				}
 
 				// Store collections in global data
 				const registry = getRegistry(this._instance);
 				const collections = registry.collections;
-				iterateCollectionsBlock(
-					this._blocks.collections,
-					(item, prefix) => {
+				Object.keys(collectionsBlock.collections.hidden).forEach(
+					(prefix) => {
 						setCollectionInfo(
 							collections,
 							this.provider,
 							prefix,
-							item
+							collectionsBlock.collections.hidden[prefix]
 						);
 					}
 				);
+				iterateCollectionsBlock(collectionsBlock, (item, prefix) => {
+					setCollectionInfo(collections, this.provider, prefix, item);
+				});
 			}
 		}
 

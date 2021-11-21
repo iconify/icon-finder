@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import { Registry } from '../../lib/registry';
 import type { FullCollectionsRoute } from '../../lib/route/types/routes';
 import { objectToRoute } from '../../lib/route/convert';
-import { API as FakeAPI } from '../fake_api';
+import { API as FakeAPI, collectionsQueryParams } from '../fake_api';
 import type { EventCallback } from '../../lib/events';
 import type { IconFinderCustomSets } from '../../lib/data/custom-sets';
 import { convertCustomSets } from '../../lib/data/custom-sets';
@@ -54,7 +54,7 @@ describe('Testing collections view with custom data', () => {
 			(registry.api as FakeAPI).loadFixture(
 				provider,
 				'/collections',
-				{},
+				collectionsQueryParams(),
 				'collections'
 			);
 		}
@@ -105,11 +105,13 @@ describe('Testing collections view with custom data', () => {
 				expect(blocks.categories.filters).to.be.eql({});
 
 				// Test collections
-				expect(Object.keys(blocks.collections.collections)).to.be.eql([
-					'Custom',
-				]);
 				expect(
-					Object.keys(blocks.collections.collections['Custom'])
+					Object.keys(blocks.collections.collections.visible)
+				).to.be.eql(['Custom']);
+				expect(
+					Object.keys(
+						blocks.collections.collections.visible['Custom']
+					)
 				).to.be.eql([prefix]);
 
 				done();
@@ -175,10 +177,14 @@ describe('Testing collections view with custom data', () => {
 
 				// Test collections
 				expect(
-					Object.keys(blocks.collections.collections['Custom'])
+					Object.keys(
+						blocks.collections.collections.visible['Custom']
+					)
 				).to.be.eql([prefix]);
 				expect(
-					Object.keys(blocks.collections.collections['Thematic'])
+					Object.keys(
+						blocks.collections.collections.visible['Thematic']
+					)
 				).to.be.eql([
 					'logos',
 					'simple-icons',
@@ -256,7 +262,9 @@ describe('Testing collections view with custom data', () => {
 
 				// Test collections
 				expect(
-					Object.keys(blocks.collections.collections['Thematic'])
+					Object.keys(
+						blocks.collections.collections.visible['Thematic']
+					)
 				).to.be.eql([
 					'wi',
 					'logos',
@@ -335,11 +343,13 @@ describe('Testing collections view with custom data', () => {
 				// Test collections
 				expect(
 					Object.keys(
-						blocks.collections.collections[category]
+						blocks.collections.collections.visible[category]
 					).indexOf(prefix)
 				).to.be.equal(0);
 				expect(
-					Object.keys(blocks.collections.collections['Thematic'])
+					Object.keys(
+						blocks.collections.collections.visible['Thematic']
+					)
 				).to.be.eql([
 					// 'wi', // should not be in this list
 					'logos',

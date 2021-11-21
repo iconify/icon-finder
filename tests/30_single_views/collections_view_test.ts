@@ -10,7 +10,7 @@ import type { FullCollectionsRoute } from '../../lib/route/types/routes';
 import { objectToRoute } from '../../lib/route/convert';
 import type { FullCollectionsRouteParams } from '../../lib/route/types/params';
 import type { EventCallback } from '../../lib/events';
-import { API as FakeAPI } from '../fake_api';
+import { API as FakeAPI, collectionsQueryParams } from '../fake_api';
 import { collectionsCacheKey } from '../../lib/api/base';
 
 describe('Testing collections list view', () => {
@@ -27,7 +27,7 @@ describe('Testing collections list view', () => {
 		api.loadFixture(
 			provider,
 			'/collections',
-			{},
+			collectionsQueryParams(),
 			'collections',
 			{},
 			collectionsCacheKey(),
@@ -312,8 +312,20 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, void 0, 404, {});
-		api.loadFixture('test', '/collections', {}, 'collections');
+		api.setFakeData(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			void 0,
+			404,
+			{}
+		);
+		api.loadFixture(
+			'test',
+			'/collections',
+			collectionsQueryParams(),
+			'collections'
+		);
 
 		let isSync = true;
 
@@ -347,11 +359,18 @@ describe('Testing collections list view', () => {
 		registry.config.router.syncRender = true;
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, void 0, 404, {});
+		api.setFakeData(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			void 0,
+			404,
+			{}
+		);
 		api.loadFixture(
 			'test',
 			'/collections',
-			{},
+			collectionsQueryParams(),
 			'collections',
 			{},
 			collectionsCacheKey(),
@@ -391,12 +410,12 @@ describe('Testing collections list view', () => {
 		registry.config.router.syncRender = true;
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		// api.setFakeData('', '/collections', {}, null);
+		// api.setFakeData('', '/collections', collectionsQueryParams(), null);
 		api.storeCache('', 'collections', null);
 		api.loadFixture(
 			'test',
 			'/collections',
-			{},
+			collectionsQueryParams(),
 			'collections',
 			{},
 			collectionsCacheKey(),
@@ -433,7 +452,14 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, void 0, 404, {});
+		api.setFakeData(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			void 0,
+			404,
+			{}
+		);
 
 		// Sign up for event
 		const events = registry.events;
@@ -632,7 +658,7 @@ describe('Testing collections list view', () => {
 		api.setFakeData(
 			'',
 			'/collections',
-			{},
+			collectionsQueryParams(),
 			JSON.stringify({
 				error: 'not_found',
 			}),
@@ -664,7 +690,14 @@ describe('Testing collections list view', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.setFakeData('', '/collections', {}, 'whatever', void 0, {});
+		api.setFakeData(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			'whatever',
+			void 0,
+			{}
+		);
 
 		// Sign up for event
 		const events = registry.events;

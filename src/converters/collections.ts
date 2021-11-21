@@ -5,10 +5,14 @@ import { dataToCollectionInfo } from './info';
 /**
  * List of collections, sorted by category and by prefix
  */
-export interface CollectionsList {
-	[index: string]: {
-		[index: string]: CollectionInfo;
-	};
+export type VisibleCollectionsList = Record<
+	string,
+	Record<string, CollectionInfo>
+>;
+export type HiddenCollectionsList = Record<string, CollectionInfo>;
+export interface ExtendedCollectionsList {
+	visible: VisibleCollectionsList;
+	hidden: HiddenCollectionsList;
 }
 
 /**
@@ -31,8 +35,12 @@ export type CollectionsListRawData = Record<
  */
 export function dataToCollections(
 	data: CollectionsListRawData
-): CollectionsList {
-	const result = Object.create(null);
+): ExtendedCollectionsList {
+	const result: ExtendedCollectionsList = {
+		visible: Object.create(null),
+		hidden: Object.create(null),
+	};
+	const visible = result.visible;
 	const uncategorised = Object.create(null);
 
 	if (typeof data !== 'object' || data === null) {
@@ -52,17 +60,21 @@ export function dataToCollections(
 
 		// Convert item
 		const item = dataToCollectionInfo(row, prefix);
-		if (item === null) {
+		if (!item) {
+			return;
+		}
+		if (item.hidden) {
+			result.hidden[prefix] = item;
 			return;
 		}
 
 		// Add category and item
 		const category = row.category;
 		if (category !== '') {
-			if (result[category] === void 0) {
-				result[category] = Object.create(null);
+			if (visible[category] === void 0) {
+				visible[category] = Object.create(null);
 			}
-			result[category][prefix] = item;
+			visible[category][prefix] = item;
 		} else {
 			uncategorised[prefix] = item;
 		}
@@ -70,7 +82,7 @@ export function dataToCollections(
 
 	// Add uncategorised at the end
 	if (Object.keys(uncategorised).length > 0) {
-		result[''] = uncategorised;
+		visible[''] = uncategorised;
 	}
 
 	return result;
@@ -79,10 +91,13 @@ export function dataToCollections(
 /**
  * Get collection prefixes from converted collections list
  */
-export function collectionsPrefixes(collections: CollectionsList): string[] {
+export function collectionsPrefixes(
+	collections: ExtendedCollectionsList
+): string[] {
 	let prefixes: string[] = [];
-	Object.keys(collections).forEach((category) => {
-		prefixes = prefixes.concat(Object.keys(collections[category]));
+	const visible = collections.visible;
+	Object.keys(visible).forEach((category) => {
+		prefixes = prefixes.concat(Object.keys(visible[category]));
 	});
 	return prefixes;
 }
@@ -91,31 +106,36 @@ export function collectionsPrefixes(collections: CollectionsList): string[] {
  * Filter collections
  */
 export function filterCollections(
-	collections: CollectionsList,
+	collections: ExtendedCollectionsList,
 	callback: CollectionsListFilterCallback,
 	keepEmptyCategories = false
-): CollectionsList {
-	const result = Object.create(null);
+): ExtendedCollectionsList {
+	const result: ExtendedCollectionsList = {
+		visible: Object.create(null),
+		hidden: collections.hidden,
+	};
+	const visibleSource = collections.visible;
+	const visibleResults = result.visible;
 
 	// Parse each category
-	Object.keys(collections).forEach((category) => {
+	Object.keys(visibleSource).forEach((category) => {
 		if (keepEmptyCategories) {
-			result[category] = Object.create(null);
+			visibleResults[category] = Object.create(null);
 		}
 
 		// Parse each item in category
-		Object.keys(collections[category]).forEach((prefix) => {
-			const item = collections[category][prefix];
+		Object.keys(visibleSource[category]).forEach((prefix) => {
+			const item = visibleSource[category][prefix];
 
 			if (!callback(item, category, prefix)) {
 				return;
 			}
 
 			// Passed filter
-			if (result[category] === void 0) {
-				result[category] = Object.create(null);
+			if (visibleResults[category] === void 0) {
+				visibleResults[category] = Object.create(null);
 			}
-			result[category][prefix] = item;
+			visibleResults[category][prefix] = item;
 		});
 	});
 
@@ -126,13 +146,14 @@ export function filterCollections(
  * Add indexes to all collections
  */
 export function autoIndexCollections(
-	collections: CollectionsList,
+	collections: ExtendedCollectionsList,
 	start = 0
 ): void {
+	const visible = collections.visible;
 	let index = start;
 
-	Object.keys(collections).forEach((category) => {
-		const items = collections[category];
+	Object.keys(visible).forEach((category) => {
+		const items = visible[category];
 		Object.keys(items).forEach((prefix) => {
 			items[prefix].index = index++;
 		});

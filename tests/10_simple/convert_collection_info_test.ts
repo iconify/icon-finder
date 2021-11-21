@@ -255,4 +255,45 @@ describe('Testing converting collection information', () => {
 
 		expect(result).to.be.eql(item);
 	});
+
+	it('Converted partial hidden item', () => {
+		const item = {
+			name: 'Emblemicons',
+			total: 1064,
+			author: {
+				name: 'Manish Bharvey',
+			},
+			license: {
+				title: 'MIT',
+			},
+			height: 24,
+			palette: false,
+			category: 'General',
+			hidden: true,
+		};
+		const result = dataToCollectionInfo(item, 'emblemicons');
+
+		const expected: CollectionInfo = {
+			prefix: 'emblemicons',
+			name: 'Emblemicons',
+			total: 1064,
+			author: {
+				name: 'Manish Bharvey',
+				url: '',
+			},
+			license: {
+				title: 'MIT',
+				spdx: '',
+				url: '',
+			},
+			version: '',
+			height: 24,
+			displayHeight: 24,
+			palette: false,
+			samples: [],
+			category: 'General',
+			hidden: true,
+		};
+		expect(result).to.be.eql(expected);
+	});
 });

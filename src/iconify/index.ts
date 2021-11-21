@@ -36,6 +36,13 @@ export function setIconify(functions: Partial<CoreIconifyFunctions>): void {
 				for (const key in items) {
 					const value = items[key as keyof typeof items];
 					if (typeof value === 'function') {
+						if (key === 'getVersion') {
+							const version = (value as IconifyGetVersion)();
+							if (version.slice(0, 4) === '2.0.') {
+								// 2.1.0 is newer. To be fixed in rewrite
+								continue;
+							}
+						}
 						(Iconify as Record<string, unknown>)[key] = value;
 					}
 				}

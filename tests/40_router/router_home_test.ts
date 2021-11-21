@@ -6,7 +6,11 @@ import { expect } from 'chai';
 import SVGFramework from '@iconify/iconify';
 import { setIconify } from '../../lib/iconify';
 import { Registry } from '../../lib/registry';
-import { API as FakeAPI } from '../fake_api';
+import {
+	API as FakeAPI,
+	collectionQueryParams,
+	collectionsQueryParams,
+} from '../fake_api';
 import { convertCustomSets } from '../../lib/data/custom-sets';
 
 // Set SVG Framework
@@ -33,7 +37,12 @@ describe('Testing home route with custom icon sets', () => {
 		const registry = new Registry(namespace + nsCounter++);
 		const api = new FakeAPI(registry);
 		registry.api = api;
-		api.loadFixture(provider, '/collections', {}, 'collections');
+		api.loadFixture(
+			provider,
+			'/collections',
+			collectionsQueryParams(),
+			'collections'
+		);
 		return registry;
 	}
 
@@ -73,17 +82,7 @@ describe('Testing home route with custom icon sets', () => {
 
 		// Load fixture
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		// Create router
 		const router = registry.router;

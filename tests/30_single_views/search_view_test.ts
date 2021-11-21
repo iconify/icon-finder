@@ -12,7 +12,7 @@ import type {
 	FullSearchRouteParams,
 	PartialSearchRouteParams,
 } from '../../lib/route/types/params';
-import { API as FakeAPI } from '../fake_api';
+import { API as FakeAPI, searchQueryParams } from '../fake_api';
 import type { EventCallback } from '../../lib/events';
 import type { FiltersBlock } from '../../lib/blocks/filters';
 import { isFiltersBlockEmpty } from '../../lib/blocks/filters';
@@ -54,10 +54,7 @@ describe('Testing search view', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: search,
-				limit,
-			},
+			searchQueryParams(search, limit),
 			'search-' + search + (short ? '' : '-full'),
 			{},
 			searchCacheKey(search, limit),
@@ -213,10 +210,7 @@ describe('Testing search view', () => {
 		api.setFakeData(
 			'',
 			'/search',
-			{
-				query: keyword,
-				limit: 64,
-			},
+			searchQueryParams(keyword, 64),
 			void 0,
 			404,
 			{}

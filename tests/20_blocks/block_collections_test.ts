@@ -26,7 +26,10 @@ describe('Testing collections list block', () => {
 
 		// Add empty category
 		block.collections = {
-			General: {},
+			visible: {
+				General: {},
+			},
+			hidden: {},
 		};
 		expect(isCollectionsBlockEmpty(block)).to.be.eql(true);
 		expect(getCollectionsBlockCategories(block)).to.be.eql(['General']);
@@ -35,12 +38,15 @@ describe('Testing collections list block', () => {
 
 		// Add one collection
 		block.collections = {
-			General: {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					title: 'Foo',
-				}),
+			visible: {
+				General: {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						title: 'Foo',
+					}),
+				},
 			},
+			hidden: {},
 		};
 		expect(isCollectionsBlockEmpty(block)).to.be.eql(false);
 		expect(getCollectionsBlockCategories(block)).to.be.eql(['General']);
@@ -51,22 +57,25 @@ describe('Testing collections list block', () => {
 
 		// Add more collections
 		block.collections = {
-			General: {
-				foo: Object.assign(defaultCollectionInfo(), {
-					prefix: 'foo',
-					title: 'Foo',
-				}),
-				bar: Object.assign(defaultCollectionInfo(), {
-					prefix: 'bar',
-					title: 'Bar',
-				}),
+			visible: {
+				General: {
+					foo: Object.assign(defaultCollectionInfo(), {
+						prefix: 'foo',
+						title: 'Foo',
+					}),
+					bar: Object.assign(defaultCollectionInfo(), {
+						prefix: 'bar',
+						title: 'Bar',
+					}),
+				},
+				Emoji: {
+					baz: Object.assign(defaultCollectionInfo(), {
+						prefix: 'baz',
+						title: 'Baz',
+					}),
+				},
 			},
-			Emoji: {
-				baz: Object.assign(defaultCollectionInfo(), {
-					prefix: 'baz',
-					title: 'Baz',
-				}),
-			},
+			hidden: {},
 		};
 		expect(isCollectionsBlockEmpty(block)).to.be.eql(false);
 		expect(getCollectionsBlockCategories(block)).to.be.eql([
@@ -139,8 +148,9 @@ describe('Testing collections list block', () => {
 		// Test autoIndexCollections
 		autoIndexCollections(block.collections);
 
-		expect(block.collections.General.foo.index).to.be.equal(0);
-		expect(block.collections.General.bar.index).to.be.equal(1);
-		expect(block.collections.Emoji.baz.index).to.be.equal(2);
+		const visibleItems = block.collections.visible;
+		expect(visibleItems.General.foo.index).to.be.equal(0);
+		expect(visibleItems.General.bar.index).to.be.equal(1);
+		expect(visibleItems.Emoji.baz.index).to.be.equal(2);
 	});
 });

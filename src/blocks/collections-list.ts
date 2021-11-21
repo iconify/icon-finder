@@ -1,6 +1,6 @@
 import type { BaseBlock } from './types';
 import type {
-	CollectionsList,
+	ExtendedCollectionsList,
 	CollectionsListFilterCallback,
 } from '../converters/collections';
 import {
@@ -19,7 +19,7 @@ import { match } from '../misc/objects';
 export interface CollectionsListBlock extends BaseBlock {
 	readonly type: 'collections-list';
 	showCategories: boolean;
-	collections: CollectionsList;
+	collections: ExtendedCollectionsList;
 }
 
 /**
@@ -29,7 +29,10 @@ export const defaultCollectionsListBlock = (): CollectionsListBlock => {
 	return {
 		type: 'collections-list',
 		showCategories: true,
-		collections: Object.create(null),
+		collections: {
+			visible: Object.create(null),
+			hidden: Object.create(null),
+		},
 	};
 };
 
@@ -43,10 +46,11 @@ export function isCollectionsBlockEmpty(
 		return true;
 	}
 
-	const categories = Object.keys(block.collections);
+	const items = block.collections.visible;
+	const categories = Object.keys(items);
 
 	for (let i = 0; i < categories.length; i++) {
-		if (Object.keys(block.collections[categories[i]]).length > 0) {
+		if (Object.keys(items[categories[i]]).length > 0) {
 			return false;
 		}
 	}
@@ -61,10 +65,11 @@ export function getCollectionsBlockCategories(
 	block: CollectionsListBlock,
 	ignoreEmpty = false
 ): string[] {
-	let categories = Object.keys(block.collections);
+	const items = block.collections.visible;
+	let categories = Object.keys(items);
 	if (ignoreEmpty) {
 		categories = categories.filter(
-			(category) => Object.keys(block.collections[category]).length > 0
+			(category) => Object.keys(items[category]).length > 0
 		);
 	}
 	return categories;
@@ -86,12 +91,11 @@ export function collectionsPrefixesWithInfo(
 	block: CollectionsListBlock
 ): CollectionInfo[] {
 	const info: CollectionInfo[] = [];
-	Object.keys(block.collections).forEach((category) => {
-		const items = block.collections[category];
+	const visibleItems = block.collections.visible;
+	Object.keys(visibleItems).forEach((category) => {
+		const items = visibleItems[category];
 		Object.keys(items).forEach((prefix) => {
-			if (items[prefix] !== null) {
-				info.push(items[prefix]);
-			}
+			info.push(items[prefix]);
 		});
 	});
 	return info;
@@ -104,8 +108,9 @@ export function iterateCollectionsBlock(
 	block: CollectionsListBlock,
 	callback: (data: CollectionInfo, prefix: string, category: string) => void
 ): void {
-	Object.keys(block.collections).forEach((category) => {
-		const items = block.collections[category];
+	const visibleItems = block.collections.visible;
+	Object.keys(visibleItems).forEach((category) => {
+		const items = visibleItems[category];
 		Object.keys(items).forEach((prefix) => {
 			callback(items[prefix], prefix, category);
 		});
@@ -143,13 +148,17 @@ export function disableInactiveCategories(
 		return block;
 	}
 
+	const visibleItems = block.collections.visible;
 	const result: CollectionsListBlock = {
 		type: 'collections-list',
 		showCategories: block.showCategories,
-		collections: Object.create(null),
+		collections: {
+			visible: Object.create(null),
+			hidden: block.collections.hidden,
+		},
 	};
-	if (block.collections[category] !== void 0) {
-		result.collections[category] = block.collections[category];
+	if (visibleItems[category] !== void 0) {
+		result.collections.visible[category] = visibleItems[category];
 	}
 
 	return result;

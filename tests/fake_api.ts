@@ -206,3 +206,35 @@ export class API extends BaseAPI {
 		}
 	}
 }
+
+/**
+ * Parameters for queries
+ */
+export function collectionsQueryParams(): APIParams {
+	return {
+		hidden: true,
+	};
+}
+
+export function collectionQueryParams(
+	prefix: string,
+	hidden = false
+): APIParams {
+	const result: APIParams = {
+		prefix,
+		info: 'true',
+		chars: 'true',
+		aliases: 'true',
+	};
+	if (hidden) {
+		result.hidden = 'true';
+	}
+	return result;
+}
+
+export function searchQueryParams(query: string, limit: number): APIParams {
+	return {
+		query,
+		limit,
+	};
+}

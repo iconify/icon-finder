@@ -36,6 +36,9 @@ export interface LegacyIconifyInfo {
 	// Category
 	category?: string;
 	palette?: 'Colorless' | 'Colorful';
+
+	// Hidden
+	hidden?: boolean;
 }
 
 /**
@@ -44,6 +47,9 @@ export interface LegacyIconifyInfo {
 export interface CollectionInfo extends IconifyInfo {
 	// Prefix
 	prefix: string;
+
+	// Hidden
+	hidden?: boolean;
 
 	// Index for color rotation
 	index?: number;
@@ -226,6 +232,11 @@ export function dataToCollectionInfo(
 			case 'true': // Boolean as string
 				result.palette = true;
 		}
+	}
+
+	// Hidden
+	if (source.hidden) {
+		result.hidden = true;
 	}
 
 	// Parse all old keys

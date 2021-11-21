@@ -1,5 +1,4 @@
-// Iconify version (do not edit it, replaced during build!)
-export const iconifyVersion = '2.0.0';
+export const iconifyVersion = '2.1.0';
 
 /**
  * Packages

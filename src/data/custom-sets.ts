@@ -2,7 +2,7 @@ import type { IconifyJSON, IconifyInfo } from '@iconify/types';
 import { Iconify } from '../iconify';
 import type { CollectionData } from '../converters/collection';
 import { rawDataToCollection } from '../converters/collection';
-import type { CollectionsList } from '../converters/collections';
+import type { ExtendedCollectionsList } from '../converters/collections';
 import { dataToCollections } from '../converters/collections';
 
 /**
@@ -45,7 +45,7 @@ export interface IconFinderCustomSets {
 interface ConvertedProviderData {
 	total: number;
 	data: Record<string, CollectionData>;
-	collections: CollectionsList;
+	collections: ExtendedCollectionsList;
 }
 
 /**
@@ -133,7 +133,10 @@ export function convertCustomSets(
 			result.providers[provider] = {
 				total: 0,
 				data: Object.create(null),
-				collections: {},
+				collections: {
+					visible: Object.create(null),
+					hidden: Object.create(null),
+				},
 			};
 		}
 
@@ -177,12 +180,12 @@ export function convertCustomSets(
  */
 export function mergeCollections(
 	provider: string,
-	defaultSets: CollectionsList | null,
+	defaultSets: ExtendedCollectionsList | null,
 	customSets: ConvertedCustomSets | null
-): CollectionsList {
+): ExtendedCollectionsList {
 	interface ParsedList {
 		isCustom: boolean;
-		categories: CollectionsList;
+		data: ExtendedCollectionsList;
 	}
 
 	// Get list of parsed data
@@ -190,7 +193,7 @@ export function mergeCollections(
 	if (defaultSets) {
 		parsedData.push({
 			isCustom: false,
-			categories: defaultSets,
+			data: defaultSets,
 		});
 	}
 	if (customSets) {
@@ -199,28 +202,35 @@ export function mergeCollections(
 		// Unshift or push it, depending on merge order
 		parsedData[customSets.merge === 'custom-first' ? 'unshift' : 'push']({
 			isCustom: true,
-			categories: customCollections,
+			data: customCollections,
 		});
 	}
 
 	// Setup result as empty object
-	const results: CollectionsList = Object.create(null);
+	const results: ExtendedCollectionsList = {
+		visible: Object.create(null),
+		hidden: Object.create(null),
+	};
+	const visibleResults = results.visible;
+	const hiddenResults = results.hidden;
 
 	// Store prefixes map to avoid duplicates
-	const usedPrefixes: Record<string, string> = Object.create(null);
+	const prefixCategories: Record<string, string> = Object.create(null);
 
-	// Parse all data
+	// Parse all visible items
 	parsedData.forEach((item) => {
 		// Parse all categories
-		const collectionsList = item.categories;
-		Object.keys(collectionsList).forEach((category) => {
-			const categoryItems = collectionsList[category];
+		const data = item.data;
+		const visibleItems = data.visible;
+
+		Object.keys(visibleItems).forEach((category) => {
+			const categoryItems = visibleItems[category];
 			Object.keys(categoryItems).forEach((prefix) => {
-				if (usedPrefixes[prefix] !== void 0) {
+				if (prefixCategories[prefix] !== void 0) {
 					// Prefix has already been parsed
 					if (item.isCustom) {
 						// Remove previous entry
-						delete results[usedPrefixes[prefix]][prefix];
+						delete visibleResults[prefixCategories[prefix]][prefix];
 					} else {
 						// Do not overwrite: always show set from API in case of duplicate entries
 						return;
@@ -228,12 +238,23 @@ export function mergeCollections(
 				}
 
 				// Add item
-				usedPrefixes[prefix] = category;
-				if (results[category] === void 0) {
-					results[category] = Object.create(null);
+				prefixCategories[prefix] = category;
+				if (visibleResults[category] === void 0) {
+					visibleResults[category] = Object.create(null);
 				}
-				results[category][prefix] = categoryItems[prefix];
+				visibleResults[category][prefix] = categoryItems[prefix];
 			});
+		});
+	});
+
+	// Parse all hidden items
+	parsedData.forEach((item) => {
+		const hiddenItems = item.data.hidden;
+
+		Object.keys(hiddenItems).forEach((prefix) => {
+			if (prefixCategories[prefix] === void 0) {
+				hiddenResults[prefix] = hiddenItems[prefix];
+			}
 		});
 	});
 

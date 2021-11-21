@@ -7,7 +7,12 @@ import SVGFramework from '@iconify/iconify';
 import { setIconify } from '../../lib/iconify';
 import { Registry } from '../../lib/registry';
 import type { PartialRoute } from '../../lib/route/types/routes';
-import { API as FakeAPI } from '../fake_api';
+import {
+	API as FakeAPI,
+	collectionQueryParams,
+	collectionsQueryParams,
+	searchQueryParams,
+} from '../fake_api';
 import type { RouterEvent } from '../../lib/route/router';
 import type { FiltersBlock } from '../../lib/blocks/filters';
 import type { CollectionViewBlocks } from '../../lib/views/collection';
@@ -41,7 +46,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			provider,
 			'/collections',
-			{},
+			collectionsQueryParams(),
 			'collections',
 			{},
 			collectionsCacheKey(),
@@ -153,17 +158,7 @@ describe('Testing router', () => {
 	it('Custom home route', (done) => {
 		const registry = setupRegistry();
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		// Set custom home page
 		const config = registry.config;
@@ -237,17 +232,7 @@ describe('Testing router', () => {
 	it('Loading route from object', (done) => {
 		const registry = setupRegistry();
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		const config = registry.config;
 		config.ui!.showSiblingCollections = 3;
@@ -350,12 +335,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{},
 			collectionCacheKey('mdi'),
@@ -449,17 +429,7 @@ describe('Testing router', () => {
 	it('Loading route from object (synchronous, not cached)', (done) => {
 		const registry = setupRegistry('', false, true);
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		const config = registry.config;
 		config.ui!.showSiblingCollections = 3;
@@ -547,12 +517,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{},
 			collectionCacheKey('mdi'),
@@ -642,17 +607,7 @@ describe('Testing router', () => {
 	it('Loading route from object (synchronous, child view not cached)', (done) => {
 		const registry = setupRegistry('', true, true);
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		const config = registry.config;
 		config.ui!.showSiblingCollections = 3;
@@ -738,17 +693,7 @@ describe('Testing router', () => {
 		const registry = setupRegistry();
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'mdi'
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('mdi'), 'mdi');
 
 		// Create router
 		const router = registry.router;
@@ -830,12 +775,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{
 				responseDelay: 200,
@@ -946,37 +886,27 @@ describe('Testing router', () => {
 
 		const events = registry.events;
 		const api = registry.api as FakeAPI;
-		api.loadFixture('', '/collections', {}, 'collections', {
-			responseDelay: 500,
-		});
+		api.loadFixture(
+			'',
+			'/collections',
+			collectionsQueryParams(),
+			'collections',
+			{
+				responseDelay: 500,
+			}
+		);
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{
 				responseDelay: 10,
 			}
 		);
-		api.loadFixture(
-			'',
-			'/collection',
-			{
-				prefix: 'el',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
-			'el',
-			{
-				responseDelay: 700,
-			}
-		);
+		api.loadFixture('', '/collection', collectionQueryParams('el'), 'el', {
+			responseDelay: 700,
+		});
 
 		// Create router
 		const router = registry.router;
@@ -1109,10 +1039,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'',
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home',
 			{
 				responseDelay: 300,
@@ -1121,12 +1048,7 @@ describe('Testing router', () => {
 		api.loadFixture(
 			'',
 			'/collection',
-			{
-				prefix: 'mdi',
-				info: 'true',
-				chars: 'true',
-				aliases: 'true',
-			},
+			collectionQueryParams('mdi'),
 			'mdi',
 			{
 				responseDelay: 10,
@@ -1246,19 +1168,13 @@ describe('Testing router', () => {
 		api.loadFixture(
 			provider,
 			'/search',
-			{
-				query: 'home',
-				limit: 64,
-			},
+			searchQueryParams('home', 64),
 			'search-home'
 		);
 		api.loadFixture(
 			provider,
 			'/search',
-			{
-				query: 'home',
-				limit: 999,
-			},
+			searchQueryParams('home', 999),
 			'search-home-full'
 		);
 
