@@ -223,6 +223,7 @@ describe('Testing converting collections list', () => {
 			'map',
 			'medical-icon',
 		]);
+		expect(Object.keys(result.hidden)).to.be.eql(['mono-icons']);
 
 		// Test info for ant-design
 		const expected: CollectionInfo = {
@@ -316,5 +317,8 @@ describe('Testing converting collections list', () => {
 			'emojione-v1',
 			'fxemoji',
 		]);
+
+		// Hidden icons should not be filtered
+		expect(Object.keys(result.hidden)).to.be.eql(['mono-icons']);
 	});
 });

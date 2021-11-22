@@ -1052,4 +1052,60 @@ describe('Testing collection view', () => {
 			}
 		);
 	});
+
+	it('Test Mono Icons (hidden, new info format)', (done) => {
+		const view = setupView(
+			() => {
+				const blocks = view.render() as NonNullable<
+					CollectionViewBlocks
+				>;
+				expect(blocks).to.not.be.equal(null);
+
+				// Test info
+				expect(blocks.info).to.be.eql({
+					type: 'collection-info',
+					prefix: 'mono-icons',
+					info: {
+						prefix: 'mono-icons',
+						name: 'Mono Icons',
+						total: 180,
+						version: '1.3.1',
+						author: {
+							name: 'Mono',
+							url: 'https://github.com/mono-company/mono-icons',
+						},
+						license: {
+							title: 'MIT',
+							spdx: '',
+							url:
+								'https://github.com/mono-company/mono-icons/blob/master/LICENSE.md',
+						},
+						samples: ['user', 'log-in', 'play'],
+						category: 'General',
+						palette: false,
+						height: 24,
+						displayHeight: 24,
+						hidden: true,
+					},
+				});
+
+				// Test pagination
+				expect(blocks.pagination).to.be.eql({
+					type: 'pagination',
+					page: 3,
+					length: 180,
+					perPage: 48,
+					more: false,
+					fullLength: 180,
+				});
+
+				done();
+			},
+			'mono-icons',
+			{
+				prefix: 'mono-icons',
+				page: 3,
+			}
+		);
+	});
 });

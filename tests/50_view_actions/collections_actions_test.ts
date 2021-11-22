@@ -126,6 +126,82 @@ describe('Testing collections actions', () => {
 		router.home();
 	});
 
+	it('Navigating to hidden collection', (done) => {
+		const registry = setupRegistry();
+		const events = registry.events;
+		const api = registry.api as FakeAPI;
+		api.loadFixture(
+			'',
+			'/collection',
+			collectionQueryParams('mono-icons'),
+			'mono-icons'
+		);
+
+		// Create router
+		const router = registry.router;
+
+		// Check for data
+		expect(router.error()).to.be.equal('loading');
+		expect(router.fullRoute).to.be.equal(null);
+		expect(router.partialRoute).to.be.equal(null);
+		expect(router.render()).to.be.equal(null);
+
+		// Create event listener
+		let eventCounter = 0;
+		events.subscribe('render', (data: unknown) => {
+			const params = data as RouterEvent;
+			eventCounter++;
+
+			switch (eventCounter) {
+				case 1:
+					// Loading page
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('loading');
+					expect(params.route).to.be.eql({
+						type: 'collections',
+					});
+					break;
+
+				case 2:
+					// Home page has loaded
+					expect(params.viewChanged).to.be.equal(false);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collections',
+					});
+
+					// Change view to "mono-icons"
+					router.action('collections', 'mono-icons');
+					break;
+
+				case 3:
+					// "mono-icons" has loaded
+					expect(params.viewChanged).to.be.equal(true);
+					expect(params.error).to.be.equal('');
+					expect(params.route).to.be.eql({
+						type: 'collection',
+						params: {
+							prefix: 'mono-icons',
+						},
+						parent: {
+							type: 'collections',
+						},
+					});
+
+					done();
+					break;
+
+				default:
+					done(
+						`Render event should have been called less than ${eventCounter} times!`
+					);
+			}
+		});
+
+		// Navigate to home
+		router.home();
+	});
+
 	it('Changing provider', (done) => {
 		const provider = 'testing-provider';
 		const registry = setupRegistry();
