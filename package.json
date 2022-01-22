@@ -14,8 +14,9 @@
 	"homepage": "https://github.com/iconify/icon-finder",
 	"repository": "github:iconify/icon-finder#base-svelte",
 	"devDependencies": {
-		"@iconify/search-core": "^1.1.0",
+		"@iconify/search-core": "^1.1.2",
 		"@iconify/svelte": "^2.0.0",
+		"@iconify/types": "^1.0.7",
 		"@iconify/utils": "^1.0.19",
 		"@rollup/plugin-buble": "^0.21.3",
 		"@rollup/plugin-commonjs": "^17.0.0",
