@@ -47,6 +47,11 @@ export function renderHTML(
 		body = body.replace(/currentColor/g, customisations.color);
 	}
 
+	// Remove unused xlink namespace
+	if (body.indexOf('xlink:') === -1) {
+		delete attributes['xmlns:xlink'];
+	}
+
 	// Generate HTML
 	return (
 		'<svg ' +

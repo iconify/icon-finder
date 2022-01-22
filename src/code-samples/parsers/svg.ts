@@ -60,7 +60,13 @@ export function svgParser(
 			str = parts.join('>');
 
 			// Encode
-			str = "url('data:image/svg+xml," + encodeURIComponent(str) + "')";
+			str =
+				"url('data:image/svg+xml," +
+				encodeURIComponent(str)
+					.replace(/%20/g, ' ')
+					.replace(/%22/g, '"')
+					.replace(/%3D/g, '=') +
+				"')";
 			break;
 		}
 	}
