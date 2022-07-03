@@ -1,0 +1,271 @@
+{
+	"name": "@iconify/search-utils",
+	"type": "module",
+	"description": "Collection of functions for browsing and searching icon sets",
+	"author": "Vjacheslav Trushkin",
+	"version": "0.0.0",
+	"license": "MIT",
+	"bugs": "https://github.com/iconify/icon-finder/issues",
+	"homepage": "https://github.com/iconify/icon-finder",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/iconify/icon-finder.git"
+	},
+	"scripts": {
+		"clean": "rimraf lib tsconfig.tsbuildinfo coverage",
+		"lint": "eslint --fix src/**/*.ts",
+		"prebuild": "pnpm run lint && pnpm run clean",
+		"build": "unbuild",
+		"test:cjs": "vitest --config vitest.config.cjs",
+		"test:esm": "vitest --config vitest.config.mjs",
+		"test": "pnpm run test:cjs && pnpm run test:esm"
+	},
+	"exports": {
+		"./*": "./*",
+		"./lib/api/types/v3-dev/api": {
+			"types": "./lib/api/types/v3-dev/api.d.ts",
+			"require": "./lib/api/types/v3-dev/api.cjs",
+			"import": "./lib/api/types/v3-dev/api.mjs"
+		},
+		"./lib/api/types/v3-dev/icon-set": {
+			"types": "./lib/api/types/v3-dev/icon-set.d.ts",
+			"require": "./lib/api/types/v3-dev/icon-set.cjs",
+			"import": "./lib/api/types/v3-dev/icon-set.mjs"
+		},
+		"./lib/api/types/v3-dev/icons": {
+			"types": "./lib/api/types/v3-dev/icons.d.ts",
+			"require": "./lib/api/types/v3-dev/icons.cjs",
+			"import": "./lib/api/types/v3-dev/icons.mjs"
+		},
+		"./lib/api/types/v3-dev/info": {
+			"types": "./lib/api/types/v3-dev/info.d.ts",
+			"require": "./lib/api/types/v3-dev/info.cjs",
+			"import": "./lib/api/types/v3-dev/info.mjs"
+		},
+		"./lib/api/types/v3-dev/params": {
+			"types": "./lib/api/types/v3-dev/params.d.ts",
+			"require": "./lib/api/types/v3-dev/params.cjs",
+			"import": "./lib/api/types/v3-dev/params.mjs"
+		},
+		"./lib/api/types/v2": {
+			"types": "./lib/api/types/v2.d.ts",
+			"require": "./lib/api/types/v2.cjs",
+			"import": "./lib/api/types/v2.mjs"
+		},
+		"./lib/collections/convert/finalise": {
+			"types": "./lib/collections/convert/finalise.d.ts",
+			"require": "./lib/collections/convert/finalise.cjs",
+			"import": "./lib/collections/convert/finalise.mjs"
+		},
+		"./lib/collections/convert/list": {
+			"types": "./lib/collections/convert/list.d.ts",
+			"require": "./lib/collections/convert/list.cjs",
+			"import": "./lib/collections/convert/list.mjs"
+		},
+		"./lib/collections/convert/search": {
+			"types": "./lib/collections/convert/search.d.ts",
+			"require": "./lib/collections/convert/search.cjs",
+			"import": "./lib/collections/convert/search.mjs"
+		},
+		"./lib/collections/filter/apply": {
+			"types": "./lib/collections/filter/apply.d.ts",
+			"require": "./lib/collections/filter/apply.cjs",
+			"import": "./lib/collections/filter/apply.mjs"
+		},
+		"./lib/collections/filter/map": {
+			"types": "./lib/collections/filter/map.d.ts",
+			"require": "./lib/collections/filter/map.cjs",
+			"import": "./lib/collections/filter/map.mjs"
+		},
+		"./lib/collections/filter/reset": {
+			"types": "./lib/collections/filter/reset.d.ts",
+			"require": "./lib/collections/filter/reset.cjs",
+			"import": "./lib/collections/filter/reset.mjs"
+		},
+		"./lib/collections/types/collections": {
+			"types": "./lib/collections/types/collections.d.ts",
+			"require": "./lib/collections/types/collections.cjs",
+			"import": "./lib/collections/types/collections.mjs"
+		},
+		"./lib/collections/types/filter": {
+			"types": "./lib/collections/types/filter.d.ts",
+			"require": "./lib/collections/types/filter.cjs",
+			"import": "./lib/collections/types/filter.mjs"
+		},
+		"./lib/collections/types/prefixed-info": {
+			"types": "./lib/collections/types/prefixed-info.d.ts",
+			"require": "./lib/collections/types/prefixed-info.cjs",
+			"import": "./lib/collections/types/prefixed-info.mjs"
+		},
+		"./lib/collections/types/storage": {
+			"types": "./lib/collections/types/storage.d.ts",
+			"require": "./lib/collections/types/storage.cjs",
+			"import": "./lib/collections/types/storage.mjs"
+		},
+		"./lib/collections/storage": {
+			"types": "./lib/collections/storage.d.ts",
+			"require": "./lib/collections/storage.cjs",
+			"import": "./lib/collections/storage.mjs"
+		},
+		"./lib/events/events": {
+			"types": "./lib/events/events.d.ts",
+			"require": "./lib/events/events.cjs",
+			"import": "./lib/events/events.mjs"
+		},
+		"./lib/events/types": {
+			"types": "./lib/events/types.d.ts",
+			"require": "./lib/events/types.cjs",
+			"import": "./lib/events/types.mjs"
+		},
+		"./lib/filters/colors": {
+			"types": "./lib/filters/colors.d.ts",
+			"require": "./lib/filters/colors.cjs",
+			"import": "./lib/filters/colors.mjs"
+		},
+		"./lib/filters/count": {
+			"types": "./lib/filters/count.d.ts",
+			"require": "./lib/filters/count.cjs",
+			"import": "./lib/filters/count.mjs"
+		},
+		"./lib/filters/types": {
+			"types": "./lib/filters/types.d.ts",
+			"require": "./lib/filters/types.cjs",
+			"import": "./lib/filters/types.mjs"
+		},
+		"./lib/icon/types/icon": {
+			"types": "./lib/icon/types/icon.d.ts",
+			"require": "./lib/icon/types/icon.cjs",
+			"import": "./lib/icon/types/icon.mjs"
+		},
+		"./lib/icon/types/name": {
+			"types": "./lib/icon/types/name.d.ts",
+			"require": "./lib/icon/types/name.cjs",
+			"import": "./lib/icon/types/name.mjs"
+		},
+		"./lib/icon/types/variations": {
+			"types": "./lib/icon/types/variations.d.ts",
+			"require": "./lib/icon/types/variations.cjs",
+			"import": "./lib/icon/types/variations.mjs"
+		},
+		"./lib/icon/name": {
+			"types": "./lib/icon/name.d.ts",
+			"require": "./lib/icon/name.cjs",
+			"import": "./lib/icon/name.mjs"
+		},
+		"./lib/icon/variations": {
+			"types": "./lib/icon/variations.d.ts",
+			"require": "./lib/icon/variations.cjs",
+			"import": "./lib/icon/variations.mjs"
+		},
+		"./lib/icon-set/convert/helpers/hash": {
+			"types": "./lib/icon-set/convert/helpers/hash.d.ts",
+			"require": "./lib/icon-set/convert/helpers/hash.cjs",
+			"import": "./lib/icon-set/convert/helpers/hash.mjs"
+		},
+		"./lib/icon-set/convert/helpers/props": {
+			"types": "./lib/icon-set/convert/helpers/props.d.ts",
+			"require": "./lib/icon-set/convert/helpers/props.cjs",
+			"import": "./lib/icon-set/convert/helpers/props.mjs"
+		},
+		"./lib/icon-set/convert/helpers/themes": {
+			"types": "./lib/icon-set/convert/helpers/themes.d.ts",
+			"require": "./lib/icon-set/convert/helpers/themes.cjs",
+			"import": "./lib/icon-set/convert/helpers/themes.mjs"
+		},
+		"./lib/icon-set/convert/helpers/transforms": {
+			"types": "./lib/icon-set/convert/helpers/transforms.d.ts",
+			"require": "./lib/icon-set/convert/helpers/transforms.cjs",
+			"import": "./lib/icon-set/convert/helpers/transforms.mjs"
+		},
+		"./lib/icon-set/convert/helpers/value": {
+			"types": "./lib/icon-set/convert/helpers/value.d.ts",
+			"require": "./lib/icon-set/convert/helpers/value.cjs",
+			"import": "./lib/icon-set/convert/helpers/value.mjs"
+		},
+		"./lib/icon-set/convert/api-v2": {
+			"types": "./lib/icon-set/convert/api-v2.d.ts",
+			"require": "./lib/icon-set/convert/api-v2.cjs",
+			"import": "./lib/icon-set/convert/api-v2.mjs"
+		},
+		"./lib/icon-set/convert/raw": {
+			"types": "./lib/icon-set/convert/raw.d.ts",
+			"require": "./lib/icon-set/convert/raw.cjs",
+			"import": "./lib/icon-set/convert/raw.mjs"
+		},
+		"./lib/icon-set/themes/base": {
+			"types": "./lib/icon-set/themes/base.d.ts",
+			"require": "./lib/icon-set/themes/base.cjs",
+			"import": "./lib/icon-set/themes/base.mjs"
+		},
+		"./lib/icon-set/themes/variations": {
+			"types": "./lib/icon-set/themes/variations.d.ts",
+			"require": "./lib/icon-set/themes/variations.cjs",
+			"import": "./lib/icon-set/themes/variations.mjs"
+		},
+		"./lib/icon-set/types/category": {
+			"types": "./lib/icon-set/types/category.d.ts",
+			"require": "./lib/icon-set/types/category.cjs",
+			"import": "./lib/icon-set/types/category.mjs"
+		},
+		"./lib/icon-set/types/convert": {
+			"types": "./lib/icon-set/types/convert.d.ts",
+			"require": "./lib/icon-set/types/convert.cjs",
+			"import": "./lib/icon-set/types/convert.mjs"
+		},
+		"./lib/icon-set/types/icon-set": {
+			"types": "./lib/icon-set/types/icon-set.d.ts",
+			"require": "./lib/icon-set/types/icon-set.cjs",
+			"import": "./lib/icon-set/types/icon-set.mjs"
+		},
+		"./lib/icon-set/types/icons": {
+			"types": "./lib/icon-set/types/icons.d.ts",
+			"require": "./lib/icon-set/types/icons.cjs",
+			"import": "./lib/icon-set/types/icons.mjs"
+		},
+		"./lib/icon-set/types/themes": {
+			"types": "./lib/icon-set/types/themes.d.ts",
+			"require": "./lib/icon-set/types/themes.cjs",
+			"import": "./lib/icon-set/types/themes.mjs"
+		},
+		"./lib/icons/types/filters": {
+			"types": "./lib/icons/types/filters.d.ts",
+			"require": "./lib/icons/types/filters.cjs",
+			"import": "./lib/icons/types/filters.mjs"
+		},
+		"./lib/icons/types/pagination": {
+			"types": "./lib/icons/types/pagination.d.ts",
+			"require": "./lib/icons/types/pagination.cjs",
+			"import": "./lib/icons/types/pagination.mjs"
+		},
+		"./lib/icons/pagination": {
+			"types": "./lib/icons/pagination.d.ts",
+			"require": "./lib/icons/pagination.cjs",
+			"import": "./lib/icons/pagination.mjs"
+		},
+		"./lib/tests/helpers": {
+			"types": "./lib/tests/helpers.d.ts",
+			"require": "./lib/tests/helpers.cjs",
+			"import": "./lib/tests/helpers.mjs"
+		}
+	},
+	"files": [
+		"lib",
+		"*.d.ts"
+	],
+	"dependencies": {
+		"@iconify/types": "2.0.0-beta.1",
+		"@iconify/utils": "2.0.0-beta.4",
+		"iconify-icon": "1.0.0-beta.2"
+	},
+	"devDependencies": {
+		"@types/jest": "^28.1.4",
+		"@types/node": "^18.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.30.4",
+		"eslint": "^8.19.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"rimraf": "^3.0.2",
+		"unbuild": "^0.7.4",
+		"vitest": "^0.16.0"
+	}
+}

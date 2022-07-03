@@ -1,0 +1,4 @@
+packages:
+    - 'packages/search-utils'
+    - 'packages/*'
+    - 'debug/*'
