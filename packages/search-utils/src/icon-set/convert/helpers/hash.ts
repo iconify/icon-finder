@@ -1,7 +1,7 @@
 /**
  * Create basic hash
  */
-export function hashIconBody(content: string): string {
+export function hashString(content: string): string {
 	let hash = 0;
 	const length = content.length;
 	for (let i = 0; i < length; i++) {
