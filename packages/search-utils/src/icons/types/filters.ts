@@ -4,16 +4,16 @@ import type { IconFinderIconSetThemeTypes } from '../../icon-set/types/themes';
 /**
  * Types of filters
  */
-export type IconFinderIconSetFilterType =
+export type IconFinderIconsListFilterType =
 	// Sort by icon set: search results, bookmarks
 	| 'icon-set'
 	// Icon set themes
 	| IconFinderIconSetThemeTypes
-	| 'category';
+	| 'categories';
 
 /**
  * Filters list
  */
-export type IconFinderIconSetFilters = Partial<
-	Record<string, IconFinderFiltersList>
+export type IconFinderIconsListFilters = Partial<
+	Record<IconFinderIconsListFilterType, IconFinderFiltersList>
 >;

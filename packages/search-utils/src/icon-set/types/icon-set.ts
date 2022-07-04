@@ -19,9 +19,17 @@ export type IconFinderIconSetThemes = Partial<
 >;
 
 /**
+ * Filters: themes + categories
+ */
+export interface IconFinderIconSetFilters extends IconFinderIconSetThemes {
+	// Categories
+	categories?: IconFinderIconSetCategory[];
+}
+
+/**
  * Icon set
  */
-export interface IconFinderIconSet extends IconFinderIconSetThemes {
+export interface IconFinderIconSet extends IconFinderIconSetFilters {
 	// Source
 	source: IconFinderIconSetSource;
 
@@ -41,8 +49,5 @@ export interface IconFinderIconSet extends IconFinderIconSetThemes {
 	// Icons list
 	icons: IconFinderIconSetIcons;
 
-	// Prefixes/suffixes are added from IconFinderIconSetThemes
-
-	// Categories
-	categories?: IconFinderIconSetCategory[];
+	// Prefixes, suffixes and categories are added from IconFinderIconSetFilters
 }

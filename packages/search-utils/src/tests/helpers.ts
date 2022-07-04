@@ -1,3 +1,5 @@
+import { promises as fs } from 'fs';
+
 let providerCounter = 0;
 let prefixCounter = 0;
 
@@ -13,4 +15,11 @@ export function nextProvider(): string {
  */
 export function nextPrefix(): string {
 	return 'prefix-' + (prefixCounter++).toString();
+}
+
+/**
+ * Load fixture
+ */
+export async function loadFixture(name: string): Promise<string> {
+	return await fs.readFile('tests/fixtures/' + name, 'utf8');
 }
