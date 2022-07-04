@@ -202,11 +202,6 @@
 			"require": "./lib/icon-set/themes/variations.cjs",
 			"import": "./lib/icon-set/themes/variations.mjs"
 		},
-		"./lib/icon-set/types/category": {
-			"types": "./lib/icon-set/types/category.d.ts",
-			"require": "./lib/icon-set/types/category.cjs",
-			"import": "./lib/icon-set/types/category.mjs"
-		},
 		"./lib/icon-set/types/convert": {
 			"types": "./lib/icon-set/types/convert.d.ts",
 			"require": "./lib/icon-set/types/convert.cjs",

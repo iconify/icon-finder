@@ -1,5 +1,5 @@
 import type { IconifyInfo } from '@iconify/types';
-import type { IconFinderIconSetCategory } from './category';
+import type { IconFinderFilter } from '../../filters/types';
 import type { IconFinderIconSetIcons } from './icons';
 import type {
 	IconFinderIconSetTheme,
@@ -23,7 +23,7 @@ export type IconFinderIconSetThemes = Partial<
  */
 export interface IconFinderIconSetFilters extends IconFinderIconSetThemes {
 	// Categories
-	categories?: IconFinderIconSetCategory[];
+	categories?: IconFinderFilter[];
 }
 
 /**
@@ -49,5 +49,6 @@ export interface IconFinderIconSet extends IconFinderIconSetFilters {
 	// Icons list
 	icons: IconFinderIconSetIcons;
 
-	// Prefixes, suffixes and categories are added from IconFinderIconSetFilters
+	// Filters
+	// filters: IconFinderIconsListFilters;
 }

@@ -134,7 +134,7 @@ describe('Convert icon set from API', () => {
 		const expectedIconSetSuffixes: IconFinderIconSetTheme = {
 			type: 'suffixes',
 			// Same order as in JSON file
-			items: [emptySuffix, ...otherSuffixes],
+			filters: [emptySuffix, ...otherSuffixes],
 			// Longest matches first
 			sorted: [otherSuffixes[2], otherSuffixes[1], otherSuffixes[0]],
 			empty: emptySuffix,

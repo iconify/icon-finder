@@ -78,14 +78,14 @@ describe('Testing themes', () => {
 		};
 		const expectedSuffixes: IconFinderIconSetTheme = {
 			type: 'suffixes',
-			items: [solidSuffix, outlineSuffix, twotoneSuffix],
+			filters: [solidSuffix, outlineSuffix, twotoneSuffix],
 			sorted: [outlineSuffix, twotoneSuffix, solidSuffix],
 		};
 		expect(suffixes).toEqual(expectedSuffixes);
 
 		// Get actual items, make sure they are not clones
 		const [actualSolidSuffix, actualOutlineSuffix, actualTwotoneSuffix] =
-			suffixes.items;
+			suffixes.filters;
 		expect(suffixes.sorted[0]).toBe(actualOutlineSuffix);
 		expect(suffixes.sorted[1]).toBe(actualTwotoneSuffix);
 		expect(suffixes.sorted[2]).toBe(actualSolidSuffix);
@@ -223,7 +223,12 @@ describe('Testing themes', () => {
 		};
 		const expectedPrefixes: IconFinderIconSetTheme = {
 			type: 'prefixes',
-			items: [baselinePrefix, outlinePrefix, roundPrefix, twotonePrefix],
+			filters: [
+				baselinePrefix,
+				outlinePrefix,
+				roundPrefix,
+				twotonePrefix,
+			],
 			sorted: [outlinePrefix, twotonePrefix, roundPrefix],
 			empty: baselinePrefix,
 		};
@@ -235,7 +240,7 @@ describe('Testing themes', () => {
 			actualOutlinePrefix,
 			actualRoundPrefix,
 			actualTwotonePrefix,
-		] = prefixes.items;
+		] = prefixes.filters;
 		expect(prefixes.sorted[0]).toBe(actualOutlinePrefix);
 		expect(prefixes.sorted[1]).toBe(actualTwotonePrefix);
 		expect(prefixes.sorted[2]).toBe(actualRoundPrefix);
@@ -375,7 +380,7 @@ describe('Testing themes', () => {
 		};
 		const expectedPrefixes: IconFinderIconSetTheme = {
 			type: 'prefixes',
-			items: [baselinePrefix, roundPrefix, twotonePrefix],
+			filters: [baselinePrefix, roundPrefix, twotonePrefix],
 			sorted: [baselinePrefix, twotonePrefix, roundPrefix],
 		};
 		expect(prefixes).toEqual(expectedPrefixes);
@@ -394,7 +399,7 @@ describe('Testing themes', () => {
 		};
 		const expectedSuffixes: IconFinderIconSetTheme = {
 			type: 'suffixes',
-			items: [defaultSuffix, animatedSuffix],
+			filters: [defaultSuffix, animatedSuffix],
 			sorted: [animatedSuffix],
 			empty: defaultSuffix,
 		};

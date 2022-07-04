@@ -1,6 +1,6 @@
 import type { IconifyJSON } from '@iconify/types';
 import type { APIv2CollectionResponse } from '../../api/types/v2';
-import type { IconFinderIconSetCategory } from '../types/category';
+import type { IconFinderFilter } from '../../filters/types';
 import type { IconFinderIconSet } from '../types/icon-set';
 import type {
 	IconFinderIconSetIcon,
@@ -33,7 +33,7 @@ export function convertAPIv2IconSet(
 	// Function to add icon
 	const addIcon = (
 		name: string,
-		category?: IconFinderIconSetCategory,
+		category?: IconFinderFilter,
 		hidden?: boolean
 	) => {
 		let uniqueIcon: IconFinderIconSetUniqueIcon;
@@ -76,11 +76,11 @@ export function convertAPIv2IconSet(
 
 	// Generate categories list
 	const categories2 = categories || {};
-	const categoryItems: IconFinderIconSetCategory[] = [];
+	const categoryItems: IconFinderFilter[] = [];
 
 	// Add icons with categories
 	Object.keys(categories2).forEach((title, color) => {
-		const category: IconFinderIconSetCategory = {
+		const category: IconFinderFilter = {
 			title,
 			color,
 		};
@@ -94,7 +94,7 @@ export function convertAPIv2IconSet(
 	// Add icons without categories
 	const uncategorized = data.uncategorized;
 	if (uncategorized && uncategorized.length) {
-		let emptyCategory: IconFinderIconSetCategory | undefined;
+		let emptyCategory: IconFinderFilter | undefined;
 		if (categoryItems.length) {
 			emptyCategory = {
 				title: '',

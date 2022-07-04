@@ -7,7 +7,7 @@ import {
 	commonObjectProps,
 	unmergeObjects,
 } from '@iconify/utils/lib/misc/objects';
-import type { IconFinderIconSetCategory } from '../types/category';
+import type { IconFinderFilter } from '../../filters/types';
 import type { IconFinderIconSet } from '../types/icon-set';
 import type {
 	IconFinderIconSetIcon,
@@ -64,24 +64,22 @@ export function convertRawIconSet(
 
 	// Generate categories list
 	const categories2 = categories || {};
-	const categoryItems: IconFinderIconSetCategory[] = Object.keys(
-		categories2
-	).map((title, color) => {
-		return {
-			title,
-			color,
-		};
-	});
-	const emptyCategory: IconFinderIconSetCategory = {
+	const categoryItems: IconFinderFilter[] = Object.keys(categories2).map(
+		(title, color) => {
+			return {
+				title,
+				color,
+			};
+		}
+	);
+	const emptyCategory: IconFinderFilter = {
 		title: '',
 		color: categoryItems.length,
 	};
 	let hasUncategorised = false;
 
 	// Get categories for icons tree
-	function getCategoriesForIcons(
-		tree: string[]
-	): IconFinderIconSetCategory[] {
+	function getCategoriesForIcons(tree: string[]): IconFinderFilter[] {
 		for (let i = 0; i < tree.length; i++) {
 			const name = tree[i];
 			const result = categoryItems.filter((item) => {

@@ -1,4 +1,4 @@
-import type { IconFinderIconSetCategory } from './category';
+import type { IconFinderFilter } from '../../filters/types';
 
 /**
  * Icon
@@ -11,7 +11,7 @@ export interface IconFinderIconSetIcon {
 	hidden?: boolean;
 
 	// List of categories icon belongs to
-	categories?: IconFinderIconSetCategory[];
+	categories?: IconFinderFilter[];
 }
 
 /**
@@ -25,7 +25,7 @@ export interface IconFinderIconSetUniqueIcon {
 	render: string;
 
 	// List of categories icons belong to
-	categories?: IconFinderIconSetCategory[];
+	categories?: IconFinderFilter[];
 
 	// True if all icons are hidden
 	hidden?: boolean;

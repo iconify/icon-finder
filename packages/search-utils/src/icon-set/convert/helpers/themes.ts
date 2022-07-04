@@ -13,10 +13,10 @@ function convert(
 	prefix: boolean,
 	index: number
 ): IconFinderIconSetTheme {
-	const items = [] as IconFinderIconSetTheme['items'];
+	const filters = [] as IconFinderIconSetTheme['filters'];
 	const result: IconFinderIconSetTheme = {
 		type: prefix ? 'prefixes' : 'suffixes',
-		items,
+		filters,
 		sorted: [],
 	};
 
@@ -34,7 +34,7 @@ function convert(
 			match,
 			color: index++,
 		};
-		result.items.push(item);
+		result.filters.push(item);
 
 		if (!key) {
 			result.empty = item;
@@ -96,7 +96,7 @@ export function getIconSetThemes(data: IconifyJSON): GetIconSetThemesResult {
 		result.suffixes = convert(
 			rawSuffixes,
 			false,
-			result.prefixes ? result.prefixes.items.length : 0
+			result.prefixes ? result.prefixes.filters.length : 0
 		);
 	}
 

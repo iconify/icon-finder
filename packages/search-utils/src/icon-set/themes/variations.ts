@@ -24,10 +24,10 @@ export function getThemeVariations(
 	}
 
 	const baseName = baseItem.name;
-	const { type, items } = theme;
+	const { type, filters } = theme;
 	const results: GetThemeVariationsResult[] = [];
-	for (let i = 0; i < items.length; i++) {
-		const item = items[i];
+	for (let i = 0; i < filters.length; i++) {
+		const item = filters[i];
 		const match = item.match;
 		results.push({
 			name: type === 'prefixes' ? match + baseName : baseName + match,

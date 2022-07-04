@@ -1,3 +1,5 @@
+import type { IconFinderFilter } from '../../filters/types';
+
 /**
  * Theme types
  */
@@ -6,15 +8,9 @@ export type IconFinderIconSetThemeTypes = 'prefixes' | 'suffixes';
 /**
  * Prefix or suffix
  */
-export interface IconFinderIconSetThemeItem {
-	// Title
-	title: string;
-
+export interface IconFinderIconSetThemeItem extends IconFinderFilter {
 	// Match value, including '-'
 	match: string;
-
-	// Palette index
-	color?: number;
 }
 
 /**
@@ -25,7 +21,7 @@ export interface IconFinderIconSetTheme {
 	type: IconFinderIconSetThemeTypes;
 
 	// Items, in same order as in JSON file, including empty item
-	items: IconFinderIconSetThemeItem[];
+	filters: IconFinderIconSetThemeItem[];
 
 	// Sorted matches, without empty item, shorted match first
 	sorted: IconFinderIconSetThemeItem[];
