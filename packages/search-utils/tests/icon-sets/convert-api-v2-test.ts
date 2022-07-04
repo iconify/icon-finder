@@ -3,11 +3,11 @@ import { loadFixture } from '../../lib/tests/helpers';
 import { convertAPIv2IconSet } from '../../lib/icon-set/convert/api-v2';
 import type { APIv2CollectionResponse } from '../../lib/api/types/v2';
 import type { IconFinderIconSetUniqueIcon } from '../../lib/icon-set/types/icons';
-import type { IconFinderIconSetCategory } from '../../lib/icon-set/types/category';
 import type {
-	IconFinderIconSetTheme,
-	IconFinderIconSetThemeItem,
-} from '../../lib/icon-set/types/themes';
+	IconFinderTagsFilter,
+	IconFinderThemeFilter,
+} from '../../lib/filters/types/filter';
+import type { IconFinderThemeFiltersList } from '../../lib/filters/types/list';
 
 describe('Convert icon set from API', () => {
 	it('Missing info', async () => {
@@ -59,20 +59,21 @@ describe('Convert icon set from API', () => {
 			palette: false,
 		});
 
-		// Icons
+		// Icons and tags
 		const { map } = iconSet!.icons;
+		const { tags, suffixes } = iconSet!.filters;
 
-		const accountCategory: IconFinderIconSetCategory = {
+		const accountTag: IconFinderTagsFilter = {
 			title: 'Account',
 			color: 0,
 		};
-		expect(iconSet!.categories![0]).toEqual(accountCategory);
+		expect(tags!.filters[0]).toEqual(accountTag);
 
-		const foodCategory: IconFinderIconSetCategory = {
+		const foodTag: IconFinderTagsFilter = {
 			title: 'Food and Drink',
 			color: 7,
 		};
-		expect(iconSet!.categories![7]).toEqual(foodCategory);
+		expect(tags!.filters[7]).toEqual(foodTag);
 
 		// account
 		const accountIcon = map['account'];
@@ -80,11 +81,11 @@ describe('Convert icon set from API', () => {
 			icons: [
 				{
 					name: 'account',
-					categories: [accountCategory],
+					tags: [accountTag],
 				},
 			],
 			render: 'account',
-			categories: [accountCategory],
+			tags: [accountTag],
 		};
 		expect(accountIcon).toEqual(expectedAccountIcon);
 
@@ -94,27 +95,27 @@ describe('Convert icon set from API', () => {
 			icons: [
 				{
 					name: 'beer-filled',
-					categories: [foodCategory],
+					tags: [foodTag],
 				},
 				{
 					name: 'beer-solid',
-					categories: [foodCategory],
+					tags: [foodTag],
 				},
 			],
 			render: 'beer-filled',
-			categories: [foodCategory],
+			tags: [foodTag],
 		};
 		expect(beerFilledIcon).toEqual(expectedBeerFilledIcon);
 
 		expect(map['beer-solid']).toBe(map['beer-filled']);
 
 		// Suffixes
-		const emptySuffix: IconFinderIconSetThemeItem = {
+		const emptySuffix: IconFinderThemeFilter = {
 			title: 'Outline Animation',
 			match: '',
 			color: 0,
 		};
-		const otherSuffixes: IconFinderIconSetThemeItem[] = [
+		const otherSuffixes: IconFinderThemeFilter[] = [
 			{
 				title: 'Erase Animation',
 				match: '-out',
@@ -131,14 +132,18 @@ describe('Convert icon set from API', () => {
 				color: 3,
 			},
 		];
-		const expectedIconSetSuffixes: IconFinderIconSetTheme = {
+		const expectedIconSetSuffixes: IconFinderThemeFiltersList = {
 			type: 'suffixes',
+			visible: 4,
+
 			// Same order as in JSON file
 			filters: [emptySuffix, ...otherSuffixes],
+
 			// Longest matches first
 			sorted: [otherSuffixes[2], otherSuffixes[1], otherSuffixes[0]],
+
 			empty: emptySuffix,
 		};
-		expect(iconSet!.suffixes).toEqual(expectedIconSetSuffixes);
+		expect(suffixes).toEqual(expectedIconSetSuffixes);
 	});
 });

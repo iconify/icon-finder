@@ -7,7 +7,6 @@ import {
 	commonObjectProps,
 	unmergeObjects,
 } from '@iconify/utils/lib/misc/objects';
-import type { IconFinderFilter } from '../../filters/types';
 import type { IconFinderIconSet } from '../types/icon-set';
 import type {
 	IconFinderIconSetIcon,
@@ -15,6 +14,7 @@ import type {
 } from '../types/icons';
 import { hashString } from './helpers/hash';
 import { getIconSetThemes } from './helpers/themes';
+import type { IconFinderTagsFilter } from '../../filters/types/filter';
 
 /**
  * Convert raw icon set
@@ -62,9 +62,9 @@ export function convertRawIconSet(
 		Set<IconFinderIconSetUniqueIcon>
 	>;
 
-	// Generate categories list
-	const categories2 = categories || {};
-	const categoryItems: IconFinderFilter[] = Object.keys(categories2).map(
+	// Generate tags list
+	const tags = categories || {};
+	const tagFilters: IconFinderTagsFilter[] = Object.keys(tags).map(
 		(title, color) => {
 			return {
 				title,
@@ -72,28 +72,30 @@ export function convertRawIconSet(
 			};
 		}
 	);
-	const emptyCategory: IconFinderFilter = {
+	const emptyTag: IconFinderTagsFilter = {
 		title: '',
-		color: categoryItems.length,
+		color: tagFilters.length,
 	};
-	let hasUncategorised = false;
+	let hasEmptyTag = false;
 
-	// Get categories for icons tree
-	function getCategoriesForIcons(tree: string[]): IconFinderFilter[] {
+	// Get tags for icons tree
+	function getTagsForIcons(tree: string[]): IconFinderTagsFilter[] {
 		for (let i = 0; i < tree.length; i++) {
 			const name = tree[i];
-			const result = categoryItems.filter((item) => {
+			const result = tagFilters.filter((item) => {
 				const title = item.title;
-				return categories2[title].indexOf(name) !== -1;
+				return tags[title].indexOf(name) !== -1;
 			});
 			if (result.length) {
 				return result;
 			}
 		}
 
-		// Icon is not listed in any category
-		hasUncategorised = true;
-		return [emptyCategory];
+		// Icon is not listed in any tags
+		if (!hasEmptyTag) {
+			hasEmptyTag = true;
+		}
+		return [emptyTag];
 	}
 
 	// Parse all icons
@@ -167,15 +169,15 @@ export function convertRawIconSet(
 			(transformationsList[contentHash] = new Set())
 		).add(uniqueIcon);
 
-		// Add categories
-		const iconCategories =
-			categories &&
+		// Add tags
+		const iconTags =
 			!hidden &&
-			getCategoriesForIcons([name].concat(parents));
-		if (iconCategories) {
-			icon.categories = iconCategories;
-			uniqueIcon.categories = Array.from(
-				new Set(iconCategories.concat(uniqueIcon.categories || []))
+			tagFilters.length &&
+			getTagsForIcons([name].concat(parents));
+		if (iconTags) {
+			icon.tags = iconTags;
+			uniqueIcon.tags = Array.from(
+				new Set(iconTags.concat(uniqueIcon.tags || []))
 			);
 		}
 	}
@@ -195,6 +197,7 @@ export function convertRawIconSet(
 
 	// Update counter, create icon set
 	info.total = total;
+	const filters = {} as IconFinderIconSet['filters'];
 	const iconSet: IconFinderIconSet = {
 		provider,
 		prefix,
@@ -206,17 +209,23 @@ export function convertRawIconSet(
 			map,
 			unique,
 		},
+		filters,
 	};
 
 	// Get themes
-	Object.assign(iconSet, getIconSetThemes(data));
+	Object.assign(filters, getIconSetThemes(data));
 
-	// Set categories
-	if (categories) {
-		if (hasUncategorised) {
-			categoryItems.push(emptyCategory);
-		}
-		iconSet.categories = categoryItems;
+	// Set tags
+	if (hasEmptyTag) {
+		tagFilters.push(emptyTag);
+	}
+	const filtersLength = tagFilters.length;
+	if (filtersLength) {
+		filters.tags = {
+			type: 'tags',
+			filters: tagFilters,
+			visible: filtersLength,
+		};
 	}
 
 	return iconSet;

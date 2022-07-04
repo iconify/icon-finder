@@ -1,8 +1,6 @@
 import type { IconifyInfo } from '@iconify/types';
-import type {
-	IconFinderFilter,
-	IconFinderFiltersList,
-} from '../../filters/types';
+import type { IconFinderCategoriesFilters } from '../../filters/types/all';
+import type { IconFinderCategoriesFilter } from '../../filters/types/filter';
 
 /**
  * Icon set
@@ -41,7 +39,7 @@ export interface IconFinderCollectionsCategory {
 	items: IconFinderCollectionsListItem[];
 
 	// Filter item
-	filter: IconFinderFilter;
+	filter: IconFinderCategoriesFilter;
 
 	// Visible icon sets count
 	visible: number;
@@ -56,7 +54,7 @@ export interface IconFinderCollectionsList {
 	showHidden?: boolean;
 
 	// Category filters
-	filters: IconFinderFiltersList;
+	filters: IconFinderCategoriesFilters;
 
 	// Sorted by categories
 	categorised: Record<string, IconFinderCollectionsCategory>;

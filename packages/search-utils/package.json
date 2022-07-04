@@ -117,6 +117,21 @@
 			"require": "./lib/events/types.cjs",
 			"import": "./lib/events/types.mjs"
 		},
+		"./lib/filters/types/all": {
+			"types": "./lib/filters/types/all.d.ts",
+			"require": "./lib/filters/types/all.cjs",
+			"import": "./lib/filters/types/all.mjs"
+		},
+		"./lib/filters/types/filter": {
+			"types": "./lib/filters/types/filter.d.ts",
+			"require": "./lib/filters/types/filter.cjs",
+			"import": "./lib/filters/types/filter.mjs"
+		},
+		"./lib/filters/types/list": {
+			"types": "./lib/filters/types/list.d.ts",
+			"require": "./lib/filters/types/list.cjs",
+			"import": "./lib/filters/types/list.mjs"
+		},
 		"./lib/filters/colors": {
 			"types": "./lib/filters/colors.d.ts",
 			"require": "./lib/filters/colors.cjs",
@@ -126,11 +141,6 @@
 			"types": "./lib/filters/count.d.ts",
 			"require": "./lib/filters/count.cjs",
 			"import": "./lib/filters/count.mjs"
-		},
-		"./lib/filters/types": {
-			"types": "./lib/filters/types.d.ts",
-			"require": "./lib/filters/types.cjs",
-			"import": "./lib/filters/types.mjs"
 		},
 		"./lib/icon/types/icon": {
 			"types": "./lib/icon/types/icon.d.ts",
@@ -162,11 +172,6 @@
 			"require": "./lib/icon-set/convert/helpers/hash.cjs",
 			"import": "./lib/icon-set/convert/helpers/hash.mjs"
 		},
-		"./lib/icon-set/convert/helpers/props": {
-			"types": "./lib/icon-set/convert/helpers/props.d.ts",
-			"require": "./lib/icon-set/convert/helpers/props.cjs",
-			"import": "./lib/icon-set/convert/helpers/props.mjs"
-		},
 		"./lib/icon-set/convert/helpers/themes": {
 			"types": "./lib/icon-set/convert/helpers/themes.d.ts",
 			"require": "./lib/icon-set/convert/helpers/themes.cjs",
@@ -176,11 +181,6 @@
 			"types": "./lib/icon-set/convert/helpers/transforms.d.ts",
 			"require": "./lib/icon-set/convert/helpers/transforms.cjs",
 			"import": "./lib/icon-set/convert/helpers/transforms.mjs"
-		},
-		"./lib/icon-set/convert/helpers/value": {
-			"types": "./lib/icon-set/convert/helpers/value.d.ts",
-			"require": "./lib/icon-set/convert/helpers/value.cjs",
-			"import": "./lib/icon-set/convert/helpers/value.mjs"
 		},
 		"./lib/icon-set/convert/api-v2": {
 			"types": "./lib/icon-set/convert/api-v2.d.ts",
@@ -202,11 +202,6 @@
 			"require": "./lib/icon-set/themes/variations.cjs",
 			"import": "./lib/icon-set/themes/variations.mjs"
 		},
-		"./lib/icon-set/types/convert": {
-			"types": "./lib/icon-set/types/convert.d.ts",
-			"require": "./lib/icon-set/types/convert.cjs",
-			"import": "./lib/icon-set/types/convert.mjs"
-		},
 		"./lib/icon-set/types/icon-set": {
 			"types": "./lib/icon-set/types/icon-set.d.ts",
 			"require": "./lib/icon-set/types/icon-set.cjs",
@@ -216,16 +211,6 @@
 			"types": "./lib/icon-set/types/icons.d.ts",
 			"require": "./lib/icon-set/types/icons.cjs",
 			"import": "./lib/icon-set/types/icons.mjs"
-		},
-		"./lib/icon-set/types/themes": {
-			"types": "./lib/icon-set/types/themes.d.ts",
-			"require": "./lib/icon-set/types/themes.cjs",
-			"import": "./lib/icon-set/types/themes.mjs"
-		},
-		"./lib/icons/types/filters": {
-			"types": "./lib/icons/types/filters.d.ts",
-			"require": "./lib/icons/types/filters.cjs",
-			"import": "./lib/icons/types/filters.mjs"
 		},
 		"./lib/icons/types/pagination": {
 			"types": "./lib/icons/types/pagination.d.ts",

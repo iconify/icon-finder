@@ -1,36 +1,34 @@
-import type {
-	IconFinderIconSetTheme,
-	IconFinderIconSetThemeItem,
-} from '../types/themes';
+import type { IconFinderThemeFilter } from '../../filters/types/filter';
+import type { IconFinderThemeFiltersList } from '../../filters/types/list';
 
 /**
  * Get base icon name, without prefix/suffix
  */
 interface GetBaseIconForThemeResult {
 	name: string;
-	item: IconFinderIconSetThemeItem;
+	filter: IconFinderThemeFilter;
 }
 export function getBaseIconForTheme(
 	name: string,
-	theme: IconFinderIconSetTheme
+	theme: IconFinderThemeFiltersList
 ): GetBaseIconForThemeResult | undefined {
 	const { type, sorted } = theme;
 	for (let i = 0; i < sorted.length; i++) {
-		const item = sorted[i];
-		const match = item.match;
+		const filter = sorted[i];
+		const match = filter.match;
 		if (type === 'prefixes') {
 			if (name.slice(0, match.length) === match) {
 				// Found match
 				return {
 					name: name.slice(match.length),
-					item,
+					filter,
 				};
 			}
 		} else {
 			if (name.slice(0 - match.length) === match) {
 				return {
 					name: name.slice(0, name.length - match.length),
-					item,
+					filter,
 				};
 			}
 		}
@@ -40,7 +38,7 @@ export function getBaseIconForTheme(
 	return (
 		theme.empty && {
 			name,
-			item: theme.empty,
+			filter: theme.empty,
 		}
 	);
 }

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
+import type { IconFinderTagsFilter } from '../../lib/filters/types/filter';
 import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
-import type { IconFinderIconSetCategory } from '../../lib/icon-set/types/category';
 
-describe('Testing categories', () => {
-	it('Simple icon set with one category per icon', () => {
+describe('Testing tags', () => {
+	it('Simple icon set with one tag per icon', () => {
 		const prefix = 'foo';
 		const raw: IconifyJSON = {
 			prefix,
@@ -59,12 +59,13 @@ describe('Testing categories', () => {
 		expect(iconSet).toBeTruthy();
 
 		// Prefixes and suffixes should be empty
-		expect(iconSet?.prefixes).toBeUndefined();
-		expect(iconSet?.suffixes).toBeUndefined();
+		const filters = iconSet!.filters;
+		expect(filters.prefixes).toBeUndefined();
+		expect(filters.suffixes).toBeUndefined();
 
-		// Check categories
-		const categories = iconSet!.categories!;
-		const expectedCategories: IconFinderIconSetCategory[] = [
+		// Check tags
+		const tags = filters.tags!;
+		const expectedTags: IconFinderTagsFilter[] = [
 			{
 				title: 'Home',
 				color: 0,
@@ -78,34 +79,30 @@ describe('Testing categories', () => {
 				color: 2,
 			},
 		];
-		expect(categories).toEqual(expectedCategories);
+		expect(tags.filters).toEqual(expectedTags);
 
-		const [homeCategory, accountCategory, emptyCategory] = categories;
+		const [homeTag, accountTag, emptyTag] = tags.filters;
 
-		// Check categories in icons
+		// Check tags in icons
 		const { map } = iconSet!.icons;
 
 		const homeSolidIcon = map['home-solid'];
-		expect(homeSolidIcon.categories).toEqual([homeCategory]);
-		expect(homeSolidIcon.categories![0]).toBe(homeCategory);
-		expect(homeSolidIcon.icons[0].categories).toEqual([homeCategory]);
-		expect(homeSolidIcon.icons[0].categories![0]).toBe(homeCategory);
+		expect(homeSolidIcon.tags).toEqual([homeTag]);
+		expect(homeSolidIcon.tags![0]).toBe(homeTag);
+		expect(homeSolidIcon.icons[0].tags).toEqual([homeTag]);
+		expect(homeSolidIcon.icons[0].tags![0]).toBe(homeTag);
 
 		const accountOutlineIcon = map['account-outline'];
-		expect(accountOutlineIcon.categories).toEqual([accountCategory]);
-		expect(accountOutlineIcon.categories![0]).toBe(accountCategory);
-		expect(accountOutlineIcon.icons[0].categories).toEqual([
-			accountCategory,
-		]);
-		expect(accountOutlineIcon.icons[0].categories![0]).toBe(
-			accountCategory
-		);
+		expect(accountOutlineIcon.tags).toEqual([accountTag]);
+		expect(accountOutlineIcon.tags![0]).toBe(accountTag);
+		expect(accountOutlineIcon.icons[0].tags).toEqual([accountTag]);
+		expect(accountOutlineIcon.icons[0].tags![0]).toBe(accountTag);
 
 		const whateverIcon = map['whatever'];
-		expect(whateverIcon.categories).toEqual([emptyCategory]);
-		expect(whateverIcon.categories![0]).toBe(emptyCategory);
-		expect(whateverIcon.icons[0].categories).toEqual([emptyCategory]);
-		expect(whateverIcon.icons[0].categories![0]).toBe(emptyCategory);
+		expect(whateverIcon.tags).toEqual([emptyTag]);
+		expect(whateverIcon.tags![0]).toBe(emptyTag);
+		expect(whateverIcon.icons[0].tags).toEqual([emptyTag]);
+		expect(whateverIcon.icons[0].tags![0]).toBe(emptyTag);
 	});
 
 	it('Aliases', () => {
@@ -163,9 +160,11 @@ describe('Testing categories', () => {
 		const iconSet = convertRawIconSet('', raw);
 		expect(iconSet).toBeTruthy();
 
-		// Check categories
-		const categories = iconSet!.categories!;
-		const expectedCategories: IconFinderIconSetCategory[] = [
+		const filters = iconSet!.filters;
+
+		// Check tags
+		const tags = filters.tags!;
+		const expectedTags: IconFinderTagsFilter[] = [
 			{
 				title: 'Arrows',
 				color: 0,
@@ -183,57 +182,56 @@ describe('Testing categories', () => {
 				color: 3,
 			},
 		];
-		expect(categories).toEqual(expectedCategories);
+		expect(tags.filters).toEqual(expectedTags);
 
-		const [arrowsCategory, carsCategory, lhdCarsCategory, rhdCarsCategory] =
-			categories;
+		const [arrowsTag, carsTag, lhdCarsTag, rhdCarsTag] = tags.filters;
 
-		// Check categories in icons
+		// Check tags in icons
 		const { map } = iconSet!.icons;
 
 		const arrowLeftIcon = map['arrow-left'];
-		expect(arrowLeftIcon.categories).toEqual([arrowsCategory]);
-		expect(arrowLeftIcon.categories![0]).toBe(arrowsCategory);
-		expect(arrowLeftIcon.icons[0].categories).toEqual([arrowsCategory]);
-		expect(arrowLeftIcon.icons[0].categories![0]).toBe(arrowsCategory);
+		expect(arrowLeftIcon.tags).toEqual([arrowsTag]);
+		expect(arrowLeftIcon.tags![0]).toBe(arrowsTag);
+		expect(arrowLeftIcon.icons[0].tags).toEqual([arrowsTag]);
+		expect(arrowLeftIcon.icons[0].tags![0]).toBe(arrowsTag);
 
 		// Alias with transformation
 		const arrowRightIcon = map['arrow-right'];
-		expect(arrowRightIcon.categories).toEqual([arrowsCategory]);
-		expect(arrowRightIcon.icons[0].categories).toEqual([arrowsCategory]);
+		expect(arrowRightIcon.tags).toEqual([arrowsTag]);
+		expect(arrowRightIcon.icons[0].tags).toEqual([arrowsTag]);
 
 		// Simple icon
 		const subaruIcon = map['subaru'];
-		expect(subaruIcon.categories).toEqual([carsCategory]);
-		expect(subaruIcon.icons[0].categories).toEqual([carsCategory]);
+		expect(subaruIcon.tags).toEqual([carsTag]);
+		expect(subaruIcon.icons[0].tags).toEqual([carsTag]);
 
 		// Icon with multiple entries
 		const opelIcon = map['opel'];
-		expect(opelIcon.categories).toEqual([
-			// unique icon should contain categories from both 'opel' and 'vauxhall'
-			carsCategory,
-			rhdCarsCategory,
-			lhdCarsCategory,
+		expect(opelIcon.tags).toEqual([
+			// unique icon should contain tags from both 'opel' and 'vauxhall'
+			carsTag,
+			rhdCarsTag,
+			lhdCarsTag,
 		]);
 		expect(opelIcon.icons[0]).toEqual({
 			name: 'opel',
-			categories: [
-				// only categories for 'opel'
-				carsCategory,
-				lhdCarsCategory,
+			tags: [
+				// only tags for 'opel'
+				carsTag,
+				lhdCarsTag,
 			],
 		});
 		expect(opelIcon.icons[1]).toEqual({
 			name: 'vauxhall',
-			categories: [
-				// only categories for 'vauxhall'
-				carsCategory,
-				rhdCarsCategory,
+			tags: [
+				// only tags for 'vauxhall'
+				carsTag,
+				rhdCarsTag,
 			],
 		});
 		expect(opelIcon.render).toBe('opel');
 
-		// Alias with custom categories
+		// Alias with custom tags
 		const vauxhallIcon = map['vauxhall'];
 		expect(vauxhallIcon).toBe(opelIcon);
 	});

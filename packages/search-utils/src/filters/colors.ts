@@ -1,4 +1,4 @@
-import type { IconFinderFiltersList } from './types';
+import type { IconFinderFiltersList } from './types/list';
 
 /**
  * Set colors

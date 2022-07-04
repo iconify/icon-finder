@@ -1,9 +1,7 @@
 import type { IconifyJSON } from 'iconify-icon';
-import type {
-	IconFinderIconSetTheme,
-	IconFinderIconSetThemeItem,
-	IconFinderIconSetThemeTypes,
-} from '../../types/themes';
+import type { IconFinderThemeFilters } from '../../../filters/types/all';
+import type { IconFinderThemeFilter } from '../../../filters/types/filter';
+import type { IconFinderThemeFiltersList } from '../../../filters/types/list';
 
 /**
  * Convert theme
@@ -12,29 +10,27 @@ function convert(
 	data: Record<string, string>,
 	prefix: boolean,
 	index: number
-): IconFinderIconSetTheme {
-	const filters = [] as IconFinderIconSetTheme['filters'];
-	const result: IconFinderIconSetTheme = {
+): IconFinderThemeFiltersList {
+	const filters = [] as IconFinderThemeFilter[];
+	const list = Object.create(null) as Record<string, IconFinderThemeFilter>;
+
+	const result: IconFinderThemeFiltersList = {
 		type: prefix ? 'prefixes' : 'suffixes',
 		filters,
 		sorted: [],
+		visible: 0,
 	};
-
-	const list = Object.create(null) as Record<
-		string,
-		IconFinderIconSetThemeItem
-	>;
 
 	// Parse all items
 	for (const key in data) {
 		const isEmpty = !key;
 		const match = isEmpty ? '' : prefix ? key + '-' : '-' + key;
-		const item: IconFinderIconSetThemeItem = {
+		const item: IconFinderThemeFilter = {
 			title: data[key],
 			match,
 			color: index++,
 		};
-		result.filters.push(item);
+		filters.push(item);
 
 		if (!key) {
 			result.empty = item;
@@ -48,19 +44,15 @@ function convert(
 		a.length === b.length ? a.localeCompare(b) : b.length - a.length
 	);
 	result.sorted = sortedKeys.filter((key) => !!key).map((key) => list[key]);
+	result.visible = filters.length;
 
 	return result;
 }
 
-// Result of getIconSetThemes()
-type GetIconSetThemesResult = Partial<
-	Record<IconFinderIconSetThemeTypes, IconFinderIconSetTheme>
->;
-
 /**
  * Convert icon set themes
  */
-export function getIconSetThemes(data: IconifyJSON): GetIconSetThemesResult {
+export function getIconSetThemes(data: IconifyJSON): IconFinderThemeFilters {
 	const rawPrefixes =
 		data.prefixes || (Object.create(null) as Record<string, string>);
 	const rawSuffixes =
@@ -88,7 +80,7 @@ export function getIconSetThemes(data: IconifyJSON): GetIconSetThemesResult {
 	}
 
 	// Convert prefixes and suffixes
-	const result = {} as GetIconSetThemesResult;
+	const result = {} as IconFinderThemeFilters;
 	if (Object.keys(rawPrefixes).length > 1) {
 		result.prefixes = convert(rawPrefixes, true, 0);
 	}

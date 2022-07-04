@@ -27,15 +27,19 @@ export interface IconFinderFilter {
 }
 
 /**
- * Filters list
+ * Filter for categories in collections list
  */
-export interface IconFinderFiltersList {
-	// All filters
-	filters: IconFinderFilter[];
+export type IconFinderCategoriesFilter = IconFinderFilter;
 
-	// Selected filter
-	selected?: IconFinderFilter | null;
+/**
+ * Filter for categories in icon set
+ */
+export type IconFinderTagsFilter = IconFinderFilter;
 
-	// Visible filters count
-	visible: number;
+/**
+ * Filter for theme
+ */
+export interface IconFinderThemeFilter extends IconFinderFilter {
+	// Prefix or suffix match, including '-'
+	match: string;
 }

@@ -1,10 +1,9 @@
 import type { IconifyInfo } from '@iconify/types';
-import type { IconFinderFilter } from '../../filters/types';
-import type { IconFinderIconSetIcons } from './icons';
 import type {
-	IconFinderIconSetTheme,
-	IconFinderIconSetThemeTypes,
-} from './themes';
+	IconFinderTagsFilters,
+	IconFinderThemeFilters,
+} from '../../filters/types/all';
+import type { IconFinderIconSetIcons } from './icons';
 
 /**
  * Source
@@ -12,24 +11,18 @@ import type {
 export type IconFinderIconSetSource = 'api' | 'raw';
 
 /**
- * Themes
+ * Filters: themes + tags
  */
-export type IconFinderIconSetThemes = Partial<
-	Record<IconFinderIconSetThemeTypes, IconFinderIconSetTheme>
->;
-
-/**
- * Filters: themes + categories
- */
-export interface IconFinderIconSetFilters extends IconFinderIconSetThemes {
-	// Categories
-	categories?: IconFinderFilter[];
+export interface IconFinderIconSetFilters
+	extends IconFinderThemeFilters,
+		IconFinderTagsFilters {
+	//
 }
 
 /**
  * Icon set
  */
-export interface IconFinderIconSet extends IconFinderIconSetFilters {
+export interface IconFinderIconSet {
 	// Source
 	source: IconFinderIconSetSource;
 
@@ -50,5 +43,5 @@ export interface IconFinderIconSet extends IconFinderIconSetFilters {
 	icons: IconFinderIconSetIcons;
 
 	// Filters
-	// filters: IconFinderIconsListFilters;
+	filters: IconFinderIconSetFilters;
 }

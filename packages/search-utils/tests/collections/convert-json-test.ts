@@ -1,25 +1,29 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyInfo } from '@iconify/types';
 import { promises as fs } from 'fs';
 import { convertCollectionsList } from '../../lib/collections/convert/list';
 import type { IconFinderCollectionsListItem } from '../../lib/collections/types/collections';
-import type {
-	IconFinderFilter,
-	IconFinderFiltersList,
-} from '../../lib/filters/types';
+import type { IconFinderCategoriesFiltersList } from '../../lib/filters/types/list';
+import type { IconFinderCategoriesFilter } from '../../lib/filters/types/filter';
 import { generateSearchData } from '../../lib/collections/convert/search';
 
 describe('Testing convertCollectionsList', () => {
 	function categoriesToBaseFilters(
 		titles: string[]
-	): IconFinderFiltersList['filters'] {
-		return titles.map((title, index) => {
-			const result: IconFinderFilter = {
+	): IconFinderCategoriesFiltersList {
+		const filters = titles.map((title, index) => {
+			const result: IconFinderCategoriesFilter = {
 				title,
 				color: index,
 				disabled: false,
 			};
 			return result;
 		});
+		return {
+			type: 'categories',
+			filters,
+			visible: titles.length,
+		};
 	}
 
 	const mdi: IconifyInfo = {
@@ -91,11 +95,11 @@ describe('Testing convertCollectionsList', () => {
 		expect(Object.keys(result.prefixed)).toEqual(['mdi', 'ph']);
 
 		// Test filters
-		const expectedGeneralFilters: IconFinderFiltersList = {
-			filters: categoriesToBaseFilters(['General']),
+		const expectedGeneralFilters: IconFinderCategoriesFiltersList = {
+			...categoriesToBaseFilters(['General']),
 			visible: 1,
 		};
-		expect(result.filters).toEqual(expectedGeneralFilters);
+		expect(result.filters.categories).toEqual(expectedGeneralFilters);
 
 		// Test lists
 		expect(generalCategory.items.length).toBe(2);
@@ -199,11 +203,12 @@ describe('Testing convertCollectionsList', () => {
 		]);
 
 		// Test filters
-		expect(result.filters.filters).toEqual(
+		const categoriesFilters = result.filters.categories!;
+		expect(categoriesFilters).toEqual(
 			categoriesToBaseFilters(['General', 'Emoji'])
 		);
-		expect(result.filters.visible).toBe(2);
-		expect(result.filters.selected).toBeFalsy();
+		expect(categoriesFilters.visible).toBe(2);
+		expect(categoriesFilters.selected).toBeFalsy();
 	});
 
 	test('Hidden icon set without category', () => {
@@ -256,12 +261,12 @@ describe('Testing convertCollectionsList', () => {
 
 		// Get expected filters, empty category should be disabled
 		const expectedFiltersList = categoriesToBaseFilters(['General', '']);
-		expect(expectedFiltersList.length).toBe(2);
-		const emptyFilter = expectedFiltersList[1];
+		expect(expectedFiltersList.filters.length).toBe(2);
+		const emptyFilter = expectedFiltersList.filters[1];
 		emptyFilter.disabled = emptyFilter.hiddenIfDisabled = true;
 
-		expect(result.filters).toEqual({
-			filters: expectedFiltersList,
+		expect(result.filters.categories).toEqual({
+			...expectedFiltersList,
 			visible: 1,
 		});
 	});
@@ -323,12 +328,12 @@ describe('Testing convertCollectionsList', () => {
 			'General',
 			'Archive / Unmaintained',
 		]);
-		expect(expectedFiltersList.length).toBe(2);
-		const archiveFilter = expectedFiltersList[1];
+		expect(expectedFiltersList.filters.length).toBe(2);
+		const archiveFilter = expectedFiltersList.filters[1];
 		archiveFilter.disabled = archiveFilter.hiddenIfDisabled = true;
 
-		expect(result.filters).toEqual({
-			filters: expectedFiltersList,
+		expect(result.filters.categories).toEqual({
+			...expectedFiltersList,
 			visible: 1,
 		});
 	});
@@ -353,13 +358,16 @@ describe('Testing convertCollectionsList', () => {
 
 		// Get expected filters, empty category should be disabled
 		const expectedFiltersList = categoriesToBaseFilters(expectedCategories);
-		expect(expectedFiltersList.length).toBe(expectedCategories.length);
-		const emptyFilter = expectedFiltersList[expectedFiltersList.length - 1];
+		expect(expectedFiltersList.filters.length).toBe(
+			expectedCategories.length
+		);
+		const emptyFilter =
+			expectedFiltersList.filters[expectedFiltersList.filters.length - 1];
 		emptyFilter.disabled = emptyFilter.hiddenIfDisabled = true;
 
-		expect(result.filters).toEqual({
-			filters: expectedFiltersList,
-			visible: expectedFiltersList.length - 1,
+		expect(result.filters.categories).toEqual({
+			...expectedFiltersList,
+			visible: expectedFiltersList.filters.length - 1,
 		});
 	});
 });

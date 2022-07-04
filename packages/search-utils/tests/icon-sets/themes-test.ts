@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
+import type { IconFinderThemeFilter } from '../../lib/filters/types/filter';
+import type { IconFinderThemeFiltersList } from '../../lib/filters/types/list';
 import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
 import { getBaseIconForTheme } from '../../lib/icon-set/themes/base';
 import { getThemeVariations } from '../../lib/icon-set/themes/variations';
-import type {
-	IconFinderIconSetTheme,
-	IconFinderIconSetThemeItem,
-} from '../../lib/icon-set/types/themes';
 
 describe('Testing themes', () => {
 	it('Suffixes', () => {
@@ -55,31 +53,33 @@ describe('Testing themes', () => {
 		const iconSet = convertRawIconSet('', raw);
 		expect(iconSet).toBeTruthy();
 
-		// Prefixes and categories should be empty
-		expect(iconSet?.prefixes).toBeUndefined();
-		expect(iconSet?.categories).toBeUndefined();
+		// Prefixes and tags should be empty
+		const filters = iconSet!.filters;
+		expect(filters.prefixes).toBeUndefined();
+		expect(filters.tags).toBeUndefined();
 
 		// Check suffixes
-		const suffixes = iconSet!.suffixes!;
-		const solidSuffix: IconFinderIconSetThemeItem = {
+		const suffixes = filters.suffixes!;
+		const solidSuffix: IconFinderThemeFilter = {
 			title: 'Solid',
 			match: '-solid',
 			color: 0,
 		};
-		const outlineSuffix: IconFinderIconSetThemeItem = {
+		const outlineSuffix: IconFinderThemeFilter = {
 			title: 'Outline',
 			match: '-outline',
 			color: 1,
 		};
-		const twotoneSuffix: IconFinderIconSetThemeItem = {
+		const twotoneSuffix: IconFinderThemeFilter = {
 			title: 'Two-Tone',
 			match: '-twotone',
 			color: 2,
 		};
-		const expectedSuffixes: IconFinderIconSetTheme = {
+		const expectedSuffixes: IconFinderThemeFiltersList = {
 			type: 'suffixes',
 			filters: [solidSuffix, outlineSuffix, twotoneSuffix],
 			sorted: [outlineSuffix, twotoneSuffix, solidSuffix],
+			visible: 3,
 		};
 		expect(suffixes).toEqual(expectedSuffixes);
 
@@ -95,9 +95,9 @@ describe('Testing themes', () => {
 		const baseAccount = getBaseIconForTheme('account-twotone', suffixes);
 		expect(baseAccount).toEqual({
 			name: 'account',
-			item: actualTwotoneSuffix,
+			filter: actualTwotoneSuffix,
 		});
-		expect(baseAccount.item).toBe(actualTwotoneSuffix);
+		expect(baseAccount!.filter).toBe(actualTwotoneSuffix);
 
 		// Match suffixes
 		const accountVariations = getThemeVariations(
@@ -107,44 +107,44 @@ describe('Testing themes', () => {
 		expect(accountVariations).toEqual([
 			{
 				name: 'account-solid',
-				item: actualSolidSuffix,
+				filter: actualSolidSuffix,
 			},
 			{
 				name: 'account-outline',
-				item: actualOutlineSuffix,
+				filter: actualOutlineSuffix,
 			},
 			{
 				name: 'account-twotone',
-				item: actualTwotoneSuffix,
+				filter: actualTwotoneSuffix,
 			},
 		]);
-		expect(accountVariations?.[0].item).toBe(actualSolidSuffix);
-		expect(accountVariations?.[1].item).toBe(actualOutlineSuffix);
-		expect(accountVariations?.[2].item).toBe(actualTwotoneSuffix);
+		expect(accountVariations?.[0].filter).toBe(actualSolidSuffix);
+		expect(accountVariations?.[1].filter).toBe(actualOutlineSuffix);
+		expect(accountVariations?.[2].filter).toBe(actualTwotoneSuffix);
 
 		// Check 'home' icon
 		// Base name without suffix
 		const baseHome = getBaseIconForTheme('home-solid', suffixes);
 		expect(baseHome).toEqual({
 			name: 'home',
-			item: actualSolidSuffix,
+			filter: actualSolidSuffix,
 		});
-		expect(baseHome.item).toBe(actualSolidSuffix);
+		expect(baseHome!.filter).toBe(actualSolidSuffix);
 
 		// Match suffixes
 		const homeVariations = getThemeVariations(baseHome, suffixes);
 		expect(homeVariations).toEqual([
 			{
 				name: 'home-solid',
-				item: actualSolidSuffix,
+				filter: actualSolidSuffix,
 			},
 			{
 				name: 'home-outline',
-				item: actualOutlineSuffix,
+				filter: actualOutlineSuffix,
 			},
 			{
 				name: 'home-twotone',
-				item: actualTwotoneSuffix,
+				filter: actualTwotoneSuffix,
 			},
 		]);
 		expect(getThemeVariations('home-outline', suffixes)).toEqual(
@@ -195,33 +195,34 @@ describe('Testing themes', () => {
 		const iconSet = convertRawIconSet('', raw);
 		expect(iconSet).toBeTruthy();
 
-		// Suffixes and categories should be empty
-		expect(iconSet?.suffixes).toBeUndefined();
-		expect(iconSet?.categories).toBeUndefined();
+		// Suffixes and tags should be empty
+		const filters = iconSet!.filters;
+		expect(filters.suffixes).toBeUndefined();
+		expect(filters.tags).toBeUndefined();
 
 		// Check prefixes
-		const prefixes = iconSet!.prefixes!;
-		const baselinePrefix: IconFinderIconSetThemeItem = {
+		const prefixes = filters.prefixes!;
+		const baselinePrefix: IconFinderThemeFilter = {
 			title: 'Baseline',
 			match: '',
 			color: 0,
 		};
-		const outlinePrefix: IconFinderIconSetThemeItem = {
+		const outlinePrefix: IconFinderThemeFilter = {
 			title: 'Outline',
 			match: 'outline-',
 			color: 1,
 		};
-		const roundPrefix: IconFinderIconSetThemeItem = {
+		const roundPrefix: IconFinderThemeFilter = {
 			title: 'Round',
 			match: 'round-',
 			color: 2,
 		};
-		const twotonePrefix: IconFinderIconSetThemeItem = {
+		const twotonePrefix: IconFinderThemeFilter = {
 			title: 'Two-Tone',
 			match: 'twotone-',
 			color: 3,
 		};
-		const expectedPrefixes: IconFinderIconSetTheme = {
+		const expectedPrefixes: IconFinderThemeFiltersList = {
 			type: 'prefixes',
 			filters: [
 				baselinePrefix,
@@ -231,6 +232,7 @@ describe('Testing themes', () => {
 			],
 			sorted: [outlinePrefix, twotonePrefix, roundPrefix],
 			empty: baselinePrefix,
+			visible: 4,
 		};
 		expect(prefixes).toEqual(expectedPrefixes);
 
@@ -251,34 +253,34 @@ describe('Testing themes', () => {
 		const baseHome = getBaseIconForTheme('twotone-home', prefixes);
 		expect(baseHome).toEqual({
 			name: 'home',
-			item: actualTwotonePrefix,
+			filter: actualTwotonePrefix,
 		});
-		expect(baseHome.item).toBe(actualTwotonePrefix);
+		expect(baseHome!.filter).toBe(actualTwotonePrefix);
 
 		// Match suffixes
 		const homeVariations = getThemeVariations(baseHome, prefixes);
 		expect(homeVariations).toEqual([
 			{
 				name: 'home',
-				item: actualBaselinePrefix,
+				filter: actualBaselinePrefix,
 			},
 			{
 				name: 'outline-home',
-				item: actualOutlinePrefix,
+				filter: actualOutlinePrefix,
 			},
 			{
 				name: 'round-home',
-				item: actualRoundPrefix,
+				filter: actualRoundPrefix,
 			},
 			{
 				name: 'twotone-home',
-				item: actualTwotonePrefix,
+				filter: actualTwotonePrefix,
 			},
 		]);
-		expect(homeVariations?.[0].item).toBe(actualBaselinePrefix);
-		expect(homeVariations?.[1].item).toBe(actualOutlinePrefix);
-		expect(homeVariations?.[2].item).toBe(actualRoundPrefix);
-		expect(homeVariations?.[3].item).toBe(actualTwotonePrefix);
+		expect(homeVariations?.[0].filter).toBe(actualBaselinePrefix);
+		expect(homeVariations?.[1].filter).toBe(actualOutlinePrefix);
+		expect(homeVariations?.[2].filter).toBe(actualRoundPrefix);
+		expect(homeVariations?.[3].filter).toBe(actualTwotonePrefix);
 		expect(getThemeVariations('home', prefixes)).toEqual(homeVariations);
 		expect(getThemeVariations('twotone-home', prefixes)).toEqual(
 			homeVariations
@@ -289,34 +291,34 @@ describe('Testing themes', () => {
 		const baseHome2 = getBaseIconForTheme('solid-home', prefixes);
 		expect(baseHome2).toEqual({
 			name: 'solid-home',
-			item: actualBaselinePrefix,
+			filter: actualBaselinePrefix,
 		});
-		expect(baseHome2.item).toBe(actualBaselinePrefix);
+		expect(baseHome2!.filter).toBe(actualBaselinePrefix);
 
 		// Match prefixes
 		const home2Variations = getThemeVariations(baseHome2, prefixes);
 		expect(home2Variations).toEqual([
 			{
 				name: 'solid-home',
-				item: actualBaselinePrefix,
+				filter: actualBaselinePrefix,
 			},
 			{
 				name: 'outline-solid-home',
-				item: actualOutlinePrefix,
+				filter: actualOutlinePrefix,
 			},
 			{
 				name: 'round-solid-home',
-				item: actualRoundPrefix,
+				filter: actualRoundPrefix,
 			},
 			{
 				name: 'twotone-solid-home',
-				item: actualTwotonePrefix,
+				filter: actualTwotonePrefix,
 			},
 		]);
-		expect(home2Variations?.[0].item).toBe(actualBaselinePrefix);
-		expect(home2Variations?.[1].item).toBe(actualOutlinePrefix);
-		expect(home2Variations?.[2].item).toBe(actualRoundPrefix);
-		expect(home2Variations?.[3].item).toBe(actualTwotonePrefix);
+		expect(home2Variations?.[0].filter).toBe(actualBaselinePrefix);
+		expect(home2Variations?.[1].filter).toBe(actualOutlinePrefix);
+		expect(home2Variations?.[2].filter).toBe(actualRoundPrefix);
+		expect(home2Variations?.[3].filter).toBe(actualTwotonePrefix);
 		expect(getThemeVariations('solid-home', prefixes)).toEqual(
 			home2Variations
 		);
@@ -358,50 +360,53 @@ describe('Testing themes', () => {
 		const iconSet = convertRawIconSet('', raw);
 		expect(iconSet).toBeTruthy();
 
-		// Categories should be empty
-		expect(iconSet?.categories).toBeUndefined();
+		// Tags should be empty
+		const filters = iconSet!.filters;
+		expect(filters.tags).toBeUndefined();
 
 		// Check prefixes
-		const prefixes = iconSet!.prefixes!;
-		const baselinePrefix: IconFinderIconSetThemeItem = {
+		const prefixes = filters.prefixes!;
+		const baselinePrefix: IconFinderThemeFilter = {
 			title: 'Baseline',
 			match: 'baseline-',
 			color: 0,
 		};
-		const roundPrefix: IconFinderIconSetThemeItem = {
+		const roundPrefix: IconFinderThemeFilter = {
 			title: 'Round',
 			match: 'round-',
 			color: 1,
 		};
-		const twotonePrefix: IconFinderIconSetThemeItem = {
+		const twotonePrefix: IconFinderThemeFilter = {
 			title: 'Two-Tone',
 			match: 'twotone-',
 			color: 2,
 		};
-		const expectedPrefixes: IconFinderIconSetTheme = {
+		const expectedPrefixes: IconFinderThemeFiltersList = {
 			type: 'prefixes',
 			filters: [baselinePrefix, roundPrefix, twotonePrefix],
 			sorted: [baselinePrefix, twotonePrefix, roundPrefix],
+			visible: 3,
 		};
 		expect(prefixes).toEqual(expectedPrefixes);
 
 		// Check suffixes
-		const suffixes = iconSet!.suffixes!;
-		const defaultSuffix: IconFinderIconSetThemeItem = {
+		const suffixes = filters.suffixes!;
+		const defaultSuffix: IconFinderThemeFilter = {
 			title: 'Simple',
 			match: '',
 			color: 3,
 		};
-		const animatedSuffix: IconFinderIconSetThemeItem = {
+		const animatedSuffix: IconFinderThemeFilter = {
 			title: 'Animated',
 			match: '-animated',
 			color: 4,
 		};
-		const expectedSuffixes: IconFinderIconSetTheme = {
+		const expectedSuffixes: IconFinderThemeFiltersList = {
 			type: 'suffixes',
 			filters: [defaultSuffix, animatedSuffix],
 			sorted: [animatedSuffix],
 			empty: defaultSuffix,
+			visible: 2,
 		};
 		expect(suffixes).toEqual(expectedSuffixes);
 
@@ -409,13 +414,13 @@ describe('Testing themes', () => {
 		const baseHomePrefix = getBaseIconForTheme('baseline-home', prefixes);
 		expect(baseHomePrefix).toEqual({
 			name: 'home',
-			item: baselinePrefix,
+			filter: baselinePrefix,
 		});
 
 		const baseHomeSuffix = getBaseIconForTheme('baseline-home', suffixes);
 		expect(baseHomeSuffix).toEqual({
 			name: 'baseline-home',
-			item: defaultSuffix,
+			filter: defaultSuffix,
 		});
 
 		// Match prefixes
@@ -426,15 +431,15 @@ describe('Testing themes', () => {
 		expect(homePrefixVariations).toEqual([
 			{
 				name: 'baseline-home',
-				item: baselinePrefix,
+				filter: baselinePrefix,
 			},
 			{
 				name: 'round-home',
-				item: roundPrefix,
+				filter: roundPrefix,
 			},
 			{
 				name: 'twotone-home',
-				item: twotonePrefix,
+				filter: twotonePrefix,
 			},
 		]);
 		expect(getThemeVariations('twotone-home', prefixes)).toEqual(
@@ -448,11 +453,11 @@ describe('Testing themes', () => {
 		expect(homeSuffixVariations).toEqual([
 			{
 				name: 'baseline-home',
-				item: defaultSuffix,
+				filter: defaultSuffix,
 			},
 			{
 				name: 'baseline-home-animated',
-				item: animatedSuffix,
+				filter: animatedSuffix,
 			},
 		]);
 		expect(getThemeVariations('baseline-home-animated', suffixes)).toEqual(

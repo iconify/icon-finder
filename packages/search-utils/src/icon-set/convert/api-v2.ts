@@ -1,6 +1,6 @@
 import type { IconifyJSON } from '@iconify/types';
 import type { APIv2CollectionResponse } from '../../api/types/v2';
-import type { IconFinderFilter } from '../../filters/types';
+import type { IconFinderTagsFilter } from '../../filters/types/filter';
 import type { IconFinderIconSet } from '../types/icon-set';
 import type {
 	IconFinderIconSetIcon,
@@ -33,7 +33,7 @@ export function convertAPIv2IconSet(
 	// Function to add icon
 	const addIcon = (
 		name: string,
-		category?: IconFinderFilter,
+		tag?: IconFinderTagsFilter,
 		hidden?: boolean
 	) => {
 		let uniqueIcon: IconFinderIconSetUniqueIcon;
@@ -60,12 +60,9 @@ export function convertAPIv2IconSet(
 			}
 		}
 
-		// Add category
-		if (category) {
-			uniqueIcon.categories = icon.categories = [
-				category,
-				...(icon.categories || []),
-			];
+		// Add tags
+		if (tag) {
+			uniqueIcon.tags = icon.tags = [tag, ...(icon.tags || [])];
 		}
 
 		// Hide
@@ -74,37 +71,37 @@ export function convertAPIv2IconSet(
 		}
 	};
 
-	// Generate categories list
-	const categories2 = categories || {};
-	const categoryItems: IconFinderFilter[] = [];
+	// Generate tags list
+	const tags = categories || {};
+	const tagFilters: IconFinderTagsFilter[] = [];
 
-	// Add icons with categories
-	Object.keys(categories2).forEach((title, color) => {
-		const category: IconFinderFilter = {
+	// Add icons with tags
+	Object.keys(tags).forEach((title, color) => {
+		const tag: IconFinderTagsFilter = {
 			title,
 			color,
 		};
-		categoryItems.push(category);
+		tagFilters.push(tag);
 
-		categories2[title].forEach((name) => {
-			addIcon(name, category);
+		tags[title].forEach((name) => {
+			addIcon(name, tag);
 		});
 	});
 
-	// Add icons without categories
+	// Add icons without tags
 	const uncategorized = data.uncategorized;
 	if (uncategorized && uncategorized.length) {
-		let emptyCategory: IconFinderFilter | undefined;
-		if (categoryItems.length) {
-			emptyCategory = {
+		let emptyTag: IconFinderTagsFilter | undefined;
+		if (tagFilters.length) {
+			emptyTag = {
 				title: '',
-				color: categoryItems.length,
+				color: tagFilters.length,
 			};
-			categoryItems.push(emptyCategory);
+			tagFilters.push(emptyTag);
 		}
 
 		uncategorized.forEach((name) => {
-			addIcon(name, emptyCategory);
+			addIcon(name, emptyTag);
 		});
 	}
 
@@ -123,7 +120,7 @@ export function convertAPIv2IconSet(
 				map[name] = icon;
 				icon.icons.push({
 					name,
-					categories: icon.categories,
+					tags: icon.tags,
 					hidden: icon.hidden,
 				});
 			}
@@ -132,6 +129,7 @@ export function convertAPIv2IconSet(
 
 	// Update counter, create icon set
 	info.total = total;
+	const filters = {} as IconFinderIconSet['filters'];
 	const iconSet: IconFinderIconSet = {
 		provider,
 		prefix,
@@ -143,14 +141,20 @@ export function convertAPIv2IconSet(
 			map,
 			unique,
 		},
+		filters,
 	};
 
 	// Get themes
-	Object.assign(iconSet, getIconSetThemes(data as unknown as IconifyJSON));
+	Object.assign(filters, getIconSetThemes(data as unknown as IconifyJSON));
 
-	// Set categories
-	if (categoryItems.length) {
-		iconSet.categories = categoryItems;
+	// Set tags
+	const filtersLength = tagFilters.length;
+	if (filtersLength) {
+		filters.tags = {
+			type: 'tags',
+			filters: tagFilters,
+			visible: filtersLength,
+		};
 	}
 
 	return iconSet;

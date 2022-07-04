@@ -11,7 +11,9 @@ export function applyCollectionsListFilter(list: IconFinderCollectionsList) {
 		.split(/\s+/)
 		.map((item) => item.toLowerCase())
 		.filter((keyword) => keyword !== '');
-	const selectedFilter = list.filters.selected;
+
+	const categoriesFilters = list.filters.categories;
+	const selectedFilter = categoriesFilters && categoriesFilters.selected;
 
 	// Main callback
 	const defaultCallback = getDefaultCollectionsListCallback(list);

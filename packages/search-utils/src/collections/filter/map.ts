@@ -45,5 +45,8 @@ export function filterCollectionsList(
 	}
 
 	// Update filters counter
-	countVisibleFilters(list.filters);
+	const categoriesFilters = list.filters.categories;
+	if (categoriesFilters) {
+		countVisibleFilters(categoriesFilters);
+	}
 }

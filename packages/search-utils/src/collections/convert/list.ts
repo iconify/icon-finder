@@ -1,6 +1,6 @@
 import type { IconifyInfo } from '@iconify/types';
 import { convertIconSetInfo } from '@iconify/utils/lib/icon-set/convert-info';
-import type { IconFinderFilter } from '../../filters/types';
+import type { IconFinderCategoriesFilter } from '../../filters/types/filter';
 import type {
 	IconFinderCollectionsCategory,
 	IconFinderCollectionsList,
@@ -21,10 +21,7 @@ export function convertCollectionsList(
 			null
 		) as IconFinderCollectionsList['categorised'],
 		prefixed: Object.create(null) as IconFinderCollectionsList['prefixed'],
-		filters: {
-			filters: [],
-			visible: 0,
-		},
+		filters: {},
 		visible: 0,
 		total: 0,
 	};
@@ -71,7 +68,7 @@ export function convertCollectionsList(
 			categoryItem = result.categorised[category];
 			if (!categoryItem) {
 				// New category
-				const filter: IconFinderFilter = {
+				const filter: IconFinderCategoriesFilter = {
 					title: category,
 				};
 				result.categorised[category] = {

@@ -1,12 +1,10 @@
-import type {
-	IconFinderIconSetTheme,
-	IconFinderIconSetThemeItem,
-} from '../types/themes';
+import type { IconFinderThemeFilter } from '../../filters/types/filter';
+import type { IconFinderThemeFiltersList } from '../../filters/types/list';
 import { getBaseIconForTheme } from './base';
 
 interface GetThemeVariationsResult {
 	name: string;
-	item: IconFinderIconSetThemeItem;
+	filter: IconFinderThemeFilter;
 }
 
 /**
@@ -14,7 +12,7 @@ interface GetThemeVariationsResult {
  */
 export function getThemeVariations(
 	name: string | ReturnType<typeof getBaseIconForTheme>,
-	theme: IconFinderIconSetTheme
+	theme: IconFinderThemeFiltersList
 ): GetThemeVariationsResult[] | undefined {
 	const baseItem =
 		typeof name === 'string' ? getBaseIconForTheme(name, theme) : name;
@@ -27,11 +25,11 @@ export function getThemeVariations(
 	const { type, filters } = theme;
 	const results: GetThemeVariationsResult[] = [];
 	for (let i = 0; i < filters.length; i++) {
-		const item = filters[i];
-		const match = item.match;
+		const filter = filters[i];
+		const match = filter.match;
 		results.push({
 			name: type === 'prefixes' ? match + baseName : baseName + match,
-			item,
+			filter,
 		});
 	}
 
