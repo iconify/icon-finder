@@ -49,15 +49,10 @@ export function convertAPIv2IconSet(
 			};
 			uniqueIcon = {
 				icons: [icon],
-				render: name,
+				hidden: true,
 			};
 			unique.push(uniqueIcon);
 			map[name] = uniqueIcon;
-
-			if (!hidden) {
-				// New visible icon
-				total++;
-			}
 		}
 
 		// Add tags
@@ -68,6 +63,10 @@ export function convertAPIv2IconSet(
 		// Hide
 		if (hidden) {
 			uniqueIcon.hidden = icon.hidden = true;
+		} else if (uniqueIcon.hidden) {
+			// Unhide
+			delete uniqueIcon.hidden;
+			total++;
 		}
 	};
 

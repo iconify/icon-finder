@@ -229,7 +229,6 @@ describe('Testing tags', () => {
 				rhdCarsTag,
 			],
 		});
-		expect(opelIcon.render).toBe('opel');
 
 		// Alias with custom tags
 		const vauxhallIcon = map['vauxhall'];

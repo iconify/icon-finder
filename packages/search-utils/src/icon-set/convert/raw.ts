@@ -140,7 +140,6 @@ export function convertRawIconSet(
 			// Found duplicate: add as alias
 			if (!hidden && uniqueIcon.hidden) {
 				// Clone is hidden, but icon is visible: set visible icon as primary
-				uniqueIcon.render = name;
 				uniqueIcon.icons.unshift(icon);
 				delete uniqueIcon.hidden;
 				total++;
@@ -151,7 +150,6 @@ export function convertRawIconSet(
 			// Create icon
 			uniqueIcon = {
 				icons: [icon],
-				render: name,
 			};
 			hidden ? (uniqueIcon.hidden = true) : total++;
 
@@ -190,7 +188,7 @@ export function convertRawIconSet(
 				item.transformations = list
 					.slice(0, index)
 					.concat(list.slice(index + 1))
-					.map((item) => item.render);
+					.map((item) => item.icons[0].name);
 			});
 		}
 	}

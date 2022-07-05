@@ -21,8 +21,8 @@ export interface IconFinderIconSetUniqueIcon {
 	// Icons that match it, including icon in `render`
 	icons: IconFinderIconSetIcon[];
 
-	// Icon to render
-	render: string;
+	// Icon name to render, defaults to first entry in `icons` property
+	render?: string;
 
 	// List of tags icons belong to
 	tags?: IconFinderTagsFilter[];

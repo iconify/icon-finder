@@ -79,7 +79,6 @@ describe('Convert raw icon set', () => {
 					name: 'home',
 				},
 			],
-			render: 'home',
 		});
 
 		const hiddenIcon = map['hidden'];
@@ -90,7 +89,6 @@ describe('Convert raw icon set', () => {
 					hidden: true,
 				},
 			],
-			render: 'hidden',
 			hidden: true,
 		});
 	});
@@ -243,7 +241,6 @@ describe('Convert raw icon set', () => {
 					hidden: true,
 				},
 			],
-			render: 'home',
 			transformations: ['house-rtl'],
 		});
 
@@ -257,7 +254,6 @@ describe('Convert raw icon set', () => {
 					name: 'user',
 				},
 			],
-			render: 'account',
 			transformations: ['account2'],
 		});
 
@@ -281,7 +277,6 @@ describe('Convert raw icon set', () => {
 					hidden: true,
 				},
 			],
-			render: 'hidden',
 			hidden: true,
 		});
 	});

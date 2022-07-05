@@ -84,7 +84,6 @@ describe('Convert icon set from API', () => {
 					tags: [accountTag],
 				},
 			],
-			render: 'account',
 			tags: [accountTag],
 		};
 		expect(accountIcon).toEqual(expectedAccountIcon);
@@ -102,7 +101,6 @@ describe('Convert icon set from API', () => {
 					tags: [foodTag],
 				},
 			],
-			render: 'beer-filled',
 			tags: [foodTag],
 		};
 		expect(beerFilledIcon).toEqual(expectedBeerFilledIcon);
