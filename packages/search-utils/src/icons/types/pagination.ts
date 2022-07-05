@@ -1,5 +1,3 @@
-import type { IconFinderIcon } from '../../icon/types/icon';
-
 /**
  * Pagination
  */
@@ -11,7 +9,7 @@ export interface IconFinderIconsListPagination {
 	itemsPerPage: number;
 
 	// Reference icon to adjust current page when filter is clicked
-	reference?: IconFinderIcon;
+	// reference?: IconFinderIcon;
 
 	// "Show more" button
 	showMoreAction?: () => void;
