@@ -197,12 +197,14 @@ export function convertRawIconSet(
 	info.total = total;
 	const filters = {} as IconFinderIconSet['filters'];
 	const iconSet: IconFinderIconSet = {
-		provider,
-		prefix,
+		source: 'raw',
+		id: {
+			provider,
+			prefix,
+		},
 		info,
 		title: info.name || prefix,
 		total,
-		source: 'raw',
 		icons: {
 			map,
 			unique,

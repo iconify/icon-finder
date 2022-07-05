@@ -212,6 +212,16 @@
 			"require": "./lib/icon-set/types/icons.cjs",
 			"import": "./lib/icon-set/types/icons.mjs"
 		},
+		"./lib/icon-set/types/id": {
+			"types": "./lib/icon-set/types/id.d.ts",
+			"require": "./lib/icon-set/types/id.cjs",
+			"import": "./lib/icon-set/types/id.mjs"
+		},
+		"./lib/icons/types/name": {
+			"types": "./lib/icons/types/name.d.ts",
+			"require": "./lib/icons/types/name.cjs",
+			"import": "./lib/icons/types/name.mjs"
+		},
 		"./lib/icons/types/pagination": {
 			"types": "./lib/icons/types/pagination.d.ts",
 			"require": "./lib/icons/types/pagination.cjs",

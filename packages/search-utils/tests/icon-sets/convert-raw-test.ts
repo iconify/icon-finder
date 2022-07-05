@@ -48,8 +48,10 @@ describe('Convert raw icon set', () => {
 		expect(iconSet).toBeTruthy();
 
 		expect(iconSet!.source).toBe('raw');
-		expect(iconSet!.provider).toBe('');
-		expect(iconSet!.prefix).toBe(prefix);
+		expect(iconSet!.id).toEqual({
+			provider: '',
+			prefix,
+		});
 		expect(iconSet!.total).toBe(2);
 		expect(iconSet!.info).toEqual({
 			name: 'Test',
@@ -184,8 +186,10 @@ describe('Convert raw icon set', () => {
 		const expectedVisible = 4; // 2 icons + 2 variations
 
 		expect(iconSet!.source).toBe('raw');
-		expect(iconSet!.provider).toBe('');
-		expect(iconSet!.prefix).toBe(prefix);
+		expect(iconSet!.id).toEqual({
+			provider: '',
+			prefix,
+		});
 		expect(iconSet!.total).toBe(expectedVisible);
 		expect(iconSet!.info).toEqual({
 			name: 'Test',
@@ -330,8 +334,10 @@ describe('Convert raw icon set', () => {
 		const expectedVisible = 3; // 2 icons + 1 variation
 
 		expect(iconSet!.source).toBe('raw');
-		expect(iconSet!.provider).toBe('');
-		expect(iconSet!.prefix).toBe(prefix);
+		expect(iconSet!.id).toEqual({
+			provider: '',
+			prefix,
+		});
 		expect(iconSet!.total).toBe(expectedVisible);
 		expect(iconSet!.info).toEqual({
 			name: 'Test',

@@ -33,8 +33,10 @@ describe('Convert icon set from API', () => {
 		const total = 310;
 
 		expect(iconSet!.source).toBe('api');
-		expect(iconSet!.provider).toBe('');
-		expect(iconSet!.prefix).toBe('line-md');
+		expect(iconSet!.id).toEqual({
+			provider: '',
+			prefix: 'line-md',
+		});
 		expect(iconSet!.total).toBe(total);
 		expect(iconSet!.info).toEqual({
 			name: 'Material Line Icons',

@@ -130,12 +130,14 @@ export function convertAPIv2IconSet(
 	info.total = total;
 	const filters = {} as IconFinderIconSet['filters'];
 	const iconSet: IconFinderIconSet = {
-		provider,
-		prefix,
+		source: 'api',
+		id: {
+			provider,
+			prefix,
+		},
 		info,
 		title: info.name || prefix,
 		total,
-		source: 'api',
 		icons: {
 			map,
 			unique,

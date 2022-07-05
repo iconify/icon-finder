@@ -4,6 +4,7 @@ import type {
 	IconFinderThemeFilters,
 } from '../../filters/types/all';
 import type { IconFinderIconSetIcons } from './icons';
+import type { IconSetID } from './id';
 
 /**
  * Source
@@ -27,8 +28,7 @@ export interface IconFinderIconSet {
 	source: IconFinderIconSetSource;
 
 	// Provider and prefix
-	provider: string;
-	prefix: string;
+	id: IconSetID;
 
 	// Title: duplicate of info.name
 	title: string;
