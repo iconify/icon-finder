@@ -1,4 +1,4 @@
-export const iconifyVersion = '2.2.0';
+export const iconifyVersion = '2.2.1';
 
 /**
  * Packages
