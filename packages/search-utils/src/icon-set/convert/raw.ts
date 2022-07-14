@@ -15,6 +15,7 @@ import type {
 import { hashString } from './helpers/hash';
 import { getIconSetThemes } from './helpers/themes';
 import type { IconFinderTagsFilter } from '../../filters/types/filter';
+import { getBaseIconForTheme } from '../themes/base';
 
 /**
  * Convert raw icon set
@@ -27,6 +28,9 @@ export function convertRawIconSet(
 	if (!info) {
 		return null;
 	}
+
+	// Themes
+	const filters = getIconSetThemes(data) as IconFinderIconSet['filters'];
 
 	// Default props
 	const defaults = Object.assign({}, defaultIconProps);
@@ -42,10 +46,8 @@ export function convertRawIconSet(
 	let total = 0;
 
 	// All icons, value could be identical for several icons
-	const map = Object.create(null) as Record<
-		string,
-		IconFinderIconSetUniqueIcon
-	>;
+	const uniqueMap: Map<string, IconFinderIconSetUniqueIcon> = new Map();
+	const iconsMap: Map<string, IconFinderIconSetIcon> = new Map();
 
 	// Unique icons
 	const unique: IconFinderIconSetUniqueIcon[] = [];
@@ -64,15 +66,18 @@ export function convertRawIconSet(
 
 	// Generate tags list
 	const tags = categories || {};
+	const tagsType = 'tags';
 	const tagFilters: IconFinderTagsFilter[] = Object.keys(tags).map(
 		(title, color) => {
 			return {
+				key: tagsType + title,
 				title,
 				color,
 			};
 		}
 	);
 	const emptyTag: IconFinderTagsFilter = {
+		key: tagsType,
 		title: '',
 		color: tagFilters.length,
 	};
@@ -129,6 +134,20 @@ export function convertRawIconSet(
 		};
 		hidden && (icon.hidden = true);
 
+		// Add prefix/suffix
+		if (filters.prefixes) {
+			const prefix = getBaseIconForTheme(name, filters.prefixes);
+			if (prefix) {
+				icon.prefix = prefix.filter;
+			}
+		}
+		if (filters.suffixes) {
+			const suffix = getBaseIconForTheme(name, filters.suffixes);
+			if (suffix) {
+				icon.suffix = suffix.filter;
+			}
+		}
+
 		// Check for duplicate
 		const dupeCheckKey = JSON.stringify({
 			contentHash,
@@ -159,7 +178,8 @@ export function convertRawIconSet(
 		}
 
 		// Add icon
-		map[name] = uniqueIcon;
+		uniqueMap.set(name, uniqueIcon);
+		iconsMap.set(name, icon);
 
 		// Add to transformation
 		(
@@ -174,9 +194,6 @@ export function convertRawIconSet(
 			getTagsForIcons([name].concat(parents));
 		if (iconTags) {
 			icon.tags = iconTags;
-			uniqueIcon.tags = Array.from(
-				new Set(iconTags.concat(uniqueIcon.tags || []))
-			);
 		}
 	}
 
@@ -195,7 +212,6 @@ export function convertRawIconSet(
 
 	// Update counter, create icon set
 	info.total = total;
-	const filters = {} as IconFinderIconSet['filters'];
 	const iconSet: IconFinderIconSet = {
 		source: 'raw',
 		id: {
@@ -206,14 +222,12 @@ export function convertRawIconSet(
 		title: info.name || prefix,
 		total,
 		icons: {
-			map,
+			uniqueMap,
+			iconsMap,
 			unique,
 		},
 		filters,
 	};
-
-	// Get themes
-	Object.assign(filters, getIconSetThemes(data));
 
 	// Set tags
 	if (hasEmptyTag) {
@@ -222,7 +236,7 @@ export function convertRawIconSet(
 	const filtersLength = tagFilters.length;
 	if (filtersLength) {
 		filters.tags = {
-			type: 'tags',
+			type: tagsType,
 			filters: tagFilters,
 			visible: filtersLength,
 		};

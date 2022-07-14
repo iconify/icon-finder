@@ -13,6 +13,7 @@ describe('Testing convertCollectionsList', () => {
 	): IconFinderCategoriesFiltersList {
 		const filters = titles.map((title, index) => {
 			const result: IconFinderCategoriesFilter = {
+				key: 'category-' + title,
 				title,
 				color: index,
 				disabled: false,

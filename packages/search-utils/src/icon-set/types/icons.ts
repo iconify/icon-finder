@@ -10,8 +10,12 @@ export interface IconFinderIconSetIcon {
 	// True if hidden
 	hidden?: boolean;
 
-	// List of tags icon belongs to
+	// List of tags icon belongs to (cannot be empty array). Undefined if none
 	tags?: IconFinderTagsFilter[];
+
+	// Pointer to prefix and suffix filters
+	prefix?: IconFinderTagsFilter;
+	suffix?: IconFinderTagsFilter;
 }
 
 /**
@@ -24,9 +28,6 @@ export interface IconFinderIconSetUniqueIcon {
 	// Icon name to render, defaults to first entry in `icons` property
 	render?: string;
 
-	// List of tags icons belong to
-	tags?: IconFinderTagsFilter[];
-
 	// True if all icons are hidden
 	hidden?: boolean;
 
@@ -38,8 +39,11 @@ export interface IconFinderIconSetUniqueIcon {
  * Icons list
  */
 export interface IconFinderIconSetIcons {
-	// Map of all icons, including aliases and hidden icons. Multiple entries can point to same icon
-	map: Record<string, IconFinderIconSetUniqueIcon>;
+	// Map of all icons, including aliases and hidden icons. Multiple entries can point to the same icon
+	uniqueMap: Map<string, IconFinderIconSetUniqueIcon>;
+
+	// Same as `uniqueMap`, but points to IconFinderIconSetIcon object
+	iconsMap: Map<string, IconFinderIconSetIcon>;
 
 	// Unique icons: icon + aliases + clones
 	unique: IconFinderIconSetUniqueIcon[];

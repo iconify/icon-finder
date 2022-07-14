@@ -67,14 +67,17 @@ describe('Testing tags', () => {
 		const tags = filters.tags!;
 		const expectedTags: IconFinderTagsFilter[] = [
 			{
+				key: 'tagsHome',
 				title: 'Home',
 				color: 0,
 			},
 			{
+				key: 'tagsAccount',
 				title: 'Account',
 				color: 1,
 			},
 			{
+				key: 'tags',
 				title: '',
 				color: 2,
 			},
@@ -84,25 +87,19 @@ describe('Testing tags', () => {
 		const [homeTag, accountTag, emptyTag] = tags.filters;
 
 		// Check tags in icons
-		const { map } = iconSet!.icons;
+		const { iconsMap } = iconSet!.icons;
 
-		const homeSolidIcon = map['home-solid'];
+		const homeSolidIcon = iconsMap.get('home-solid')!;
 		expect(homeSolidIcon.tags).toEqual([homeTag]);
 		expect(homeSolidIcon.tags![0]).toBe(homeTag);
-		expect(homeSolidIcon.icons[0].tags).toEqual([homeTag]);
-		expect(homeSolidIcon.icons[0].tags![0]).toBe(homeTag);
 
-		const accountOutlineIcon = map['account-outline'];
+		const accountOutlineIcon = iconsMap.get('account-outline')!;
 		expect(accountOutlineIcon.tags).toEqual([accountTag]);
 		expect(accountOutlineIcon.tags![0]).toBe(accountTag);
-		expect(accountOutlineIcon.icons[0].tags).toEqual([accountTag]);
-		expect(accountOutlineIcon.icons[0].tags![0]).toBe(accountTag);
 
-		const whateverIcon = map['whatever'];
+		const whateverIcon = iconsMap.get('whatever')!;
 		expect(whateverIcon.tags).toEqual([emptyTag]);
 		expect(whateverIcon.tags![0]).toBe(emptyTag);
-		expect(whateverIcon.icons[0].tags).toEqual([emptyTag]);
-		expect(whateverIcon.icons[0].tags![0]).toBe(emptyTag);
 	});
 
 	it('Aliases', () => {
@@ -166,18 +163,22 @@ describe('Testing tags', () => {
 		const tags = filters.tags!;
 		const expectedTags: IconFinderTagsFilter[] = [
 			{
+				key: 'tagsArrows',
 				title: 'Arrows',
 				color: 0,
 			},
 			{
+				key: 'tagsCars',
 				title: 'Cars',
 				color: 1,
 			},
 			{
+				key: 'tagsLHD Only Cars',
 				title: 'LHD Only Cars',
 				color: 2,
 			},
 			{
+				key: 'tagsRHD Only Cars',
 				title: 'RHD Only Cars',
 				color: 3,
 			},
@@ -187,33 +188,23 @@ describe('Testing tags', () => {
 		const [arrowsTag, carsTag, lhdCarsTag, rhdCarsTag] = tags.filters;
 
 		// Check tags in icons
-		const { map } = iconSet!.icons;
+		const { iconsMap, uniqueMap } = iconSet!.icons;
 
-		const arrowLeftIcon = map['arrow-left'];
+		const arrowLeftIcon = iconsMap.get('arrow-left')!;
 		expect(arrowLeftIcon.tags).toEqual([arrowsTag]);
 		expect(arrowLeftIcon.tags![0]).toBe(arrowsTag);
-		expect(arrowLeftIcon.icons[0].tags).toEqual([arrowsTag]);
-		expect(arrowLeftIcon.icons[0].tags![0]).toBe(arrowsTag);
 
 		// Alias with transformation
-		const arrowRightIcon = map['arrow-right'];
+		const arrowRightIcon = iconsMap.get('arrow-right')!;
 		expect(arrowRightIcon.tags).toEqual([arrowsTag]);
-		expect(arrowRightIcon.icons[0].tags).toEqual([arrowsTag]);
 
 		// Simple icon
-		const subaruIcon = map['subaru'];
+		const subaruIcon = iconsMap.get('subaru')!;
 		expect(subaruIcon.tags).toEqual([carsTag]);
-		expect(subaruIcon.icons[0].tags).toEqual([carsTag]);
 
-		// Icon with multiple entries
-		const opelIcon = map['opel'];
-		expect(opelIcon.tags).toEqual([
-			// unique icon should contain tags from both 'opel' and 'vauxhall'
-			carsTag,
-			rhdCarsTag,
-			lhdCarsTag,
-		]);
-		expect(opelIcon.icons[0]).toEqual({
+		// Icon with multiple entries: check unique icon
+		const uniqueOpelIcon = uniqueMap.get('opel')!;
+		expect(uniqueOpelIcon.icons[0]).toEqual({
 			name: 'opel',
 			tags: [
 				// only tags for 'opel'
@@ -221,7 +212,7 @@ describe('Testing tags', () => {
 				lhdCarsTag,
 			],
 		});
-		expect(opelIcon.icons[1]).toEqual({
+		expect(uniqueOpelIcon.icons[1]).toEqual({
 			name: 'vauxhall',
 			tags: [
 				// only tags for 'vauxhall'
@@ -231,7 +222,7 @@ describe('Testing tags', () => {
 		});
 
 		// Alias with custom tags
-		const vauxhallIcon = map['vauxhall'];
-		expect(vauxhallIcon).toBe(opelIcon);
+		const uniqueVauxhallIcon = uniqueMap.get('vauxhall');
+		expect(uniqueVauxhallIcon).toBe(uniqueOpelIcon);
 	});
 });

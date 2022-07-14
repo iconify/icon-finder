@@ -12,7 +12,7 @@ describe('Testing events', () => {
 	}
 
 	it('Basic event', () => {
-		return new Promise((fulfill, reject) => {
+		return new Promise((fulfill) => {
 			const foo = eventName();
 			const payload = {
 				foo: 1,
@@ -97,7 +97,7 @@ describe('Testing events', () => {
 	});
 
 	it('Fire event with delay', () => {
-		return new Promise((fulfill, reject) => {
+		return new Promise((fulfill) => {
 			const foo = eventName();
 			const bar = eventName();
 			const payload = {

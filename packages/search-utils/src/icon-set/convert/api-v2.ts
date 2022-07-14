@@ -1,6 +1,7 @@
 import type { IconifyJSON } from '@iconify/types';
 import type { APIv2CollectionResponse } from '../../api/types/v2';
 import type { IconFinderTagsFilter } from '../../filters/types/filter';
+import { getBaseIconForTheme } from '../themes/base';
 import type { IconFinderIconSet } from '../types/icon-set';
 import type {
 	IconFinderIconSetIcon,
@@ -20,11 +21,14 @@ export function convertAPIv2IconSet(
 		return null;
 	}
 
+	// Themes
+	const filters = getIconSetThemes(
+		data as unknown as IconifyJSON
+	) as IconFinderIconSet['filters'];
+
 	// All icons, value could be identical for several icons
-	const map = Object.create(null) as Record<
-		string,
-		IconFinderIconSetUniqueIcon
-	>;
+	const uniqueMap: Map<string, IconFinderIconSetUniqueIcon> = new Map();
+	const iconsMap: Map<string, IconFinderIconSetIcon> = new Map();
 
 	// Unique icons
 	const unique: IconFinderIconSetUniqueIcon[] = [];
@@ -36,28 +40,45 @@ export function convertAPIv2IconSet(
 		tag?: IconFinderTagsFilter,
 		hidden?: boolean
 	) => {
-		let uniqueIcon: IconFinderIconSetUniqueIcon;
+		let uniqueIcon = uniqueMap.get(name);
 		let icon: IconFinderIconSetIcon;
-		if (map[name]) {
+		if (uniqueIcon) {
 			// Icon exists
-			uniqueIcon = map[name];
 			icon = uniqueIcon.icons[0];
 		} else {
 			// New icon
 			icon = {
 				name,
 			};
+
+			// Add prefix/suffix
+			if (filters.prefixes) {
+				const prefix = getBaseIconForTheme(name, filters.prefixes);
+				if (prefix) {
+					icon.prefix = prefix.filter;
+				}
+			}
+			if (filters.suffixes) {
+				const suffix = getBaseIconForTheme(name, filters.suffixes);
+				if (suffix) {
+					icon.suffix = suffix.filter;
+				}
+			}
+
+			// New unique icon
 			uniqueIcon = {
 				icons: [icon],
 				hidden: true,
 			};
 			unique.push(uniqueIcon);
-			map[name] = uniqueIcon;
+			uniqueMap.set(name, uniqueIcon);
 		}
+		iconsMap.set(name, icon);
 
 		// Add tags
 		if (tag) {
-			uniqueIcon.tags = icon.tags = [tag, ...(icon.tags || [])];
+			// No need to check if it exists, function can only be called once per icon per tag
+			icon.tags = [tag, ...(icon.tags || [])];
 		}
 
 		// Hide
@@ -75,8 +96,10 @@ export function convertAPIv2IconSet(
 	const tagFilters: IconFinderTagsFilter[] = [];
 
 	// Add icons with tags
+	const tagsType = 'tags';
 	Object.keys(tags).forEach((title, color) => {
 		const tag: IconFinderTagsFilter = {
+			key: tagsType + title,
 			title,
 			color,
 		};
@@ -93,6 +116,7 @@ export function convertAPIv2IconSet(
 		let emptyTag: IconFinderTagsFilter | undefined;
 		if (tagFilters.length) {
 			emptyTag = {
+				key: tagsType,
 				title: '',
 				color: tagFilters.length,
 			};
@@ -112,23 +136,29 @@ export function convertAPIv2IconSet(
 	// Add aliases
 	const aliases = data.aliases || {};
 	for (const name in aliases) {
-		if (!map[name]) {
+		if (!uniqueMap.has(name)) {
 			const parent = aliases[name];
-			const icon = map[parent];
-			if (icon) {
-				map[name] = icon;
-				icon.icons.push({
+			const icon = uniqueMap.get(parent);
+			const parentIcon = iconsMap.get(parent);
+
+			// Check if parent icon exists.
+			// Not handling circular dependencies, they should not be sent by API v2 and should be handled differently in v3.
+			if (icon && parentIcon) {
+				uniqueMap.set(name, icon);
+
+				const item = {
+					// Copy everything from parent icon, override name
+					...parentIcon,
 					name,
-					tags: icon.tags,
-					hidden: icon.hidden,
-				});
+				};
+				iconsMap.set(name, item);
+				icon.icons.push(item);
 			}
 		}
 	}
 
 	// Update counter, create icon set
 	info.total = total;
-	const filters = {} as IconFinderIconSet['filters'];
 	const iconSet: IconFinderIconSet = {
 		source: 'api',
 		id: {
@@ -139,20 +169,18 @@ export function convertAPIv2IconSet(
 		title: info.name || prefix,
 		total,
 		icons: {
-			map,
+			uniqueMap,
+			iconsMap,
 			unique,
 		},
 		filters,
 	};
 
-	// Get themes
-	Object.assign(filters, getIconSetThemes(data as unknown as IconifyJSON));
-
 	// Set tags
 	const filtersLength = tagFilters.length;
 	if (filtersLength) {
 		filters.tags = {
-			type: 'tags',
+			type: tagsType,
 			filters: tagFilters,
 			visible: filtersLength,
 		};

@@ -61,16 +61,19 @@ describe('Testing themes', () => {
 		// Check suffixes
 		const suffixes = filters.suffixes!;
 		const solidSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-solid',
 			title: 'Solid',
 			match: '-solid',
 			color: 0,
 		};
 		const outlineSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-outline',
 			title: 'Outline',
 			match: '-outline',
 			color: 1,
 		};
 		const twotoneSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-twotone',
 			title: 'Two-Tone',
 			match: '-twotone',
 			color: 2,
@@ -203,21 +206,25 @@ describe('Testing themes', () => {
 		// Check prefixes
 		const prefixes = filters.prefixes!;
 		const baselinePrefix: IconFinderThemeFilter = {
+			key: 'prefixes',
 			title: 'Baseline',
 			match: '',
 			color: 0,
 		};
 		const outlinePrefix: IconFinderThemeFilter = {
+			key: 'prefixesoutline-',
 			title: 'Outline',
 			match: 'outline-',
 			color: 1,
 		};
 		const roundPrefix: IconFinderThemeFilter = {
+			key: 'prefixesround-',
 			title: 'Round',
 			match: 'round-',
 			color: 2,
 		};
 		const twotonePrefix: IconFinderThemeFilter = {
+			key: 'prefixestwotone-',
 			title: 'Two-Tone',
 			match: 'twotone-',
 			color: 3,
@@ -367,16 +374,19 @@ describe('Testing themes', () => {
 		// Check prefixes
 		const prefixes = filters.prefixes!;
 		const baselinePrefix: IconFinderThemeFilter = {
+			key: 'prefixesbaseline-',
 			title: 'Baseline',
 			match: 'baseline-',
 			color: 0,
 		};
 		const roundPrefix: IconFinderThemeFilter = {
+			key: 'prefixesround-',
 			title: 'Round',
 			match: 'round-',
 			color: 1,
 		};
 		const twotonePrefix: IconFinderThemeFilter = {
+			key: 'prefixestwotone-',
 			title: 'Two-Tone',
 			match: 'twotone-',
 			color: 2,
@@ -392,11 +402,13 @@ describe('Testing themes', () => {
 		// Check suffixes
 		const suffixes = filters.suffixes!;
 		const defaultSuffix: IconFinderThemeFilter = {
+			key: 'suffixes',
 			title: 'Simple',
 			match: '',
 			color: 3,
 		};
 		const animatedSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-animated',
 			title: 'Animated',
 			match: '-animated',
 			color: 4,

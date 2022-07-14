@@ -1,9 +1,10 @@
+import type { IconifyIconName } from '@iconify/utils';
 import type { IconSetID } from '../../icon-set/types/id';
 
 /**
  * Icon name for icon set
  */
-export interface IconFinderIconsListIconSetIconName {
+export interface IconFinderIconSetIconName {
 	// Icon set
 	id: IconSetID;
 
@@ -11,21 +12,17 @@ export interface IconFinderIconsListIconSetIconName {
 	name: string;
 
 	// Icon name to render, could be different than `name` in case of aliases
-	render?: string;
+	render: string;
 }
 
 /**
  * Icon name for generic list, not specific to icon set
  */
-export interface IconFinderIconsListGenericIconName {
-	provider: string;
-	prefix: string;
-	name: string;
-}
+export type IconFinderGenericIconName = IconifyIconName;
 
 /**
  * Combination
  */
-export type IconFinderIconsListIconName =
-	| IconFinderIconsListIconSetIconName
-	| IconFinderIconsListGenericIconName;
+export type IconFinderIconName =
+	| IconFinderIconSetIconName
+	| IconFinderGenericIconName;

@@ -61,89 +61,121 @@ describe('Convert icon set from API', () => {
 			palette: false,
 		});
 
-		// Icons and tags
-		const { map } = iconSet!.icons;
+		// Expand icons list and filters
+		const { uniqueMap, iconsMap } = iconSet!.icons;
 		const { tags, suffixes } = iconSet!.filters;
 
+		// Suffixes
+		const emptySuffix: IconFinderThemeFilter = {
+			key: 'suffixes',
+			title: 'Outline Animation',
+			match: '',
+			color: 0,
+		};
+		const outSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-out',
+			title: 'Erase Animation',
+			match: '-out',
+			color: 1,
+		};
+		const loopSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-loop',
+			title: 'Looping Animation',
+			match: '-loop',
+			color: 2,
+		};
+		const transitionSuffix: IconFinderThemeFilter = {
+			key: 'suffixes-transition',
+			title: 'Transition Between Icons',
+			match: '-transition',
+			color: 3,
+		};
+
+		const expectedIconSetSuffixes: IconFinderThemeFiltersList = {
+			type: 'suffixes',
+			visible: 4,
+
+			// Same order as in JSON file
+			filters: [emptySuffix, outSuffix, loopSuffix, transitionSuffix],
+
+			// Longest matches first
+			sorted: [transitionSuffix, loopSuffix, outSuffix],
+
+			empty: emptySuffix,
+		};
+		expect(suffixes).toEqual(expectedIconSetSuffixes);
+
+		// Icons and tags
 		const accountTag: IconFinderTagsFilter = {
+			key: 'tagsAccount',
 			title: 'Account',
 			color: 0,
 		};
 		expect(tags!.filters[0]).toEqual(accountTag);
 
 		const foodTag: IconFinderTagsFilter = {
+			key: 'tagsFood and Drink',
 			title: 'Food and Drink',
 			color: 7,
 		};
 		expect(tags!.filters[7]).toEqual(foodTag);
 
+		const socialTag: IconFinderTagsFilter = {
+			key: 'tagsSocial',
+			title: 'Social',
+			color: 10,
+		};
+		expect(tags!.filters[10]).toEqual(socialTag);
+
 		// account
-		const accountIcon = map['account'];
+		const accountIcon = uniqueMap.get('account');
+		const accountIconItem = iconsMap.get('account');
 		const expectedAccountIcon: IconFinderIconSetUniqueIcon = {
 			icons: [
 				{
 					name: 'account',
 					tags: [accountTag],
+					suffix: emptySuffix,
 				},
 			],
-			tags: [accountTag],
 		};
 		expect(accountIcon).toEqual(expectedAccountIcon);
+		expect(accountIcon!.icons[0]).toBe(accountIconItem);
 
 		// beer-filled + alias
-		const beerFilledIcon = map['beer-filled'];
+		const beerFilledIcon = uniqueMap.get('beer-filled');
+		const beerFilledIconItem = iconsMap.get('beer-filled');
+		const beerSolidIconItem = iconsMap.get('beer-solid');
 		const expectedBeerFilledIcon: IconFinderIconSetUniqueIcon = {
 			icons: [
 				{
 					name: 'beer-filled',
 					tags: [foodTag],
+					suffix: emptySuffix,
 				},
 				{
 					name: 'beer-solid',
 					tags: [foodTag],
+					suffix: emptySuffix,
 				},
 			],
-			tags: [foodTag],
 		};
 		expect(beerFilledIcon).toEqual(expectedBeerFilledIcon);
+		expect(uniqueMap.get('beer-solid')).toBe(beerFilledIcon);
+		expect(beerFilledIcon!.icons[0]).toBe(beerFilledIconItem);
+		expect(beerFilledIcon!.icons[1]).toBe(beerSolidIconItem);
 
-		expect(map['beer-solid']).toBe(map['beer-filled']);
-
-		// Suffixes
-		const emptySuffix: IconFinderThemeFilter = {
-			title: 'Outline Animation',
-			match: '',
-			color: 0,
+		// github-loop to check suffix
+		const githubLoopIcon = uniqueMap.get('github-loop');
+		const expectedGithubLoopIcon: IconFinderIconSetUniqueIcon = {
+			icons: [
+				{
+					name: 'github-loop',
+					tags: [socialTag],
+					suffix: loopSuffix,
+				},
+			],
 		};
-		const otherSuffixes: IconFinderThemeFilter[] = [
-			{
-				title: 'Erase Animation',
-				match: '-out',
-				color: 1,
-			},
-			{
-				title: 'Looping Animation',
-				match: '-loop',
-				color: 2,
-			},
-			{
-				title: 'Transition Between Icons',
-				match: '-transition',
-				color: 3,
-			},
-		];
-		const expectedIconSetSuffixes: IconFinderThemeFiltersList = {
-			type: 'suffixes',
-			visible: 4,
-
-			// Same order as in JSON file
-			filters: [emptySuffix, ...otherSuffixes],
-
-			// Longest matches first
-			sorted: [otherSuffixes[2], otherSuffixes[1], otherSuffixes[0]],
-
-			empty: emptySuffix,
-		};
-		expect(suffixes).toEqual(expectedIconSetSuffixes);
+		expect(githubLoopIcon).toEqual(expectedGithubLoopIcon);
 	});
 });

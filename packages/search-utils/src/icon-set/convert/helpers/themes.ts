@@ -14,8 +14,9 @@ function convert(
 	const filters = [] as IconFinderThemeFilter[];
 	const list = Object.create(null) as Record<string, IconFinderThemeFilter>;
 
+	const type = prefix ? 'prefixes' : 'suffixes';
 	const result: IconFinderThemeFiltersList = {
-		type: prefix ? 'prefixes' : 'suffixes',
+		type,
 		filters,
 		sorted: [],
 		visible: 0,
@@ -23,9 +24,9 @@ function convert(
 
 	// Parse all items
 	for (const key in data) {
-		const isEmpty = !key;
-		const match = isEmpty ? '' : prefix ? key + '-' : '-' + key;
+		const match = key ? (prefix ? key + '-' : '-' + key) : '';
 		const item: IconFinderThemeFilter = {
+			key: type + match,
 			title: data[key],
 			match,
 			color: index++,

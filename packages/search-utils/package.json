@@ -202,6 +202,21 @@
 			"require": "./lib/icon-set/convert/raw.cjs",
 			"import": "./lib/icon-set/convert/raw.mjs"
 		},
+		"./lib/icon-set/filter/filters": {
+			"types": "./lib/icon-set/filter/filters.d.ts",
+			"require": "./lib/icon-set/filter/filters.cjs",
+			"import": "./lib/icon-set/filter/filters.mjs"
+		},
+		"./lib/icon-set/filter/get-filters": {
+			"types": "./lib/icon-set/filter/get-filters.d.ts",
+			"require": "./lib/icon-set/filter/get-filters.cjs",
+			"import": "./lib/icon-set/filter/get-filters.mjs"
+		},
+		"./lib/icon-set/filter/keyword": {
+			"types": "./lib/icon-set/filter/keyword.d.ts",
+			"require": "./lib/icon-set/filter/keyword.cjs",
+			"import": "./lib/icon-set/filter/keyword.mjs"
+		},
 		"./lib/icon-set/themes/base": {
 			"types": "./lib/icon-set/themes/base.d.ts",
 			"require": "./lib/icon-set/themes/base.cjs",
@@ -226,6 +241,11 @@
 			"types": "./lib/icon-set/types/id.d.ts",
 			"require": "./lib/icon-set/types/id.cjs",
 			"import": "./lib/icon-set/types/id.mjs"
+		},
+		"./lib/icons/types/list": {
+			"types": "./lib/icons/types/list.d.ts",
+			"require": "./lib/icons/types/list.cjs",
+			"import": "./lib/icons/types/list.mjs"
 		},
 		"./lib/icons/types/pagination": {
 			"types": "./lib/icons/types/pagination.d.ts",

@@ -1,12 +1,10 @@
 import type { IconifyIconName } from '@iconify/utils';
-import type { IconFinderIconsListIconName } from '../types/name';
+import type { IconFinderIconName } from '../types/name';
 
 /**
  * Get icon name to render
  */
-export function getIconNameToRender(
-	item: IconFinderIconsListIconName
-): IconifyIconName {
+export function getIconNameToRender(item: IconFinderIconName): IconifyIconName {
 	if ('id' in item) {
 		return {
 			...item.id,

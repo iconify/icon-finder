@@ -141,7 +141,7 @@ export interface APIv2SearchResponse {
 }
 
 /**
- * Last modifications response
+ * /last-modified
  */
 export interface APIv2LastModifiedResponse {
 	// Last modified times of icon sets

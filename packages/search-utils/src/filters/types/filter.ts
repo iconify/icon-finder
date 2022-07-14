@@ -10,6 +10,10 @@ export type IconFinderFilterCallback = (selected: boolean) => boolean;
  * Filter
  */
 export interface IconFinderFilter {
+	// Unique key, can be used in components to make sure item is unique
+	// Can be changed if one of the following properties changes: title, color, event
+	key: string;
+
 	// Filter title
 	title: string;
 

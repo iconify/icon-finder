@@ -65,16 +65,18 @@ describe('Convert raw icon set', () => {
 		});
 
 		// Icons
-		const { map, unique } = iconSet!.icons;
+		const { uniqueMap, iconsMap, unique } = iconSet!.icons;
 
-		// Map must include all icons
-		expect(Object.keys(map)).toEqual(['home', 'account', 'hidden']);
+		// Maps must include all icons
+		const expectedKeys = ['home', 'account', 'hidden'];
+		expect(Array.from(uniqueMap.keys())).toEqual(expectedKeys);
+		expect(Array.from(iconsMap.keys())).toEqual(expectedKeys);
 
 		// All icons are unique
 		expect(unique.length).toBe(3);
 
 		// Check icons
-		const homeIcon = map['home'];
+		const homeIcon = uniqueMap.get('home');
 		expect(homeIcon).toEqual({
 			icons: [
 				{
@@ -83,7 +85,7 @@ describe('Convert raw icon set', () => {
 			],
 		});
 
-		const hiddenIcon = map['hidden'];
+		const hiddenIcon = uniqueMap.get('hidden');
 		expect(hiddenIcon).toEqual({
 			icons: [
 				{
@@ -203,10 +205,10 @@ describe('Convert raw icon set', () => {
 		});
 
 		// Icons
-		const { map, unique } = iconSet!.icons;
+		const { uniqueMap, iconsMap, unique } = iconSet!.icons;
 
-		// Map must include all icons
-		expect(Object.keys(map)).toEqual([
+		// Maps must include all icons
+		const expectedKeys = [
 			'home',
 			'account',
 			'hidden',
@@ -221,13 +223,15 @@ describe('Convert raw icon set', () => {
 			'well-hidden',
 			'well-hidden2',
 			'well-hidden3',
-		]);
+		];
+		expect(Array.from(uniqueMap.keys())).toEqual(expectedKeys);
+		expect(Array.from(iconsMap.keys())).toEqual(expectedKeys);
 
 		// Check length
 		expect(unique.length).toBe(expectedTotal);
 
 		// Check icons
-		const homeIcon = map['home'];
+		const homeIcon = uniqueMap.get('home');
 		expect(homeIcon).toEqual({
 			icons: [
 				{
@@ -248,7 +252,7 @@ describe('Convert raw icon set', () => {
 			transformations: ['house-rtl'],
 		});
 
-		const accountIcon = map['account'];
+		const accountIcon = uniqueMap.get('account');
 		expect(accountIcon).toEqual({
 			icons: [
 				{
@@ -261,7 +265,7 @@ describe('Convert raw icon set', () => {
 			transformations: ['account2'],
 		});
 
-		const hiddenIcon = map['hidden'];
+		const hiddenIcon = uniqueMap.get('hidden');
 		expect(hiddenIcon).toEqual({
 			icons: [
 				{
@@ -351,17 +355,19 @@ describe('Convert raw icon set', () => {
 		});
 
 		// Icons
-		const { map, unique } = iconSet!.icons;
+		const { uniqueMap, iconsMap, unique } = iconSet!.icons;
 
-		// Map must include all icons
-		expect(Object.keys(map)).toEqual([
+		// Maps must include all icons
+		const expectedKeys = [
 			'home',
 			'house',
 			'account',
 			'user',
 			'house-rtl',
 			'home-rtl',
-		]);
+		];
+		expect(Array.from(uniqueMap.keys())).toEqual(expectedKeys);
+		expect(Array.from(iconsMap.keys())).toEqual(expectedKeys);
 
 		// Check length of unique icons list
 		expect(unique.length).toBe(expectedTotal);

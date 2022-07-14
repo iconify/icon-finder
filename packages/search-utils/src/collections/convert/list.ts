@@ -27,10 +27,12 @@ export function convertCollectionsList(
 	};
 
 	// Create empty category
+	const categoryPrefix = 'category-';
 	const emptyCategory: IconFinderCollectionsCategory = {
 		title: '',
 		items: [],
 		filter: {
+			key: categoryPrefix,
 			title: '',
 		},
 		visible: 0,
@@ -69,6 +71,7 @@ export function convertCollectionsList(
 			if (!categoryItem) {
 				// New category
 				const filter: IconFinderCategoriesFilter = {
+					key: categoryPrefix + category,
 					title: category,
 				};
 				result.categorised[category] = {
