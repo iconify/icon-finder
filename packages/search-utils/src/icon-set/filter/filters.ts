@@ -49,6 +49,7 @@ export function filterIconSet(
 				name: icon.name,
 				render: item.render,
 			});
+			return;
 		}
 	});
 

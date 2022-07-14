@@ -66,16 +66,18 @@ describe('Testing tags', () => {
 		// Check tags
 		const tags = filters.tags!;
 		const expectedTags: IconFinderTagsFilter[] = [
-			{
-				key: 'tagsHome',
-				title: 'Home',
-				color: 0,
-			},
+			// Should be sorted alphabetically
 			{
 				key: 'tagsAccount',
 				title: 'Account',
+				color: 0,
+			},
+			{
+				key: 'tagsHome',
+				title: 'Home',
 				color: 1,
 			},
+			// Empty tag is always last
 			{
 				key: 'tags',
 				title: '',
@@ -84,7 +86,7 @@ describe('Testing tags', () => {
 		];
 		expect(tags.filters).toEqual(expectedTags);
 
-		const [homeTag, accountTag, emptyTag] = tags.filters;
+		const [accountTag, homeTag, emptyTag] = tags.filters;
 
 		// Check tags in icons
 		const { iconsMap } = iconSet!.icons;

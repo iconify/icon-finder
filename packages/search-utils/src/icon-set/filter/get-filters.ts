@@ -19,7 +19,9 @@ export function getIconSetIconClickableFilters(
 	// Add tags
 	const iconTags = icon.tags;
 	const result: IconFinderFilter[] = iconTags
-		? iconTags.filter((tag) => tags?.selected !== tag)
+		? iconTags
+				.filter((tag) => tags?.selected !== tag)
+				.sort((a, b) => a.title.localeCompare(b.title))
 		: [];
 
 	// Add prefix and suffix before tags

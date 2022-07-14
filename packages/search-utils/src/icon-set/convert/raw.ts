@@ -64,18 +64,18 @@ export function convertRawIconSet(
 		Set<IconFinderIconSetUniqueIcon>
 	>;
 
-	// Generate tags list
+	// Generate tags list, sorted alphabetically
 	const tags = categories || {};
 	const tagsType = 'tags';
-	const tagFilters: IconFinderTagsFilter[] = Object.keys(tags).map(
-		(title, color) => {
+	const tagFilters: IconFinderTagsFilter[] = Object.keys(tags)
+		.sort((a, b) => a.localeCompare(b))
+		.map((title, color) => {
 			return {
 				key: tagsType + title,
 				title,
 				color,
 			};
-		}
-	);
+		});
 	const emptyTag: IconFinderTagsFilter = {
 		key: tagsType,
 		title: '',

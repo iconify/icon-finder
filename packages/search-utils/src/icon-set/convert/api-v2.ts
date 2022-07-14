@@ -95,20 +95,22 @@ export function convertAPIv2IconSet(
 	const tags = categories || {};
 	const tagFilters: IconFinderTagsFilter[] = [];
 
-	// Add icons with tags
+	// Add icons with tags, sort tags alphabetically
 	const tagsType = 'tags';
-	Object.keys(tags).forEach((title, color) => {
-		const tag: IconFinderTagsFilter = {
-			key: tagsType + title,
-			title,
-			color,
-		};
-		tagFilters.push(tag);
+	Object.keys(tags)
+		.sort((a, b) => a.localeCompare(b))
+		.forEach((title, color) => {
+			const tag: IconFinderTagsFilter = {
+				key: tagsType + title,
+				title,
+				color,
+			};
+			tagFilters.push(tag);
 
-		tags[title].forEach((name) => {
-			addIcon(name, tag);
+			tags[title].forEach((name) => {
+				addIcon(name, tag);
+			});
 		});
-	});
 
 	// Add icons without tags
 	const uncategorized = data.uncategorized;
