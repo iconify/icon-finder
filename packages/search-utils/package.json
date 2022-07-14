@@ -242,6 +242,11 @@
 			"require": "./lib/icon-set/types/id.cjs",
 			"import": "./lib/icon-set/types/id.mjs"
 		},
+		"./lib/icon-set/reference": {
+			"types": "./lib/icon-set/reference.d.ts",
+			"require": "./lib/icon-set/reference.cjs",
+			"import": "./lib/icon-set/reference.mjs"
+		},
 		"./lib/icons/types/list": {
 			"types": "./lib/icons/types/list.d.ts",
 			"require": "./lib/icons/types/list.cjs",

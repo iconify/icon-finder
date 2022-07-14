@@ -3,6 +3,7 @@ import { loadFixture } from '../../lib/tests/helpers';
 import { filterIconSet } from '../../lib/icon-set/filter/filters';
 import { getIconSetIconClickableFilters } from '../../lib/icon-set/filter/get-filters';
 import { convertAPIv2IconSet } from '../../lib/icon-set/convert/api-v2';
+import { findReferenceIconSetIcon } from '../../lib/icon-set/reference';
 import type { APIv2CollectionResponse } from '../../lib/api/types/v2';
 import type { IconFinderIconSetFilters } from '../../lib/icon-set/types/icon-set';
 import type { IconFinderFilter } from '../../lib/filters/types/filter';
@@ -88,6 +89,10 @@ describe('Filter Material Design Icons', () => {
 			animalTagFilter,
 		]);
 
+		// Get index for few icons
+		expect(findReferenceIconSetIcon(iconSet, icons, 'bee')).toBe(0);
+		expect(findReferenceIconSetIcon(iconSet, icons, 'account')).toBe(-1);
+
 		//
 		// Filter by 'bee' without active tag
 		//
@@ -105,5 +110,12 @@ describe('Filter Material Design Icons', () => {
 			animalTagFilter,
 			natureTagFilter,
 		]);
+
+		// Get index for few icons
+		expect(findReferenceIconSetIcon(iconSet, icons, 'bee')).toBe(0);
+		expect(findReferenceIconSetIcon(iconSet, icons, 'beef')).toBe(2); // alias of 'food-steak'
+		expect(findReferenceIconSetIcon(iconSet, icons, 'food-steak')).toBe(2);
+		expect(findReferenceIconSetIcon(iconSet, icons, 'marker-tick')).toBe(7); // alias of 'marker-check', which has alias 'beenhere' that should be in results
+		expect(findReferenceIconSetIcon(iconSet, icons, 'account')).toBe(-1);
 	});
 });
