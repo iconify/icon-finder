@@ -132,11 +132,6 @@
 			"require": "./lib/filters/types/list.cjs",
 			"import": "./lib/filters/types/list.mjs"
 		},
-		"./lib/filters/colors": {
-			"types": "./lib/filters/colors.d.ts",
-			"require": "./lib/filters/colors.cjs",
-			"import": "./lib/filters/colors.mjs"
-		},
 		"./lib/filters/count": {
 			"types": "./lib/filters/count.d.ts",
 			"require": "./lib/filters/count.cjs",
@@ -156,11 +151,6 @@
 			"types": "./lib/icon/name/to-string.d.ts",
 			"require": "./lib/icon/name/to-string.cjs",
 			"import": "./lib/icon/name/to-string.mjs"
-		},
-		"./lib/icon/types/icon": {
-			"types": "./lib/icon/types/icon.d.ts",
-			"require": "./lib/icon/types/icon.cjs",
-			"import": "./lib/icon/types/icon.mjs"
 		},
 		"./lib/icon/types/name": {
 			"types": "./lib/icon/types/name.d.ts",
@@ -261,6 +251,31 @@
 			"types": "./lib/icons/pagination.d.ts",
 			"require": "./lib/icons/pagination.cjs",
 			"import": "./lib/icons/pagination.mjs"
+		},
+		"./lib/icons-list/filter/filters": {
+			"types": "./lib/icons-list/filter/filters.d.ts",
+			"require": "./lib/icons-list/filter/filters.cjs",
+			"import": "./lib/icons-list/filter/filters.mjs"
+		},
+		"./lib/icons-list/filter/get-filters": {
+			"types": "./lib/icons-list/filter/get-filters.d.ts",
+			"require": "./lib/icons-list/filter/get-filters.cjs",
+			"import": "./lib/icons-list/filter/get-filters.mjs"
+		},
+		"./lib/search/convert/api-v2": {
+			"types": "./lib/search/convert/api-v2.d.ts",
+			"require": "./lib/search/convert/api-v2.cjs",
+			"import": "./lib/search/convert/api-v2.mjs"
+		},
+		"./lib/search/types/query": {
+			"types": "./lib/search/types/query.d.ts",
+			"require": "./lib/search/types/query.cjs",
+			"import": "./lib/search/types/query.mjs"
+		},
+		"./lib/search/types/results": {
+			"types": "./lib/search/types/results.d.ts",
+			"require": "./lib/search/types/results.cjs",
+			"import": "./lib/search/types/results.mjs"
 		},
 		"./lib/tests/helpers": {
 			"types": "./lib/tests/helpers.d.ts",

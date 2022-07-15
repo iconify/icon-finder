@@ -1,5 +1,6 @@
 import type {
 	IconFinderCategoriesFiltersList,
+	IconFinderCollectionsFiltersList,
 	IconFinderTagsFiltersList,
 	IconFinderThemeFiltersList,
 } from './list';
@@ -29,11 +30,19 @@ export interface IconFinderThemeFilters {
 export type IconFinderIconSetThemeTypes = keyof IconFinderThemeFilters;
 
 /**
+ * Icon sets in generic page and search results
+ */
+export interface IconFinderCollectionsFilters {
+	collections?: IconFinderCollectionsFiltersList;
+}
+
+/**
  * All filters
  */
 export interface IconFinderFilters
 	extends IconFinderCategoriesFilters,
 		IconFinderTagsFilters,
-		IconFinderThemeFilters {
+		IconFinderThemeFilters,
+		IconFinderCollectionsFilters {
 	//
 }

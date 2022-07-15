@@ -47,3 +47,11 @@ export interface IconFinderThemeFilter extends IconFinderFilter {
 	// Prefix or suffix match, including '-'
 	match: string;
 }
+
+/**
+ * Filter for collections in generic page
+ */
+export interface IconFinderCollectionsFilter extends IconFinderFilter {
+	// Icon set prefix
+	prefix: string;
+}

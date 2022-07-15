@@ -23,10 +23,10 @@ import { getBaseIconForTheme } from '../themes/base';
 export function convertRawIconSet(
 	provider: string,
 	data: IconifyJSON
-): IconFinderIconSet | null {
+): IconFinderIconSet | undefined {
 	const { prefix, info, categories } = data;
 	if (!info) {
-		return null;
+		return;
 	}
 
 	// Themes

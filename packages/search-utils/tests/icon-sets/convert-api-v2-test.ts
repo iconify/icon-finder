@@ -19,7 +19,7 @@ describe('Convert icon set from API', () => {
 		delete data.info;
 
 		const iconSet = convertAPIv2IconSet('', data);
-		expect(iconSet).toBeNull();
+		expect(iconSet).toBeUndefined();
 	});
 
 	it('line-md', async () => {

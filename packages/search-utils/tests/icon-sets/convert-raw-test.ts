@@ -14,7 +14,7 @@ describe('Convert raw icon set', () => {
 		};
 
 		const iconSet = convertRawIconSet('', raw);
-		expect(iconSet).toBeNull();
+		expect(iconSet).toBeUndefined();
 	});
 
 	it('Few icons', () => {

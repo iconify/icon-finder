@@ -1,11 +1,13 @@
 import type {
 	IconFinderCategoriesFilters,
+	IconFinderCollectionsFilters,
 	IconFinderFilters,
 	IconFinderIconSetThemeTypes,
 	IconFinderTagsFilters,
 } from './all';
 import type {
 	IconFinderCategoriesFilter,
+	IconFinderCollectionsFilter,
 	IconFinderFilter,
 	IconFinderTagsFilter,
 	IconFinderThemeFilter,
@@ -62,4 +64,16 @@ export interface IconFinderThemeFiltersList
 
 	// Default empty filter, used when icon does not match other themes
 	empty?: IconFinderThemeFilter;
+}
+
+/**
+ * Filters icon sets in generic page
+ */
+export interface IconFinderCollectionsFiltersList
+	extends IconFinderFiltersListMixin<IconFinderCollectionsFilter> {
+	// Limit type to collections
+	type: keyof IconFinderCollectionsFilters;
+
+	// Filters, sorted by prefix to quickly find filter
+	collections: Map<string, IconFinderCollectionsFilter>;
 }

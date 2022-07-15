@@ -1,4 +1,3 @@
-import { setFiltersColors } from '../../filters/colors';
 import { countVisibleFilters } from '../../filters/count';
 import type { IconFinderCategoriesFilter } from '../../filters/types/filter';
 import { filterCollectionsList } from '../filter/map';
@@ -13,6 +12,7 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 	// Add filters
 	const filters = [] as IconFinderCategoriesFilter[];
 	let hidden = 0;
+	let color = 0;
 	for (const title in list.categorised) {
 		const category = list.categorised[title];
 
@@ -28,6 +28,7 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 			hidden++;
 		}
 
+		filter.color = color++;
 		filters.push(filter);
 	}
 
@@ -41,7 +42,7 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 	list.total = Object.keys(list.prefixed).length;
 
 	// Add data for searching and colors
-	let color = 0;
+	color = 0;
 	for (const prefix in list.prefixed) {
 		const item = list.prefixed[prefix];
 		item.color = color++;
@@ -52,6 +53,5 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 	filterCollectionsList(list, getDefaultCollectionsListCallback(list));
 
 	// Update filters
-	setFiltersColors(categoriesFilters);
 	countVisibleFilters(categoriesFilters);
 }

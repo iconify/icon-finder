@@ -1,4 +1,7 @@
-import type { IconFinderTagsFilter } from '../../filters/types/filter';
+import type {
+	IconFinderTagsFilter,
+	IconFinderThemeFilter,
+} from '../../filters/types/filter';
 
 /**
  * Icon
@@ -13,9 +16,9 @@ export interface IconFinderIconSetIcon {
 	// List of tags icon belongs to (cannot be empty array). Undefined if none
 	tags?: IconFinderTagsFilter[];
 
-	// Pointer to prefix and suffix filters
-	prefix?: IconFinderTagsFilter;
-	suffix?: IconFinderTagsFilter;
+	// Pointers to prefix and suffix filters
+	prefix?: IconFinderThemeFilter;
+	suffix?: IconFinderThemeFilter;
 }
 
 /**

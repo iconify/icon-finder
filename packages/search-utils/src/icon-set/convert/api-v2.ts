@@ -15,10 +15,10 @@ import { getIconSetThemes } from './helpers/themes';
 export function convertAPIv2IconSet(
 	provider: string,
 	data: APIv2CollectionResponse
-): IconFinderIconSet | null {
+): IconFinderIconSet | undefined {
 	const { prefix, info, categories } = data;
 	if (!info) {
-		return null;
+		return;
 	}
 
 	// Themes
