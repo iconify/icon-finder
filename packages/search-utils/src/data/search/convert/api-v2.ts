@@ -1,5 +1,5 @@
 import { stringToIcon } from '@iconify/utils/lib/icon/name';
-import type { APIv2SearchResponse } from '../../api/types/v2';
+import type { APIv2SearchResponse } from '../../../api/types/v2';
 import type { StoredIconFinderCollectionsList } from '../../collections/types/storage';
 import type { IconFinderCollectionsFilter } from '../../filters/types/filter';
 import type { IconFinderCollectionsFiltersList } from '../../filters/types/list';

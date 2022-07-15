@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyInfo } from '@iconify/types';
 import { promises as fs } from 'fs';
-import { convertCollectionsList } from '../../lib/collections/convert/list';
-import type { IconFinderCollectionsListItem } from '../../lib/collections/types/collections';
-import type { IconFinderCategoriesFiltersList } from '../../lib/filters/types/list';
-import type { IconFinderCategoriesFilter } from '../../lib/filters/types/filter';
-import { generateSearchData } from '../../lib/collections/convert/search';
+import { convertCollectionsList } from '../../lib/data/collections/convert/list';
+import type { IconFinderCollectionsListItem } from '../../lib/data/collections/types/collections';
+import type { IconFinderCategoriesFiltersList } from '../../lib/data/filters/types/list';
+import type { IconFinderCategoriesFilter } from '../../lib/data/filters/types/filter';
+import { generateSearchData } from '../../lib/data/collections/convert/search';
 
 describe('Testing convertCollectionsList', () => {
 	function categoriesToBaseFilters(

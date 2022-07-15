@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
-import type { IconFinderThemeFilter } from '../../lib/filters/types/filter';
-import type { IconFinderThemeFiltersList } from '../../lib/filters/types/list';
-import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
-import { getBaseIconForTheme } from '../../lib/icon-set/themes/base';
-import { getThemeVariations } from '../../lib/icon-set/themes/variations';
+import type { IconFinderThemeFilter } from '../../lib/data/filters/types/filter';
+import type { IconFinderThemeFiltersList } from '../../lib/data/filters/types/list';
+import { convertRawIconSet } from '../../lib/data/icon-set/convert/raw';
+import { getBaseIconForTheme } from '../../lib/data/icon-set/themes/base';
+import { getThemeVariations } from '../../lib/data/icon-set/themes/variations';
 
 describe('Testing themes', () => {
 	it('Suffixes', () => {

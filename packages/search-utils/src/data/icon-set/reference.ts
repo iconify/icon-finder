@@ -1,4 +1,4 @@
-import type { IconFinderIconSetIconsList } from '../icons/types/list';
+import type { IconFinderIconSetIconsList } from '../icons-list/types/list';
 import type { IconFinderIconSet } from './types/icon-set';
 
 /**

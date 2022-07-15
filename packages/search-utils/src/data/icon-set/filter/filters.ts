@@ -1,5 +1,5 @@
 import type { IconFinderIconSetIconName } from '../../icon/types/name';
-import type { IconFinderIconSetIconsList } from '../../icons/types/list';
+import type { IconFinderIconSetIconsList } from '../../icons-list/types/list';
 import type { IconFinderIconSet } from '../types/icon-set';
 import { filterIconSetUniqueIconsByKeyword } from './keyword';
 

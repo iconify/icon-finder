@@ -1,5 +1,5 @@
 import type { IconFinderFilter } from '../../filters/types/filter';
-import type { IconFinderGenericIconsList } from '../../icons/types/list';
+import type { IconFinderGenericIconsList } from '../types/list';
 
 /**
  * Get filter for prefix

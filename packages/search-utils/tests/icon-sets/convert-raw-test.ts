@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
-import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
+import { convertRawIconSet } from '../../lib/data/icon-set/convert/raw';
 
 describe('Convert raw icon set', () => {
 	it('Missing info', () => {

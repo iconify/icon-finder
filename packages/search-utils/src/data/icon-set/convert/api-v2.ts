@@ -1,5 +1,5 @@
 import type { IconifyJSON } from '@iconify/types';
-import type { APIv2CollectionResponse } from '../../api/types/v2';
+import type { APIv2CollectionResponse } from '../../../api/types/v2';
 import type { IconFinderTagsFilter } from '../../filters/types/filter';
 import { getBaseIconForTheme } from '../themes/base';
 import type { IconFinderIconSet } from '../types/icon-set';

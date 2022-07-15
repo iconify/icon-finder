@@ -1,8 +1,8 @@
 import type { IconifyInfo } from '@iconify/types';
 import { promises as fs } from 'fs';
-import { convertCollectionsList } from '../../lib/collections/convert/list';
-import { applyCollectionsListFilter } from '../../lib/collections/filter/apply';
-import type { IconFinderCollectionsList } from '../../lib/collections/types/collections';
+import { convertCollectionsList } from '../../lib/data/collections/convert/list';
+import { applyCollectionsListFilter } from '../../lib/data/collections/filter/apply';
+import type { IconFinderCollectionsList } from '../../lib/data/collections/types/collections';
 
 describe('Testing applyCollectionsListFilter', () => {
 	// Storage for data, loaded from fixtures

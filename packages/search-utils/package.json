@@ -52,60 +52,210 @@
 			"require": "./lib/api/types/v2.cjs",
 			"import": "./lib/api/types/v2.mjs"
 		},
-		"./lib/collections/convert/finalise": {
-			"types": "./lib/collections/convert/finalise.d.ts",
-			"require": "./lib/collections/convert/finalise.cjs",
-			"import": "./lib/collections/convert/finalise.mjs"
+		"./lib/data/collections/convert/finalise": {
+			"types": "./lib/data/collections/convert/finalise.d.ts",
+			"require": "./lib/data/collections/convert/finalise.cjs",
+			"import": "./lib/data/collections/convert/finalise.mjs"
 		},
-		"./lib/collections/convert/list": {
-			"types": "./lib/collections/convert/list.d.ts",
-			"require": "./lib/collections/convert/list.cjs",
-			"import": "./lib/collections/convert/list.mjs"
+		"./lib/data/collections/convert/list": {
+			"types": "./lib/data/collections/convert/list.d.ts",
+			"require": "./lib/data/collections/convert/list.cjs",
+			"import": "./lib/data/collections/convert/list.mjs"
 		},
-		"./lib/collections/convert/search": {
-			"types": "./lib/collections/convert/search.d.ts",
-			"require": "./lib/collections/convert/search.cjs",
-			"import": "./lib/collections/convert/search.mjs"
+		"./lib/data/collections/convert/search": {
+			"types": "./lib/data/collections/convert/search.d.ts",
+			"require": "./lib/data/collections/convert/search.cjs",
+			"import": "./lib/data/collections/convert/search.mjs"
 		},
-		"./lib/collections/filter/apply": {
-			"types": "./lib/collections/filter/apply.d.ts",
-			"require": "./lib/collections/filter/apply.cjs",
-			"import": "./lib/collections/filter/apply.mjs"
+		"./lib/data/collections/filter/apply": {
+			"types": "./lib/data/collections/filter/apply.d.ts",
+			"require": "./lib/data/collections/filter/apply.cjs",
+			"import": "./lib/data/collections/filter/apply.mjs"
 		},
-		"./lib/collections/filter/map": {
-			"types": "./lib/collections/filter/map.d.ts",
-			"require": "./lib/collections/filter/map.cjs",
-			"import": "./lib/collections/filter/map.mjs"
+		"./lib/data/collections/filter/map": {
+			"types": "./lib/data/collections/filter/map.d.ts",
+			"require": "./lib/data/collections/filter/map.cjs",
+			"import": "./lib/data/collections/filter/map.mjs"
 		},
-		"./lib/collections/filter/reset": {
-			"types": "./lib/collections/filter/reset.d.ts",
-			"require": "./lib/collections/filter/reset.cjs",
-			"import": "./lib/collections/filter/reset.mjs"
+		"./lib/data/collections/filter/reset": {
+			"types": "./lib/data/collections/filter/reset.d.ts",
+			"require": "./lib/data/collections/filter/reset.cjs",
+			"import": "./lib/data/collections/filter/reset.mjs"
 		},
-		"./lib/collections/types/collections": {
-			"types": "./lib/collections/types/collections.d.ts",
-			"require": "./lib/collections/types/collections.cjs",
-			"import": "./lib/collections/types/collections.mjs"
+		"./lib/data/collections/types/collections": {
+			"types": "./lib/data/collections/types/collections.d.ts",
+			"require": "./lib/data/collections/types/collections.cjs",
+			"import": "./lib/data/collections/types/collections.mjs"
 		},
-		"./lib/collections/types/filter": {
-			"types": "./lib/collections/types/filter.d.ts",
-			"require": "./lib/collections/types/filter.cjs",
-			"import": "./lib/collections/types/filter.mjs"
+		"./lib/data/collections/types/filter": {
+			"types": "./lib/data/collections/types/filter.d.ts",
+			"require": "./lib/data/collections/types/filter.cjs",
+			"import": "./lib/data/collections/types/filter.mjs"
 		},
-		"./lib/collections/types/prefixed-info": {
-			"types": "./lib/collections/types/prefixed-info.d.ts",
-			"require": "./lib/collections/types/prefixed-info.cjs",
-			"import": "./lib/collections/types/prefixed-info.mjs"
+		"./lib/data/collections/types/prefixed-info": {
+			"types": "./lib/data/collections/types/prefixed-info.d.ts",
+			"require": "./lib/data/collections/types/prefixed-info.cjs",
+			"import": "./lib/data/collections/types/prefixed-info.mjs"
 		},
-		"./lib/collections/types/storage": {
-			"types": "./lib/collections/types/storage.d.ts",
-			"require": "./lib/collections/types/storage.cjs",
-			"import": "./lib/collections/types/storage.mjs"
+		"./lib/data/collections/types/storage": {
+			"types": "./lib/data/collections/types/storage.d.ts",
+			"require": "./lib/data/collections/types/storage.cjs",
+			"import": "./lib/data/collections/types/storage.mjs"
 		},
-		"./lib/collections/storage": {
-			"types": "./lib/collections/storage.d.ts",
-			"require": "./lib/collections/storage.cjs",
-			"import": "./lib/collections/storage.mjs"
+		"./lib/data/collections/storage": {
+			"types": "./lib/data/collections/storage.d.ts",
+			"require": "./lib/data/collections/storage.cjs",
+			"import": "./lib/data/collections/storage.mjs"
+		},
+		"./lib/data/filters/types/all": {
+			"types": "./lib/data/filters/types/all.d.ts",
+			"require": "./lib/data/filters/types/all.cjs",
+			"import": "./lib/data/filters/types/all.mjs"
+		},
+		"./lib/data/filters/types/filter": {
+			"types": "./lib/data/filters/types/filter.d.ts",
+			"require": "./lib/data/filters/types/filter.cjs",
+			"import": "./lib/data/filters/types/filter.mjs"
+		},
+		"./lib/data/filters/types/list": {
+			"types": "./lib/data/filters/types/list.d.ts",
+			"require": "./lib/data/filters/types/list.cjs",
+			"import": "./lib/data/filters/types/list.mjs"
+		},
+		"./lib/data/filters/count": {
+			"types": "./lib/data/filters/count.d.ts",
+			"require": "./lib/data/filters/count.cjs",
+			"import": "./lib/data/filters/count.mjs"
+		},
+		"./lib/data/icon/name/display": {
+			"types": "./lib/data/icon/name/display.d.ts",
+			"require": "./lib/data/icon/name/display.cjs",
+			"import": "./lib/data/icon/name/display.mjs"
+		},
+		"./lib/data/icon/name/render": {
+			"types": "./lib/data/icon/name/render.d.ts",
+			"require": "./lib/data/icon/name/render.cjs",
+			"import": "./lib/data/icon/name/render.mjs"
+		},
+		"./lib/data/icon/name/to-string": {
+			"types": "./lib/data/icon/name/to-string.d.ts",
+			"require": "./lib/data/icon/name/to-string.cjs",
+			"import": "./lib/data/icon/name/to-string.mjs"
+		},
+		"./lib/data/icon/types/name": {
+			"types": "./lib/data/icon/types/name.d.ts",
+			"require": "./lib/data/icon/types/name.cjs",
+			"import": "./lib/data/icon/types/name.mjs"
+		},
+		"./lib/data/icon/types/variations": {
+			"types": "./lib/data/icon/types/variations.d.ts",
+			"require": "./lib/data/icon/types/variations.cjs",
+			"import": "./lib/data/icon/types/variations.mjs"
+		},
+		"./lib/data/icon/variations": {
+			"types": "./lib/data/icon/variations.d.ts",
+			"require": "./lib/data/icon/variations.cjs",
+			"import": "./lib/data/icon/variations.mjs"
+		},
+		"./lib/data/icon-set/convert/helpers/hash": {
+			"types": "./lib/data/icon-set/convert/helpers/hash.d.ts",
+			"require": "./lib/data/icon-set/convert/helpers/hash.cjs",
+			"import": "./lib/data/icon-set/convert/helpers/hash.mjs"
+		},
+		"./lib/data/icon-set/convert/helpers/themes": {
+			"types": "./lib/data/icon-set/convert/helpers/themes.d.ts",
+			"require": "./lib/data/icon-set/convert/helpers/themes.cjs",
+			"import": "./lib/data/icon-set/convert/helpers/themes.mjs"
+		},
+		"./lib/data/icon-set/convert/helpers/transforms": {
+			"types": "./lib/data/icon-set/convert/helpers/transforms.d.ts",
+			"require": "./lib/data/icon-set/convert/helpers/transforms.cjs",
+			"import": "./lib/data/icon-set/convert/helpers/transforms.mjs"
+		},
+		"./lib/data/icon-set/convert/api-v2": {
+			"types": "./lib/data/icon-set/convert/api-v2.d.ts",
+			"require": "./lib/data/icon-set/convert/api-v2.cjs",
+			"import": "./lib/data/icon-set/convert/api-v2.mjs"
+		},
+		"./lib/data/icon-set/convert/raw": {
+			"types": "./lib/data/icon-set/convert/raw.d.ts",
+			"require": "./lib/data/icon-set/convert/raw.cjs",
+			"import": "./lib/data/icon-set/convert/raw.mjs"
+		},
+		"./lib/data/icon-set/filter/filters": {
+			"types": "./lib/data/icon-set/filter/filters.d.ts",
+			"require": "./lib/data/icon-set/filter/filters.cjs",
+			"import": "./lib/data/icon-set/filter/filters.mjs"
+		},
+		"./lib/data/icon-set/filter/get-filters": {
+			"types": "./lib/data/icon-set/filter/get-filters.d.ts",
+			"require": "./lib/data/icon-set/filter/get-filters.cjs",
+			"import": "./lib/data/icon-set/filter/get-filters.mjs"
+		},
+		"./lib/data/icon-set/filter/keyword": {
+			"types": "./lib/data/icon-set/filter/keyword.d.ts",
+			"require": "./lib/data/icon-set/filter/keyword.cjs",
+			"import": "./lib/data/icon-set/filter/keyword.mjs"
+		},
+		"./lib/data/icon-set/themes/base": {
+			"types": "./lib/data/icon-set/themes/base.d.ts",
+			"require": "./lib/data/icon-set/themes/base.cjs",
+			"import": "./lib/data/icon-set/themes/base.mjs"
+		},
+		"./lib/data/icon-set/themes/variations": {
+			"types": "./lib/data/icon-set/themes/variations.d.ts",
+			"require": "./lib/data/icon-set/themes/variations.cjs",
+			"import": "./lib/data/icon-set/themes/variations.mjs"
+		},
+		"./lib/data/icon-set/types/icon-set": {
+			"types": "./lib/data/icon-set/types/icon-set.d.ts",
+			"require": "./lib/data/icon-set/types/icon-set.cjs",
+			"import": "./lib/data/icon-set/types/icon-set.mjs"
+		},
+		"./lib/data/icon-set/types/icons": {
+			"types": "./lib/data/icon-set/types/icons.d.ts",
+			"require": "./lib/data/icon-set/types/icons.cjs",
+			"import": "./lib/data/icon-set/types/icons.mjs"
+		},
+		"./lib/data/icon-set/types/id": {
+			"types": "./lib/data/icon-set/types/id.d.ts",
+			"require": "./lib/data/icon-set/types/id.cjs",
+			"import": "./lib/data/icon-set/types/id.mjs"
+		},
+		"./lib/data/icon-set/reference": {
+			"types": "./lib/data/icon-set/reference.d.ts",
+			"require": "./lib/data/icon-set/reference.cjs",
+			"import": "./lib/data/icon-set/reference.mjs"
+		},
+		"./lib/data/icons-list/filter/filters": {
+			"types": "./lib/data/icons-list/filter/filters.d.ts",
+			"require": "./lib/data/icons-list/filter/filters.cjs",
+			"import": "./lib/data/icons-list/filter/filters.mjs"
+		},
+		"./lib/data/icons-list/filter/get-filters": {
+			"types": "./lib/data/icons-list/filter/get-filters.d.ts",
+			"require": "./lib/data/icons-list/filter/get-filters.cjs",
+			"import": "./lib/data/icons-list/filter/get-filters.mjs"
+		},
+		"./lib/data/icons-list/types/list": {
+			"types": "./lib/data/icons-list/types/list.d.ts",
+			"require": "./lib/data/icons-list/types/list.cjs",
+			"import": "./lib/data/icons-list/types/list.mjs"
+		},
+		"./lib/data/search/convert/api-v2": {
+			"types": "./lib/data/search/convert/api-v2.d.ts",
+			"require": "./lib/data/search/convert/api-v2.cjs",
+			"import": "./lib/data/search/convert/api-v2.mjs"
+		},
+		"./lib/data/search/types/query": {
+			"types": "./lib/data/search/types/query.d.ts",
+			"require": "./lib/data/search/types/query.cjs",
+			"import": "./lib/data/search/types/query.mjs"
+		},
+		"./lib/data/search/types/results": {
+			"types": "./lib/data/search/types/results.d.ts",
+			"require": "./lib/data/search/types/results.cjs",
+			"import": "./lib/data/search/types/results.mjs"
 		},
 		"./lib/events/events": {
 			"types": "./lib/events/events.d.ts",
@@ -116,166 +266,6 @@
 			"types": "./lib/events/types.d.ts",
 			"require": "./lib/events/types.cjs",
 			"import": "./lib/events/types.mjs"
-		},
-		"./lib/filters/types/all": {
-			"types": "./lib/filters/types/all.d.ts",
-			"require": "./lib/filters/types/all.cjs",
-			"import": "./lib/filters/types/all.mjs"
-		},
-		"./lib/filters/types/filter": {
-			"types": "./lib/filters/types/filter.d.ts",
-			"require": "./lib/filters/types/filter.cjs",
-			"import": "./lib/filters/types/filter.mjs"
-		},
-		"./lib/filters/types/list": {
-			"types": "./lib/filters/types/list.d.ts",
-			"require": "./lib/filters/types/list.cjs",
-			"import": "./lib/filters/types/list.mjs"
-		},
-		"./lib/filters/count": {
-			"types": "./lib/filters/count.d.ts",
-			"require": "./lib/filters/count.cjs",
-			"import": "./lib/filters/count.mjs"
-		},
-		"./lib/icon/name/display": {
-			"types": "./lib/icon/name/display.d.ts",
-			"require": "./lib/icon/name/display.cjs",
-			"import": "./lib/icon/name/display.mjs"
-		},
-		"./lib/icon/name/render": {
-			"types": "./lib/icon/name/render.d.ts",
-			"require": "./lib/icon/name/render.cjs",
-			"import": "./lib/icon/name/render.mjs"
-		},
-		"./lib/icon/name/to-string": {
-			"types": "./lib/icon/name/to-string.d.ts",
-			"require": "./lib/icon/name/to-string.cjs",
-			"import": "./lib/icon/name/to-string.mjs"
-		},
-		"./lib/icon/types/name": {
-			"types": "./lib/icon/types/name.d.ts",
-			"require": "./lib/icon/types/name.cjs",
-			"import": "./lib/icon/types/name.mjs"
-		},
-		"./lib/icon/types/variations": {
-			"types": "./lib/icon/types/variations.d.ts",
-			"require": "./lib/icon/types/variations.cjs",
-			"import": "./lib/icon/types/variations.mjs"
-		},
-		"./lib/icon/variations": {
-			"types": "./lib/icon/variations.d.ts",
-			"require": "./lib/icon/variations.cjs",
-			"import": "./lib/icon/variations.mjs"
-		},
-		"./lib/icon-set/convert/helpers/hash": {
-			"types": "./lib/icon-set/convert/helpers/hash.d.ts",
-			"require": "./lib/icon-set/convert/helpers/hash.cjs",
-			"import": "./lib/icon-set/convert/helpers/hash.mjs"
-		},
-		"./lib/icon-set/convert/helpers/themes": {
-			"types": "./lib/icon-set/convert/helpers/themes.d.ts",
-			"require": "./lib/icon-set/convert/helpers/themes.cjs",
-			"import": "./lib/icon-set/convert/helpers/themes.mjs"
-		},
-		"./lib/icon-set/convert/helpers/transforms": {
-			"types": "./lib/icon-set/convert/helpers/transforms.d.ts",
-			"require": "./lib/icon-set/convert/helpers/transforms.cjs",
-			"import": "./lib/icon-set/convert/helpers/transforms.mjs"
-		},
-		"./lib/icon-set/convert/api-v2": {
-			"types": "./lib/icon-set/convert/api-v2.d.ts",
-			"require": "./lib/icon-set/convert/api-v2.cjs",
-			"import": "./lib/icon-set/convert/api-v2.mjs"
-		},
-		"./lib/icon-set/convert/raw": {
-			"types": "./lib/icon-set/convert/raw.d.ts",
-			"require": "./lib/icon-set/convert/raw.cjs",
-			"import": "./lib/icon-set/convert/raw.mjs"
-		},
-		"./lib/icon-set/filter/filters": {
-			"types": "./lib/icon-set/filter/filters.d.ts",
-			"require": "./lib/icon-set/filter/filters.cjs",
-			"import": "./lib/icon-set/filter/filters.mjs"
-		},
-		"./lib/icon-set/filter/get-filters": {
-			"types": "./lib/icon-set/filter/get-filters.d.ts",
-			"require": "./lib/icon-set/filter/get-filters.cjs",
-			"import": "./lib/icon-set/filter/get-filters.mjs"
-		},
-		"./lib/icon-set/filter/keyword": {
-			"types": "./lib/icon-set/filter/keyword.d.ts",
-			"require": "./lib/icon-set/filter/keyword.cjs",
-			"import": "./lib/icon-set/filter/keyword.mjs"
-		},
-		"./lib/icon-set/themes/base": {
-			"types": "./lib/icon-set/themes/base.d.ts",
-			"require": "./lib/icon-set/themes/base.cjs",
-			"import": "./lib/icon-set/themes/base.mjs"
-		},
-		"./lib/icon-set/themes/variations": {
-			"types": "./lib/icon-set/themes/variations.d.ts",
-			"require": "./lib/icon-set/themes/variations.cjs",
-			"import": "./lib/icon-set/themes/variations.mjs"
-		},
-		"./lib/icon-set/types/icon-set": {
-			"types": "./lib/icon-set/types/icon-set.d.ts",
-			"require": "./lib/icon-set/types/icon-set.cjs",
-			"import": "./lib/icon-set/types/icon-set.mjs"
-		},
-		"./lib/icon-set/types/icons": {
-			"types": "./lib/icon-set/types/icons.d.ts",
-			"require": "./lib/icon-set/types/icons.cjs",
-			"import": "./lib/icon-set/types/icons.mjs"
-		},
-		"./lib/icon-set/types/id": {
-			"types": "./lib/icon-set/types/id.d.ts",
-			"require": "./lib/icon-set/types/id.cjs",
-			"import": "./lib/icon-set/types/id.mjs"
-		},
-		"./lib/icon-set/reference": {
-			"types": "./lib/icon-set/reference.d.ts",
-			"require": "./lib/icon-set/reference.cjs",
-			"import": "./lib/icon-set/reference.mjs"
-		},
-		"./lib/icons/types/list": {
-			"types": "./lib/icons/types/list.d.ts",
-			"require": "./lib/icons/types/list.cjs",
-			"import": "./lib/icons/types/list.mjs"
-		},
-		"./lib/icons/types/pagination": {
-			"types": "./lib/icons/types/pagination.d.ts",
-			"require": "./lib/icons/types/pagination.cjs",
-			"import": "./lib/icons/types/pagination.mjs"
-		},
-		"./lib/icons/pagination": {
-			"types": "./lib/icons/pagination.d.ts",
-			"require": "./lib/icons/pagination.cjs",
-			"import": "./lib/icons/pagination.mjs"
-		},
-		"./lib/icons-list/filter/filters": {
-			"types": "./lib/icons-list/filter/filters.d.ts",
-			"require": "./lib/icons-list/filter/filters.cjs",
-			"import": "./lib/icons-list/filter/filters.mjs"
-		},
-		"./lib/icons-list/filter/get-filters": {
-			"types": "./lib/icons-list/filter/get-filters.d.ts",
-			"require": "./lib/icons-list/filter/get-filters.cjs",
-			"import": "./lib/icons-list/filter/get-filters.mjs"
-		},
-		"./lib/search/convert/api-v2": {
-			"types": "./lib/search/convert/api-v2.d.ts",
-			"require": "./lib/search/convert/api-v2.cjs",
-			"import": "./lib/search/convert/api-v2.mjs"
-		},
-		"./lib/search/types/query": {
-			"types": "./lib/search/types/query.d.ts",
-			"require": "./lib/search/types/query.cjs",
-			"import": "./lib/search/types/query.mjs"
-		},
-		"./lib/search/types/results": {
-			"types": "./lib/search/types/results.d.ts",
-			"require": "./lib/search/types/results.cjs",
-			"import": "./lib/search/types/results.mjs"
 		},
 		"./lib/tests/helpers": {
 			"types": "./lib/tests/helpers.d.ts",

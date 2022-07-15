@@ -2,14 +2,14 @@
 import type { IconifyInfo } from '@iconify/types';
 import { promises as fs } from 'fs';
 import { nextProvider } from '../../lib/tests/helpers';
-import { convertCollectionsList } from '../../lib/collections/convert/list';
-import { applyCollectionsListFilter } from '../../lib/collections/filter/apply';
+import { convertCollectionsList } from '../../lib/data/collections/convert/list';
+import { applyCollectionsListFilter } from '../../lib/data/collections/filter/apply';
 import {
 	storeCollectionsList,
 	getCollectionsList,
 	awaitCollectionsList,
-} from '../../lib/collections/storage';
-import type { IconFinderCollectionsList } from '../../lib/collections/types/collections';
+} from '../../lib/data/collections/storage';
+import type { IconFinderCollectionsList } from '../../lib/data/collections/types/collections';
 
 describe('Testing collections storage', () => {
 	// Storage for data, loaded from fixtures

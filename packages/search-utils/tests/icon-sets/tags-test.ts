@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
-import type { IconFinderTagsFilter } from '../../lib/filters/types/filter';
-import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
+import type { IconFinderTagsFilter } from '../../lib/data/filters/types/filter';
+import { convertRawIconSet } from '../../lib/data/icon-set/convert/raw';
 
 describe('Testing tags', () => {
 	it('Simple icon set with one tag per icon', () => {

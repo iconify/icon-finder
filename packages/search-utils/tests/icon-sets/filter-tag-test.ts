@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
 import { loadFixture } from '../../lib/tests/helpers';
-import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
-import { filterIconSet } from '../../lib/icon-set/filter/filters';
-import { getIconSetIconClickableFilters } from '../../lib/icon-set/filter/get-filters';
+import { convertRawIconSet } from '../../lib/data/icon-set/convert/raw';
+import { filterIconSet } from '../../lib/data/icon-set/filter/filters';
+import { getIconSetIconClickableFilters } from '../../lib/data/icon-set/filter/get-filters';
 
 describe('Filter icon set by tag', () => {
 	it('Testing line-md from IconifyJSON', async () => {

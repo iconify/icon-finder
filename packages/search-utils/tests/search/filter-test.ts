@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { loadFixture } from '../../lib/tests/helpers';
-import { convertAPIv2SearchResults } from '../../lib/search/convert/api-v2';
-import { getCollectionFilterFromIconsList } from '../../lib/icons-list/filter/get-filters';
-import { filterGenericIconsList } from '../../lib/icons-list/filter/filters';
+import { convertAPIv2SearchResults } from '../../lib/data/search/convert/api-v2';
+import { getCollectionFilterFromIconsList } from '../../lib/data/icons-list/filter/get-filters';
+import { filterGenericIconsList } from '../../lib/data/icons-list/filter/filters';
 import type { APIv2SearchResponse } from '../../lib/api/types/v2';
-import type { IconFinderGenericIconName } from '../../lib/icon/types/name';
+import type { IconFinderGenericIconName } from '../../lib/data/icon/types/name';
 
 function findIcon(
 	icons: IconFinderGenericIconName[],

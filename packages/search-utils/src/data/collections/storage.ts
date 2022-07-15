@@ -1,7 +1,7 @@
 import {
 	fireIconFinderEvent,
 	subscribeIconFinderEvent,
-} from '../events/events';
+} from '../../events/events';
 import type { IconFinderCollectionsList } from './types/collections';
 import type { StoredIconFinderCollectionsList } from './types/storage';
 

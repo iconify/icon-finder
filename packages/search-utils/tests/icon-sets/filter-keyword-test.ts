@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyJSON } from '@iconify/types';
 import { loadFixture } from '../../lib/tests/helpers';
-import { convertRawIconSet } from '../../lib/icon-set/convert/raw';
-import { filterIconSetUniqueIconsByKeyword } from '../../lib/icon-set/filter/keyword';
-import type { IconFinderIconSetUniqueIcon } from '../../lib/icon-set/types/icons';
+import { convertRawIconSet } from '../../lib/data/icon-set/convert/raw';
+import { filterIconSetUniqueIconsByKeyword } from '../../lib/data/icon-set/filter/keyword';
+import type { IconFinderIconSetUniqueIcon } from '../../lib/data/icon-set/types/icons';
 
 describe('Filter icon set by keyword', () => {
 	it('Testing line-md from IconifyJSON', async () => {

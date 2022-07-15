@@ -1,4 +1,4 @@
-import type { IconFinderGenericIconsList } from '../../icons/types/list';
+import type { IconFinderGenericIconsList } from '../../icons-list/types/list';
 
 /**
  * Search results
