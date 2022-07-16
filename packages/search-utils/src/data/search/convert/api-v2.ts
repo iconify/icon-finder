@@ -1,6 +1,6 @@
 import { stringToIcon } from '@iconify/utils/lib/icon/name';
 import type { APIv2SearchResponse } from '../../../api/types/v2';
-import { getCollectionsListItemsFromStorage } from '../../../storage/data/collections';
+import { getCollectionsListItemsFromStorage } from '../../storage/data/collections';
 import type { IconFinderCollectionsFilter } from '../../filters/types/filter';
 import type { IconFinderCollectionsFiltersList } from '../../filters/types/list';
 import type { IconFinderGenericIconName } from '../../icon/types/name';

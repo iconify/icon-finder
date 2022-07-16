@@ -1,4 +1,4 @@
-import type { IconFinderCollectionsListItem } from '../../data/collections/types/collections';
+import type { IconFinderCollectionsListItem } from '../../collections/types/collections';
 import type {
 	StoredIconFinderCollectionsList,
 	StoredIconFinderCollectionsParams,

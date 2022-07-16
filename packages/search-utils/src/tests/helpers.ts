@@ -4,6 +4,11 @@ let providerCounter = 0;
 let prefixCounter = 0;
 
 /**
+ * Directory where fixtures are stored, with trailing slash
+ */
+export const fixturesDirectory = 'tests/fixtures/';
+
+/**
  * Get unique provider for tests
  */
 export function nextProvider(): string {
@@ -21,5 +26,5 @@ export function nextPrefix(): string {
  * Load fixture
  */
 export async function loadFixture(name: string): Promise<string> {
-	return await fs.readFile('tests/fixtures/' + name, 'utf8');
+	return await fs.readFile(fixturesDirectory + name, 'utf8');
 }

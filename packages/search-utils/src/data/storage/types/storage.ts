@@ -10,7 +10,7 @@
  *
  * Errors are changed to:
  * 404 = not found -> item not found, should show empty results
- * 503 = service unavailable -> error retrieving data, should show error
+ * 503 = service unavailable -> error retrieving data or invalid data, should show error
  */
 export type IconFinderStorageError = 404 | 503;
 

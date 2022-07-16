@@ -1,4 +1,4 @@
-import type { IconFinderCollectionsList } from '../../data/collections/types/collections';
+import type { IconFinderCollectionsList } from '../../collections/types/collections';
 
 /**
  * Params = provider

@@ -2,7 +2,7 @@ import {
 	fireIconFinderEvent,
 	subscribeIconFinderEvent,
 	unsubscribeIconFinderEvent,
-} from '../events/events';
+} from '../../events/events';
 import type {
 	IconFinderStorage,
 	IconFinderStorageError,
