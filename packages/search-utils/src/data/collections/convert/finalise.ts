@@ -12,7 +12,6 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 	// Add filters
 	const filters = [] as IconFinderCategoriesFilter[];
 	let hidden = 0;
-	let color = 0;
 	for (const title in list.categorised) {
 		const category = list.categorised[title];
 
@@ -28,7 +27,6 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 			hidden++;
 		}
 
-		filter.color = color++;
 		filters.push(filter);
 	}
 
@@ -42,10 +40,8 @@ export function finaliseCollectionsList(list: IconFinderCollectionsList) {
 	list.total = Object.keys(list.prefixed).length;
 
 	// Add data for searching and colors
-	color = 0;
 	for (const prefix in list.prefixed) {
 		const item = list.prefixed[prefix];
-		item.color = color++;
 		item.searchData = generateSearchData(prefix, item.info);
 	}
 

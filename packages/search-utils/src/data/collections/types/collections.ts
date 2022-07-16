@@ -19,7 +19,7 @@ export interface IconFinderCollectionsListItem {
 	readonly category: string;
 
 	// Palette
-	color?: number;
+	color: number;
 
 	// True if icon set is filtered out (hidden)
 	filtered?: boolean;

@@ -39,6 +39,8 @@ export function convertCollectionsList(
 	};
 
 	// Parse all items
+	let iconSetColor = 0;
+	let filterColor = 0;
 	for (const prefix in collections) {
 		if (result.prefixed[prefix]) {
 			// Duplicate item
@@ -60,6 +62,7 @@ export function convertCollectionsList(
 			title,
 			info,
 			category,
+			color: iconSetColor++,
 		};
 		result.prefixed[prefix] = item;
 
@@ -73,6 +76,7 @@ export function convertCollectionsList(
 				const filter: IconFinderCategoriesFilter = {
 					key: categoryPrefix + category,
 					title: category,
+					color: filterColor++,
 				};
 				result.categorised[category] = {
 					title: category,
@@ -90,6 +94,7 @@ export function convertCollectionsList(
 
 	// Add empty category
 	if (emptyCategory.items.length) {
+		emptyCategory.filter.color = filterColor++;
 		result.categorised[emptyCategory.title] = emptyCategory;
 	}
 
