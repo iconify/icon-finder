@@ -97,16 +97,6 @@
 			"require": "./lib/data/collections/types/prefixed-info.cjs",
 			"import": "./lib/data/collections/types/prefixed-info.mjs"
 		},
-		"./lib/data/collections/types/storage": {
-			"types": "./lib/data/collections/types/storage.d.ts",
-			"require": "./lib/data/collections/types/storage.cjs",
-			"import": "./lib/data/collections/types/storage.mjs"
-		},
-		"./lib/data/collections/storage": {
-			"types": "./lib/data/collections/storage.d.ts",
-			"require": "./lib/data/collections/storage.cjs",
-			"import": "./lib/data/collections/storage.mjs"
-		},
 		"./lib/data/filters/types/all": {
 			"types": "./lib/data/filters/types/all.d.ts",
 			"require": "./lib/data/filters/types/all.cjs",
@@ -266,6 +256,26 @@
 			"types": "./lib/events/types.d.ts",
 			"require": "./lib/events/types.cjs",
 			"import": "./lib/events/types.mjs"
+		},
+		"./lib/storage/data/collections": {
+			"types": "./lib/storage/data/collections.d.ts",
+			"require": "./lib/storage/data/collections.cjs",
+			"import": "./lib/storage/data/collections.mjs"
+		},
+		"./lib/storage/types/collections": {
+			"types": "./lib/storage/types/collections.d.ts",
+			"require": "./lib/storage/types/collections.cjs",
+			"import": "./lib/storage/types/collections.mjs"
+		},
+		"./lib/storage/types/storage": {
+			"types": "./lib/storage/types/storage.d.ts",
+			"require": "./lib/storage/types/storage.cjs",
+			"import": "./lib/storage/types/storage.mjs"
+		},
+		"./lib/storage/functions": {
+			"types": "./lib/storage/functions.d.ts",
+			"require": "./lib/storage/functions.cjs",
+			"import": "./lib/storage/functions.mjs"
 		},
 		"./lib/tests/helpers": {
 			"types": "./lib/tests/helpers.d.ts",

@@ -1,6 +1,6 @@
 import { stringToIcon } from '@iconify/utils/lib/icon/name';
 import type { APIv2SearchResponse } from '../../../api/types/v2';
-import type { StoredIconFinderCollectionsList } from '../../collections/types/storage';
+import { getCollectionsListItemsFromStorage } from '../../../storage/data/collections';
 import type { IconFinderCollectionsFilter } from '../../filters/types/filter';
 import type { IconFinderCollectionsFiltersList } from '../../filters/types/list';
 import type { IconFinderGenericIconName } from '../../icon/types/name';
@@ -13,10 +13,9 @@ export function convertAPIv2SearchResults(
 	// API provider
 	provider: string,
 	// Response
-	data: APIv2SearchResponse,
-	// Collections list to get titles and colors from
-	collectionsList?: StoredIconFinderCollectionsList
+	data: APIv2SearchResponse
 ): IconFinderSearchResults {
+	const collectionsList = getCollectionsListItemsFromStorage(provider);
 	const collections: Map<string, IconFinderCollectionsFilter> = new Map();
 	const icons: IconFinderGenericIconName[] = [];
 
