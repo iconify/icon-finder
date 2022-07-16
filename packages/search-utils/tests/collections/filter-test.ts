@@ -3,13 +3,17 @@ import { promises as fs } from 'fs';
 import { convertCollectionsList } from '../../lib/data/collections/convert/list';
 import { applyCollectionsListFilter } from '../../lib/data/collections/filter/apply';
 import type { IconFinderCollectionsList } from '../../lib/data/collections/types/collections';
+import { fixturesDirectory } from '../../lib/tests/helpers';
 
 describe('Testing applyCollectionsListFilter', () => {
 	// Storage for data, loaded from fixtures
 	let data: Record<string, IconifyInfo>;
 	beforeAll(async () => {
 		data = JSON.parse(
-			await fs.readFile('tests/fixtures/collections/all.json', 'utf8')
+			await fs.readFile(
+				fixturesDirectory + 'collections/all.json',
+				'utf8'
+			)
 		) as Record<string, IconifyInfo>;
 	});
 

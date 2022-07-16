@@ -6,6 +6,7 @@ import type { IconFinderCollectionsListItem } from '../../lib/data/collections/t
 import type { IconFinderCategoriesFiltersList } from '../../lib/data/filters/types/list';
 import type { IconFinderCategoriesFilter } from '../../lib/data/filters/types/filter';
 import { generateSearchData } from '../../lib/data/collections/convert/search';
+import { fixturesDirectory } from '../../lib/tests/helpers';
 
 describe('Testing convertCollectionsList', () => {
 	function categoriesToBaseFilters(
@@ -74,7 +75,8 @@ describe('Testing convertCollectionsList', () => {
 			ph,
 		};
 
-		const result = convertCollectionsList(source);
+		const result = convertCollectionsList(source)!;
+		expect(result).toBeTruthy();
 
 		// Make sure source was not modified
 		expect(mdi).toEqual(JSON.parse(mdiSerialised));
@@ -173,7 +175,9 @@ describe('Testing convertCollectionsList', () => {
 				palette: true,
 			},
 		};
-		const result = convertCollectionsList(source);
+
+		const result = convertCollectionsList(source)!;
+		expect(result).toBeTruthy();
 
 		// Make sure source was not modified
 		expect(mdi).toEqual(JSON.parse(mdiSerialised));
@@ -234,7 +238,9 @@ describe('Testing convertCollectionsList', () => {
 				hidden: true,
 			},
 		};
-		const result = convertCollectionsList(source);
+
+		const result = convertCollectionsList(source)!;
+		expect(result).toBeTruthy();
 
 		// Make sure source was not modified
 		expect(mdi).toEqual(JSON.parse(mdiSerialised));
@@ -295,7 +301,9 @@ describe('Testing convertCollectionsList', () => {
 				hidden: true,
 			},
 		};
-		const result = convertCollectionsList(source);
+
+		const result = convertCollectionsList(source)!;
+		expect(result).toBeTruthy();
 
 		// Make sure source was not modified
 		expect(mdi).toEqual(JSON.parse(mdiSerialised));
@@ -341,9 +349,14 @@ describe('Testing convertCollectionsList', () => {
 
 	test('collections.json', async () => {
 		const source = JSON.parse(
-			await fs.readFile('tests/fixtures/collections/all.json', 'utf8')
+			await fs.readFile(
+				fixturesDirectory + 'collections/all.json',
+				'utf8'
+			)
 		) as Record<string, IconifyInfo>;
-		const result = convertCollectionsList(source);
+
+		const result = convertCollectionsList(source)!;
+		expect(result).toBeTruthy();
 
 		// Test categories
 		const expectedCategories: string[] = [
@@ -370,5 +383,14 @@ describe('Testing convertCollectionsList', () => {
 			...expectedFiltersList,
 			visible: expectedFiltersList.filters.length - 1,
 		});
+	});
+
+	test('Bad file', async () => {
+		const source = JSON.parse(
+			await fs.readFile(fixturesDirectory + 'api-v2/mdi.json', 'utf8')
+		) as Record<string, IconifyInfo>;
+
+		const result = convertCollectionsList(source);
+		expect(result).toBeUndefined();
 	});
 });

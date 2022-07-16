@@ -82,6 +82,11 @@
 			"require": "./lib/data/collections/filter/reset.cjs",
 			"import": "./lib/data/collections/filter/reset.mjs"
 		},
+		"./lib/data/collections/loaders/fs": {
+			"types": "./lib/data/collections/loaders/fs.d.ts",
+			"require": "./lib/data/collections/loaders/fs.cjs",
+			"import": "./lib/data/collections/loaders/fs.mjs"
+		},
 		"./lib/data/collections/types/collections": {
 			"types": "./lib/data/collections/types/collections.d.ts",
 			"require": "./lib/data/collections/types/collections.cjs",

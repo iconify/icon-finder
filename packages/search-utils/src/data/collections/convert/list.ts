@@ -13,7 +13,7 @@ import { finaliseCollectionsList } from './finalise';
  */
 export function convertCollectionsList(
 	collections: Record<string, IconifyInfo>
-): IconFinderCollectionsList {
+): IconFinderCollectionsList | undefined {
 	// Create result
 	const result: IconFinderCollectionsList = {
 		search: '',
@@ -51,7 +51,7 @@ export function convertCollectionsList(
 		const info = convertIconSetInfo(collections[prefix]);
 		if (!info) {
 			// Invalid icon set
-			continue;
+			return;
 		}
 
 		const category = info.category || '';
