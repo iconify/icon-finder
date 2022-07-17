@@ -4,7 +4,7 @@ import type {
 	StoredIconFinderIconSet,
 	StoredIconFinderIconSetParams,
 } from '../types/storage';
-import type { IconFinderStorageError } from '../../storage/types/storage';
+import type { IconFinderStorageError } from '../../storage/types';
 import { convertAPIv2IconSet } from '../convert/api-v2';
 import { getLoaderError } from '../../storage/functions';
 

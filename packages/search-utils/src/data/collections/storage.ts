@@ -3,7 +3,7 @@ import type {
 	StoredIconFinderCollectionsList,
 	StoredIconFinderCollectionsParams,
 } from './types/storage';
-import type { IconFinderStorage } from '../storage/types/storage';
+import type { IconFinderStorage } from '../storage/types';
 
 /**
  * Collections storage

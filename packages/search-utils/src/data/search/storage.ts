@@ -2,7 +2,7 @@ import type {
 	StoredIconFinderSearchQuery,
 	StoredIconFinderSearchResults,
 } from './types/storage';
-import type { IconFinderStorage } from '../storage/types/storage';
+import type { IconFinderStorage } from '../storage/types';
 
 /**
  * Search results storage

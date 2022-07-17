@@ -1,6 +1,6 @@
 import { collectionsFSLoader } from '../collections/loaders/fs';
 import { iconSetFSLoader } from '../icon-set/loaders/fs';
-import { loaders } from './loaders';
+import { loaders } from '../loaders';
 
 /**
  * Set loaders for `@iconify/json` or `https://github.com/iconify/icon-sets`

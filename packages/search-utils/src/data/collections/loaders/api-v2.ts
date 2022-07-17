@@ -6,7 +6,7 @@ import type { StoredIconFinderCollectionsList } from '../types/storage';
 import type {
 	IconFinderStorageError,
 	IconFinderStorageItem,
-} from '../../storage/types/storage';
+} from '../../storage/types';
 import { convertCollectionsList } from '../convert/list';
 
 /**

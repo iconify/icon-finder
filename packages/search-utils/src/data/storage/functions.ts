@@ -8,7 +8,7 @@ import type {
 	IconFinderStorageError,
 	IconFinderStorageItem,
 	IconFinderStorageLoader,
-} from './types/storage';
+} from './types';
 
 // Counter for events
 let eventCounter = 0;

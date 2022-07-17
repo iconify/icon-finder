@@ -270,11 +270,6 @@
 			"require": "./lib/data/icons-list/types/list.cjs",
 			"import": "./lib/data/icons-list/types/list.mjs"
 		},
-		"./lib/data/loaders/types/loaders": {
-			"types": "./lib/data/loaders/types/loaders.d.ts",
-			"require": "./lib/data/loaders/types/loaders.cjs",
-			"import": "./lib/data/loaders/types/loaders.mjs"
-		},
 		"./lib/data/loaders/api-v2": {
 			"types": "./lib/data/loaders/api-v2.d.ts",
 			"require": "./lib/data/loaders/api-v2.cjs",
@@ -285,10 +280,10 @@
 			"require": "./lib/data/loaders/fs-full.cjs",
 			"import": "./lib/data/loaders/fs-full.mjs"
 		},
-		"./lib/data/loaders/loaders": {
-			"types": "./lib/data/loaders/loaders.d.ts",
-			"require": "./lib/data/loaders/loaders.cjs",
-			"import": "./lib/data/loaders/loaders.mjs"
+		"./lib/data/loaders/types": {
+			"types": "./lib/data/loaders/types.d.ts",
+			"require": "./lib/data/loaders/types.cjs",
+			"import": "./lib/data/loaders/types.mjs"
 		},
 		"./lib/data/search/convert/api-v2": {
 			"types": "./lib/data/search/convert/api-v2.d.ts",
@@ -320,15 +315,20 @@
 			"require": "./lib/data/search/storage.cjs",
 			"import": "./lib/data/search/storage.mjs"
 		},
-		"./lib/data/storage/types/storage": {
-			"types": "./lib/data/storage/types/storage.d.ts",
-			"require": "./lib/data/storage/types/storage.cjs",
-			"import": "./lib/data/storage/types/storage.mjs"
-		},
 		"./lib/data/storage/functions": {
 			"types": "./lib/data/storage/functions.d.ts",
 			"require": "./lib/data/storage/functions.cjs",
 			"import": "./lib/data/storage/functions.mjs"
+		},
+		"./lib/data/storage/types": {
+			"types": "./lib/data/storage/types.d.ts",
+			"require": "./lib/data/storage/types.cjs",
+			"import": "./lib/data/storage/types.mjs"
+		},
+		"./lib/data/loaders": {
+			"types": "./lib/data/loaders.d.ts",
+			"require": "./lib/data/loaders.cjs",
+			"import": "./lib/data/loaders.mjs"
 		},
 		"./lib/events/events": {
 			"types": "./lib/events/events.d.ts",

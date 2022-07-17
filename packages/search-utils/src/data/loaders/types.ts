@@ -1,16 +1,16 @@
 import type {
 	StoredIconFinderCollectionsList,
 	StoredIconFinderCollectionsParams,
-} from '../../collections/types/storage';
+} from '../collections/types/storage';
 import type {
 	StoredIconFinderIconSet,
 	StoredIconFinderIconSetParams,
-} from '../../icon-set/types/storage';
+} from '../icon-set/types/storage';
 import type {
 	StoredIconFinderSearchQuery,
 	StoredIconFinderSearchResults,
-} from '../../search/types/storage';
-import type { IconFinderStorageLoader } from '../../storage/types/storage';
+} from '../search/types/storage';
+import type { IconFinderStorageLoader } from '../storage/types';
 
 /**
  * Various loaders

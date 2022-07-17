@@ -5,7 +5,7 @@ import type {
 	StoredIconFinderSearchQuery,
 	StoredIconFinderSearchResults,
 } from '../types/storage';
-import type { IconFinderStorageError } from '../../storage/types/storage';
+import type { IconFinderStorageError } from '../../storage/types';
 import { convertAPIv2SearchResults } from '../convert/api-v2';
 
 /**

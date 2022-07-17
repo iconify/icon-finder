@@ -1,7 +1,7 @@
 import type { IconifyInfo } from '@iconify/types';
 import { readFile } from 'node:fs/promises';
 import type { StoredIconFinderCollectionsList } from '../types/storage';
-import type { IconFinderStorageError } from '../../storage/types/storage';
+import type { IconFinderStorageError } from '../../storage/types';
 import { convertCollectionsList } from '../convert/list';
 
 /**
