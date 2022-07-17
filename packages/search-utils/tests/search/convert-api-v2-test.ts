@@ -2,7 +2,7 @@
 import { loadFixture } from '../../lib/tests/helpers';
 import { convertAPIv2SearchResults } from '../../lib/data/search/convert/api-v2';
 import { getCollectionFilterFromIconsList } from '../../lib/data/icons-list/filter/get-filters';
-import type { APIv2SearchResponse } from '../../lib/api/types/v2';
+import type { APIv2SearchResponse } from '../../lib/data/api-types/v2';
 import type { IconFinderGenericIconName } from '../../lib/data/icon/types/name';
 
 function findIcon(

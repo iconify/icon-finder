@@ -3,9 +3,10 @@ import {
 	collectionsAPIURI,
 	nextMockedAPIProvider,
 } from '../../lib/tests/api-data';
-import { loadCollectionsFromAPIv2 } from '../../lib/data/collections/loaders/api-v2';
+import { collectionsAPIv2Loader } from '../../lib/data/collections/loaders/api-v2';
+import { collectionsStorage } from '../../lib/data/collections/storage';
+import { loadStorageItem } from '../../lib/data/storage/functions';
 import { loadFixture } from '../../lib/tests/helpers';
-import { collectionsStorage } from '../../lib/data/storage/data/collections';
 import { mockAPIData } from '../../lib/tests/api-mock';
 
 describe('Loading collections from API', () => {
@@ -26,7 +27,11 @@ describe('Loading collections from API', () => {
 			response,
 		});
 
-		const data = await loadCollectionsFromAPIv2(provider);
+		const data = await loadStorageItem(
+			collectionsStorage,
+			collectionsAPIv2Loader,
+			provider
+		);
 
 		// Error should be empty, data should be set
 		expect(data.error).toBeUndefined();
@@ -48,7 +53,11 @@ describe('Loading collections from API', () => {
 		expect(collectionsStorage.storage.get(provider)).toBeUndefined();
 
 		// Get data without mocking API response
-		const data = await loadCollectionsFromAPIv2(provider);
+		const data = await loadStorageItem(
+			collectionsStorage,
+			collectionsAPIv2Loader,
+			provider
+		);
 
 		// Should return 404
 		expect(data.error).toBe(404);

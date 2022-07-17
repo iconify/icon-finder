@@ -1,14 +1,19 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { fixturesDirectory, nextProvider } from '../../lib/tests/helpers';
-import { loadCollectionsFromFS } from '../../lib/data/collections/loaders/fs';
-import { collectionsStorage } from '../../lib/data/storage/data/collections';
+import { collectionsFSLoader } from '../../lib/data/collections/loaders/fs';
+import { collectionsStorage } from '../../lib/data/collections/storage';
+import { loadStorageItem } from '../../lib/data/storage/functions';
 
 describe('Loading collections from file system', () => {
 	it('Loading collections list', async () => {
 		const provider = '';
-		const data = await loadCollectionsFromFS(
-			provider,
-			fixturesDirectory + 'collections/all.json'
+		const data = await loadStorageItem(
+			collectionsStorage,
+			collectionsFSLoader.bind(
+				null,
+				fixturesDirectory + 'collections/all.json'
+			),
+			provider
 		);
 
 		// Error should be empty, data should be set
@@ -19,10 +24,15 @@ describe('Loading collections from file system', () => {
 		expect(collections.total).toBe(121);
 
 		// Loading icon set again should return cache
-		const data2 = await loadCollectionsFromFS(
-			provider,
-			fixturesDirectory + 'bad-directory/line-md.json'
+		const data2 = await loadStorageItem(
+			collectionsStorage,
+			collectionsFSLoader.bind(
+				null,
+				fixturesDirectory + 'bad-directory/line-md.json'
+			),
+			provider
 		);
+
 		expect(data2).toBe(data);
 		expect(data2.data).toBe(collections);
 	});
@@ -34,9 +44,13 @@ describe('Loading collections from file system', () => {
 		expect(collectionsStorage.storage.get(provider)).toBeUndefined();
 
 		// Load data
-		const data = await loadCollectionsFromFS(
-			provider,
-			fixturesDirectory + 'collections/all.json'
+		const data = await loadStorageItem(
+			collectionsStorage,
+			collectionsFSLoader.bind(
+				null,
+				fixturesDirectory + 'collections/all.json'
+			),
+			provider
 		);
 
 		// Error should be empty, data should be set
@@ -54,9 +68,13 @@ describe('Loading collections from file system', () => {
 
 	it('Invalid file', async () => {
 		const provider = nextProvider();
-		const data = await loadCollectionsFromFS(
-			provider,
-			fixturesDirectory + 'dir/missing-file.json'
+		const data = await loadStorageItem(
+			collectionsStorage,
+			collectionsFSLoader.bind(
+				null,
+				fixturesDirectory + 'dir/missing-file.json'
+			),
+			provider
 		);
 
 		// Error
@@ -66,9 +84,13 @@ describe('Loading collections from file system', () => {
 
 	it('Bad data', async () => {
 		const provider = nextProvider();
-		const data = await loadCollectionsFromFS(
-			provider,
-			fixturesDirectory + 'api-v2/line-md.json'
+		const data = await loadStorageItem(
+			collectionsStorage,
+			collectionsFSLoader.bind(
+				null,
+				fixturesDirectory + 'api-v2/line-md.json'
+			),
+			provider
 		);
 
 		// Error

@@ -1,8 +1,8 @@
 import type {
 	StoredIconFinderIconSet,
 	StoredIconFinderIconSetParams,
-} from '../types/icon-set';
-import type { IconFinderStorage } from '../types/storage';
+} from './types/storage';
+import type { IconFinderStorage } from '../storage/types/storage';
 
 /**
  * Icon sets storage

@@ -1,19 +1,17 @@
 import { _api } from 'iconify-icon';
-import type { APIv2SearchResponse } from '../../../api/types/v2';
+import type { APIv2SearchResponse } from '../../api-types/v2';
 import { waitForCollectionsFromAPIv2 } from '../../collections/loaders/api-v2';
-import { searchResultsStorage } from '../../storage/data/search';
-import { loadStorageItem } from '../../storage/functions';
 import type {
 	StoredIconFinderSearchQuery,
 	StoredIconFinderSearchResults,
-} from '../../storage/types/search';
+} from '../types/storage';
 import type { IconFinderStorageError } from '../../storage/types/storage';
 import { convertAPIv2SearchResults } from '../convert/api-v2';
 
 /**
  * Load search results
  */
-function loader(
+export function searchAPIv2Loader(
 	query: StoredIconFinderSearchQuery
 ): Promise<StoredIconFinderSearchResults | IconFinderStorageError> {
 	return new Promise((fulfill) => {
@@ -55,6 +53,6 @@ function loader(
 /**
  * Load results from API
  */
-export function getSearchResultsFromAPIv2(query: StoredIconFinderSearchQuery) {
-	return loadStorageItem(searchResultsStorage, loader, query);
-}
+// export function getSearchResultsFromAPIv2(query: StoredIconFinderSearchQuery) {
+// 	return loadStorageItem(searchResultsStorage, searchAPIv2Loader, query);
+// }

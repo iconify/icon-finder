@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { loadFixture } from '../../lib/tests/helpers';
 import { convertAPIv2IconSet } from '../../lib/data/icon-set/convert/api-v2';
-import type { APIv2CollectionResponse } from '../../lib/api/types/v2';
+import type { APIv2CollectionResponse } from '../../lib/data/api-types/v2';
 import type { IconFinderIconSetUniqueIcon } from '../../lib/data/icon-set/types/icons';
 import type {
 	IconFinderTagsFilter,

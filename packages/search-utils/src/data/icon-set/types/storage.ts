@@ -1,4 +1,4 @@
-import type { IconFinderIconSet } from '../../icon-set/types/icon-set';
+import type { IconFinderIconSet } from './icon-set';
 
 /**
  * Params

@@ -1,9 +1,9 @@
-import type { IconFinderCollectionsListItem } from '../../collections/types/collections';
+import type { IconFinderCollectionsListItem } from './types/collections';
 import type {
 	StoredIconFinderCollectionsList,
 	StoredIconFinderCollectionsParams,
-} from '../types/collections';
-import type { IconFinderStorage } from '../types/storage';
+} from './types/storage';
+import type { IconFinderStorage } from '../storage/types/storage';
 
 /**
  * Collections storage

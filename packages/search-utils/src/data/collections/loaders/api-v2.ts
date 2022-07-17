@@ -1,8 +1,8 @@
 import { _api } from 'iconify-icon';
-import type { APIv2CollectionsResponse } from '../../../api/types/v2';
-import { collectionsStorage } from '../../storage/data/collections';
+import type { APIv2CollectionsResponse } from '../../api-types/v2';
+import { collectionsStorage } from '../storage';
 import { getLoaderError, loadStorageItem } from '../../storage/functions';
-import type { StoredIconFinderCollectionsList } from '../../storage/types/collections';
+import type { StoredIconFinderCollectionsList } from '../types/storage';
 import type {
 	IconFinderStorageError,
 	IconFinderStorageItem,
@@ -12,7 +12,7 @@ import { convertCollectionsList } from '../convert/list';
 /**
  * Load icon sets list
  */
-function loader(
+export function collectionsAPIv2Loader(
 	provider: string
 ): Promise<StoredIconFinderCollectionsList | IconFinderStorageError> {
 	return new Promise((fulfill) => {
@@ -43,9 +43,9 @@ function loader(
 /**
  * Load icon sets list from API
  */
-export function loadCollectionsFromAPIv2(provider: string) {
-	return loadStorageItem(collectionsStorage, loader, provider);
-}
+// export function loadCollectionsFromAPIv2(provider: string) {
+// 	return loadStorageItem(collectionsStorage, collectionsAPIv2Loader, provider);
+// }
 
 /**
  * Wait for collections list to load before parsing another API query
@@ -92,7 +92,7 @@ export function waitForCollectionsFromAPIv2(
 	};
 
 	// Load collections
-	loadCollectionsFromAPIv2(provider)
+	loadStorageItem(collectionsStorage, collectionsAPIv2Loader, provider)
 		.then((data) => {
 			collectionsLoaded = data;
 			check();

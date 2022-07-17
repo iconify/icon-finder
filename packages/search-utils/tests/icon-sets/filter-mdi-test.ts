@@ -4,7 +4,7 @@ import { filterIconSet } from '../../lib/data/icon-set/filter/filters';
 import { getIconSetIconClickableFilters } from '../../lib/data/icon-set/filter/get-filters';
 import { convertAPIv2IconSet } from '../../lib/data/icon-set/convert/api-v2';
 import { findReferenceIconSetIcon } from '../../lib/data/icon-set/reference';
-import type { APIv2CollectionResponse } from '../../lib/api/types/v2';
+import type { APIv2CollectionResponse } from '../../lib/data/api-types/v2';
 import type { IconFinderIconSetFilters } from '../../lib/data/icon-set/types/icon-set';
 import type { IconFinderFilter } from '../../lib/data/filters/types/filter';
 

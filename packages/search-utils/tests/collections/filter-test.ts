@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { IconifyInfo } from '@iconify/types';
 import { promises as fs } from 'fs';
 import { convertCollectionsList } from '../../lib/data/collections/convert/list';
@@ -27,7 +28,7 @@ describe('Testing applyCollectionsListFilter', () => {
 			source[prefix] = data[prefix];
 		});
 
-		return convertCollectionsList(source);
+		return convertCollectionsList(source)!;
 	}
 
 	// Get list of visible prefixes

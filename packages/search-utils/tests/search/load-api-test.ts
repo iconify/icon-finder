@@ -4,8 +4,10 @@ import {
 	searchAPIURI,
 	nextMockedAPIProvider,
 } from '../../lib/tests/api-data';
-import { getSearchResultsFromAPIv2 } from '../../lib/data/search/loaders/api-v2';
-import { collectionsStorage } from '../../lib/data/storage/data/collections';
+import { collectionsStorage } from '../../lib/data/collections/storage';
+import { searchAPIv2Loader } from '../../lib/data/search/loaders/api-v2';
+import { searchResultsStorage } from '../../lib/data/search/storage';
+import { loadStorageItem } from '../../lib/data/storage/functions';
 import { loadFixture } from '../../lib/tests/helpers';
 import { mockAPIData } from '../../lib/tests/api-mock';
 import type { IconFinderSearchQuery } from '../../lib/data/search/types/query';
@@ -44,7 +46,11 @@ describe('Loading search results from API', () => {
 			response,
 		});
 
-		const data = await getSearchResultsFromAPIv2(query);
+		const data = await loadStorageItem(
+			searchResultsStorage,
+			searchAPIv2Loader,
+			query
+		);
 
 		// Error should be empty, data should be set
 		expect(data.error).toBeUndefined();
@@ -94,7 +100,11 @@ describe('Loading search results from API', () => {
 			response,
 		});
 
-		const data = await getSearchResultsFromAPIv2(query);
+		const data = await loadStorageItem(
+			searchResultsStorage,
+			searchAPIv2Loader,
+			query
+		);
 
 		// Error should be empty, data should be set
 		expect(data.error).toBeUndefined();

@@ -1,5 +1,5 @@
-import type { IconFinderSearchQuery } from '../../search/types/query';
-import type { IconFinderSearchResults } from '../../search/types/results';
+import type { IconFinderSearchQuery } from './query';
+import type { IconFinderSearchResults } from './results';
 
 /**
  * Params

@@ -1,7 +1,7 @@
 import { _api, addAPIProvider } from 'iconify-icon';
 import { nextProvider } from './helpers';
 import { mockAPIModule } from './api-mock';
-import type { StoredIconFinderSearchQuery } from '../data/storage/types/search';
+import type { StoredIconFinderSearchQuery } from '../data/search/types/storage';
 
 /**
  * URI for collections list
