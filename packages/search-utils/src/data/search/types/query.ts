@@ -2,6 +2,9 @@
  * Search query
  */
 export interface IconFinderSearchQuery {
+	// API provider
+	provider: string;
+
 	// Search keyword. Cannot be empty
 	keyword: string;
 
