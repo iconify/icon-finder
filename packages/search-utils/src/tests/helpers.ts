@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import { readFile } from 'node:fs/promises';
 
 let providerCounter = 0;
 let prefixCounter = 0;
@@ -26,5 +26,5 @@ export function nextPrefix(): string {
  * Load fixture
  */
 export async function loadFixture(name: string): Promise<string> {
-	return await fs.readFile(fixturesDirectory + name, 'utf8');
+	return await readFile(fixturesDirectory + name, 'utf8');
 }

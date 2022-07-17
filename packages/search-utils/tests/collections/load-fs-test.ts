@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { fixturesDirectory, nextProvider } from '../../lib/tests/helpers';
 import { loadCollectionsFromFS } from '../../lib/data/collections/loaders/fs';
+import { collectionsStorage } from '../../lib/data/storage/data/collections';
 
 describe('Loading collections from file system', () => {
-	it('Loading collecitons list', async () => {
+	it('Loading collections list', async () => {
 		const provider = '';
 		const data = await loadCollectionsFromFS(
 			provider,
@@ -28,6 +29,11 @@ describe('Loading collections from file system', () => {
 
 	it('Custom provider', async () => {
 		const provider = nextProvider();
+
+		// Make sure collections list is not in storage
+		expect(collectionsStorage.storage.get(provider)).toBeUndefined();
+
+		// Load data
 		const data = await loadCollectionsFromFS(
 			provider,
 			fixturesDirectory + 'collections/all.json'
@@ -39,6 +45,11 @@ describe('Loading collections from file system', () => {
 
 		const collections = data.data!;
 		expect(collections.total).toBe(121);
+
+		// Make sure collections list is available in storage
+		const storedCollections = collectionsStorage.storage.get(provider);
+		expect(storedCollections).toBeDefined();
+		expect(storedCollections!.data).toBeDefined();
 	});
 
 	it('Invalid file', async () => {

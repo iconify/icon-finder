@@ -58,7 +58,7 @@ export function awaitItemFromStorage<T, P>(
 /**
  * Get error
  */
-function getLoaderError(error: number): IconFinderStorageError {
+export function getLoaderError(error: unknown): IconFinderStorageError {
 	if (error === 404) {
 		return error;
 	}

@@ -16,9 +16,7 @@
 		"lint": "eslint --fix src/**/*.ts",
 		"prebuild": "pnpm run lint && pnpm run clean",
 		"build": "unbuild",
-		"test:cjs": "vitest --config vitest.config.cjs",
-		"test:esm": "vitest --config vitest.config.mjs",
-		"test": "pnpm run test:cjs && pnpm run test:esm"
+		"test": "vitest"
 	},
 	"exports": {
 		"./*": "./*",
@@ -81,6 +79,11 @@
 			"types": "./lib/data/collections/filter/reset.d.ts",
 			"require": "./lib/data/collections/filter/reset.cjs",
 			"import": "./lib/data/collections/filter/reset.mjs"
+		},
+		"./lib/data/collections/loaders/api-v2": {
+			"types": "./lib/data/collections/loaders/api-v2.d.ts",
+			"require": "./lib/data/collections/loaders/api-v2.cjs",
+			"import": "./lib/data/collections/loaders/api-v2.mjs"
 		},
 		"./lib/data/collections/loaders/fs": {
 			"types": "./lib/data/collections/loaders/fs.d.ts",
@@ -192,6 +195,11 @@
 			"require": "./lib/data/icon-set/filter/keyword.cjs",
 			"import": "./lib/data/icon-set/filter/keyword.mjs"
 		},
+		"./lib/data/icon-set/loaders/api-v2": {
+			"types": "./lib/data/icon-set/loaders/api-v2.d.ts",
+			"require": "./lib/data/icon-set/loaders/api-v2.cjs",
+			"import": "./lib/data/icon-set/loaders/api-v2.mjs"
+		},
 		"./lib/data/icon-set/loaders/fs": {
 			"types": "./lib/data/icon-set/loaders/fs.d.ts",
 			"require": "./lib/data/icon-set/loaders/fs.cjs",
@@ -297,6 +305,16 @@
 			"require": "./lib/events/types.cjs",
 			"import": "./lib/events/types.mjs"
 		},
+		"./lib/tests/api-data": {
+			"types": "./lib/tests/api-data.d.ts",
+			"require": "./lib/tests/api-data.cjs",
+			"import": "./lib/tests/api-data.mjs"
+		},
+		"./lib/tests/api-mock": {
+			"types": "./lib/tests/api-mock.d.ts",
+			"require": "./lib/tests/api-mock.cjs",
+			"import": "./lib/tests/api-mock.mjs"
+		},
 		"./lib/tests/helpers": {
 			"types": "./lib/tests/helpers.d.ts",
 			"require": "./lib/tests/helpers.cjs",
@@ -321,6 +339,6 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"rimraf": "^3.0.2",
 		"unbuild": "^0.7.4",
-		"vitest": "^0.16.0"
+		"vitest": "^0.18.1"
 	}
 }
