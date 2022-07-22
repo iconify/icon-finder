@@ -33,29 +33,3 @@ export async function iconSetFSLoader(
 
 	return iconSet;
 }
-
-/**
- * Get loader
- */
-// export function getIconSetFSLoader(
-// 	filename: string
-// ): IconFinderStorageLoader<
-// 	StoredIconFinderIconSet,
-// 	StoredIconFinderIconSetParams
-// > {
-// 	return iconSetFSLoader.bind(null, filename);
-// }
-
-/**
- * Load icon set from file system
- */
-// export function loadIconSetFromFS(
-// 	provider: string,
-// 	prefix: string,
-// 	filename: string
-// ) {
-// 	return loadStorageItem(iconSetsStorage, getIconSetFSLoader(filename), {
-// 		provider,
-// 		prefix,
-// 	});
-// }

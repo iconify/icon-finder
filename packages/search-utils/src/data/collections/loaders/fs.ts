@@ -28,26 +28,3 @@ export async function collectionsFSLoader(
 
 	return list;
 }
-
-/**
- * Get loader
- */
-// export function getCollectionsFSLoader(
-// 	filename: string
-// ): IconFinderStorageLoader<
-// 	StoredIconFinderCollectionsList,
-// 	StoredIconFinderCollectionsParams
-// > {
-// 	return collectionsFSLoader.bind(null, filename);
-// }
-
-/**
- * Load icon sets list from file system
- */
-// export function loadCollectionsFromFS(provider: string, filename: string) {
-// 	return loadStorageItem(
-// 		collectionsStorage,
-// 		getCollectionsFSLoader(filename),
-// 		provider
-// 	);
-// }

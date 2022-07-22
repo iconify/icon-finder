@@ -49,10 +49,3 @@ export function searchAPIv2Loader(
 		);
 	});
 }
-
-/**
- * Load results from API
- */
-// export function getSearchResultsFromAPIv2(query: StoredIconFinderSearchQuery) {
-// 	return loadStorageItem(searchResultsStorage, searchAPIv2Loader, query);
-// }

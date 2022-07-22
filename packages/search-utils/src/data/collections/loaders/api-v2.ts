@@ -41,13 +41,6 @@ export function collectionsAPIv2Loader(
 }
 
 /**
- * Load icon sets list from API
- */
-// export function loadCollectionsFromAPIv2(provider: string) {
-// 	return loadStorageItem(collectionsStorage, collectionsAPIv2Loader, provider);
-// }
-
-/**
  * Wait for collections list to load before parsing another API query
  */
 export function waitForCollectionsFromAPIv2(

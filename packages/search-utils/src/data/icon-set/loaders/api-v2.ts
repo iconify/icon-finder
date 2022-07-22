@@ -48,13 +48,3 @@ export function iconSetAPIv2Loader(
 		);
 	});
 }
-
-/**
- * Load icon set from API
- */
-// export function loadIconSetFromAPIv2(provider: string, prefix: string) {
-// 	return loadStorageItem(iconSetsStorage, iconSetAPIv2Loader, {
-// 		provider,
-// 		prefix,
-// 	});
-// }

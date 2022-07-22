@@ -2,8 +2,10 @@
 import type { IconifyJSON } from '@iconify/types';
 import { loadFixture } from '../../lib/tests/helpers';
 import { convertRawIconSet } from '../../lib/data/icon-set/convert/raw';
+import { convertAPIv2IconSet } from '../../lib/data/icon-set/convert/api-v2';
 import { filterIconSetUniqueIconsByKeyword } from '../../lib/data/icon-set/filter/keyword';
 import type { IconFinderIconSetUniqueIcon } from '../../lib/data/icon-set/types/icons';
+import type { APIv2CollectionResponse } from '../../lib/data/api-types/v2';
 
 describe('Filter icon set by keyword', () => {
 	it('Testing line-md from IconifyJSON', async () => {
@@ -270,5 +272,93 @@ describe('Filter icon set by keyword', () => {
 
 		// Check suffixes
 		testFilters('suffixes', new Set(['16', '24']));
+	});
+
+	it('Testing Material Symbols from IconifyJSON', async () => {
+		// Load icon set
+		const rawData = JSON.parse(
+			await loadFixture('icon-sets/material-symbols.json')
+		) as IconifyJSON;
+		const iconSet = convertRawIconSet('', rawData)!;
+
+		const filters = iconSet.filters;
+
+		//
+		// Search for 'cloud-upload'
+		//
+		const icons = filterIconSetUniqueIconsByKeyword(
+			iconSet.icons.unique,
+			filters,
+			'cloud-upload'
+		);
+
+		expect(icons).toEqual([
+			{
+				icons: [
+					{
+						name: 'cloud-upload',
+						tags: [
+							{
+								key: 'tagsCommon Actions',
+								title: 'Common Actions',
+								color: 5,
+								disabled: false,
+							},
+							{
+								key: 'tagsText Formatting',
+								title: 'Text Formatting',
+								color: 14,
+								disabled: false,
+							},
+						],
+					},
+				],
+				render: 'backup',
+			},
+		]);
+	});
+
+	it('Testing Material Symbols from API v2', async () => {
+		// Load icon set
+		const rawData = JSON.parse(
+			await loadFixture('api-v2/material-symbols.json')
+		) as APIv2CollectionResponse;
+		const iconSet = convertAPIv2IconSet('', rawData)!;
+
+		const filters = iconSet.filters;
+
+		//
+		// Search for 'cloud-upload'
+		//
+		const icons = filterIconSetUniqueIconsByKeyword(
+			iconSet.icons.unique,
+			filters,
+			'cloud-upload'
+		);
+
+		expect(icons).toEqual([
+			{
+				icons: [
+					{
+						name: 'cloud-upload',
+						tags: [
+							{
+								key: 'tagsText Formatting',
+								title: 'Text Formatting',
+								color: 14,
+								disabled: false,
+							},
+							{
+								key: 'tagsCommon Actions',
+								title: 'Common Actions',
+								color: 5,
+								disabled: false,
+							},
+						],
+					},
+				],
+				render: 'backup',
+			},
+		]);
 	});
 });
