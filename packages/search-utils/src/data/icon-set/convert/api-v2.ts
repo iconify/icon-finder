@@ -7,6 +7,7 @@ import type {
 	IconFinderIconSetIcon,
 	IconFinderIconSetUniqueIcon,
 } from '../types/icons';
+import { convertIconSetTags } from './helpers/tags';
 import { getIconSetThemes } from './helpers/themes';
 
 /**
@@ -37,7 +38,7 @@ export function convertAPIv2IconSet(
 	// Function to add icon
 	const addIcon = (
 		name: string,
-		tag?: IconFinderTagsFilter,
+		tags?: IconFinderTagsFilter[],
 		hidden?: boolean
 	) => {
 		let uniqueIcon = uniqueMap.get(name);
@@ -49,6 +50,7 @@ export function convertAPIv2IconSet(
 			// New icon
 			icon = {
 				name,
+				tags,
 			};
 
 			// Add prefix/suffix
@@ -75,12 +77,6 @@ export function convertAPIv2IconSet(
 		}
 		iconsMap.set(name, icon);
 
-		// Add tags
-		if (tag) {
-			// No need to check if it exists, function can only be called once per icon per tag
-			icon.tags = [tag, ...(icon.tags || [])];
-		}
-
 		// Hide
 		if (hidden) {
 			uniqueIcon.hidden = icon.hidden = true;
@@ -92,41 +88,29 @@ export function convertAPIv2IconSet(
 	};
 
 	// Generate tags list
-	const tags = categories || {};
-	const tagFilters: IconFinderTagsFilter[] = [];
-
-	// Add icons with tags, sort tags alphabetically
 	const tagsType = 'tags';
-	Object.keys(tags)
-		.sort((a, b) => a.localeCompare(b))
-		.forEach((title, color) => {
-			const tag: IconFinderTagsFilter = {
-				key: tagsType + title,
-				title,
-				color,
-			};
-			tagFilters.push(tag);
-
-			tags[title].forEach((name) => {
-				addIcon(name, tag);
-			});
-		});
+	const tagsData = convertIconSetTags(categories || {});
+	const tagFilters = tagsData.filters;
+	tagsData.map.forEach((tags, name) => {
+		addIcon(name, tags);
+	});
 
 	// Add icons without tags
 	const uncategorized = data.uncategorized;
 	if (uncategorized && uncategorized.length) {
-		let emptyTag: IconFinderTagsFilter | undefined;
+		let emptyTags: IconFinderTagsFilter[] | undefined;
 		if (tagFilters.length) {
-			emptyTag = {
+			const emptyTag = {
 				key: tagsType,
 				title: '',
 				color: tagFilters.length,
 			};
+			emptyTags = [emptyTag];
 			tagFilters.push(emptyTag);
 		}
 
 		uncategorized.forEach((name) => {
-			addIcon(name, emptyTag);
+			addIcon(name, emptyTags);
 		});
 	}
 

@@ -16,6 +16,7 @@ import { hashString } from './helpers/hash';
 import { getIconSetThemes } from './helpers/themes';
 import type { IconFinderTagsFilter } from '../../filters/types/filter';
 import { getBaseIconForTheme } from '../themes/base';
+import { convertIconSetTags } from './helpers/tags';
 
 /**
  * Convert raw icon set
@@ -65,17 +66,10 @@ export function convertRawIconSet(
 	>;
 
 	// Generate tags list, sorted alphabetically
-	const tags = categories || {};
 	const tagsType = 'tags';
-	const tagFilters: IconFinderTagsFilter[] = Object.keys(tags)
-		.sort((a, b) => a.localeCompare(b))
-		.map((title, color) => {
-			return {
-				key: tagsType + title,
-				title,
-				color,
-			};
-		});
+	const tagsData = convertIconSetTags(categories || {});
+	const tagFilters = tagsData.filters;
+	const tagsMap = tagsData.map;
 	const emptyTag: IconFinderTagsFilter = {
 		key: tagsType,
 		title: '',
@@ -86,13 +80,9 @@ export function convertRawIconSet(
 	// Get tags for icons tree
 	function getTagsForIcons(tree: string[]): IconFinderTagsFilter[] {
 		for (let i = 0; i < tree.length; i++) {
-			const name = tree[i];
-			const result = tagFilters.filter((item) => {
-				const title = item.title;
-				return tags[title].indexOf(name) !== -1;
-			});
-			if (result.length) {
-				return result;
+			const item = tagsMap.get(tree[i]);
+			if (item) {
+				return item;
 			}
 		}
 
@@ -191,7 +181,7 @@ export function convertRawIconSet(
 		const iconTags =
 			!hidden &&
 			tagFilters.length &&
-			getTagsForIcons([name].concat(parents));
+			(tagsMap.get(name) || getTagsForIcons(parents));
 		if (iconTags) {
 			icon.tags = iconTags;
 		}

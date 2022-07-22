@@ -343,15 +343,15 @@ describe('Filter icon set by keyword', () => {
 						name: 'cloud-upload',
 						tags: [
 							{
-								key: 'tagsText Formatting',
-								title: 'Text Formatting',
-								color: 14,
-								disabled: false,
-							},
-							{
 								key: 'tagsCommon Actions',
 								title: 'Common Actions',
 								color: 5,
+								disabled: false,
+							},
+							{
+								key: 'tagsText Formatting',
+								title: 'Text Formatting',
+								color: 14,
 								disabled: false,
 							},
 						],

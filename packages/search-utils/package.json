@@ -170,6 +170,11 @@
 			"require": "./lib/data/icon-set/convert/helpers/hash.cjs",
 			"import": "./lib/data/icon-set/convert/helpers/hash.mjs"
 		},
+		"./lib/data/icon-set/convert/helpers/tags": {
+			"types": "./lib/data/icon-set/convert/helpers/tags.d.ts",
+			"require": "./lib/data/icon-set/convert/helpers/tags.cjs",
+			"import": "./lib/data/icon-set/convert/helpers/tags.mjs"
+		},
 		"./lib/data/icon-set/convert/helpers/themes": {
 			"types": "./lib/data/icon-set/convert/helpers/themes.d.ts",
 			"require": "./lib/data/icon-set/convert/helpers/themes.cjs",
