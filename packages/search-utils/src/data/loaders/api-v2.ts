@@ -1,7 +1,7 @@
 import { collectionsAPIv2Loader } from '../collections/loaders/api-v2';
 import { iconSetAPIv2Loader } from '../icon-set/loaders/api-v2';
 import { searchAPIv2Loader } from '../search/loaders/api-v2';
-import { loaders } from '../loaders';
+import { loaders } from '../../config/loaders';
 
 /**
  * Set loaders for API

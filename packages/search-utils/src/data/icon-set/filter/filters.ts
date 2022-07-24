@@ -1,6 +1,6 @@
 import type { IconFinderIconSetIconName } from '../../icon/types/name';
-import type { IconFinderIconSetIconsList } from '../../icons-list/types/list';
 import type { IconFinderIconSet } from '../types/icon-set';
+import type { IconFinderIconSetIconsList } from '../types/list';
 import { filterIconSetUniqueIconsByKeyword } from './keyword';
 
 /**
@@ -59,6 +59,7 @@ export function filterIconSet(
 	// Return icons list
 	return {
 		type: 'icon-set',
+		source: iconSet,
 		filters,
 		icons: iconNames,
 	};

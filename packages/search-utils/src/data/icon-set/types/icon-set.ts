@@ -3,6 +3,7 @@ import type {
 	IconFinderTagsFilters,
 	IconFinderThemeFilters,
 } from '../../filters/types/all';
+import type { IconFinderPaginationIconSetConfig } from '../../pagination/types/source';
 import type { IconFinderIconSetIcons } from './icons';
 import type { IconSetID } from './id';
 
@@ -44,4 +45,7 @@ export interface IconFinderIconSet {
 
 	// Filters
 	filters: IconFinderIconSetFilters;
+
+	// Pagination, reference icon as icon name
+	pagination: IconFinderPaginationIconSetConfig;
 }

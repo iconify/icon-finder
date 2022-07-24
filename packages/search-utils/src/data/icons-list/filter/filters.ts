@@ -1,11 +1,12 @@
-import type { IconFinderGenericIconsList } from '../types/list';
+import type { IconFinderGenericIconName } from '../../icon/types/name';
+import type { IconFinderIconsListIcons } from '../types/list';
 
 /**
  * Filter generic icons list
  */
-export function filterGenericIconsList<T extends IconFinderGenericIconsList>(
-	icons: T
-): T {
+export function filterGenericIconsList<
+	T extends IconFinderIconsListIcons<IconFinderGenericIconName>
+>(icons: T): T {
 	const sourceIcons = icons.icons;
 	let iconsList: typeof sourceIcons;
 

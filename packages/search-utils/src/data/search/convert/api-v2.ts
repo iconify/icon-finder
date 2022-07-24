@@ -75,7 +75,6 @@ export function convertAPIv2SearchResults(
 	// Return list
 	return {
 		// Icons list
-		type: 'generic',
 		icons,
 		filters: {
 			[filterType]: collectionsFilters,
@@ -83,5 +82,6 @@ export function convertAPIv2SearchResults(
 
 		// Custom stuff
 		gotMaxResults: data.total >= data.limit,
+		pagination: {},
 	};
 }

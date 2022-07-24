@@ -1,13 +1,9 @@
 import type { IconFinderFilters } from '../../filters/types/all';
-import type {
-	IconFinderGenericIconName,
-	IconFinderIconSetIconName,
-} from '../../icon/types/name';
 
-interface IconFinderIconsListMixin<Type, Icon> {
-	// Type
-	type: Type;
-
+/**
+ * Icons + filters
+ */
+export interface IconFinderIconsListIcons<Icon> {
 	// List of icons
 	icons: Icon[];
 
@@ -16,24 +12,13 @@ interface IconFinderIconsListMixin<Type, Icon> {
 }
 
 /**
- * Icons list for icon set
+ * Icons list
  */
-export type IconFinderIconSetIconsList = IconFinderIconsListMixin<
-	'icon-set',
-	IconFinderIconSetIconName
->;
+export interface IconFinderIconsList<Type, Source, Icon>
+	extends IconFinderIconsListIcons<Icon> {
+	// Type
+	type: Type;
 
-/**
- * Icons list, not specific to icon set
- */
-export type IconFinderGenericIconsList = IconFinderIconsListMixin<
-	'generic',
-	IconFinderGenericIconName
->;
-
-/**
- * Combination
- */
-export type IconFinderIconsList =
-	| IconFinderIconSetIconsList
-	| IconFinderGenericIconsList;
+	// Source data
+	source: Source;
+}

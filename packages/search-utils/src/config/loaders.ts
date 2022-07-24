@@ -1,4 +1,4 @@
-import type { IconFinderLoaders } from './loaders/types';
+import type { IconFinderLoaders } from '../data/loaders/types';
 
 /**
  * Loaders

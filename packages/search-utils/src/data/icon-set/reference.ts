@@ -1,5 +1,5 @@
-import type { IconFinderIconSetIconsList } from '../icons-list/types/list';
 import type { IconFinderIconSet } from './types/icon-set';
+import type { IconFinderIconSetIconsList } from './types/list';
 
 /**
  * Get index of reference icon in icons list

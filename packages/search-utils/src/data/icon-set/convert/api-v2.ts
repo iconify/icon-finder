@@ -160,6 +160,7 @@ export function convertAPIv2IconSet(
 			unique,
 		},
 		filters,
+		pagination: {},
 	};
 
 	// Set tags

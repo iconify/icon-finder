@@ -217,6 +217,7 @@ export function convertRawIconSet(
 			unique,
 		},
 		filters,
+		pagination: {},
 	};
 
 	// Set tags
