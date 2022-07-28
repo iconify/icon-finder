@@ -45,5 +45,8 @@ describe('Convert search results from API', () => {
 		expect(getCollectionFilterFromIconsList(results, 'charm')).toBe(
 			charmFilter
 		);
+
+		// Pagination should be empty
+		expect(results.pagination).toEqual({});
 	});
 });

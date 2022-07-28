@@ -80,5 +80,9 @@ describe('Filtering search results', () => {
 
 		// Check icons
 		expect(findIcon(icons, 'charm', 'home')).toBe(charmHomeIcon);
+
+		// Pagination should be empty and same object in icons list and search results
+		expect(searchResults.pagination).toEqual({});
+		expect(filtered.pagination).toBe(searchResults.pagination);
 	});
 });

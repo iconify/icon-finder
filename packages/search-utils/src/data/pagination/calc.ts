@@ -1,6 +1,6 @@
 import { utilsConfig } from '../../config/ui';
 import type { IconFinderIconsListPagination } from './types/results';
-import type { IconFinderPaginationConfig } from './types/source';
+import type { IconFinderPaginationConfig } from './types/config';
 
 /**
  * Generate pagination result
@@ -16,7 +16,7 @@ export function getPaginationResult(
 	return {
 		perPage,
 		total,
-		page: Math.min(maxPage, page || 0),
+		page: Math.min(maxPage, page || config.page || 0),
 		maxPage,
 		totalPages: total && maxPage + 1,
 	};

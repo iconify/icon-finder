@@ -305,15 +305,25 @@
 			"require": "./lib/data/loaders/types.cjs",
 			"import": "./lib/data/loaders/types.mjs"
 		},
+		"./lib/data/pagination/types/config": {
+			"types": "./lib/data/pagination/types/config.d.ts",
+			"require": "./lib/data/pagination/types/config.cjs",
+			"import": "./lib/data/pagination/types/config.mjs"
+		},
+		"./lib/data/pagination/types/icons": {
+			"types": "./lib/data/pagination/types/icons.d.ts",
+			"require": "./lib/data/pagination/types/icons.cjs",
+			"import": "./lib/data/pagination/types/icons.mjs"
+		},
+		"./lib/data/pagination/types/pages": {
+			"types": "./lib/data/pagination/types/pages.d.ts",
+			"require": "./lib/data/pagination/types/pages.cjs",
+			"import": "./lib/data/pagination/types/pages.mjs"
+		},
 		"./lib/data/pagination/types/results": {
 			"types": "./lib/data/pagination/types/results.d.ts",
 			"require": "./lib/data/pagination/types/results.cjs",
 			"import": "./lib/data/pagination/types/results.mjs"
-		},
-		"./lib/data/pagination/types/source": {
-			"types": "./lib/data/pagination/types/source.d.ts",
-			"require": "./lib/data/pagination/types/source.cjs",
-			"import": "./lib/data/pagination/types/source.mjs"
 		},
 		"./lib/data/pagination/apply": {
 			"types": "./lib/data/pagination/apply.d.ts",
@@ -324,6 +334,11 @@
 			"types": "./lib/data/pagination/calc.d.ts",
 			"require": "./lib/data/pagination/calc.cjs",
 			"import": "./lib/data/pagination/calc.mjs"
+		},
+		"./lib/data/pagination/pages": {
+			"types": "./lib/data/pagination/pages.d.ts",
+			"require": "./lib/data/pagination/pages.cjs",
+			"import": "./lib/data/pagination/pages.mjs"
 		},
 		"./lib/data/search/convert/api-v2": {
 			"types": "./lib/data/search/convert/api-v2.d.ts",

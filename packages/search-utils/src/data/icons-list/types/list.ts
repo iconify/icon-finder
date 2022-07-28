@@ -1,9 +1,11 @@
 import type { IconFinderFilters } from '../../filters/types/all';
+import type { IconFinderIconsListWithPaginationConfig } from '../../pagination/types/config';
 
 /**
- * Icons + filters
+ * Icons + filters + pagination config
  */
-export interface IconFinderIconsListIcons<Icon> {
+export interface IconFinderIconsListIcons<Icon>
+	extends IconFinderIconsListWithPaginationConfig {
 	// List of icons
 	icons: Icon[];
 

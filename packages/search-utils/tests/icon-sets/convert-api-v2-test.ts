@@ -177,5 +177,8 @@ describe('Convert icon set from API', () => {
 			],
 		};
 		expect(githubLoopIcon).toEqual(expectedGithubLoopIcon);
+
+		// Pagination should be empty
+		expect(iconSet!.pagination).toEqual({});
 	});
 });

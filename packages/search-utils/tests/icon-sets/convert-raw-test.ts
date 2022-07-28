@@ -95,6 +95,9 @@ describe('Convert raw icon set', () => {
 			],
 			hidden: true,
 		});
+
+		// Pagination should be empty
+		expect(iconSet!.pagination).toEqual({});
 	});
 
 	it('Aliases', () => {

@@ -131,5 +131,9 @@ describe('Filter icon set by tag', () => {
 			'arrow-left'
 		);
 		expect(clickableFilters).toEqual([]);
+
+		// Pagination should be empty and same object in icons list and icon set
+		expect(iconSet.pagination).toEqual({});
+		expect(icons.pagination).toBe(iconSet.pagination);
 	});
 });

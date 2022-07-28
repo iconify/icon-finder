@@ -10,7 +10,7 @@ export function filterIconSet(
 	iconSet: IconFinderIconSet,
 	keyword: string
 ): IconFinderIconSetIconsList {
-	const { id, filters } = iconSet;
+	const { id, filters, icons } = iconSet;
 
 	const selectedPrefix = filters.prefixes?.selected;
 	const selectedSuffix = filters.suffixes?.selected;
@@ -19,39 +19,30 @@ export function filterIconSet(
 	const iconNames: IconFinderIconSetIconName[] = [];
 
 	// Filter icons list by keyword, then by filters
-	filterIconSetUniqueIconsByKeyword(
-		iconSet.icons.unique,
-		filters,
-		keyword
-	).forEach((item) => {
-		const icons = item.icons;
-		for (let i = 0; i < icons.length; i++) {
-			const icon = icons[i];
-			// Check prefix and suffix
-			if (selectedPrefix && selectedPrefix !== icon.prefix) {
-				continue;
-			}
-			if (selectedSuffix && selectedSuffix !== icon.suffix) {
-				continue;
-			}
+	filterIconSetUniqueIconsByKeyword(icons.unique, filters, keyword).forEach(
+		(item) => {
+			const icons = item.icons;
+			for (let i = 0; i < icons.length; i++) {
+				const icon = icons[i];
 
-			// Check tags
-			if (
-				selectedTag &&
-				(!icon.tags || icon.tags.indexOf(selectedTag) == -1)
-			) {
-				continue;
+				// Check prefix, suffix and tags
+				if (
+					(!selectedPrefix || selectedPrefix === icon.prefix) &&
+					(!selectedSuffix || selectedSuffix === icon.suffix) &&
+					(!selectedTag ||
+						(icon.tags && icon.tags.indexOf(selectedTag) !== -1))
+				) {
+					// Found match
+					iconNames.push({
+						id,
+						name: icon.name,
+						render: item.render,
+					});
+					return;
+				}
 			}
-
-			// Found match
-			iconNames.push({
-				id,
-				name: icon.name,
-				render: item.render,
-			});
-			return;
 		}
-	});
+	);
 
 	// Sort icons
 	iconNames.sort((a, b) => a.name.localeCompare(b.name));
@@ -62,5 +53,6 @@ export function filterIconSet(
 		source: iconSet,
 		filters,
 		icons: iconNames,
+		pagination: iconSet.pagination,
 	};
 }
