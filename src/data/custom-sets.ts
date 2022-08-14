@@ -1,4 +1,5 @@
 import type { IconifyJSON, IconifyInfo } from '@iconify/types';
+import type { IconifyJSON as OldIconifyJSON } from '@iconify/iconify';
 import { Iconify } from '../iconify';
 import type { CollectionData } from '../converters/collection';
 import { rawDataToCollection } from '../converters/collection';
@@ -161,7 +162,7 @@ export function convertCustomSets(
 
 		// Add icons to Iconify
 		if (importIcons && Iconify.addCollection) {
-			Iconify.addCollection(item);
+			Iconify.addCollection(item as OldIconifyJSON);
 		}
 	});
 

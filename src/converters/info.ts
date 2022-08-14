@@ -109,6 +109,7 @@ export function dataToCollectionInfo(
 	}
 
 	// Generate data
+	const samples: string[] = [];
 	const result: CollectionInfo = {
 		prefix: prefix,
 		name: name,
@@ -131,7 +132,7 @@ export function dataToCollectionInfo(
 			spdx: getSourceNestedString('license', 'spdx', ''),
 			url: getSourceNestedString('license', 'url', ''),
 		},
-		samples: [],
+		samples,
 		category: typeof source.category === 'string' ? source.category : '',
 		palette: typeof source.palette === 'boolean' ? source.palette : false,
 	};
@@ -147,8 +148,8 @@ export function dataToCollectionInfo(
 	// Add samples
 	if (source.samples instanceof Array) {
 		source.samples.forEach((item) => {
-			if (result.samples.length < 3 && typeof item === 'string') {
-				result.samples.push(item);
+			if (samples.length < 3 && typeof item === 'string') {
+				samples.push(item);
 			}
 		});
 	}
