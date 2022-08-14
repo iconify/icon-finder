@@ -67,9 +67,6 @@ const baseCustomisationAttributes: (keyof IconCustomisations)[] = [
 	'rotate',
 	'hFlip',
 	'vFlip',
-	'hAlign',
-	'vAlign',
-	'slice',
 ];
 
 export function getCustomisationAttributes(
@@ -89,7 +86,8 @@ export function getCustomisationAttributes(
 /**
  * Documentation
  */
-export const docsBase = 'https://docs.iconify.design/icon-components/';
+ export const docsWebsite = 'https://docs.iconify.design/';
+ export const docsBase = docsWebsite + 'icon-components/';
 
 /**
  * Filter customisations
@@ -119,7 +117,7 @@ export function getCustomisationsList(
 	}
 
 	// Transformations and alignment
-	['rotate', 'hFlip', 'vFlip', 'hAlign', 'vAlign', 'slice'].forEach(
+	['rotate', 'hFlip', 'vFlip'].forEach(
 		(prop) => {
 			const key = prop as keyof IconCustomisations;
 			const value = customisations[key];

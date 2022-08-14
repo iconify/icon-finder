@@ -12,6 +12,7 @@ import { reactOfflineParser, reactParser } from './parsers/react';
 import { svelteOfflineParser, svelteParser } from './parsers/svelte';
 import { svgParser } from './parsers/svg';
 import { svgFrameworkParser } from './parsers/svg-framework';
+import { webComponentParser } from './parsers/iconify-icon';
 import { vueOfflineParser, vueParser } from './parsers/vue';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental
@@ -52,6 +53,11 @@ export function getIconCode(
 	let parser: CodeParser;
 
 	switch (lang) {
+		// IconifyIcon
+		case 'iconify-icon':
+			parser = webComponentParser;
+			break;
+
 		// SVG Framework
 		case 'iconify':
 			parser = svgFrameworkParser;

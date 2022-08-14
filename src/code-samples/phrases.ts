@@ -9,6 +9,7 @@ import type { CodeSampleKey, CodeSampleTitles } from './types';
  */
 export const codeSampleTitles: CodeSampleTitles = {
 	'iconify': 'SVG Framework',
+	'iconify-icon': 'Web Component',
 	'html': 'HTML',
 	'css': 'CSS',
 	'svg': 'SVG',

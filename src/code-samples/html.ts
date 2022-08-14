@@ -32,9 +32,9 @@ export function renderHTML(
 	const attributes: Record<string, string> = {
 		// Default SVG stuff
 		'xmlns': 'http://www.w3.org/2000/svg',
-		'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-		'aria-hidden': 'true',
-		'role': 'img',
+		// 'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+		// 'aria-hidden': 'true',
+		// 'role': 'img',
 		// Custom attributes
 		...customAttributes,
 		// Attributes from build result
@@ -48,9 +48,9 @@ export function renderHTML(
 	}
 
 	// Remove unused xlink namespace
-	if (body.indexOf('xlink:') === -1) {
-		delete attributes['xmlns:xlink'];
-	}
+	// if (body.indexOf('xlink:') === -1) {
+	// 	delete attributes['xmlns:xlink'];
+	// }
 
 	// Generate HTML
 	return (

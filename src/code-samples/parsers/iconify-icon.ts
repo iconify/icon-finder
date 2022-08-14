@@ -1,11 +1,11 @@
 import type { IconCustomisations } from '../../misc/customisations';
 import { Icon, iconToString } from '../../misc/icon';
 import type { CodeSampleAPIConfig } from '../types';
-import { iconifyVersion } from '../versions';
+import { iconifyIconVersion } from '../versions';
 import {
 	addAttr,
 	degrees,
-	docsBase,
+	docsWebsite,
 	getCustomisationsList,
 	isNumber,
 	mergeAttr,
@@ -15,19 +15,20 @@ import {
 } from './common';
 import type { CodeOutput, CodeParser, IconifyCodeDocs } from './types';
 
+
 // Documentation links
 const docs: IconifyCodeDocs = {
-	type: 'iconify',
-	href: docsBase + 'svg-framework/',
+	type: 'iconify-icon',
+	href: docsWebsite + 'iconify-icon/',
 };
 
 // Head section
 let head: string | undefined;
 
 /**
- * Code output for SVG Framework
+ * Code output for web component
  */
-export const svgFrameworkParser: CodeParser = (
+export const webComponentParser: CodeParser = (
 	icon: Icon,
 	customisations: IconCustomisations,
 	providerConfig: CodeSampleAPIConfig
@@ -39,15 +40,8 @@ export const svgFrameworkParser: CodeParser = (
 	// List of attributes
 	const list: ParserAttr = {};
 
-	// Add class
-	addAttr(
-		list,
-		'class',
-		customisations.inline ? 'iconify-inline' : 'iconify'
-	);
-
 	// Add icon name
-	addAttr(list, 'data-icon', iconToString(icon));
+	addAttr(list, 'icon', iconToString(icon));
 
 	// Parse all customisations
 	getCustomisationsList(customisations).forEach((attr) => {
@@ -64,7 +58,8 @@ export const svgFrameworkParser: CodeParser = (
 
 			// Dimensions
 			case 'width':
-				addAttr(list, 'data-width', toString(customisations[attr]));
+			case 'height':
+				addAttr(list, attr, toString(customisations[attr]));
 				break;
 
 			case 'onlyHeight': {
@@ -78,36 +73,30 @@ export const svgFrameworkParser: CodeParser = (
 				break;
 			}
 
-			case 'height':
-				addAttr(list, 'data-height', toString(customisations[attr]));
-				break;
-
 			// Transformations
 			case 'rotate':
-				addAttr(list, 'data-rotate', degrees(customisations[attr]));
+				addAttr(list, attr, degrees(customisations[attr]));
 				break;
 
 			case 'hFlip':
-				mergeAttr(list, 'data-flip', 'horizontal', ',');
+				mergeAttr(list, 'flip', 'horizontal', ',');
 				break;
 
 			case 'vFlip':
-				mergeAttr(list, 'data-flip', 'vertical', ',');
+				mergeAttr(list, 'flip', 'vertical', ',');
 				break;
 		}
 	});
 
 	// Generate HTML
-	const html = '<span ' + mergeAttributes(list) + '></span>';
+	const html = '<iconify-icon ' + (customisations.inline ? 'inline ' : '') + mergeAttributes(list) + '></iconify-icon>';
 
 	// Head script
 	if (head === void 0) {
 		head =
-			'<script src="https://code.iconify.design/' +
-			iconifyVersion.split('.').shift() +
-			'/' +
-			iconifyVersion +
-			'/iconify.min.js"><' +
+			'<script src="https://code.iconify.design/iconify-icon/' +
+			iconifyIconVersion +
+			'/iconify-icon.min.js"><' +
 			'/script>';
 	}
 

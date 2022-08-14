@@ -22,7 +22,7 @@ export interface CustomCodeOutput {
 	code: string;
 }
 
-export interface IconifyCodeOutput {
+export interface HTMLCodeOutput {
 	// Code to add to <head>
 	head: string;
 
@@ -63,8 +63,8 @@ export interface CodeOutput {
 	header?: CustomCodeOutputWithText;
 	footer?: CustomCodeOutputWithText;
 
-	// Iconify
-	iconify?: IconifyCodeOutput;
+	// HTML
+	html?: HTMLCodeOutput;
 
 	// Raw code to copy
 	raw?: string[];

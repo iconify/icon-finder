@@ -4,6 +4,8 @@ import type { Icon } from '../misc/icon';
  * Code sample modes
  */
 export type CodeSampleMode =
+	// IconifyIcon
+	| 'iconify-icon'
 	// SVG framework
 	| 'iconify'
 	// Stylesheet

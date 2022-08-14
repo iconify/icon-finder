@@ -57,6 +57,7 @@ type RawCodeSamplesTree =
 
 const rawCodeTabs: RawCodeSamplesTree = {
 	html: {
+		'iconify-icon': 'api',
 		iconify: 'api',
 		css: 'svg',
 	},

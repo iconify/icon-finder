@@ -12,11 +12,6 @@ import {
 } from './common';
 import type { CodeOutput, CodeParser, IconifyCodeDocs } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-unused-vars-experimental
-function assertNever(v: never) {
-	//
-}
-
 // Documentation links
 const docs: IconifyCodeDocs = {
 	type: 'css',
@@ -70,19 +65,6 @@ export const cssParser: CodeParser = (
 			case 'vFlip':
 				mergeAttr(list, 'flip', 'vertical', ',');
 				break;
-
-			// Alignment
-			case 'hAlign':
-			case 'vAlign':
-				mergeAttr(list, 'align', customisations[attr], ',');
-				break;
-
-			case 'slice':
-				mergeAttr(list, 'align', attr, ',');
-				break;
-
-			default:
-				assertNever(attr);
 		}
 	});
 
@@ -91,7 +73,7 @@ export const cssParser: CodeParser = (
 		.map((key) => {
 			const item = list[key];
 			if (typeof item === 'object') {
-				return item.key + '=' + encodeURIComponent(item.value);
+				return item.key + '=' + encodeURIComponent(item.value || '');
 			}
 			return key + '=' + encodeURIComponent(item);
 		})
