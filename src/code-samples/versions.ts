@@ -1,5 +1,5 @@
 export const iconifyVersion = '2.2.1';
-export const iconifyIconVersion = '1.0.0-beta.2';
+export const iconifyIconVersion = '1.0.0-beta.3';
 
 /**
  * Packages
